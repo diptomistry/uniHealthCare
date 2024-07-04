@@ -91,7 +91,7 @@ const Navbar = () => {
 
           <div className=" hidden lg:flex">
             <button
-              className="bg-brightColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out"
+              className="bg-brightColor text-white px-8 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out"
               onClick={openForm}
             >
               Contact Us
@@ -118,7 +118,7 @@ const Navbar = () => {
             spy={true}
             smooth={true}
             duration={500}
-            className=" hover:text-hoverColor transition-all cursor-pointer"
+            className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
             onClick={closeMenu}
           >
             Home
@@ -128,7 +128,7 @@ const Navbar = () => {
             spy={true}
             smooth={true}
             duration={500}
-            className=" hover:text-hoverColor transition-all cursor-pointer"
+            className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
             onClick={closeMenu}
           >
             About Us
@@ -138,7 +138,7 @@ const Navbar = () => {
             spy={true}
             smooth={true}
             duration={500}
-            className=" hover:text-hoverColor transition-all cursor-pointer"
+            className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
             onClick={closeMenu}
           >
             Services
@@ -148,7 +148,7 @@ const Navbar = () => {
             spy={true}
             smooth={true}
             duration={500}
-            className=" hover:text-hoverColor transition-all cursor-pointer"
+            className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
             onClick={closeMenu}
           >
             Doctors
@@ -158,7 +158,7 @@ const Navbar = () => {
             spy={true}
             smooth={true}
             duration={500}
-            className=" hover:text-hoverColor transition-all cursor-pointer"
+            className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
             onClick={closeMenu}
           >
             Blog
