@@ -12,3 +12,8 @@ body {
 .slick-slide > div {
   margin: 0 10px;
 }
+@layer utilities {
+  .pause {
+    animation-play-state: paused;
+  }
+}

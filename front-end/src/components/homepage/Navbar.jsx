@@ -27,7 +27,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className=" fixed w-full z-10 text-white">
+    <div className=" fixed w-full z-30 text-white">
       <div>
         <div className=" flex flex-row justify-between p-5 md:px-32 px-5 bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
           <div className=" flex flex-row items-center cursor-pointer">
@@ -98,20 +98,21 @@ const Navbar = () => {
             </button>
           </div>
 
-          {showForm && <Contact closeForm={closeForm} />}
+          {showForm && <Contact  closeForm={closeForm} />}
 
-          <div className=" lg:hidden flex items-center">
-            {menu ? (
-              <AiOutlineClose size={28} onClick={handleChange} />
-            ) : (
-              <AiOutlineMenu size={28} onClick={handleChange} />
-            )}
+          <div className=" lg:hidden flex items-center mr-28">
+          {menu ? (
+  <AiOutlineClose size={28} color="black" onClick={handleChange} />
+) : (
+  <AiOutlineMenu size={28} color="black" onClick={handleChange} />
+)}
+
           </div>
         </div>
         <div
           className={`${
             menu ? "translate-x-0" : "-translate-x-full"
-          } lg:hidden flex flex-col absolute bg-backgroundColor text-white left-0 top-16 font-semibold text-2xl text-center pt-8 pb-4 gap-8 w-full h-fit transition-transform duration-300`}
+          } lg:hidden flex flex-col absolute bg-backgroundColor text-white left-0 top-24 font-semibold text-2xl text-center pt-8 pb-4 gap-8 w-full h-fit transition-transform duration-300`}
         >
           <Link
             to="home"

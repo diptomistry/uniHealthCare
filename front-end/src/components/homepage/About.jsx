@@ -9,8 +9,10 @@ const About = () => {
     Aos.init({ duration: 2000 });
   }, []);
   return (
-    <div className=" min-h-screen flex flex-col lg:flex-row justify-between items-center lg:px-32 px-5 pt-24 lg:pt-16 gap-5">
+    
+    <div className=" min-h-screen bg-gray-100 flex flex-col lg:flex-row justify-between items-center lg:px-32 px-5  gap-5">
       <div className=" w-full lg:w-3/4 space-y-4" data-aos="fade-up-right">
+      <div className="absolute inset-0 bg-gradient-radial from-gray-100 to-transparent"></div>
         <h1 className=" text-4xl font-semibold text-center lg:text-start">
           About Us
         </h1>
