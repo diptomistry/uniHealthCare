@@ -79,15 +79,14 @@ const Doctors = () => {
   };
 
   return (
-    <div className=" min-h-screen bg-gray-100 flex flex-col justify-center lg:px-32 px-5 pt-16">
+    <div className=" min-h-screen  flex flex-col justify-center lg:px-32 px-5 pt-16">
       <div className=" flex flex-col items-center lg:flex-row justify-between mb-10 lg:mb-0">
         <div>
           <h1 className=" text-4xl font-semibold text-center lg:text-start">
             Our Doctors
           </h1>
           <p className=" mt-2 text-center lg:text-start">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus,
-            quidem.
+          We Nurture  Well-Being
           </p>
         </div>
         <div className="flex gap-5 mt-4 lg:mt-0">

@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../../layouts/Button";
-import BlogCard from "../../layouts/BlogCard";
+import Button from "../../layouts/homepage/Button";
+import BlogCard from "../../layouts/homepage/BlogCard";
 import img1 from "../../assets/img/blog1.jpg";
 import img2 from "../../assets/img/blog2.jpg";
 import img3 from "../../assets/img/blog3.jpg";
@@ -10,15 +10,14 @@ import img6 from "../../assets/img/blog6.jpg";
 
 const Blogs = () => {
   return (
-    <div className=" min-h-screen flex flex-col justify-center lg:px-32 px-5 pt-24">
+    <div className=" min-h-screen bg-gray-100 flex flex-col justify-center lg:px-32 px-5 pt-24">
       <div className=" flex flex-col items-center lg:flex-row justify-between">
         <div>
           <h1 className=" text-4xl font-semibold text-center lg:text-start">
             Latest Post
           </h1>
           <p className=" mt-2 text-center lg:text-start">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus,
-            quidem.
+          We are dedicated to providing the best health care
           </p>
         </div>
         <div className=" mt-4 lg:mt-0">

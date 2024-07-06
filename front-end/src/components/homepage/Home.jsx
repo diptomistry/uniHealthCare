@@ -1,8 +1,9 @@
 import React from "react";
-import Button from "../../layouts/Button";
+import Button from "../../layouts/homepage/Button";
 import Lottie from "lottie-react";
 import AnimationHome from "../../assets/Json/AnimationHome.json";
-import InfiniteMovingCards from "../../layouts/infinite-moving-cards";
+import InfiniteMovingCards from "../../layouts/homepage/infinite-moving-cards";
+import { FaArrowRight } from "react-icons/fa6";
 const testimonials = [
   {
     quote:
@@ -37,16 +38,15 @@ const testimonials = [
 
 const Home = () => {
   return (
-    
     <div className="h-[50rem] w-full  bg-white  bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
       {/* Radial gradient for the background */}
       <div className="absolute pointer-events-none inset-0  bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] z-10"></div>
-      
+
       {/* Content with higher z-index */}
       <div className="flex m-10 lg:m-20 relative z-20">
         <div className="mt-2 lg:mt-10 lg:ml-4">
-          <div className="w-full lg:w-4/5 space-y-5 mt-10">
-            <h1 className="text-2xl lg:text-5xl text-gray-700 font-bold leading-tight">
+          <div className="w-full  animate-slidein lg:w-4/5 space-y-5 mt-10 ">
+            <h1 className="text-2xl lg:text-5xl text-textColor font-bold leading-tight">
               Shahid Buddhijibe Dr. Muhammad Mortaza Medical Centre
             </h1>
             <p className="text-gray-500">
@@ -54,7 +54,10 @@ const Home = () => {
               University of Dhaka and also family members of the teachers and
               staff.
             </p>
-            <Button title="Get Started" />
+            <button className="py-3 px-8 text-lg lg:text-xl bg-brightColor hover:bg-hoverColor text-white rounded-md flex items-center gap-2">
+      <span>Get Started</span> 
+      <FaArrowRight />
+    </button>
           </div>
         </div>
         <div className="border-b-8 max-lg:hidden mt-8">
@@ -62,9 +65,8 @@ const Home = () => {
         </div>
       </div>
       <div className="rounded-md max-w-full flex flex-col antialiased bg-transparent items-center justify-center relative overflow-hidden ">
-      <InfiniteMovingCards items={testimonials} direction="right"/>
-    </div>
-     
+        <InfiniteMovingCards items={testimonials} direction="right" />
+      </div>
     </div>
   );
 };

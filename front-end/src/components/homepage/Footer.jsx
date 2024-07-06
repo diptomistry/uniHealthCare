@@ -1,12 +1,25 @@
 import React from "react";
 import { Link } from "react-scroll";
+import logo from "../../assets/img/logoo.svg";
 
 const Footer = () => {
   return (
-    <div className=" bg-backgroundColor text-white rounded-t-3xl mt-8 md:mt-0">
+    <div className=" bg-brightColor text-white rounded-t-3xl mt-8 md:mt-0 ">
       <div className="flex flex-col md:flex-row justify-between p-8 md:px-32 px-5">
         <div className=" w-full md:w-1/4">
-          <h1 className=" font-semibold text-xl pb-4">WellnessVista</h1>
+        <div className=" flex flex-row items-center cursor-pointer">
+            <img src={logo} alt="logo" className=" w-16 h-16" />
+            <Link to="home" spy={true} smooth={true} duration={500}>
+              <div className="flex flex-col">
+                <h1 className=" text-2xl text-gray-900  font-semibold">
+                  Medical Care
+                </h1>
+                <p className=" text-sm text-gray-900 ml-1">
+                  University of Dhaka
+                </p>
+              </div>
+            </Link>
+          </div>
           <p className=" text-sm">
             Our team of dedicated doctors, each specializing in unique fields
             such as orthopedics, cardiology, pediatrics, neurology, dermatology,
@@ -25,15 +38,7 @@ const Footer = () => {
             >
               About
             </Link>
-            <Link
-              to="services"
-              spy={true}
-              smooth={true}
-              duration={500}
-              className=" hover:text-hoverColor transition-all cursor-pointer"
-            >
-              Services
-            </Link>
+         
             <Link
               to="doctors"
               spy={true}
@@ -43,37 +48,46 @@ const Footer = () => {
             >
               Doctors
             </Link>
+            <Link
+              to="blog"
+              spy={true}
+              smooth={true}
+              duration={500}
+              className=" hover:text-hoverColor transition-all cursor-pointer"
+            >
+             Blogs
+            </Link>
           </nav>
         </div>
         <div>
           <h1 className=" font-medium text-xl pb-4 pt-5 md:pt-0">Services</h1>
           <nav className=" flex flex-col gap-2">
             <Link
-              to="services"
+              to="about"
               spy={true}
               smooth={true}
               duration={500}
               className=" hover:text-hoverColor transition-all cursor-pointer"
             >
-              Lab Test
+              Medical Test
             </Link>
             <Link
-              to="services"
+              to="about"
               spy={true}
               smooth={true}
               duration={500}
               className=" hover:text-hoverColor transition-all cursor-pointer"
             >
-              Health Check
+              Doctors Treatment
             </Link>
             <Link
-              to="services"
+              to="about"
               spy={true}
               smooth={true}
               duration={500}
               className=" hover:text-hoverColor transition-all cursor-pointer"
             >
-              Heart Health
+              Medicine
             </Link>
           </nav>
         </div>
@@ -81,13 +95,14 @@ const Footer = () => {
           <h1 className=" font-medium text-xl pb-4 pt-5 md:pt-0">Contact Us</h1>
           <nav className=" flex flex-col gap-2">
             <Link to="/" spy={true} smooth={true} duration={500}>
-              123 Elm Street, Suite 456 Springfield, IL 62701 United States
+            Dhaka 1000 ,Bangladesh<br />
+            Near the Science Annex Building
             </Link>
             <Link to="/" spy={true} smooth={true} duration={500}>
-              support@care.com
+            cmo.dumc@gmail.com
             </Link>
             <Link to="/" spy={true} smooth={true} duration={500}>
-              +123-456-7890
+            +88 09666 911 463 (Ext. )
             </Link>
           </nav>
         </div>
@@ -95,7 +110,7 @@ const Footer = () => {
       <div>
         <p className=" text-center py-4">
           @copyright developed by
-          <span className=" text-hoverColor"> champion programmers</span> | All
+          <span className=" text-hoverColor"> DU_NO_FEAR</span> | All
           rights reserved
         </p>
       </div>

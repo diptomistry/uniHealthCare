@@ -1,4 +1,4 @@
-import svgToDataUri from "mini-svg-data-uri";
+const svgToDataUri = require("mini-svg-data-uri");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -7,8 +7,8 @@ module.exports = {
   theme: {
     extend: {
       animation: {
-        scroll:
-          "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        slidein: "slidein 1s ease 300ms",
       },
       keyframes: {
         scroll: {
@@ -16,17 +16,26 @@ module.exports = {
             transform: "translate(calc(-50% - 0.5rem))",
           },
         },
+        slidein: {
+          from: {
+            opacity: "0",
+            transform: "translateY(-10px)",
+          },
+          to: {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
       },
       colors: {
-        hoverColor: "#FFC000",
-        brightColor: "#0A9DAE",
-        backgroundColor: "#EDF6F7",
-        textColor: "#039BAB",
+        hoverColor: "#FC9F5A",
+        brightColor: "#039BAB",
+        backgroundColor: "#0A9DAE",
+        textColor: "#343E39",
       },
     },
   },
   plugins: [
-  
     function ({ matchUtilities, theme }) {
       const colors = theme('colors');
       matchUtilities(

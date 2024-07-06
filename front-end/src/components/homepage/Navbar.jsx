@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-scroll";
-import Button from "../../layouts/Button";
+import Button from "../../layouts/homepage/Button";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import Contact from "../../models/Contact";
+import Contact from "../../models/homepage/Contact";
 import logo from "../../assets/img/logoo.svg";
 
 const Navbar = () => {
@@ -34,9 +34,12 @@ const Navbar = () => {
             <img src={logo} alt="logo" className=" w-16 h-16" />
             <Link to="home" spy={true} smooth={true} duration={500}>
               <div className="flex flex-col">
-              <h1 className=" text-2xl text-gray-900  font-semibold">Medical Care</h1>
-              <p className=" text-sm text-gray-900 ml-1">University of Dhaka</p>
-
+                <h1 className=" text-2xl text-gray-900  font-semibold">
+                  Medical Care
+                </h1>
+                <p className=" text-sm text-gray-900 ml-1">
+                  University of Dhaka
+                </p>
               </div>
             </Link>
           </div>
@@ -47,7 +50,7 @@ const Navbar = () => {
               spy={true}
               smooth={true}
               duration={500}
-              className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
+              className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
             >
               Home
             </Link>
@@ -56,25 +59,17 @@ const Navbar = () => {
               spy={true}
               smooth={true}
               duration={500}
-              className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
+              className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
             >
               About Us
             </Link>
-            <Link
-              to="services"
-              spy={true}
-              smooth={true}
-              duration={500}
-              className=" hover:text-hoverColor text-textColor  transition-all cursor-pointer"
-            >
-              Services
-            </Link>
+         
             <Link
               to="doctors"
               spy={true}
               smooth={true}
               duration={500}
-              className=" hover:text-hoverColor text-textColor  transition-all cursor-pointer"
+              className=" hover:text-hoverColor text-brightColor  transition-all cursor-pointer"
             >
               Doctors
             </Link>
@@ -83,7 +78,7 @@ const Navbar = () => {
               spy={true}
               smooth={true}
               duration={500}
-              className=" hover:text-hoverColor text-textColor  transition-all cursor-pointer"
+              className=" hover:text-hoverColor text-brightColor  transition-all cursor-pointer"
             >
               Blog
             </Link>
@@ -98,15 +93,14 @@ const Navbar = () => {
             </button>
           </div>
 
-          {showForm && <Contact  closeForm={closeForm} />}
+          {showForm && <Contact closeForm={closeForm} />}
 
           <div className=" lg:hidden flex items-center mr-28">
-          {menu ? (
-  <AiOutlineClose size={28} color="black" onClick={handleChange} />
-) : (
-  <AiOutlineMenu size={28} color="black" onClick={handleChange} />
-)}
-
+            {menu ? (
+              <AiOutlineClose size={28} color="black" onClick={handleChange} />
+            ) : (
+              <AiOutlineMenu size={28} color="black" onClick={handleChange} />
+            )}
           </div>
         </div>
         <div
@@ -119,7 +113,7 @@ const Navbar = () => {
             spy={true}
             smooth={true}
             duration={500}
-            className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
+            className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
             onClick={closeMenu}
           >
             Home
@@ -129,27 +123,18 @@ const Navbar = () => {
             spy={true}
             smooth={true}
             duration={500}
-            className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
+            className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
             onClick={closeMenu}
           >
             About Us
           </Link>
-          <Link
-            to="services"
-            spy={true}
-            smooth={true}
-            duration={500}
-            className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
-            onClick={closeMenu}
-          >
-            Services
-          </Link>
+      
           <Link
             to="doctors"
             spy={true}
             smooth={true}
             duration={500}
-            className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
+            className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
             onClick={closeMenu}
           >
             Doctors
@@ -159,7 +144,7 @@ const Navbar = () => {
             spy={true}
             smooth={true}
             duration={500}
-            className=" hover:text-hoverColor text-textColor transition-all cursor-pointer"
+            className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
             onClick={closeMenu}
           >
             Blog
