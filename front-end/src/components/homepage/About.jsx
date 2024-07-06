@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import CarouselCrossfade from "./CaroselComponents";
 
 import img from "../../assets/img/about.jpg";
 
@@ -9,10 +10,9 @@ const About = () => {
     Aos.init({ duration: 2000 });
   }, []);
   return (
-    
     <div className=" min-h-screen bg-gray-100 flex flex-col lg:flex-row justify-between items-center lg:px-32 px-5  gap-5">
       <div className=" w-full lg:w-3/4 space-y-4" data-aos="fade-up-right">
-      <div className="absolute inset-0 bg-gradient-radial from-gray-100 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-radial from-gray-100 to-transparent"></div>
         <h1 className=" text-4xl font-semibold text-center lg:text-start">
           About Us
         </h1>
@@ -35,8 +35,8 @@ const About = () => {
           placeat illo maxime ea.
         </p>
       </div>
-      <div className=" w-full lg:w-3/4"data-aos="fade-up-left">
-        <img className=" rounded-lg" src={img} alt="img" />
+      <div className=" w-full lg:w-3/4" data-aos="fade-up-left">
+        <CarouselCrossfade />
       </div>
     </div>
   );

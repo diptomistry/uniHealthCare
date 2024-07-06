@@ -68,7 +68,7 @@ function InfiniteMovingCards({
             <div className="mt-auto flex">
             
               <span className="text-sm leading-[1.6] text-gray-400 font-normal block">
-              {item.title}<span className="ml-1 mr-1">by</span>
+              {item.title}<span className="ml-1 mr-1">from</span>
               </span>
               <span className="text-sm leading-[1.6] text-textColor font-normal block">
                 {item.name}

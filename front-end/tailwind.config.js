@@ -2,7 +2,7 @@ import svgToDataUri from "mini-svg-data-uri";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./src/**/*.{js,jsx,tsx}"],
+  content: ["./index.html", "./src/**/*.{js,jsx,tsx}", "node_modules/tw-elements-react/dist/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
     extend: {
@@ -26,6 +26,7 @@ module.exports = {
     },
   },
   plugins: [
+  
     function ({ matchUtilities, theme }) {
       const colors = theme('colors');
       matchUtilities(

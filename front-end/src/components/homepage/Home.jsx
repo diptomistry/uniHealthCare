@@ -57,7 +57,7 @@ const Home = () => {
             <Button title="Get Started" />
           </div>
         </div>
-        <div className="shadow-lg max-lg:hidden mt-8">
+        <div className="border-b-8 max-lg:hidden mt-8">
           <Lottie animationData={AnimationHome} className="w-96 h-96" />
         </div>
       </div>
