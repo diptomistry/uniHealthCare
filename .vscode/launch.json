@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-UniMedApplication<uniMed>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.uniMed.UniMedApplication",
+            "projectName": "uniMed",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
