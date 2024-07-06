@@ -54,10 +54,8 @@ function InfiniteMovingCards({
       >
         {items.map((item, idx) => (
           <li
-            className="w-[350px] h-[200px] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px] flex flex-col"
-            style={{
-              backgroundColor: "#1f2937",
-            }}
+            className="w-[350px] h-[200px] bg-textColor max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px] flex flex-col"
+           
             key={item.name}
           >
             <div className="flex-grow overflow-y-auto mb-4">
