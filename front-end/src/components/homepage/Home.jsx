@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../../layouts/Button";
 import Lottie from "lottie-react";
 import AnimationHome from "../../assets/Json/AnimationHome.json";
-import InfiniteMovingCards from "./infinite-moving-cards";
+import InfiniteMovingCards from "../../layouts/infinite-moving-cards";
 const testimonials = [
   {
     quote:
@@ -61,7 +61,7 @@ const Home = () => {
           <Lottie animationData={AnimationHome} className="w-96 h-96" />
         </div>
       </div>
-      <div className="rounded-md max-w-full flex flex-col antialiased bg-transparent items-center justify-center relative overflow-hidden">
+      <div className="rounded-md max-w-full flex flex-col antialiased bg-transparent items-center justify-center relative overflow-hidden ">
       <InfiniteMovingCards items={testimonials} direction="right"/>
     </div>
      
