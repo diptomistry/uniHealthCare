@@ -22,13 +22,14 @@ const About = () => {
       <div className="flex flex-col lg:flex-row gap-2 flex-grow px-5 lg:px-20 mt-12">
         <div className=" lg:w-2/3 flex flex-col shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-lg ">
           <div className="bg-blue-200 flex-1 flex items-center justify-center rounded-lg">
-            <div className="w-4/5 space-y-2 mt-10 " data-aos="fade-right">
-              <h1 className=" text-4xl font-semibold text-center lg:text-start ">
+           <div className="flex ml-8 ">
+            <div className="flex basis-full">
+            <div className="space-y-2 mt-10 " data-aos="fade-right">
+              <h1 className=" text-4xl font-semibold text-textColor text-center lg:text-start ">
                 About Us
               </h1>
-              <p className=" text-justify lg:text-start">
-                ঢাকা বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার, সায়েন্স অ্যানেক্স
-                বিল্ডিংয়ের কাছে অবস্থিত, বিশ্ববিদ্যালয়ের ছাত্র, শিক্ষক ও
+              <p className=" text-justify font-hindSiliguri lg:text-start">
+                ঢাকা বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার বিশ্ববিদ্যালয়ের ছাত্র, শিক্ষক ও
                 কর্মচারী এবং শিক্ষক ও কর্মচারীদের পরিবারের সদস্যদের বিনামূল্যে
                 চিকিৎসা সেবা এবং বিনামূল্যে প্যাথলজিকাল পরীক্ষা প্রদান করে।
               </p>
@@ -36,17 +37,38 @@ const About = () => {
                 ঢাকা বিশ্ববিদ্যালয় চিকিৎসা কেন্দ্র বর্তমান শহিদ বুদ্ধিজীবী ডা.
                 মোহাম্মদ মোর্তজা মেডিকেল সেন্টার ২৪ঘণ্টা রোটেশনের ভিত্তিতে
                 ডাক্তার-নার্সের মাধ্যমে তাৎক্ষণিক প্রাথমিক স্বাস্থ্য সেবা দিয়ে
-                আসছে।
-              </p>
-              <p className="text-justify lg:text-start">
-                এ্যালোপ্যাথিক ১৯ জন ডাক্তার এবং হোমিও ইউনিটে ০৬ জন ডাক্তার
-                রয়েছে। সংক্রামক রোগীদের জন্য ওয়ার্ডে ২৪ টি বেড রয়েছে।
-                বহি:বিভাগ/প্যাথলজি বিভাগ/ কার্ডিওলজি বিভাগ/ রেডিওলজি বিভাগ/দন্ত
-                বিভাগ/চক্ষু বিভাগ/নাক, কান, গলা বিভাগ/নার্সিং বিভাগ/ডিসপেনসারী
-                বিভাগ/ ফিজিওথেরাপি বিভাগ/হোমিও বিভাগ চিকিৎসাসহ সর্বমোট ১১ টি
+                আসছে।সর্বমোট ১১ টি
                 বিভাগ রয়েছে।
               </p>
+           
             </div>
+
+            </div>
+            <div className=" flex basis-full ">
+              
+<div class="mx-auto max-w-lg"data-aos="fade-right">
+<h1 className=" text-4xl font-hindSiliguri text-center text-textColor lg:text-start ">
+বিভাগসমূহঃ 
+              </h1>
+  <ul class="ml-4 list-disc text-[#226e5e]">
+    <li>বহি:বিভাগ</li>
+    <li>প্যাথলজি বিভাগ</li>
+    <li>কার্ডিওলজি বিভাগ</li>
+    <li>রেডিওলজি বিভাগ</li>
+    <li>দন্ত বিভাগ</li>
+    <li>চক্ষু বিভাগ</li>
+    <li>নাক, কান, গলা বিভাগ</li>
+   <li>নার্সিং বিভাগ</li>
+    <li>ডিসপেনসারী বিভাগ</li>
+    <li>ফিজিওথেরাপি বিভাগ</li>
+    <li>হোমিও বিভাগ</li>
+  </ul>
+</div>
+
+
+            </div>
+
+           </div>
           </div>
           <div
             className="flex-1 flex items-center justify-center "
@@ -55,35 +77,36 @@ const About = () => {
             <CarouselCrossfade />
           </div>
         </div>
-        <div className="lg:w-1/3 flex flex-col gap-5 items-center justify-center">
-          <div
-            className=" w-full flex-grow flex   items-center justify-center"
-            data-aos="flip-up"
-          >
-            <ServicesCard
-              icon={icon1}
-              title="Medical Test"
-              bodyText="Comprehensive medical testing services available for accurate diagnosis and assessment of health conditions. "
-            />
-          </div>
-          <div
+        <div className="lg:w-1/3 flex flex-col gap-5 items-center justify-center"  data-aos="fade-up-left">
+        <div
             className="w-full flex-grow flex   items-center justify-center"
-            data-aos="flip-up"
+           
           >
             <ServicesCard
               icon={icon2}
               title="Doctors Treatment"
-              bodyText="Experience our top-notch medical services provided by highly skilled and compassionate doctors."
+              bodyText="এ্যালোপ্যাথিক ১৯ জন ডাক্তার এবং হোমিও ইউনিটে ০৬ জন ডাক্তার সার্ভিস দিয়ে থাকেন , সংক্রামক রোগীদের জন্য ওয়ার্ডে ২৪ টি বেড রয়েছে"
             />
           </div>
           <div
             className=" w-full flex-grow flex   items-center justify-center"
-            data-aos="flip-up"
+         
+          >
+            <ServicesCard
+              icon={icon1}
+              title="Medical Test"
+              bodyText="তিন ধরনের পরীক্ষা করা হয়- Urine Test, Hematological Test and Stool Test. প্যাথলজি বিভাগে পরীক্ষা করা হয়।"
+            />
+          </div>
+         
+          <div
+            className=" w-full flex-grow flex   items-center justify-center"
+         
           >
             <ServicesCard
               icon={icon3}
               title="Medicine"
-              bodyText="Get access to a wide range of high-quality medicines and prompt pharmaceutical services."
+              bodyText="উচ্চ মানের সকল প্রয়োজনীয় ঔষধ এবং দ্রুত ফার্মাসিউটিক্যাল পরিষেবার ব্যবস্থা আছে।"
             />
           </div>
         </div>
@@ -93,3 +116,13 @@ const About = () => {
 };
 
 export default About;
+/*
+   <p className="text-justify lg:text-start">
+                এ্যালোপ্যাথিক ১৯ জন ডাক্তার এবং হোমিও ইউনিটে ০৬ জন ডাক্তার
+                রয়েছে। সংক্রামক রোগীদের জন্য ওয়ার্ডে ২৪ টি বেড রয়েছে।
+                বহি:বিভাগ/প্যাথলজি বিভাগ/ কার্ডিওলজি বিভাগ/ রেডিওলজি বিভাগ/দন্ত
+                বিভাগ/চক্ষু বিভাগ/নাক, কান, গলা বিভাগ/নার্সিং বিভাগ/ডিসপেনসারী
+                বিভাগ/ ফিজিওথেরাপি বিভাগ/হোমিও বিভাগ চিকিৎসাসহ সর্বমোট ১১ টি
+                বিভাগ রয়েছে।
+              </p>
+              */

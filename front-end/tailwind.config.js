@@ -33,6 +33,10 @@ module.exports = {
         backgroundColor: "#0A9DAE",
         textColor: "#343E39",
       },
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+        hindSiliguri: ["Hind Siliguri", "sans-serif"],
+      },
     },
   },
   plugins: [

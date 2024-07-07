@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navbar, Home, About, Doctors, Blogs, Footer,ScheduleTable } from '../components/homepage'
+import { Navbar, Home, About, Doctors, Blogs, Footer,TabsWithIcon} from '../components/homepage'
 
 const Homepage = () => {
   return (
@@ -15,7 +15,7 @@ const Homepage = () => {
           <About />
         </div>
         <div id="dutyRoster">
-          <ScheduleTable />
+          <TabsWithIcon/>
         </div>
 
        

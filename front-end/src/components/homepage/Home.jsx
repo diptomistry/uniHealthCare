@@ -46,7 +46,7 @@ const Home = () => {
       <div className="flex m-10 lg:m-20 relative z-20">
         <div className="mt-2 lg:mt-10 lg:ml-4">
           <div className="w-full  animate-slidein lg:w-4/5 space-y-5 mt-10 ">
-            <h1 className="text-2xl lg:text-5xl text-textColor font-bold leading-tight">
+            <h1 className="text-2xl font-poppins lg:text-5xl text-textColor font-bold leading-tight">
               Shahid Buddhijibe Dr. Muhammad Mortaza Medical Centre
             </h1>
             <p className="text-gray-500">
