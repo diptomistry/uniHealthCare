@@ -63,6 +63,15 @@ const Navbar = () => {
             >
               About Us
             </Link>
+            <Link
+              to="dutyRoster"
+              spy={true}
+              smooth={true}
+              duration={500}
+              className=" hover:text-hoverColor text-brightColor  transition-all cursor-pointer"
+            >
+              Duty Roster
+            </Link>
          
             <Link
               to="doctors"
@@ -106,7 +115,7 @@ const Navbar = () => {
         <div
           className={`${
             menu ? "translate-x-0" : "-translate-x-full"
-          } lg:hidden flex flex-col absolute bg-backgroundColor text-white left-0 top-24 font-semibold text-2xl text-center pt-8 pb-4 gap-8 w-full h-fit transition-transform duration-300`}
+          } lg:hidden flex flex-col absolute bg-gray-200 text-white left-0 top-24 font-semibold text-2xl text-center pt-8 pb-4 gap-8 w-full h-fit transition-transform duration-300`}
         >
           <Link
             to="home"
@@ -127,6 +136,16 @@ const Navbar = () => {
             onClick={closeMenu}
           >
             About Us
+          </Link>
+          <Link
+            to="dutyRoster"
+            spy={true}
+            smooth={true}
+            duration={500}
+            className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
+            onClick={closeMenu}
+          >
+            Duty Roster
           </Link>
       
           <Link
