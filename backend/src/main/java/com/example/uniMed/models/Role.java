@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 
 @Entity
 public class Role {
-     @Id
+     public Role(Integer userRoleId) {
+        //TODO Auto-generated constructor stub
+    }
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roleID;
 
