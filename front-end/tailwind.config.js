@@ -32,6 +32,8 @@ module.exports = {
         brightColor: "#039BAB",
         backgroundColor: "#0A9DAE",
         textColor: "#343E39",
+        primaryColor:"#24bd9c",
+        secondaryColor:"#6cd2be",
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],

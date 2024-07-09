@@ -1,71 +1,103 @@
-
-
-import React from 'react';
-
-const dummyScheduleData = [
-  {
-    doctors: ['Dr. John Doe', 'Dr. Jane Smith'],
-    designation: ['Cardiologist', 'Neurologist'],
-    day: 'Monday, Wednesday',
-    times: ['9:00 AM - 1:00 PM', '2:00 PM - 6:00 PM']
-  },
-  {
-    doctors: ['Dr. Emily Brown'],
-    designation: ['Pediatrician'],
-    day: 'Tuesday, Thursday',
-    times: ['10:00 AM - 3:00 PM']
-  },
-  {
-    doctors: ['Dr. Michael Johnson', 'Dr. Sarah Lee'],
-    designation: ['Orthopedic Surgeon', 'Dermatologist'],
-    day: 'Friday',
-    times: ['8:00 AM - 12:00 PM', '1:00 PM - 5:00 PM']
-  }
-];
+import React from 'react'
 
 const DoctorScheduleTable = () => {
+    const schedule = [
+        ['বার', 'সকাল ৮.০০-দুপুর ২.০০টা', 'দুপুর ২.০০-বিকাল ৬.০০টা', 'বিকাল ৬.০০-রাত ১০.০০টা'],
+        ['রবিবার', 'জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)', 'মোস্তাফিজুর রহমান (নিউরোলজিস্ট)', 'ইয়াসমিন হক বিল্কিস (গাইনোকোলজিস্ট)'],
+        ['সোমবার', 'জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)', 'ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)', 'মোস্তাফিজুর রহমান (নিউরোলজিস্ট)'],
+        ['মঙ্গলবার', 'জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)', 'শরীফ হোসাইন (অর্থোপেডিক সার্জন)', 'মোস্তাফিজুর রহমান (নিউরোলজিস্ট)'],
+        ['বুধবার', 'জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)', 'ইয়াসমিন হক বিল্কিস (গাইনোকোলজিস্ট)', 'সৈয়দ চন্দ্র দত্ত (ডার্মাটোলজিস্ট)'],
+        ['বৃহস্পতিবার', 'ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)', 'শরীফ হোসাইন (অর্থোপেডিক সার্জন)', 'সৈয়দ চন্দ্র দত্ত (ডার্মাটোলজিস্ট)'],
+        ['শুক্রবার', 'জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)', 'ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)', 'শরীফ হোসাইন (অর্থোপেডিক সার্জন)'],
+        ['শনিবার', 'ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)', 'সৈয়দ চন্দ্র দত্ত (ডার্মাটোলজিস্ট)', 'ইয়াসমিন হক বিল্কিস (গাইনোকোলজিস্ট)']
+      ];
+      const schedule2 = [
+        ['বার', 'প্যাথলজি বিভাগ', 'চক্ষু বিভাগ', 'দন্ত বিভাগ', 'নাক, কান, গলা', 'আল্ট্রাসনোগ্রাফী', 'ফিজিওথেরাপি', 'সময়'],
+        ['রবিবার', 'ড. মোঃ আব্দুল কাদের', 'ড. মোঃ আব্দুল কাদের', 'ড. মোঃ আব্দুল কাদের', 'ড. মোঃ আব্দুল কাদের', 'ড. মোঃ আব্দুল কাদের', 'ড. মোঃ আব্দুল কাদের', 'সকাল ৮.০০-দুপুর ২.০০টা'],
+        ['সোমবার', 'ড. ফারজানা হক', 'ড. রাশেদা খাতুন', 'ড. কামরুল হাসান', 'ড. সোহেল আহমেদ', 'ড. মেহেদী হাসান', 'ড. সাদিয়া আক্তার', 'সকাল ৯.০০-দুপুর ৩.০০টা'],
+        ['মঙ্গলবার', 'ড. আরিফুর রহমান', 'ড. নুসরাত জাহান', 'ড. এম. এ. গনি', 'ড. হাসান মাহমুদ', 'ড. ফাহিমা আক্তার', 'ড. আফরোজা বেগম', 'সকাল ১০.০০-দুপুর ৪.০০টা'],
+        ['বুধবার', 'ড. শফিকুল ইসলাম', 'ড. সাবরিনা সুলতানা', 'ড. আতিকুর রহমান', 'ড. মুনিরা পারভিন', 'ড. শামসুজ্জামান', 'ড. নাজমা সুলতানা', 'সকাল ১১.০০-দুপুর ৫.০০টা'],
+        ['বৃহস্পতিবার', 'ড. মাহবুবুল আলম', 'ড. হাসিনা আক্তার', 'ড. কাসেম আলী', 'ড. ফারহানা ইয়াসমিন', 'ড. জাকির হোসেন', 'ড. সুলতানা রাজিয়া', 'সকাল ৮.০০-দুপুর ২.০০টা'],
+        ['শুক্রবার', 'ড. আনিসুর রহমান', 'ড. ফাতেমা বেগম', 'ড. মিজানুর রহমান', 'ড. নাসরিন সুলতানা', 'ড. মোস্তাফিজুর রহমান', 'ড. ফারহানা হক', 'সকাল ৯.০০-দুপুর ৩.০০টা'],
+        ['শনিবার', 'ড. মমতাজ বেগম', 'ড. রুবিনা ইয়াসমিন', 'ড. কামরুল ইসলাম', 'ড. সোহেল রানা', 'ড. শামীম আহমেদ', 'ড. লুবনা আক্তার', 'সকাল ১০.০০-দুপুর ৪.০০টা']
+      ];
+      const schedule3=[
+        ['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'],
+        ['ড. মোঃ আব্দুল কাদের\n0123123123123','ড. ফারজানা হক\n012938210938210','ড. আরিফুর রহমান\n1203812038','ড. শফিকুল ইসলাম\n123123212131','ড. মাহবুবুল আলম\n1231238120','ড. আনিসুর রহমান\n12312301280','ড. মমতাজ বেগম\n1230123808120']
+
+      ];
+      
+
   return (
-    <div className="min-h-screen   bg-white p-8 rounded-lg shadow-md " >
-      <h2 className="text-2xl font-bold text-textColor mb-4">MEDICAL CENTER SCHEDULE</h2>
-      <div className="flex flex-col">
-        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="overflow-hidden">
-              <table className="min-w-full border border-brightColor rounded-lg">
-                <thead className="bg-backgroundColor/30 text-white">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      DOCTOR'S NAME
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      DESIGNATION
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      SCHEDULE
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      TIME
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dummyScheduleData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-backgroundColor/10' : 'bg-blue-100'}>
-                      <td className="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap">{item.doctors.join('\n')}</td>
-                      <td className="px-6 py-4 text-gray-800 whitespace-pre-wrap">{item.designation.join('\n')}</td>
-                      <td className="px-6 py-4 text-gray-800 whitespace-nowrap">{item.day}</td>
-                      <td className="px-6 py-4 text-gray-800 whitespace-pre-wrap">{item.times.join('\n')}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+    <div className='flex flex-col gap-5'>
+         <div className=' flex flex-row justify-between'>
+            <div>
+            <h2 className="text-2xl font-hindSiliguri text-textColor  ">ডাক্তারদের ডিউটি রোস্টার </h2>
             </div>
+            
+          
+              <div className='flex flex-row gap-2'>
+                <div className='flex gap-2'>
+                <h2 className="text-xl font-bold text-primaryColor  ">৯ই জুলাই ২০২৪ </h2>
+                <h2 className="text-xl font-bold text-textColor  ">তারিখ থেকে </h2>
+                
+                </div>
+                <div className='flex gap-2'>
+                <h2 className="text-xl font-bold text-primaryColor  "> ১০ই জুলাই ২০২৪</h2>
+                <h2 className="text-xl font-bold text-textColor  "> তারিখ পর্যন্ত </h2>
+                </div>
+                </div>
+
+         </div>
+
+        <div className="grid grid-cols-4  border border-gray-300">
+      {schedule.map((row, rowIndex) => (
+        row.map((cell, cellIndex) => (
+          <div 
+            key={`${rowIndex}-${cellIndex}`} 
+            className={`p-2 border border-gray-300 ${rowIndex === 0 ? 'font-bold bg-gray-100' : ''}`}
+          >
+            {cell}
           </div>
-        </div>
-      </div>
-      <p className="mt-4 text-green-800">For inquiries, please call +88 09666 911 463 (Ext. )</p>
+        ))
+      ))}
     </div>
-  );
-};
+    <div className=" grid grid-cols-8  border border-gray-300">
+        {schedule2.map((row, rowIndex) => (
+            row.map((cell, cellIndex) => (
+            <div 
+                key={`${rowIndex}-${cellIndex}`} 
+                className={`p-2 border border-gray-300 ${rowIndex === 0 ? 'font-bold bg-gray-100' : ''}`}
+            >
+                {cell}
+            </div>
+            ))
+        ))}
+
+        
+    </div>
+    <div>
+        <h2 className='text-2xl font-hindSiliguri text-textColor mb-2'>
+        রাত্রিকালীন অতি জরুরি ডিউটি-
+        </h2>
+       <div className='grid grid-cols-7 border border-gray-300'>
+        {schedule3.map((row, rowIndex) => (
+            row.map((cell, cellIndex) => (
+            <div 
+                key={`${rowIndex}-${cellIndex}`} 
+                className={`p-2 border border-gray-300 ${rowIndex === 0 ? 'font-bold bg-gray-100' : ''}`}
+            >
+                {cell}
+            </div>
+            ))
+        ))}
+
+       </div>
+    </div>
+
+    </div>
+  )
+}
+
 
 export default DoctorScheduleTable;
