@@ -1,9 +1,9 @@
 import React from "react";
-import Button from "../../layouts/homepage/Button";
 import Lottie from "lottie-react";
 import AnimationHome from "../../assets/Json/AnimationHome.json";
 import InfiniteMovingCards from "../../layouts/homepage/infinite-moving-cards";
 import { FaArrowRight } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 const testimonials = [
   {
     quote:
@@ -49,15 +49,17 @@ const Home = () => {
             <h1 className="text-2xl font-poppins lg:text-5xl text-textColor font-bold leading-tight">
               Shahid Buddhijibe Dr. Muhammad Mortaza Medical Centre
             </h1>
-            <p className="text-gray-500">
+            <p className="text-gray-500 ">
               Excellent health service to students, teachers, and staff of the
               University of Dhaka and also family members of the teachers and
               staff.
             </p>
-            <button className="py-3 px-8 text-lg lg:text-xl bg-brightColor hover:bg-hoverColor text-white rounded-md flex items-center gap-2">
-      <span>Get Started</span> 
-      <FaArrowRight />
-    </button>
+            <Link to="/get-started">
+              <button className="py-3 px-8 text-lg lg:text-xl bg-brightColor hover:bg-hoverColor text-white rounded-md flex items-center gap-2 mt-4">
+                <span>Get Started</span>
+                <FaArrowRight />
+              </button>
+            </Link>
           </div>
         </div>
         <div className="border-b-8 max-lg:hidden mt-8">
