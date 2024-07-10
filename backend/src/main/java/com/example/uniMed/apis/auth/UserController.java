@@ -16,23 +16,23 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create-user")
-    public String createUser(@RequestParam("file") MultipartFile file,
-                             @RequestParam String confirmPass,
+    public Map<String, Object> createUser(@RequestParam("file") MultipartFile file,
+                             @RequestParam String confirm_pass,
                              @RequestParam String email,
                              @RequestParam Date dob,
                              @RequestParam String name,
                              @RequestParam String gender,
-                             @RequestParam String userType,
+                             @RequestParam String user_type,
+                             @RequestParam String password,
                              @RequestParam(required = false) Long department_id,
                              @RequestParam(required = false) String session,
                              @RequestParam(required = false) String registrationNo,
                              @RequestParam(required = false) String registeredFrom,
                              @RequestParam(required = false) String phone) {
-        try {
-            return userService.createUser(file, confirmPass, email, dob, name, gender, userType, department_id, session, registrationNo, registeredFrom, phone);
-        } catch (Exception e) {
-            return "Failed to create user: " + e.getMessage();
-        }
+       
+            System.out.println("Creating user");
+            return userService.createUser(file,password, confirm_pass, email, dob, name, gender, user_type, department_id, session, registrationNo, registeredFrom, phone);
+       
     }
 
     @PostMapping("/update-user")

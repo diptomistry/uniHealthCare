@@ -6,19 +6,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.uniMed.models.Doctors;
+import com.example.uniMed.models.Role;
 import com.example.uniMed.models.Student;
 import com.example.uniMed.models.User;
 import com.example.uniMed.repositories.EmailSender;
 import com.example.uniMed.repositories.auth.DoctorRepository;
+import com.example.uniMed.repositories.auth.RoleRepository;
 import com.example.uniMed.repositories.auth.StudentRepository;
 import com.example.uniMed.repositories.auth.UserRepo;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -35,52 +34,102 @@ public class UserService {
     @Autowired
     private EmailSender emailSender;
 
-    @Transactional
-    public String createUser(MultipartFile file,
-                             String confirmPass,
-                             String email,
-                             Date dob,
-                             String name,
-                             String gender,
-                             String userType,
-                             Long department_id,
-                             String session,
-                             String registrationNo,
-                             String registeredFrom,
-                             String phone) throws Exception {
-        String filePath = (file != null) ? saveFile(file) : "default/avatar.jpeg";
-    
-       
-    
-        Optional<User> existingUser = userRepository.findByEmail(email);
-        if (existingUser.isPresent()) {
-            return "Email already exists";
-        }
-    
-        String hashedPassword = BCrypt.hashpw(confirmPass, BCrypt.gensalt());
-        String token = BCrypt.hashpw(email, BCrypt.gensalt());
-    
-        String status = (userType.equals("student") || userType.equals("teacher") || userType.equals("staff")) ? "Approved" : "Pending";
-    
-        User newUser = new User(hashedPassword, email, dob, name, gender, getUserRoleId(userType), filePath, token, status, registeredFrom, phone);
-        userRepository.save(newUser);
-    
-        if (userType.equals("student")) {
-            if (department_id == null || session == null || registrationNo == null) {
-                userRepository.delete(newUser);
-                return "Department, session, and registration number must be provided for students";
+    @Autowired
+    private RoleRepository roleRepository;
+
+ @Transactional
+    public Map<String, Object> createUser(MultipartFile file,
+                                          String password,
+                                          String confirmPass,
+                                          String email,
+                                          Date dob,
+                                          String name,
+                                          String gender,
+                                          String userType,
+                                          Long departmentId,
+                                          String session,
+                                          String registrationNo,
+                                          String registeredFrom,
+                                          String phone) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            if (!password.equals(confirmPass)) {
+                response.put("success", false);
+                response.put("message", "Password does not match");
+                return response;
             }
-            Student student = new Student(newUser.getId(), department_id, session, registrationNo);
-            studentRepository.save(student);
-        } else if (userType.equals("doctor")) {
-            // Handle doctor specific logic
+
+            Optional<User> existingUser = userRepository.findByEmail(email);
+            if (existingUser.isPresent()) {
+                response.put("success", false);
+                response.put("message", "Email already exists");
+                return response;
+            }
+
+            String filePath;
+            if (file != null) {
+                filePath = saveFile(file);
+            } else {
+                filePath = "default/avatar.jpeg";
+            }
+
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+            String token = BCrypt.hashpw(email, BCrypt.gensalt());
+            String status = "Pending";
+            if ("student".equals(userType) || "teacher".equals(userType) || "staff".equals(userType)) {
+                status = "Approved";
+            }
+            System.out.println("------->Here");
+            Optional<Role> role = roleRepository.findByRoleName(userType);
+            System.out.println("------>Here");
+            if(role.isPresent()){
+                System.out.println("Role found");
+            }
+            else{
+                System.out.println("Role not found");
+            }
+            
+           
+            
+            User newUser = new User(hashedPassword, email, dob, name, gender, role.get(), filePath, token, status, registeredFrom, phone);
+            userRepository.save(newUser);
+
+            if ("student".equals(userType)) {
+                if (departmentId == null || session == null || registrationNo == null) {
+                    userRepository.delete(newUser);
+                    response.put("success", false);
+                    response.put("message", "Department, session, and registration number must be provided for students");
+                    return response;
+                }
+                Student student = new Student(newUser.getId(), departmentId, session, registrationNo);
+                studentRepository.save(student);
+            } else if ("doctor".equals(userType)) {
+
+                if (departmentId == null) {
+                    userRepository.delete(newUser);
+                    response.put("success", false);
+                    response.put("message", "Specialization must be provided for doctors");
+                    return response;
+                }
+                System.out.println("------->Creating doctor");
+
+                Doctors doctor = new Doctors(newUser, departmentId);
+                doctorRepository.save(doctor);
+            }
+
+            response.put("success", true);
+            response.put("message", "User created successfully");
+            return response;
+        } catch (Exception e) {
+            // e.printStackTrace();
+            System.out.println(e.getMessage());
+            response.put("success", false);
+            response.put("message", "An error occurred while creating the user: " + e.getMessage());
+            return response;
         }
-    
-        return "User created successfully";
     }
-    
-  
-    
+
     @Transactional
     public String updateUser(MultipartFile file, Long user_id, String email, String email2, String name, String department, String session, String registrationNo, String phone, MultipartFile phone2) throws Exception {
         Optional<User> userOpt = userRepository.findById((user_id));
@@ -230,29 +279,7 @@ public class UserService {
         return otp;
     }
 
-    private Integer getUserRoleId(String userType) {
-        switch (userType) {
-            case "admin":
-                return 1;
-            case "doctor":
-                return 2;
-            case "student":
-                return 3;
-            case "teacher":
-                return 4;
-            case "staff":
-                return 5;
-            case "dispensary_officer":
-                return 6;
-            case "senior_officer":
-                return 7;
-            case "section_officer":
-                return 8;
-            default:
-                throw new IllegalArgumentException("Invalid user type");
-        }
-    }
-
+ 
     private String saveFile(MultipartFile file) throws Exception {
         // Implement file saving logic here
         return "path/to/saved/file";

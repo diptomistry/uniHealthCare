@@ -27,21 +27,21 @@ public class User {
     private String otp;
     private String registeredFrom;
 
-    @ManyToOne
-    @JoinColumn(name = "roleID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "roleid")
     private Role role;
 
     public User() {
     }
 
-    public User(String hashedPassword, String email, Date dob, String name, String sex, Integer userRoleId,
+    public User(String hashedPassword, String email, Date dob, String name, String sex, Role role,
             String filePath, String token, String status, String registeredFrom, String phone) {
         this.password = hashedPassword;
         this.email = email;
         this.dob = dob;
         this.name = name;
         this.sex = sex;
-        this.role = new Role(userRoleId);
+        this.role = role;
         this.image = filePath;
         this.token = token;
         this.status = status;
