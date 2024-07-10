@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import CarouselCrossfade from "../../layouts/homepage/CaroselComponents";
-import Button from "../../layouts/homepage/Button";
 import { RiMicroscopeLine } from "react-icons/ri";
 import ServicesCard from "../../layouts/homepage/ServicesCard";
 import { MdHealthAndSafety } from "react-icons/md";

@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
+import AdminQuote from "../../layouts/homepage/AdminQuote";
 
 const Doctors = () => {
   const data = [
@@ -79,7 +80,8 @@ const Doctors = () => {
   };
 
   return (
-    <div className=" min-h-screen  bg-gray-100 flex flex-col justify-center lg:px-32 px-5 pt-16">
+    <div className=" min-h-screen  bg-gray-100 flex flex-col lg:px-32 px-5 pt-10">
+      <div>
       <div className=" flex flex-col items-center lg:flex-row justify-between mb-10 lg:mb-0">
         <div>
           <h1 className=" text-4xl font-semibold text-center lg:text-start">
@@ -126,6 +128,10 @@ const Doctors = () => {
             </div>
           ))}
         </Slider>
+      </div>
+      </div>
+      <div className="mt-8 p-2">
+      <AdminQuote />
       </div>
     </div>
   );
