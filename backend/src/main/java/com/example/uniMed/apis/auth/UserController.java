@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 public class UserController {
 
     @Autowired
@@ -106,7 +106,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestParam String email, @RequestParam String password) {
+    public Map<String, Object> login(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        String password = body.get("password");
         try {
             return userService.loginUser(email, password);
         } catch (Exception e) {
