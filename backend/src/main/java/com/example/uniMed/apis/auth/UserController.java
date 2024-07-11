@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.uniMed.services.auth.UserService;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/update-user")
-    public String updateUser(@RequestParam("file") MultipartFile file,
+    public Map<String, Object> updateUser(@RequestParam("file") MultipartFile file,
                              @RequestParam Long user_id,
                              @RequestParam(required = false) String email,
                              @RequestParam(required = false) String dob,
@@ -48,63 +49,81 @@ public class UserController {
         try {
             return userService.updateUser(file, user_id, email, dob, name, department, session, registrationNo, phone, file);
         } catch (Exception e) {
-            return "Failed to update user: " + e.getMessage();
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to send OTP: " + e.getMessage());
+            return response;
         }
     }
 
     @PostMapping("/delete-user")
-    public String deleteUser(@RequestParam Long user_id) {
+    public Map<String, Object> deleteUser(@RequestParam Long user_id) {
         return userService.deleteUser(user_id);
     }
 
     @PostMapping("/update-status")
-    public String updateStatus(@RequestParam Long user_id, @RequestParam String status) {
+    public Map<String, Object> updateStatus(@RequestParam Long user_id, @RequestParam String status) {
         return userService.updateUserStatus(user_id, status);
     }
 
     @PostMapping("/update-role")
-    public String updateRole(@RequestParam Long user_id, @RequestParam Integer role_id) {
+    public Map<String, Object> updateRole(@RequestParam Long user_id, @RequestParam Integer role_id) {
         return userService.updateUserRole(user_id, role_id);
-    }
-
-    @PostMapping("/send-otp")
-    public String sendOtp(@RequestParam String email, @RequestParam boolean debug) {
+    }@PostMapping("/send-otp")
+    public Map<String, Object> sendOtp(@RequestParam String email, @RequestParam boolean debug) {
         try {
             return userService.sendOtp(email, debug);
         } catch (Exception e) {
-            return "Failed to send OTP: " + e.getMessage();
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to send OTP: " + e.getMessage());
+            return response;
         }
     }
 
     @PostMapping("/verify-email")
-    public String verifyEmail(@RequestParam String email) {
+    public Map<String, Object> verifyEmail(@RequestParam String email) {
         try {
             return userService.verifyEmail(email);
         } catch (Exception e) {
-            return "Failed to verify email: " + e.getMessage();
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to verify email: " + e.getMessage());
+            return response;
         }
     }
 
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestParam String email, @RequestParam String current_pass, @RequestParam String confirm_pass) {
+    public Map<String, Object> resetPassword(@RequestParam String email, @RequestParam String current_pass, @RequestParam String confirm_pass) {
         try {
             return userService.resetPassword(email, current_pass, confirm_pass);
         } catch (Exception e) {
-            return "Failed to reset password: " + e.getMessage();
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to reset password: " + e.getMessage());
+            return response;
         }
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String email, @RequestParam String password) {
+    public Map<String, Object> login(@RequestParam String email, @RequestParam String password) {
         try {
             return userService.loginUser(email, password);
         } catch (Exception e) {
-            return "Login failed: " + e.getMessage();
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to login: " + e.getMessage());
+            return response;
         }
     }
 
     @GetMapping("/get-doctors")
-    public String getDoctors() {
-        return userService.getDoctors();
+    public Map<String, Object> getDoctors() {
+        Map<String, Object> response = userService.getDoctors();
+        if (!response.containsKey("success")) {
+            response.put("success", false);
+            response.put("message", "Failed to get doctors");
+        }
+        return response;
     }
 }

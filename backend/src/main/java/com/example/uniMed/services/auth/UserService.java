@@ -14,6 +14,7 @@ import com.example.uniMed.repositories.auth.DoctorRepository;
 import com.example.uniMed.repositories.auth.RoleRepository;
 import com.example.uniMed.repositories.auth.StudentRepository;
 import com.example.uniMed.repositories.auth.UserRepo;
+import com.example.uniMed.services.FileService;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -36,6 +37,9 @@ public class UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private FileService fileService;
 
  @Transactional
     public Map<String, Object> createUser(MultipartFile file,
@@ -68,11 +72,9 @@ public class UserService {
             }
 
             String filePath;
-            if (file != null) {
-                filePath = saveFile(file);
-            } else {
-                filePath = "default/avatar.jpeg";
-            }
+       
+                 filePath = (file != null) ? fileService.saveFile(file) : "default/avatar.jpeg";
+            
 
             String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
             String token = BCrypt.hashpw(email, BCrypt.gensalt());
@@ -129,18 +131,20 @@ public class UserService {
             return response;
         }
     }
-
     @Transactional
-    public String updateUser(MultipartFile file, Long user_id, String email, String email2, String name, String department, String session, String registrationNo, String phone, MultipartFile phone2) throws Exception {
-        Optional<User> userOpt = userRepository.findById((user_id));
+    public Map<String, Object> updateUser(MultipartFile file, Long userId, String email, String email2, String name, String department, String session, String registrationNo, String phone, MultipartFile phone2) throws Exception {
+        Map<String, Object> response = new HashMap<>();
+        Optional<User> userOpt = userRepository.findById(userId);
         if (!userOpt.isPresent()) {
-            return "User does not exist";
+            response.put("success", false);
+            response.put("message", "User does not exist");
+            return response;
         }
 
         User user = userOpt.get();
 
-        if (user_id != null) {
-            user.setUserID(user_id);
+        if (userId != null) {
+            user.setUserID(userId);
         }
         if (email != null) {
             user.setEmail(email);
@@ -162,83 +166,136 @@ public class UserService {
         userRepository.save(user);
 
         if (department != null) {
-            studentRepository.updateDepartment(user_id, department);
+            studentRepository.updateDepartment(userId, department);
         }
         if (session != null) {
-            studentRepository.updateSession(user_id, session);
+            studentRepository.updateSession(userId, session);
         }
         if (registrationNo != null) {
-            studentRepository.updateRegistrationNo(user_id, registrationNo);
+            studentRepository.updateRegistrationNo(userId, registrationNo);
         }
 
-        return "User updated successfully";
+        response.put("success", true);
+        response.put("message", "User updated successfully");
+        return response;
     }
 
     @Transactional
-    public String deleteUser(Long userId) {
+    public Map<String, Object> deleteUser(Long userId) {
+        Map<String, Object> response = new HashMap<>();
         try {
             userRepository.deleteUserData(userId);
             userRepository.deleteById(userId);
-            return "User and all related records deleted successfully";
+            response.put("success", true);
+            response.put("message", "User and all related records deleted successfully");
         } catch (Exception e) {
-            return "An error occurred while deleting the user";
+            response.put("success", false);
+            response.put("message", "An error occurred while deleting the user");
         }
+        return response;
     }
 
-    public String updateUserStatus(Long userId, String status) {
+    public Map<String, Object> updateUserStatus(Long userId, String status) {
+        Map<String, Object> response = new HashMap<>();
         Optional<User> userOpt = userRepository.findById(userId);
         if (!userOpt.isPresent()) {
-            return "User does not exist";
+            response.put("success", false);
+            response.put("message", "User does not exist");
+            return response;
         }
 
         User user = userOpt.get();
         user.setStatus(status);
         userRepository.save(user);
-        return "User status updated successfully";
+
+        response.put("success", true);
+        response.put("message", "User status updated successfully");
+        return response;
     }
 
-    public String updateUserRole(Long userId, Integer roleId) {
+    public Map<String, Object> updateUserRole(Long userId, Integer roleId) {
+        Map<String, Object> response = new HashMap<>();
         Optional<User> userOpt = userRepository.findById(userId);
         if (!userOpt.isPresent()) {
-            return "User does not exist";
+            response.put("success", false);
+            response.put("message", "User does not exist");
+            return response;
         }
 
         User user = userOpt.get();
         user.setRoleId(roleId);
         userRepository.save(user);
-        return "User role updated successfully";
+
+        response.put("success", true);
+        response.put("message", "User role updated successfully");
+        return response;
     }
 
-    public Optional<User> getUserById(Long userId) {
-        return userRepository.findById(userId);
+    public Map<String, Object> getUserById(Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            response.put("success", true);
+            response.put("message", "User found");
+            response.put("data", user.get());
+        } else {
+            response.put("success", false);
+            response.put("message", "User not found");
+        }
+        return response;
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Map<String, Object> getAllUsers() {
+        Map<String, Object> response = new HashMap<>();
+        List<User> users = userRepository.findAll();
+        response.put("success", true);
+        response.put("message", "Users retrieved successfully");
+        response.put("data", users);
+        return response;
     }
 
-    public String sendOtp(String email, boolean debug) throws Exception {
+    public Map<String, Object> sendOtp(String email, boolean debug) throws Exception {
+        try{
+        Map<String, Object> response = new HashMap<>();
         int otp = generateOtp(debug);
         String message = "Use this token to reset your password: " + otp;
         emailSender.sendEmail(email, "Password Reset Request", message);
-        return "OTP sent successfully";
+        response.put("success", true);
+        response.put("message", "OTP sent successfully");
+        response.put("otp", otp);
+        return response;
+        }
+        catch(Exception e){
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to send OTP: " + e.getMessage());
+            return response;
+        }
     }
 
-    public String verifyEmail(String email) throws Exception {
+    public Map<String, Object> verifyEmail(String email) throws Exception {
+        Map<String, Object> response = new HashMap<>();
         int otp = generateOtp(false);
         String message = "Use this token to reset your password: " + otp;
         emailSender.sendEmail(email, "Password Reset Request", message);
-        return "OTP sent successfully";
+        response.put("success", true);
+        response.put("message", "OTP sent successfully");
+        return response;
     }
 
-    public String resetPassword(String email, String currentPass, String confirmPass) throws Exception {
+    public Map<String, Object> resetPassword(String email, String currentPass, String confirmPass) throws Exception {
+        Map<String, Object> response = new HashMap<>();
         if (!currentPass.equals(confirmPass)) {
-            return "Password does not match";
+            response.put("success", false);
+            response.put("message", "Password does not match");
+            return response;
         }
 
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (!userOpt.isPresent()) {
-            return "User does not exist";
+            response.put("success", false);
+            response.put("message", "User does not exist");
+            return response;
         }
 
         User user = userOpt.get();
@@ -246,23 +303,37 @@ public class UserService {
         user.setPassword(hashedPassword);
         userRepository.save(user);
 
-        return "Password reset successfully";
+        response.put("success", true);
+        response.put("message", "Password reset successfully");
+        return response;
     }
 
-    public String loginUser(String email, String password) throws Exception {
+    public Map<String, Object> loginUser(String email, String password) throws Exception {
+        Map<String, Object> response = new HashMap<>();
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (!userOpt.isPresent()) {
-            return "User does not exist";
+            response.put("success", false);
+            response.put("message", "User does not exist");
+            return response;
         }
-
+    
         User user = userOpt.get();
         if (!BCrypt.checkpw(password, user.getPassword())) {
-            return "Invalid username or password";
+            response.put("success", false);
+            response.put("message", "Invalid username or password");
+            return response;
         }
-
-        return "Login successful";
+    
+        // Build the response
+        response.put("success", true);
+        response.put("message", "Login successful");
+        response.put("data", user);
+    
+    
+    
+        return response;
     }
-
+    
     private int generateOtp(boolean debug) {
         if (debug) {
             return 1234;
@@ -275,20 +346,17 @@ public class UserService {
             random = new SecureRandom();
         }
 
-        int otp = 1000 + random.nextInt(9000);
-        return otp;
+        return 1000 + random.nextInt(9000);
     }
 
- 
     private String saveFile(MultipartFile file) throws Exception {
-        // Implement file saving logic here
-        return "path/to/saved/file";
+        return (file != null) ? fileService.saveFile(file) : "default/avatar.jpeg";
     }
 
-
-
-    public String getDoctors() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDoctors'");
+    public Map<String, Object> getDoctors() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", false);
+        response.put("message", "Method not implemented for getDoctors");
+        return response;
     }
 }
