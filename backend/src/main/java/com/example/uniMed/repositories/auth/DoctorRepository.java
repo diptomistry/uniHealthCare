@@ -6,5 +6,6 @@ import com.example.uniMed.models.Doctors;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctors, Long> {
+    
     // Additional query methods if needed
 }

@@ -11,4 +11,7 @@ public class Department {
     private String name;
     private String description;
     private String image;
+    public Department(Long departmentId2) {
+        this.departmentID = Integer.parseInt(departmentId2.toString());
+    }
 }
