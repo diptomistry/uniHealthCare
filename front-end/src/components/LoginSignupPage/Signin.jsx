@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Signin = ({ isSignUpMode, openForm }) => {
   return (
@@ -20,16 +21,18 @@ const Signin = ({ isSignUpMode, openForm }) => {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-start">
-              <input id="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300" required />
+              <input id="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 accent-brightColor  "  />
               <label htmlFor="remember" className="ml-3 text-sm text-gray-500">Remember me</label>
             </div>
             <button type="button" onClick={openForm} className="text-sm font-medium text-brightColor hover:text-hoverColor hover:underline">
               Forgot password?
             </button>
           </div>
-          <button type="submit" className="w-full text-white bg-brightColor hover:bg-hoverColor focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+         <Link to="/admin">
+         <button type="submit" className="w-full mt-8 text-white bg-brightColor hover:bg-hoverColor focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             Sign in
           </button>
+            </Link>
         </form>
       </div>
     </div>
