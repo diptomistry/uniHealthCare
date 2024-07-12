@@ -17,7 +17,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
         type="button"
         onClick={() => customFunc()}
         style={{ color }}
-        className="relative text-xl rounded-full p-3 hover:bg-[#F7F7F7]"
+        className="relative text-xl rounded-full p-3 hover:bg-gray-200"
       >
         <span
           style={{ background: dotColor }}
@@ -52,7 +52,7 @@ const Navbar = () => {
 
   return (
     <div className='flex justify-between p-2 md:ml-6 md:mr-6 relative'>
-              <NavButton title="Menu" customFunc={()=>setActiveMenu((prevActiveMenu)=>!prevActiveMenu)} color='blue' icon={<AiOutlineMenu />} />
+              <NavButton title="Menu" customFunc={()=>setActiveMenu((prevActiveMenu)=>!prevActiveMenu)} color='gray' icon={<AiOutlineMenu />} />
               <div className='flex'>
               <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => handleClick('chat')} color='#03C9D7' icon={<BsChatLeft />} />
               <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color='#03C9D7' icon={<RiNotification3Line />} />
