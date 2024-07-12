@@ -20,14 +20,13 @@ const Sidebar = () => {
    
   return (
     
-      <div className='ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10'>
+      <div className='ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 '>
         {
           activeMenu && (<>
           <div className='flex justify-between items-center'>
             <Link to='/' onClick={handleCloseSideBar} className="items-center gap-3 ml-3 mt-4 flex text-xl font-bold tracking-tight dark:text-white text-slate-900">
             <MdAdminPanelSettings size={30} 
-             className={` bg-gray-200 rounded 
-            `}
+            
             /> <span>Admin Panel</span>
 
             </Link>

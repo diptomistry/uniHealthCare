@@ -27,12 +27,12 @@ const Dashboard = () => {
             type="button"
             onClick={toggleMode}
            
-            className="text-xl p-3 bg-gray-200 dark:bg-gray-700   hover:bg-gray-400 dark:hover:bg-gray-600 rounded-full"
+            className="text-xl p-3 bg-gray-200 dark:bg-gray-700   hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full"
           >
             {darkMode ? (
-              <MdOutlineLightMode size={34} className="bg-white rounded-full p-1"/>
+              <MdOutlineLightMode size={34} className="bg-backgroundColor text-gray-200 rounded-full p-1"/>
             ) : (
-              <MdOutlineDarkMode size={34} className="bg-gray-500 rounded-full p-1"/>
+              <MdOutlineDarkMode size={34} className="bg-backgroundColor text-gray-600  rounded-full p-1"/>
             )}
           </button>
         </TooltipComponent>
@@ -43,7 +43,7 @@ const Dashboard = () => {
           <Sidebar />
         </div>
       ) : (
-        <div className=" w-0  dark:bg-secondary-dark-bg duration-500">
+        <div className=" w-0  dark:bg-secondary-dark-bg duration-300">
           <Sidebar />
         </div>
       )}
