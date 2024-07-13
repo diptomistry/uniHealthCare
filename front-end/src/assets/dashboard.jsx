@@ -10,7 +10,7 @@ export const links = [
     title: 'Dashboard',
     links: [
       {
-        name: 'Medical Center',
+        name: 'Medical-Center',
         icon: <FiHome />,
       },
     ],

@@ -4,9 +4,9 @@ import Homepage from "./pages/Homepage";
 import SlidingLoginSignup from "./pages/SigninSignup";
 import Dashboard from "./pages/Dashboard";
 import { registerLicense } from '@syncfusion/ej2-base';
-let key = "Ngo9BigBOggjHTQxAR8/V1NCaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXhfcnRQRWBYUkRyXUY="
-registerLicense(key);
 
+let key = "Ngo9BigBOggjHTQxAR8/V1NCaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXhfcnRQRWBYUkRyXUY=";
+registerLicense(key);
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/get-started" element={<SlidingLoginSignup />} />
-        <Route path="/admin" element={<Dashboard/>} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
