@@ -1,6 +1,6 @@
 import React from 'react'
 import { MdOutlineCancel } from 'react-icons/md';
-import Button from '../../layouts/homepage/Button';
+import Button from '../../layouts/dashboard/Button';
 import { chatData } from '../../assets/dashboard';
 
 const Chat = () => {

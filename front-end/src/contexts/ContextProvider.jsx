@@ -4,15 +4,11 @@ const StateContext = createContext();
 
 const initialState = {
   chat: false,
-  cart: false,
   userProfile: false,
   notification: false,
 };
 
 export const ContextProvider = ({ children }) => {
-  
-
-
 
 const [activeMenu, setActiveMenu] = useState(true);
 const [isClicked, setIsClicked] = useState(initialState);//initial value
@@ -27,6 +23,7 @@ const handleClick = (clicked) => setIsClicked({ ...initialState, [clicked]: true
       isClicked, setIsClicked,
       handleClick,
       screenSize, setScreenSize,
+      initialState,
 
       }}>
       {children}
