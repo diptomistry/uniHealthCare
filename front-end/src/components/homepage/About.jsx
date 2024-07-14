@@ -45,8 +45,8 @@ const About = () => {
             </div>
             <div className=" flex basis-full ">
               
-<div class="mx-auto max-w-lg"data-aos="fade-right">
-<h1 className=" text-4xl font-hindSiliguri text-center text-textColor lg:text-start ">
+<div class="mx-auto max-w-lg place-content-center"data-aos="fade-right">
+<h1 className=" text-4xl font-hindSiliguri text-center text-textColor lg:text-start  ">
 বিভাগসমূহঃ 
               </h1>
   <ul class="ml-4 list-disc text-[#226e5e]">

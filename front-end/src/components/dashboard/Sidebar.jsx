@@ -39,7 +39,7 @@ const Sidebar = () => {
   const menuItems = getMenuItems(userType);
 
   return (
-    <div className='h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 '>
+    <div className='h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 border-r-2 '>
       <div className='flex justify-between items-center'>
         <Link to='/dashboard' onClick={handleCloseSideBar} className="items-center gap-3 ml-[19px] mt-4 flex text-xl font-semibold tracking-tight dark:text-white text-slate-900">
           <MdAdminPanelSettings size={activeMenu ? 30 : 34} />

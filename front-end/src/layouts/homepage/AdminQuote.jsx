@@ -5,7 +5,7 @@ const AdminQuote = () => {
   return (
     <div className="w-full mx-auto bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-center">Message from Chief Medical Officer</h2>
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-col md:flex-row items-center space-x-4">
         <div className="flex-shrink-0">
           <img 
             src={adminImg}

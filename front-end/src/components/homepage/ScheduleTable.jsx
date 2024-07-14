@@ -12,6 +12,7 @@ import { MdLocalPharmacy } from "react-icons/md";
 import DoctorScheduleTable from "../../layouts/homepage/DoctorSchedule";
 import NursingSchedule from "../../layouts/homepage/NursingSchedule";
 import PharmacySchedule from "../../layouts/homepage/PharmacySchedule";
+import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 export function TabsWithIcon() {
   const data = [
@@ -41,9 +42,16 @@ export function TabsWithIcon() {
         <TabsHeader>
           {data.map(({ label, value, icon }) => (
             <Tab key={value} value={value}>
-              <div className="flex items-center gap-2 text-brightColor text-lg font-semibold">
-                {React.createElement(icon, { className: "w-5 h-5" })}
-                {label}
+              <div className="flex items-center gap-2 text-brightColor font-semibold">
+                <TooltipComponent
+                  content={label}
+                  position="Top"
+                  className="md:hidden"
+                >
+                  {React.createElement(icon, { className: "w-5 h-5" })}
+                </TooltipComponent>
+                <span className="md:inline hidden">{React.createElement(icon, { className: "w-5 h-5" })}</span>
+                <span className="hidden md:inline text-lg">{label}</span>
               </div>
             </Tab>
           ))}

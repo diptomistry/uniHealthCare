@@ -44,7 +44,7 @@ const Dashboard = () => {
           <Sidebar />
         </div>
       ) : (
-        <div className=" w-0 md:w-20 fixed  dark:bg-secondary-dark-bg ">
+        <div className=" w-0 md:w-20 fixed  dark:bg-secondary-dark-bg">
           <Sidebar />
         </div>
       )}
@@ -53,10 +53,10 @@ const Dashboard = () => {
           activeMenu ? "md:ml-64 duration-300" : "flex-1 md:ml-20 "
         }`}
       >
-        <div className={`fixed  bg-white dark:bg-main-dark-bg z-[1000] w-full  ${activeMenu ?"md:pr-64":"md:pr-20 "}`}>
+        <div className={`fixed  border-b-2 bg-white dark:bg-main-dark-bg z-[1000] w-full  ${activeMenu ?"md:pr-64":"md:pr-20 "}`}>
           <Navbar />
         </div>
-        <div className="mt-20 md:ml-6 md:mr-6 ml-2 mr-1 ">
+        <div className="mt-20 md:ml-6 md:mr-6 ml-2 mr-1  ">
           <Routes>
             <Route path="/" element={<MedicalCenter/>} />
             <Route path="/Medical-Center" element={<MedicalCenter/>} />
