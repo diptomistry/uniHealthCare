@@ -27,8 +27,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className=" fixed w-full z-30 text-white">
-      <div>
+    <div className=" fixed w-full z-30 text-white  ">
+    
         <div className=" flex flex-row justify-between p-5 md:px-32 px-5 bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
           <div className=" flex flex-row items-center cursor-pointer">
             <img src={logo} alt="logo" className=" w-16 h-16" />
@@ -179,7 +179,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-    </div>
+
   );
 };
 

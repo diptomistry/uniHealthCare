@@ -38,7 +38,7 @@ const testimonials = [
 
 const Home = () => {
   return (
-    <div className="h-[50rem] w-full  bg-white  bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
+    <div className=" min-h-screen   bg-white  bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
       {/* Radial gradient for the background */}
       <div className="absolute pointer-events-none inset-0  bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] z-10"></div>
 

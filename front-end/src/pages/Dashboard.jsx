@@ -3,9 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import Sidebar from "../components/dashboard/Sidebar";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import "../components/dashboard/Dashboard.css";
 import { useStateContext } from "../contexts/ContextProvider";
 import Navbar from "../components/dashboard/Navbar";
+
 
 const Dashboard = () => {
   const { activeMenu } = useStateContext();
@@ -38,7 +38,7 @@ const Dashboard = () => {
         </TooltipComponent>
       </div>
       {activeMenu ? (
-        <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white duration-500 ">
+        <div className="w-72 fixed  max-md:z-[10000000] dark:bg-secondary-dark-bg bg-white duration-500 " style={{ boxShadow: '0px 7px 30px 0px rgba(113, 122, 131, 0.11)' }}>
           {" "}
           <Sidebar />
         </div>
@@ -52,7 +52,7 @@ const Dashboard = () => {
           activeMenu ? "md:ml-72" : "flex-1"
         }`}
       >
-        <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
+        <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg z-[1000] w-full ">
           <Navbar />
         </div>
         <div>
