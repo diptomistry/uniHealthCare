@@ -8,7 +8,7 @@ const Signup = ({userType,handleUserTypeChange}) => {
   >
 <div className=" flex flex-col items-center">
 <div className="text-center">
-<h1 className="text-2xl xl:text-4xl font-extrabold text-backgroundColor">
+<h1 className="text-2xl xl:text-4xl font-extrabold text-textColor">
   Authority Sign up
 </h1>
 <p className="text-[12px] text-gray-500">

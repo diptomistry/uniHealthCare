@@ -30,9 +30,9 @@ const Dashboard = () => {
             className="text-xl p-3 bg-gray-200 dark:bg-gray-700   hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full"
           >
             {darkMode ? (
-              <MdOutlineLightMode size={34} className="bg-backgroundColor text-gray-200 rounded-full p-1"/>
+              <MdOutlineLightMode size={34} className="bg-[#03C9D7] text-gray-200 rounded-full p-1"/>
             ) : (
-              <MdOutlineDarkMode size={34} className="bg-backgroundColor text-gray-600  rounded-full p-1"/>
+              <MdOutlineDarkMode size={34} className="bg-[#03C9D7] text-gray-600  rounded-full p-1"/>
             )}
           </button>
         </TooltipComponent>
@@ -43,7 +43,7 @@ const Dashboard = () => {
           <Sidebar />
         </div>
       ) : (
-        <div className=" w-16  dark:bg-secondary-dark-bg duration-300">
+        <div className=" w-0 md:w-20  dark:bg-secondary-dark-bg duration-300">
           <Sidebar />
         </div>
       )}

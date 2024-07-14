@@ -29,7 +29,7 @@ const Signin = ({ isSignUpMode, openForm }) => {
       isSignUpMode ? "opacity-0 z-10" : ""
     }`}>
       <div className="w-full max-w-md bg-white rounded-lg shadow p-6 space-y-4 md:space-y-6 sm:p-8">
-        <h1 className="text-xl font-bold leading-tight tracking-tight text-backgroundColor md:text-2xl">
+        <h1 className="text-xl font-bold leading-tight tracking-tight text-textColor md:text-2xl">
           Sign in to your account
         </h1>
         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>

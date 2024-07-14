@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiHome, FiUsers, FiActivity, FiClipboard,  FiCreditCard,  FiCamera } from 'react-icons/fi';
-import { AiOutlineCheckCircle, AiOutlineSchedule, AiOutlineInfoCircle } from 'react-icons/ai';
+import { AiOutlineCheckCircle, AiOutlineSchedule, AiOutlineInfoCircle,AiOutlineFileAdd,AiOutlinePlusCircle,AiOutlineDelete } from 'react-icons/ai';
 import { BsPencilSquare, BsChatQuote, BsCurrencyDollar, BsShield } from 'react-icons/bs';
 import { MdOutlineMedicalServices } from 'react-icons/md';
 import { RiStethoscopeLine, RiNurseLine, RiStockLine } from 'react-icons/ri';
@@ -86,6 +86,57 @@ export const links = [
       {
         name: 'Quote Section',
         icon: <BsChatQuote />,
+      },
+    ],
+  },
+];
+export const doctorLinks = [
+  {
+    title: 'Dashboard',
+    links: [
+      {
+        name: 'Medical-Center',
+        icon: <FiHome />,
+      },
+    ],
+  },
+  {
+    title: 'Prescription',
+    links: [
+      {
+        name: 'New Requests',
+        icon: <AiOutlineFileAdd />, // Icon for new prescription requests
+      },
+      {
+        name: 'Already Prescribed',
+        icon: <AiOutlineCheckCircle />, // Icon for already prescribed items
+      },
+    ],
+  },
+ 
+  {
+    title: 'Medicine Management',
+    links: [
+      {
+        name: 'Current Stock',
+        icon: <RiStockLine />,
+      },
+      {
+        name: 'Stock Update',
+        icon: <AiOutlineSchedule />,
+      },
+    ],
+  },
+  {
+    title: 'Blogs',
+    links: [
+      {
+        name: 'Add',
+        icon: <AiOutlinePlusCircle />, // Icon for adding new blog entries
+      },
+      {
+        name: 'Delete',
+        icon: <AiOutlineDelete />, // Icon for deleting blog entries
       },
     ],
   },

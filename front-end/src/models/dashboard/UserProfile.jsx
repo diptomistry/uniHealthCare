@@ -10,7 +10,7 @@ const UserProfile = () => {
 
 
   return (
-    <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
+    <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
       <div className="flex justify-between items-center">
         <p className="font-semibold text-lg dark:text-gray-200">User Profile</p>
         <Button
@@ -21,7 +21,7 @@ const UserProfile = () => {
           borderRadius="50%"
         />
       </div>
-      <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
+      <div className="flex gap-5 items-center mt-6  border-b-2 pb-6">
         <img
           className="rounded-full h-24 w-24"
           src={avatar}
@@ -35,7 +35,7 @@ const UserProfile = () => {
       </div>
       <div>
         {userProfileData.map((item, index) => (
-          <div key={index} className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]">
+          <div key={index} className="flex gap-5  p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]">
             <button
               type="button"
               style={{ color: item.iconColor, backgroundColor: item.iconBg }}
@@ -54,7 +54,7 @@ const UserProfile = () => {
       <div className="mt-5">
         <Button
           color="white"
-          bgColor={'blue'}
+          bgColor={'#03C9D7'}
           text="Logout"
           borderRadius="10px"
           width="full"

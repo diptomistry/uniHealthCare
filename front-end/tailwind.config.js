@@ -30,7 +30,7 @@ module.exports = {
       colors: {
         hoverColor: "#FC9F5A",
         brightColor: "#039BAB",
-        backgroundColor: "#0A9DAE",
+        backgroundColor: "#03C9D7",
         textColor: "#343E39",
         primaryColor:"#24bd9c",
         secondaryColor:"#6cd2be",
