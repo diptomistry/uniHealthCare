@@ -1,13 +1,14 @@
 import React from 'react';
-import { FiHome, FiUsers, FiActivity, FiClipboard, FiFileText, FiCamera } from 'react-icons/fi';
+import { FiHome, FiUsers, FiActivity, FiClipboard,  FiCreditCard,  FiCamera } from 'react-icons/fi';
 import { AiOutlineCheckCircle, AiOutlineSchedule, AiOutlineInfoCircle } from 'react-icons/ai';
-import { BsCalendar3, BsPencilSquare, BsChatQuote } from 'react-icons/bs';
+import { BsPencilSquare, BsChatQuote, BsCurrencyDollar, BsShield } from 'react-icons/bs';
 import { MdOutlineMedicalServices } from 'react-icons/md';
-import { RiStethoscopeLine, RiNurseLine, RiStockLine, RiFileListLine } from 'react-icons/ri';
+import { RiStethoscopeLine, RiNurseLine, RiStockLine } from 'react-icons/ri';
 import avatar from './img/doc1.jpg';
 import avatar2 from './img/doc2.jpg';
 import avatar3 from './img/doc3.jpg';
 import avatar4 from './img/doc4.jpg';
+
 
 
 export const links = [
@@ -117,5 +118,28 @@ export const chatData = [
     message: 'Jolly completed tasks',
     desc: 'Assign her new tasks',
     time: '1:12 AM',
+  },
+];
+export const userProfileData = [
+  {
+    icon: <BsCurrencyDollar />,
+    title: 'My Profile',
+    desc: 'Account Settings',
+    iconColor: '#03C9D7',
+    iconBg: '#E5FAFB',
+  },
+  {
+    icon: <BsShield />,
+    title: 'My Inbox',
+    desc: 'Messages & Emails',
+    iconColor: 'rgb(0, 194, 146)',
+    iconBg: 'rgb(235, 250, 242)',
+  },
+  {
+    icon: <FiCreditCard />,
+    title: 'My Tasks',
+    desc: 'To-do and Daily Tasks',
+    iconColor: 'rgb(255, 244, 229)',
+    iconBg: 'rgb(254, 201, 15)',
   },
 ];
