@@ -51,7 +51,7 @@ const Navbar = () => {
   
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
   return (
-    <div className='flex justify-between p-2 md:ml-6 md:mr-6 relative'>
+    <div className='flex justify-between p-2 mr-6 relative '>
               <NavButton title="Menu" customFunc={handleActiveMenu} color='gray' icon={<AiOutlineMenu />} />
               <div className='flex'>
               <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => handleClick('chat')} color='#03C9D7' icon={<BsChatLeft />} />

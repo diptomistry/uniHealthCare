@@ -43,7 +43,7 @@ const Dashboard = () => {
           <Sidebar />
         </div>
       ) : (
-        <div className=" w-0  dark:bg-secondary-dark-bg duration-300">
+        <div className=" w-16  dark:bg-secondary-dark-bg duration-300">
           <Sidebar />
         </div>
       )}
