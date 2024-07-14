@@ -6,9 +6,9 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { useStateContext } from '../../contexts/ContextProvider';
 import avatar from '../../assets/img/admin.jpeg';
-import Chat from './Chat';
-import Notification from './Notification';
-import UserProfile from './UserProfile';
+import Chat from '../../models/dashboard/Chat';
+import Notification from '../../models/dashboard/Notification';
+import UserProfile from '../../models/dashboard/UserProfile';
 
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
