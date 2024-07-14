@@ -5,6 +5,7 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { useStateContext } from "../contexts/ContextProvider";
 import Navbar from "../components/dashboard/Navbar";
+import MedicalCenter from "../components/dashboard/Admin/MedicalCenter";
 
 
 const Dashboard = () => {
@@ -38,27 +39,27 @@ const Dashboard = () => {
         </TooltipComponent>
       </div>
       {activeMenu ? (
-        <div className="w-72 fixed  max-md:z-[10000000] dark:bg-secondary-dark-bg bg-white duration-500 " style={{ boxShadow: '0px 7px 30px 0px rgba(113, 122, 131, 0.11)' }}>
+        <div className="w-64 fixed  max-md:z-[10000000] dark:bg-secondary-dark-bg bg-white duration-300 " style={{ boxShadow: '0px 7px 30px 0px rgba(113, 122, 131, 0.11)' }}>
           {" "}
           <Sidebar />
         </div>
       ) : (
-        <div className=" w-0 md:w-20  dark:bg-secondary-dark-bg duration-300">
+        <div className=" w-0 md:w-20 fixed  dark:bg-secondary-dark-bg ">
           <Sidebar />
         </div>
       )}
       <div
         className={`dark:bg-main-dark-bg bg-[#FAFBFB]  min-h-screen  w-full ${
-          activeMenu ? "md:ml-72" : "flex-1"
+          activeMenu ? "md:ml-64 duration-300" : "flex-1 md:ml-20 "
         }`}
       >
-        <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg z-[1000] w-full ">
+        <div className={`fixed  bg-white dark:bg-main-dark-bg z-[1000] w-full  ${activeMenu ?"md:pr-64":"md:pr-20 "}`}>
           <Navbar />
         </div>
-        <div>
+        <div className="mt-20 md:ml-6 md:mr-6 ml-2 mr-1 ">
           <Routes>
-            <Route path="/" element="Dashboard" />
-            <Route path="/Medical-Center" element="Dashboard" />
+            <Route path="/" element={<MedicalCenter/>} />
+            <Route path="/Medical-Center" element={<MedicalCenter/>} />
           </Routes>
         </div>
       </div>
