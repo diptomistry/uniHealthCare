@@ -14,6 +14,8 @@ const Dashboard = () => {
 
   const toggleMode = () => {
     setDarkMode(!darkMode);
+  localStorage.setItem("darkMode", JSON.stringify(!darkMode));
+  
     if (!darkMode) {
       document.documentElement.classList.add("dark");
     } else {
@@ -58,8 +60,8 @@ const Dashboard = () => {
         </div>
         <div className="mt-20 md:ml-6 md:mr-6 ml-2 mr-1  ">
           <Routes>
-            <Route path="/" element={<MedicalCenter/>} />
-            <Route path="/Medical-Center" element={<MedicalCenter/>} />
+            <Route path="/" element={<MedicalCenter darkMode={darkMode} />} />
+            <Route path="/Medical-Center" element={<MedicalCenter darkMode={darkMode}/>} />
           </Routes>
         </div>
       </div>

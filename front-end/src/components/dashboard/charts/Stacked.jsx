@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChartComponent, SeriesCollectionDirective, SeriesDirective, Inject, Legend, Category, StackingColumnSeries, Tooltip } from '@syncfusion/ej2-react-charts';
 
 import { stackedCustomSeries,stackedPrimaryXAxis,stackedPrimaryYAxis } from '../../../assets/dashboard';
 
 
-const Stacked = ({ width, height }) => {
- // const { currentMode } = useStateContext();
- const currentMode = 'Dark';
-
+const Stacked = ({ width, height,darkMode }) => {
+    console.log('darkMode',darkMode);
+    
   return (
     <ChartComponent
       id="charts"
@@ -17,7 +16,7 @@ const Stacked = ({ width, height }) => {
       height={height}
       chartArea={{ border: { width: 0 } }}
       tooltip={{ enable: true }}
-      background={currentMode === 'Dark' ? '#33373E' : '#fff'}
+      background={darkMode ? '#33373E' : '#ffffff'}
       legendSettings={{ background: 'white' }}
     >
       <Inject services={[StackingColumnSeries, Category, Legend, Tooltip]} />

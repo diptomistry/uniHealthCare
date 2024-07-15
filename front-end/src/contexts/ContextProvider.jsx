@@ -16,6 +16,7 @@ const [screenSize, setScreenSize] = useState(undefined);
 const handleClick = (clicked) => setIsClicked({ ...initialState, [clicked]: true });
 
 
+
   return (
    
     <StateContext.Provider value={{
@@ -24,6 +25,7 @@ const handleClick = (clicked) => setIsClicked({ ...initialState, [clicked]: true
       handleClick,
       screenSize, setScreenSize,
       initialState,
+     
 
       }}>
       {children}
