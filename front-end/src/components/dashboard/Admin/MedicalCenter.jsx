@@ -1,5 +1,5 @@
 import React from 'react';
-import DatePicker from '../../../layouts/dashboard/mainContent/DatePicker';
+import DateRangePicker from '../../../layouts/dashboard/mainContent/DatePicker';
 import { dashData } from '../../../assets/dashboard';
 import CircularProgress from '../../../layouts/dashboard/mainContent/CircularProgress';
 import Button from '../../../layouts/dashboard/Button';
@@ -24,7 +24,7 @@ const currentMode = 'Dark';
      <h1 className='dark:text-gray-400'> If you need any assistance, use helper </h1><span className='underline dark:text-gray-400 cursor-pointer hover:text-hoverColor dark:hover:text-hoverColor'>bot.</span>
 
      </div>
-            <DatePicker/>
+            <DateRangePicker/>
         </div>
      <div className="bg-secondaryColor dark:text-gray-200 rounded-xl md:w-1/2 p-8 pt-9 mb-4 shadow-sm flex ">
         <div>
