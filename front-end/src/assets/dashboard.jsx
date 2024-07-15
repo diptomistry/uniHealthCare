@@ -1,15 +1,55 @@
 import React from 'react';
-import { FiHome, FiUsers, FiActivity, FiClipboard,  FiCreditCard,  FiCamera } from 'react-icons/fi';
+import { FiHome, FiUsers, FiClipboard,  FiCreditCard,  FiCamera, FiCalendar  } from 'react-icons/fi';
 import { AiOutlineCheckCircle, AiOutlineSchedule, AiOutlineInfoCircle,AiOutlineFileAdd,AiOutlinePlusCircle,AiOutlineDelete } from 'react-icons/ai';
-import { BsPencilSquare, BsChatQuote, BsCurrencyDollar, BsShield } from 'react-icons/bs';
+import { BsPencilSquare, BsChatQuote, BsCurrencyDollar, BsShield,  } from 'react-icons/bs';
 import { MdOutlineMedicalServices } from 'react-icons/md';
 import { RiStethoscopeLine, RiNurseLine, RiStockLine } from 'react-icons/ri';
+import { FaUserMd, FaUserNurse } from 'react-icons/fa';
+
+
 import avatar from './img/doc1.jpg';
 import avatar2 from './img/doc2.jpg';
 import avatar3 from './img/doc3.jpg';
 import avatar4 from './img/doc4.jpg';
 
-
+export const dashData = [
+  {
+    icon: <FiCalendar />,
+    amount: '39,354',
+    percentage: '-4%',
+    title: 'Total Appointment',
+    iconColor: '#03C9D7',
+    iconBg: '#E5FAFB',
+    pcColor: 'red-600',
+  },
+  {
+    icon: <FiCalendar />,
+    amount: '4,396',
+    percentage: '+23%',
+    title: 'Pending Appointment',
+    iconColor: 'rgb(255, 244, 229)',
+    iconBg: 'rgb(254, 201, 15)',
+    pcColor: 'green-600',
+  },
+  {
+    icon: <FaUserMd />,
+    amount: '423,39',
+    percentage: '+38%',
+    title: 'Total Doctor',
+    iconColor: 'rgb(228, 106, 118)',
+    iconBg: 'rgb(255, 244, 229)',
+    pcColor: 'green-600',
+  },
+  {
+    icon: <FaUserNurse />,
+    amount: '39,354',
+    percentage: '-12%',
+    title: 'Total Nurse',
+    iconColor: 'rgb(0, 194, 146)',
+    iconBg: 'rgb(235, 250, 242)',
+    pcColor: 'red-600',
+  },
+];
 
 export const links = [
   {
