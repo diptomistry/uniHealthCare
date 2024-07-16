@@ -11,13 +11,12 @@ class SparkLine extends React.PureComponent {
         height={height}
         width={width}
         lineWidth={1}
-        valueType="Numeric"
+        valueType="Category"
         fill={color}
         border={{ color: currentColor, width: 2 }}
         tooltipSettings={{
           visible: true,
-          // eslint-disable-next-line no-template-curly-in-string
-          format: '${x} : data ${yval}',
+          format: '${x} : BDT ${yval} ',
           trackLineSettings: {
             visible: true,
           },

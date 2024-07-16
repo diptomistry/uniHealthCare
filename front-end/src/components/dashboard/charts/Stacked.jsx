@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ChartComponent, SeriesCollectionDirective, SeriesDirective, Inject, Legend, Category, StackingColumnSeries, Tooltip } from '@syncfusion/ej2-react-charts';
 
 import { stackedCustomSeries,stackedPrimaryXAxis,stackedPrimaryYAxis } from '../../../assets/dashboard';
 
 
 const Stacked = ({ width, height,darkMode }) => {
-    console.log('darkMode',darkMode);
+
     
   return (
     <ChartComponent
@@ -21,7 +21,7 @@ const Stacked = ({ width, height,darkMode }) => {
     >
       <Inject services={[StackingColumnSeries, Category, Legend, Tooltip]} />
       <SeriesCollectionDirective>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+       
         {stackedCustomSeries.map((item, index) => <SeriesDirective key={index} {...item} />)}
       </SeriesCollectionDirective>
     </ChartComponent>

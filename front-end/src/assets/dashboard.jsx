@@ -12,13 +12,21 @@ import avatar2 from './img/doc2.jpg';
 import avatar3 from './img/doc3.jpg';
 import avatar4 from './img/doc4.jpg';
 export const SparklineAreaData = [
-  { x: 1, yval: 2 },
-  { x: 2, yval: 6 },
-  { x: 3, yval: 8 },
-  { x: 4, yval: 5 },
-  { x: 5, yval: 10 },
-
+  { x: 'Jan', yval: 2 },
+  { x: 'Feb', yval: 6 },
+  { x: 'Mar', yval: 8 },
+  { x: 'Apr', yval: 5 },
+  { x: 'May', yval: 10 },
+  { x: 'Jun', yval: 7 },
+  { x: 'Jul', yval: 9 },
+  { x: 'Aug', yval: 4 },
+  { x: 'Sep', yval: 3 },
+  { x: 'Oct', yval: 8 },
+  { x: 'Nov', yval: 6 },
+  { x: 'Dec', yval: 5 },
 ];
+
+
 export const stackedChartData = [
   [
     { x: 'Jan', y: 111.1 },
@@ -30,7 +38,7 @@ export const stackedChartData = [
     { x: 'July', y: 159.9 },
   ],
   [
-    { x: 'Jan', y: 111.1 },
+    { x: 'Jan', y: 211.1 },
     { x: 'Feb', y: 127.3 },
     { x: 'Mar', y: 143.4 },
     { x: 'Apr', y: 159.9 },
@@ -74,7 +82,7 @@ export const stackedPrimaryXAxis = {
 
 export const stackedPrimaryYAxis = {
   lineStyle: { width: 0 },
-  minimum: 100,
+  minimum: 0,
   maximum: 400,
   interval: 100,
   majorTickLines: { width: 0 },
@@ -145,7 +153,7 @@ export const dashData = [
     icon: <FaMoneyBillWave />,
     amount: '99,354',
     percentage: '-12%',
-    title: 'Total Budget in TK',
+    title: 'Total Budget in BDT',
     iconColor: 'rgb(54, 162, 235)',
     iconBg: 'rgb(232, 244, 255)',
     pcColor: 'red-600',
@@ -154,7 +162,7 @@ export const dashData = [
     icon: <FaMoneyBillWave />,
     amount: '39,354',
     percentage: '-12%',
-    title: 'Total Cost in TK',
+    title: 'Total Cost in BDT',
     iconColor: 'rgb(255, 206, 86)',
     iconBg: 'rgb(255, 251, 230)',
     pcColor: 'red-600',
