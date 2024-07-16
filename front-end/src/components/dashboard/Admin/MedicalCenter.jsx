@@ -5,6 +5,8 @@ import CircularProgress from '../../../layouts/dashboard/mainContent/CircularPro
 import SparkLine from '../charts/SparkLine';
 import Stacked from '../charts/Stacked';
 import { SparklineAreaData } from '../../../assets/dashboard';
+import PatientAccumulationDoughnut from '../charts/PatientGraphPie';
+import PatientGraphSplineArea from '../charts/PatientGraph';
 
 
 
@@ -57,6 +59,15 @@ const MedicalCenter = ({darkMode}) => {
             </div>
           ))}
         </div>
+        <div className="bg-white  flex flex-col  md:flex-row dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md">
+        <div className='w-full md:w-1/2 '>
+        <PatientGraphSplineArea/>
+        </div>
+        <div className='  '>
+        <PatientAccumulationDoughnut/>
+        
+        </div>
+          </div>
 
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md">
           <div className="flex justify-between">
@@ -105,12 +116,18 @@ const MedicalCenter = ({darkMode}) => {
               
              
             </div>
-            <div>
+            <div >
               <Stacked darkMode={darkMode} width="380px" height="360px" />
             </div>
           </div>
+          
         </div>
+       
+       
+      
+      
       </div>
+     
     </div>
   );
 };

@@ -5,12 +5,37 @@ import { BsPencilSquare, BsChatQuote, BsCurrencyDollar, BsShield,  } from 'react
 import { MdOutlineMedicalServices } from 'react-icons/md';
 import { RiStethoscopeLine, RiNurseLine, RiStockLine } from 'react-icons/ri';
 import { FaUserMd, FaUserNurse,FaUsers, FaPills, FaMoneyBillWave, } from 'react-icons/fa';
+import { Browser } from '@syncfusion/ej2-base';
 
 
 import avatar from './img/doc1.jpg';
 import avatar2 from './img/doc2.jpg';
 import avatar3 from './img/doc3.jpg';
 import avatar4 from './img/doc4.jpg';
+// patientData.js
+export const patientDataPie = [
+  { x: 'Student', y: 40, text: 'Student: 40%' },
+  { x: 'Teacher', y: 20, text: 'Teacher: 20%' },
+  { x: 'Staff', y: 15, text: 'Staff: 15%' },
+  { x: 'Nurse', y: 10, text: 'Nurse: 10%' },
+  { x: 'Others', y: 15, text: 'Others: 15%' }
+];
+
+
+export let PatientData = [
+  { x: new Date(2023, 0, 1), y: 120 }, // January
+  { x: new Date(2023, 1, 1), y: 150 }, // February
+  { x: new Date(2023, 2, 1), y: 170 }, // March
+  { x: new Date(2023, 3, 1), y: 130 }, // April
+  { x: new Date(2023, 4, 1), y: 180 }, // May
+  { x: new Date(2023, 5, 1), y: 160 }, // June
+  { x: new Date(2023, 6, 1), y: 190 }, // July
+  { x: new Date(2023, 7, 1), y: 210 }, // August
+  { x: new Date(2023, 8, 1), y: 170 }, // September
+  { x: new Date(2023, 9, 1), y: 200 }, // October
+  { x: new Date(2023, 10, 1), y: 220 }, // November
+  { x: new Date(2023, 11, 1), y: 230 }, // December
+];
 export const SparklineAreaData = [
   { x: 'Jan', yval: 2 },
   { x: 'Feb', yval: 6 },
