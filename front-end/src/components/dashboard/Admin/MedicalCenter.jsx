@@ -7,6 +7,7 @@ import Stacked from '../charts/Stacked';
 import { SparklineAreaData } from '../../../assets/dashboard';
 import PatientAccumulationDoughnut from '../charts/PatientGraphPie';
 import PatientGraphSplineArea from '../charts/PatientGraph';
+import DoctorColumnPlacemen from '../charts/DoctorStatColumnPlacemen';
 
 
 
@@ -68,6 +69,10 @@ const MedicalCenter = ({darkMode}) => {
         
         </div>
           </div>
+          <div className="flex justify-center items-center bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md w-full">
+  <DoctorColumnPlacemen />
+</div>
+
 
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md">
           <div className="flex justify-between">

@@ -187,7 +187,7 @@ export const dashData = [
     icon: <FaMoneyBillWave />,
     amount: '39,354',
     percentage: '-12%',
-    title: 'Total Cost in BDT',
+    title: 'Total Expenses in BDT',
     iconColor: 'rgb(255, 206, 86)',
     iconBg: 'rgb(255, 251, 230)',
     pcColor: 'red-600',
