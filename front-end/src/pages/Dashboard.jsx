@@ -6,6 +6,7 @@ import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { useStateContext } from "../contexts/ContextProvider";
 import Navbar from "../components/dashboard/Navbar";
 import MedicalCenter from "../components/dashboard/Admin/MedicalCenter";
+import AllUsers from "../components/dashboard/Admin/AllUsers";
 
 
 const Dashboard = () => {
@@ -62,6 +63,7 @@ const Dashboard = () => {
           <Routes>
             <Route path="/" element={<MedicalCenter darkMode={darkMode} />} />
             <Route path="/Medical-Center" element={<MedicalCenter darkMode={darkMode}/>} />
+            <Route path="/All-Users" element={<AllUsers />} />
           </Routes>
         </div>
       </div>

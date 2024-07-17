@@ -12,6 +12,30 @@ import avatar from './img/doc1.jpg';
 import avatar2 from './img/doc2.jpg';
 import avatar3 from './img/doc3.jpg';
 import avatar4 from './img/doc4.jpg';
+// Sample data for patients checked by doctors in different departments for each month
+export let cardiologyData = [
+  { x: 'Jan', y: 30 }, { x: 'Feb', y: 25 }, { x: 'Mar', y: 35 }, { x: 'Apr', y: 40 }, { x: 'May', y: 45 },
+  { x: 'Jun', y: 50 }, { x: 'Jul', y: 55 }, { x: 'Aug', y: 60 }, { x: 'Sep', y: 65 }, { x: 'Oct', y: 70 },
+  { x: 'Nov', y: 75 }, { x: 'Dec', y: 80 }
+];
+
+export let dentalData = [
+  { x: 'Jan', y: 20 }, { x: 'Feb', y: 22 }, { x: 'Mar', y: 24 }, { x: 'Apr', y: 26 }, { x: 'May', y: 28 },
+  { x: 'Jun', y: 30 }, { x: 'Jul', y: 32 }, { x: 'Aug', y: 34 }, { x: 'Sep', y: 36 }, { x: 'Oct', y: 38 },
+  { x: 'Nov', y: 40 }, { x: 'Dec', y: 42 }
+];
+
+export let ophthalmologyData = [
+  { x: 'Jan', y: 15 }, { x: 'Feb', y: 18 }, { x: 'Mar', y: 20 }, { x: 'Apr', y: 22 }, { x: 'May', y: 24 },
+  { x: 'Jun', y: 26 }, { x: 'Jul', y: 28 }, { x: 'Aug', y: 30 }, { x: 'Sep', y: 32 }, { x: 'Oct', y: 34 },
+  { x: 'Nov', y: 36 }, { x: 'Dec', y: 38 }
+];
+
+export let entData = [
+  { x: 'Jan', y: 10 }, { x: 'Feb', y: 12 }, { x: 'Mar', y: 14 }, { x: 'Apr', y: 16 }, { x: 'May', y: 18 },
+  { x: 'Jun', y: 20 }, { x: 'Jul', y: 22 }, { x: 'Aug', y: 24 }, { x: 'Sep', y: 26 }, { x: 'Oct', y: 28 },
+  { x: 'Nov', y: 30 }, { x: 'Dec', y: 32 }
+];
 // patientData.js
 export const patientDataPie = [
   { x: 'Student', y: 40, text: 'Student: 40%' },
@@ -209,7 +233,7 @@ export const links = [
     title: 'User Management',
     links: [
       {
-        name: 'All Users',
+        name: 'All-Users',
         icon: <FiUsers />,
       },
       {
