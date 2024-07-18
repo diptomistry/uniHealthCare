@@ -8,6 +8,7 @@ import { SparklineAreaData } from '../../../assets/dashboard';
 import PatientAccumulationDoughnut from '../charts/PatientGraphPie';
 import PatientGraphSplineArea from '../charts/PatientGraph';
 import DoctorColumnPlacemen from '../charts/DoctorStatColumnPlacemen';
+import AppointmentData from './AppointmentData';
 
 
 
@@ -40,6 +41,7 @@ const MedicalCenter = ({darkMode}) => {
             <CircularProgress />
           </div>
         </div>
+       
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full">
           {dashData.map((item) => (
@@ -59,6 +61,9 @@ const MedicalCenter = ({darkMode}) => {
               </div>
             </div>
           ))}
+        </div>
+        <div className='bg-white   dark:bg-secondary-dark-bg mt-3 mb-3 rounded-2xl shadow-md'>
+        <AppointmentData />
         </div>
         <div className="bg-white  flex flex-col  md:flex-row dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md">
         <div className='w-full md:w-1/2 '>
