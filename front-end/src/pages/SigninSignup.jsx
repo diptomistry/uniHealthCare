@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import log from "../assets/img/signin3.svg";
 import register from "../assets/img/signup.svg";
 
@@ -32,9 +31,9 @@ const SlidingLoginSignup = () => {
   };
 
   return (
-    <div>
+   
       <div
-        className={`relative w-full bg-white min-h-[800px] lg:min-h-screen overflow-hidden   before:content-[''] before:absolute before:w-[1500px] before:h-[1500px] lg:before:h-[2000px] lg:before:w-[2000px] lg:before:top-[-10%]  before:top-[initial] lg:before:right-[48%] before:right-[initial]  max-lg:before:left-[30%] max-sm:bottom-[72%]   max-md:before:left-1/2  max-lg:before:bottom-[68%]  before:z-[6] before:rounded-[50%]    max-md:p-6     lg:before:-translate-y-1/2  max-lg:before:-translate-x-1/2  before:bg-brightColor before:transition-all before:duration-[2s] lg:before:duration-[1.8s]  ${
+        className={`relative w-full bg-white min-h-screen overflow-hidden   before:content-[''] before:absolute before:w-[1500px] before:h-[1500px] lg:before:h-[2000px] lg:before:w-[2000px] lg:before:top-[-10%]  before:top-[initial] lg:before:right-[48%] before:right-[initial]  max-lg:before:left-[30%] max-sm:bottom-[72%]   max-md:before:left-1/2  max-lg:before:bottom-[68%]  before:z-[6] before:rounded-[50%] max-md:p-6 lg:before:-translate-y-1/2  max-lg:before:-translate-x-1/2  before:bg-brightColor before:transition-all before:duration-[2s] lg:before:duration-[1.8s]  ${
           isSignUpMode
             ? "lg:before:translate-x-full lg:before:-translate-y-1/2 before:-translate-x-1/2 before:translate-y-full lg:before:right-[52%] before:right-[initial]  sm:max-lg:before:bottom-[22%] max-sm:before:bottom-[20%]  max-md:before:left-1/2"
             : ""
@@ -163,7 +162,7 @@ const SlidingLoginSignup = () => {
           </div>
         </div>
       </div>
-    </div>
+    
   );
 };
 export default SlidingLoginSignup;

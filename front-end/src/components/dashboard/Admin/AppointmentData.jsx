@@ -6,8 +6,9 @@ import {  ordersData, contextMenuItems, ordersGrid  } from '../../../assets/dash
 const AppointmentData = () => {
   const editing = { allowDeleting: true, allowEditing: true };
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-    
+    <div className="m-2 md:m-10 mt-24 p-2  bg-white rounded-3xl">
+              <h1 className='text-3xl font-semibold tracking-tight text-slate-900 flex justify-center mb-10'>Patients Information</h1>
+
       <GridComponent
         id="gridcomp"
         dataSource={ordersData}

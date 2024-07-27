@@ -3,8 +3,14 @@ import { GridComponent, Inject, ColumnsDirective, ColumnDirective, Search, Page,
 import { employeesData, employeesGrid } from '../../../assets/dashboard';
 
 const AllUsers = () => {
-  const toolbarOptions = ['Search',  'Edit', 'Delete', ];
-  const editing = { allowDeleting: true, allowEditing: true, allowAdding: true, mode: 'Normal' };
+  const toolbarOptions = ['Search', 'Edit', 'Delete'];
+  const editing = { allowDeleting: true, allowEditing: true, mode: 'Normal' };
+
+  // Modify the employeesGrid to specify which fields are editable
+  const modifiedEmployeesGrid = employeesGrid.map(column => ({
+    ...column,
+    allowEditing: ['designation'].includes(column.field)
+  }));
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl shadow-md">
@@ -18,7 +24,7 @@ const AllUsers = () => {
         toolbar={toolbarOptions}
       >
         <ColumnsDirective>
-          {employeesGrid.map((item, index) => (
+          {modifiedEmployeesGrid.map((item, index) => (
             <ColumnDirective key={index} {...item} />
           ))}
         </ColumnsDirective>
