@@ -97,7 +97,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
             {userType === "doctor" && (
               <select
                 id="department"
-                class="bg-[#d5f2ec]   text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                class="bg-[#d5f2ec] py-3 px-2 rounded-lg  w-full  "
                 value={""}
                 onChange={""}
               >
@@ -136,7 +136,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
               ></input>
               <select
                 id="gender"
-                className="bg-[#d5f2ec] border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 "
+                className="bg-[#d5f2ec]  text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 "
                 value={""}
                 onChange={""}
                 class="bg-[#d5f2ec]  text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 "
