@@ -7,6 +7,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import Navbar from "../components/dashboard/Navbar";
 import MedicalCenter from "../components/dashboard/Admin/MedicalCenter";
 import AllUsers from "../components/dashboard/Admin/AllUsers";
+import UserApproval from "../components/dashboard/Admin/UserApproval";
 
 
 const Dashboard = () => {
@@ -64,6 +65,7 @@ const Dashboard = () => {
             <Route path="/" element={<MedicalCenter darkMode={darkMode} />} />
             <Route path="/Medical-Center" element={<MedicalCenter darkMode={darkMode}/>} />
             <Route path="/All-Users" element={<AllUsers />} />
+            <Route path="/User-Approval" element={<UserApproval />} />
           </Routes>
         </div>
       </div>

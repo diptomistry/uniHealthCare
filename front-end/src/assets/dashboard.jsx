@@ -16,7 +16,7 @@ import {
   AiOutlineDelete,
 } from "react-icons/ai";
 import {
-  BsPencilSquare,
+  
   BsChatQuote,
   BsCurrencyDollar,
   BsShield,
@@ -30,7 +30,7 @@ import {
   FaPills,
   FaMoneyBillWave,
 } from "react-icons/fa";
-import { GrLocation, GrMail } from "react-icons/gr";
+import { GrLocation } from "react-icons/gr";
 import { LuMessageSquarePlus } from "react-icons/lu";
 
 import avatar from "./img/doc1.jpg";
@@ -44,6 +44,36 @@ import product4 from "./img/doc4.jpg";
 import product5 from "./img/doc2.jpg";
 import product6 from "./img/doc3.jpg";
 import product7 from "./img/doc3.jpg";
+// profilesData.js
+export const profiles = [
+  {
+    id: 1,
+    name: "John Doe",
+    role: "Web Developer",
+    image: avatar,
+    address: "Chatakpur-3, Dhangadhi Kailali",
+    phone: "+977 9955221114",
+    email: "john@example.com"
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    role: "UI/UX Designer",
+    image: avatar2,
+    address: "123 Design St, Artville",
+    phone: "+1 234-567-8901",
+    email: "jane@example.com"
+  },
+  {
+    id: 3,
+    name: "Bob Johnson",
+    role: "Project Manager",
+    image: avatar3,
+    address: "456 Manager Ave, Leadtown",
+    phone: "+1 987-654-3210",
+    email: "bob@example.com"
+  }
+];
 export const gridOrderImage = (props) => (
   <div>
     <img
@@ -94,11 +124,12 @@ export const ordersGrid = [
     textAlign: "Center",
   },
   {
-    field: "Gender",
-    headerText: "Gender",
-    width: "120",
+    field: "Location",
+    headerText: "Location",
+    width: "150",
     textAlign: "Center",
   },
+
   {
     field: "Email",
     headerText: "Email",
@@ -116,10 +147,11 @@ export const ordersGrid = [
   },
  
 
+  
   {
-    field: "Location",
-    headerText: "Location",
-    width: "150",
+    field: "AppointmentDate",
+    headerText: "Date",
+    width: "120",
     textAlign: "Center",
   },
   {
@@ -151,7 +183,7 @@ export const contextMenuItems = [
 ];
 export const ordersData = [
   {
-    Gender: 10248,
+    AppointmentDate: 10248,
     Email: "Vinet@gmail.com",
 
     PhoneNum: 32.38,
@@ -162,7 +194,7 @@ export const ordersData = [
     ProductImage: product6,
   },
   {
-    Gender: 345653,
+    AppointmentDate: 345653,
     Email: "Carson Darrin",
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
@@ -172,7 +204,7 @@ export const ordersData = [
     ProductImage: product5,
   },
   {
-    Gender: 390457,
+    AppointmentDate: 390457,
     Email: "Fran Perez",
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
@@ -182,7 +214,7 @@ export const ordersData = [
     ProductImage: product7,
   },
   {
-    Gender: 893486,
+    AppointmentDate: 893486,
     Email: "Anika Viseer",
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
@@ -192,7 +224,7 @@ export const ordersData = [
     ProductImage: product4,
   },
   {
-    Gender: 748975,
+    AppointmentDate: 748975,
     Email: "Miron Vitold",
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
@@ -202,7 +234,7 @@ export const ordersData = [
     ProductImage: product1,
   },
   {
-    Gender: 94757,
+    AppointmentDate: 94757,
     Email: "Omar Darobe",
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
@@ -212,7 +244,7 @@ export const ordersData = [
     ProductImage: product2,
   },
   {
-    Gender: 944895,
+    AppointmentDate: 944895,
     Email: "Lulia albu",
     PhoneNum: 17.99,
     PatientName: "Skincare",
@@ -222,7 +254,7 @@ export const ordersData = [
     ProductImage: product3,
   },
   {
-    Gender: 845954,
+    AppointmentDate: 845954,
     Email: "Penjani",
     PhoneNum: 59.99,
     PatientName: "Headphone",
@@ -232,7 +264,7 @@ export const ordersData = [
     ProductImage: product4,
   },
   {
-    Gender: 845954,
+    AppointmentDate: 845954,
     Email: "Jie Yan",
     PhoneNum: 87.99,
     PatientName: "Shoes",
@@ -243,7 +275,7 @@ export const ordersData = [
       "https://cdn.shopclues.com/images1/thumbnails/104158/320/320/148648730-104158193-1592481791.jpg",
   },
   {
-    Gender: 874534,
+    AppointmentDate: 874534,
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
@@ -254,7 +286,7 @@ export const ordersData = [
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
-    Gender: 38489,
+    AppointmentDate: 38489,
     Email: "Miron",
     PhoneNum: 87.99,
     PatientName: "Ice Cream",
@@ -265,7 +297,7 @@ export const ordersData = [
       "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dairy-free-ice-cream-eae372d.jpg",
   },
   {
-    Gender: 24546,
+    AppointmentDate: 24546,
     Email: "Frank",
     PhoneNum: 84.99,
     PatientName: "Pan Cake",
@@ -276,7 +308,7 @@ export const ordersData = [
       "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
   },
   {
-    Gender: 874534,
+    AppointmentDate: 874534,
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
@@ -287,7 +319,7 @@ export const ordersData = [
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
-    Gender: 10248,
+    AppointmentDate: 10248,
     Email: "Vinet",
 
     PhoneNum: 32.38,
@@ -298,7 +330,7 @@ export const ordersData = [
     ProductImage: product6,
   },
   {
-    Gender: 345653,
+    AppointmentDate: 345653,
     Email: "Carson Darrin",
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
@@ -308,7 +340,7 @@ export const ordersData = [
     ProductImage: product5,
   },
   {
-    Gender: 390457,
+    AppointmentDate: 390457,
     Email: "Fran Perez",
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
@@ -318,7 +350,7 @@ export const ordersData = [
     ProductImage: product7,
   },
   {
-    Gender: 893486,
+    AppointmentDate: 893486,
     Email: "Anika Viseer",
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
@@ -328,7 +360,7 @@ export const ordersData = [
     ProductImage: product4,
   },
   {
-    Gender: 748975,
+    AppointmentDate: 748975,
     Email: "Miron Vitold",
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
@@ -338,7 +370,7 @@ export const ordersData = [
     ProductImage: product1,
   },
   {
-    Gender: 94757,
+    AppointmentDate: 94757,
     Email: "Omar Darobe",
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
@@ -348,7 +380,7 @@ export const ordersData = [
     ProductImage: product2,
   },
   {
-    Gender: 944895,
+    AppointmentDate: 944895,
     Email: "Lulia albu",
     PhoneNum: 17.99,
     PatientName: "Skincare",
@@ -358,7 +390,7 @@ export const ordersData = [
     ProductImage: product3,
   },
   {
-    Gender: 845954,
+    AppointmentDate: 845954,
     Email: "Penjani",
     PhoneNum: 59.99,
     PatientName: "Headphone",
@@ -368,7 +400,7 @@ export const ordersData = [
     ProductImage: product4,
   },
   {
-    Gender: 845954,
+    AppointmentDate: 845954,
     Email: "Jie Yan",
     PhoneNum: 87.99,
     PatientName: "Shoes",
@@ -379,7 +411,7 @@ export const ordersData = [
       "https://cdn.shopclues.com/images1/thumbnails/104158/320/320/148648730-104158193-1592481791.jpg",
   },
   {
-    Gender: 874534,
+    AppointmentDate: 874534,
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
@@ -390,7 +422,7 @@ export const ordersData = [
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
-    Gender: 38489,
+    AppointmentDate: 38489,
     Email: "Miron",
     PhoneNum: 87.99,
     PatientName: "Ice Cream",
@@ -401,7 +433,7 @@ export const ordersData = [
       "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dairy-free-ice-cream-eae372d.jpg",
   },
   {
-    Gender: 24546,
+    AppointmentDate: 24546,
     Email: "Frank",
     PhoneNum: 84.99,
     PatientName: "Pan Cake",
@@ -412,7 +444,7 @@ export const ordersData = [
       "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
   },
   {
-    Gender: 874534,
+    AppointmentDate: 874534,
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
@@ -423,7 +455,7 @@ export const ordersData = [
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
-    Gender: 10248,
+    AppointmentDate: 10248,
     Email: "Vinet",
 
     PhoneNum: 32.38,
@@ -434,7 +466,7 @@ export const ordersData = [
     ProductImage: product6,
   },
   {
-    Gender: 345653,
+    AppointmentDate: 345653,
     Email: "Carson Darrin",
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
@@ -444,7 +476,7 @@ export const ordersData = [
     ProductImage: product5,
   },
   {
-    Gender: 390457,
+    AppointmentDate: 390457,
     Email: "Fran Perez",
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
@@ -454,7 +486,7 @@ export const ordersData = [
     ProductImage: product7,
   },
   {
-    Gender: 893486,
+    AppointmentDate: 893486,
     Email: "Anika Viseer",
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
@@ -464,7 +496,7 @@ export const ordersData = [
     ProductImage: product4,
   },
   {
-    Gender: 748975,
+    AppointmentDate: 748975,
     Email: "Miron Vitold",
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
@@ -474,7 +506,7 @@ export const ordersData = [
     ProductImage: product1,
   },
   {
-    Gender: 94757,
+    AppointmentDate: 94757,
     Email: "Omar Darobe",
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
@@ -484,7 +516,7 @@ export const ordersData = [
     ProductImage: product2,
   },
   {
-    Gender: 944895,
+    AppointmentDate: 944895,
     Email: "Lulia albu",
     PhoneNum: 17.99,
     PatientName: "Skincare",
@@ -494,7 +526,7 @@ export const ordersData = [
     ProductImage: product3,
   },
   {
-    Gender: 845954,
+    AppointmentDate: 845954,
     Email: "Penjani",
     PhoneNum: 59.99,
     PatientName: "Headphone",
@@ -504,7 +536,7 @@ export const ordersData = [
     ProductImage: product4,
   },
   {
-    Gender: 845954,
+    AppointmentDate: 845954,
     Email: "Jie Yan",
     PhoneNum: 87.99,
     PatientName: "Shoes",
@@ -515,7 +547,7 @@ export const ordersData = [
       "https://cdn.shopclues.com/images1/thumbnails/104158/320/320/148648730-104158193-1592481791.jpg",
   },
   {
-    Gender: 874534,
+    AppointmentDate: 874534,
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
@@ -526,7 +558,7 @@ export const ordersData = [
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
-    Gender: 38489,
+    AppointmentDate: 38489,
     Email: "Miron",
     PhoneNum: 87.99,
     PatientName: "Ice Cream",
@@ -537,7 +569,7 @@ export const ordersData = [
       "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dairy-free-ice-cream-eae372d.jpg",
   },
   {
-    Gender: 24546,
+    AppointmentDate: 24546,
     Email: "Frank",
     PhoneNum: 84.99,
     PatientName: "Pan Cake",
@@ -548,7 +580,7 @@ export const ordersData = [
       "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
   },
   {
-    Gender: 874534,
+    AppointmentDate: 874534,
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
@@ -559,7 +591,7 @@ export const ordersData = [
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
-    Gender: 10248,
+    AppointmentDate: 10248,
     Email: "Vinet",
 
     PhoneNum: 32.38,
@@ -570,7 +602,7 @@ export const ordersData = [
     ProductImage: product6,
   },
   {
-    Gender: 345653,
+    AppointmentDate: 345653,
     Email: "Carson Darrin",
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
@@ -580,7 +612,7 @@ export const ordersData = [
     ProductImage: product5,
   },
   {
-    Gender: 390457,
+    AppointmentDate: 390457,
     Email: "Fran Perez",
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
@@ -590,7 +622,7 @@ export const ordersData = [
     ProductImage: product7,
   },
   {
-    Gender: 893486,
+    AppointmentDate: 893486,
     Email: "Anika Viseer",
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
@@ -600,7 +632,7 @@ export const ordersData = [
     ProductImage: product4,
   },
   {
-    Gender: 748975,
+    AppointmentDate: 748975,
     Email: "Miron Vitold",
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
@@ -610,7 +642,7 @@ export const ordersData = [
     ProductImage: product1,
   },
   {
-    Gender: 94757,
+    AppointmentDate: 94757,
     Email: "Omar Darobe",
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
@@ -620,7 +652,7 @@ export const ordersData = [
     ProductImage: product2,
   },
   {
-    Gender: 944895,
+    AppointmentDate: 944895,
     Email: "Lulia albu",
     PhoneNum: 17.99,
     PatientName: "Skincare",
@@ -630,7 +662,7 @@ export const ordersData = [
     ProductImage: product3,
   },
   {
-    Gender: 845954,
+    AppointmentDate: 845954,
     Email: "Penjani",
     PhoneNum: 59.99,
     PatientName: "Headphone",
@@ -640,7 +672,7 @@ export const ordersData = [
     ProductImage: product4,
   },
   {
-    Gender: 845954,
+    AppointmentDate: 845954,
     Email: "Jie Yan",
     PhoneNum: 87.99,
     PatientName: "Shoes",
@@ -651,7 +683,7 @@ export const ordersData = [
       "https://cdn.shopclues.com/images1/thumbnails/104158/320/320/148648730-104158193-1592481791.jpg",
   },
   {
-    Gender: 874534,
+    AppointmentDate: 874534,
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
@@ -662,7 +694,7 @@ export const ordersData = [
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
-    Gender: 38489,
+    AppointmentDate: 38489,
     Email: "Miron",
     PhoneNum: 87.99,
     PatientName: "Ice Cream",
@@ -673,7 +705,7 @@ export const ordersData = [
       "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dairy-free-ice-cream-eae372d.jpg",
   },
   {
-    Gender: 24546,
+    AppointmentDate: 24546,
     Email: "Frank",
     PhoneNum: 84.99,
     PatientName: "Pan Cake",
@@ -684,7 +716,7 @@ export const ordersData = [
       "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
   },
   {
-    Gender: 874534,
+    AppointmentDate: 874534,
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
@@ -695,7 +727,7 @@ export const ordersData = [
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
-    Gender: 10248,
+    AppointmentDate: 10248,
     Email: "Vinet",
 
     PhoneNum: 32.38,
@@ -706,7 +738,7 @@ export const ordersData = [
     ProductImage: product6,
   },
   {
-    Gender: 345653,
+    AppointmentDate: 345653,
     Email: "Carson Darrin",
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
@@ -716,7 +748,7 @@ export const ordersData = [
     ProductImage: product5,
   },
   {
-    Gender: 390457,
+    AppointmentDate: 390457,
     Email: "Fran Perez",
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
@@ -726,7 +758,7 @@ export const ordersData = [
     ProductImage: product7,
   },
   {
-    Gender: 893486,
+    AppointmentDate: 893486,
     Email: "Anika Viseer",
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
@@ -736,7 +768,7 @@ export const ordersData = [
     ProductImage: product4,
   },
   {
-    Gender: 748975,
+    AppointmentDate: 748975,
     Email: "Miron Vitold",
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
@@ -746,7 +778,7 @@ export const ordersData = [
     ProductImage: product1,
   },
   {
-    Gender: 94757,
+    AppointmentDate: 94757,
     Email: "Omar Darobe",
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
@@ -756,7 +788,7 @@ export const ordersData = [
     ProductImage: product2,
   },
   {
-    Gender: 944895,
+    AppointmentDate: 944895,
     Email: "Lulia albu",
     PhoneNum: 17.99,
     PatientName: "Skincare",
@@ -766,7 +798,7 @@ export const ordersData = [
     ProductImage: product3,
   },
   {
-    Gender: 845954,
+    AppointmentDate: 845954,
     Email: "Penjani",
     PhoneNum: 59.99,
     PatientName: "Headphone",
@@ -776,7 +808,7 @@ export const ordersData = [
     ProductImage: product4,
   },
   {
-    Gender: 845954,
+    AppointmentDate: 845954,
     Email: "Jie Yan",
     PhoneNum: 87.99,
     PatientName: "Shoes",
@@ -787,7 +819,7 @@ export const ordersData = [
       "https://cdn.shopclues.com/images1/thumbnails/104158/320/320/148648730-104158193-1592481791.jpg",
   },
   {
-    Gender: 874534,
+    AppointmentDate: 874534,
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
@@ -798,7 +830,7 @@ export const ordersData = [
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
-    Gender: 38489,
+    AppointmentDate: 38489,
     Email: "Miron",
     PhoneNum: 87.99,
     PatientName: "Ice Cream",
@@ -809,7 +841,7 @@ export const ordersData = [
       "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dairy-free-ice-cream-eae372d.jpg",
   },
   {
-    Gender: 24546,
+    AppointmentDate: 24546,
     Email: "Frank",
     PhoneNum: 84.99,
     PatientName: "Pan Cake",
@@ -820,7 +852,7 @@ export const ordersData = [
       "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
   },
   {
-    Gender: 874534,
+    AppointmentDate: 874534,
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
@@ -1819,13 +1851,10 @@ export const links = [
         icon: <FiUsers />,
       },
       {
-        name: "User Approval",
+        name: "User-Approval",
         icon: <AiOutlineCheckCircle />,
       },
-      {
-        name: "User Update",
-        icon: <BsPencilSquare />,
-      },
+      
     ],
   },
   {
@@ -1836,17 +1865,17 @@ export const links = [
         icon: <RiStethoscopeLine />,
       },
       {
-        name: "Nursing Section",
+        name: "Nursing-Section",
         icon: <RiNurseLine />,
       },
       {
-        name: "Pharmacy Section",
+        name: "Pharmacy-Section",
         icon: <MdOutlineMedicalServices />,
       },
     ],
   },
   {
-    title: "Medicine Management",
+    title: "Medicine-Management",
     links: [
       {
         name: "Current Stock",
@@ -1866,15 +1895,15 @@ export const links = [
         icon: <FiClipboard />,
       },
       {
-        name: "About Section",
+        name: "About-Section",
         icon: <AiOutlineInfoCircle />,
       },
       {
-        name: "Photo Gallery",
+        name: "Photo-Gallery",
         icon: <FiCamera />,
       },
       {
-        name: "Quote Section",
+        name: "Quote-Section",
         icon: <BsChatQuote />,
       },
     ],
