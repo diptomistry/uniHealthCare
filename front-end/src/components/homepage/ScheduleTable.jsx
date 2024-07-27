@@ -13,23 +13,33 @@ import DoctorScheduleTable from "../../layouts/homepage/DoctorSchedule";
 import NursingSchedule from "../../layouts/homepage/NursingSchedule";
 import PharmacySchedule from "../../layouts/homepage/PharmacySchedule";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
+import { GiMedicines } from 'react-icons/gi';
+import HomeoPathySchedule from "../../layouts/homepage/HomeoPathySchedule";
 
 export function TabsWithIcon() {
   const data = [
     {
-      label: "Doctor's Duty Roster",
+      label: "Allopathy Doctor",
       value: "doctor",
       icon: FaUserDoctor,
       component: <DoctorScheduleTable />,
     },
     {
-      label: "Nursing Section Duty Roster",
+      label:"Homeopathy Doctor",
+      value:"homeopathy",
+      icon: GiMedicines ,
+      component: <HomeoPathySchedule />,
+
+
+    },
+    {
+      label: "Nursing Section",
       value: "nurse",
       icon: RiNurseFill,
       component: <NursingSchedule />,
     },
     {
-      label: "Pharmacy Section Duty Roster",
+      label: "Pharmacy Section",
       value: "pharmacy",
       icon: MdLocalPharmacy,
       component: <PharmacySchedule />,
@@ -37,7 +47,8 @@ export function TabsWithIcon() {
   ];
 
   return (
-    <div className="min-h-screen mt-2 lg:px-32 px-5 pt-28 bg-slate-200 p-6 rounded-lg shadow-md">
+    <div className="min-h-screen lg:px-32 px-5 pt-28 bg-slate-200 p-6 rounded-lg shadow-md">
+      <h1 className="flex place-content-center mb-2 text-2xl font-poppins font-semibold text-textColor">Duty Roster</h1>
       <Tabs value="doctor">
         <TabsHeader>
           {data.map(({ label, value, icon }) => (

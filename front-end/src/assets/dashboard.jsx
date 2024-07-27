@@ -49,7 +49,7 @@ export const profiles = [
   {
     id: 1,
     name: "John Doe",
-    role: "Web Developer",
+    role: "Doctor: Cardiologist",
     image: avatar,
     address: "Chatakpur-3, Dhangadhi Kailali",
     phone: "+977 9955221114",
@@ -58,7 +58,7 @@ export const profiles = [
   {
     id: 2,
     name: "Jane Smith",
-    role: "UI/UX Designer",
+    role: "Section Officer",
     image: avatar2,
     address: "123 Design St, Artville",
     phone: "+1 234-567-8901",
@@ -67,7 +67,7 @@ export const profiles = [
   {
     id: 3,
     name: "Bob Johnson",
-    role: "Project Manager",
+    role: "Dispensary Officer",
     image: avatar3,
     address: "456 Manager Ave, Leadtown",
     phone: "+1 987-654-3210",

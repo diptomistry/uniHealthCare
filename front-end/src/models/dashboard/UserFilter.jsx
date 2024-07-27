@@ -25,7 +25,7 @@ const UserFilter = () => {
           onClick={toggleDropdown}
           aria-expanded={isDropdownOpen}
           aria-haspopup="true"
-          className="text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-backgroundColor font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center "
+          className="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-backgroundColor font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center "
           type="button"
         >
           Filter by category
