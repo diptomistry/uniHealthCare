@@ -12,6 +12,7 @@ import DutyRosterDoctor from "../components/dashboard/Admin/DutyRosterDoctor";
 import DutyRosterHomeo from "../components/dashboard/Admin/DutyRosterHomeo";
 import DutyRosterNurse from "../components/dashboard/Admin/DutyRosterNurse";
 import DutyRosterPharmacy from "../components/dashboard/Admin/DutyRosterPharmacy";
+import Notice from "../components/dashboard/Admin/Notice";
 
 
 
@@ -76,6 +77,7 @@ const Dashboard = () => {
             <Route path="/Homeopathy-Section" element={<DutyRosterHomeo />} />
             <Route path="/Nursing-section" element={<DutyRosterNurse />} />
             <Route path="/Pharmacy-Section" element={<DutyRosterPharmacy />} />
+            <Route path="/Notice" element={<Notice />} />
           </Routes>
         </div>
       </div>
