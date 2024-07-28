@@ -1,18 +1,9 @@
 import React from 'react';
-
+import { NursingSectionSchedule } from '../../assets/dashboard';
 const NursingSchedule = () => {
-  const schedule = [
-    ['বার', 'সকাল ৮.০০-দুপুর ২.০০টা', 'দুপুর ২.০০-বিকাল ৬.০০টা', 'বিকাল ৬.০০-রাত ১০.০০টা', 'রাত ১০.০০ থেকে সকাল ৮.০০টা'],
-    ['রবিবার', 'জান্নাতুল ফেরদৌসি', 'মোস্তাফিজুর রহমান', 'মোস্তাফিজুর রহমান', 'ইয়াসমিন হক বিল্কিস'],
-    ['সোমবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন জাহান', 'শরীফ হোসাইন', 'মোস্তাফিজুর রহমান'],
-    ['মঙ্গলবার', 'জান্নাতুল ফেরদৌসি', 'শরীফ হোসাইন', 'শরীফ হোসাইন', 'মোস্তাফিজুর রহমান'],
-    ['বুধবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন হক বিল্কিস', 'ইয়াসমিন হক বিল্কিস', 'সৈয়দ চন্দ্র দত্ত'],
-    ['বৃহস্পতিবার', 'ইয়াসমিন জাহান', 'শরীফ হোসাইন', 'শরীফ হোসাইন', 'সৈয়দ চন্দ্র দত্ত'],
-    ['শুক্রবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন জাহান', 'শরীফ হোসাইন', 'শরীফ হোসাইন'],
-    ['শনিবার', 'ইয়াসমিন জাহান', 'সৈয়দ চন্দ্র দত্ত', 'সৈয়দ চন্দ্র দত্ত', 'ইয়াসমিন হক বিল্কিস']
-  ];
 
-  const getGridTemplateColumns = (schedule) => `repeat(${schedule[0].length}, 1fr)`;
+
+  const getGridTemplateColumns = (NursingSectionSchedule) => `repeat(${NursingSectionSchedule[0].length}, 1fr)`;
 
   return (
     <div className='flex flex-col gap-5'>
@@ -31,8 +22,8 @@ const NursingSchedule = () => {
           </div>
         </div>
       </div>
-      <div className="grid border border-gray-300" style={{ gridTemplateColumns: getGridTemplateColumns(schedule) }}>
-        {schedule.map((row, rowIndex) => (
+      <div className="grid border border-gray-300" style={{ gridTemplateColumns: getGridTemplateColumns(NursingSectionSchedule) }}>
+        {NursingSectionSchedule.map((row, rowIndex) => (
           row.map((cell, cellIndex) => (
             <div 
               key={`${rowIndex}-${cellIndex}`} 

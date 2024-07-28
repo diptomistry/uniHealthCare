@@ -1,17 +1,8 @@
 import React from 'react'
-
+import { PharmacySectionSchedule } from '../../assets/dashboard';
 const PharmacySchedule = () => {
-  const schedule = [
-    ['বার', 'সকাল ৮.৩০-দুপুর ২.৩০টা পর্যন্ত', 'দুপুর ২.৩০-রাত ৯.৩০টা পর্যন্ত'],
-    ['রবিবার', 'মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম', 'মোসাঃ ফতিমা আক্তার\nবিশজিত তালুকদার'],
-    ['সোমবার', 'মোঃ রুবেল মাহমুদ\nবিশজিত তালুকদার', 'মোসাঃ ফতিমা আক্তার\nমোঃ শাহজুল আলম'],
-    ['মঙ্গলবার', 'মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম', 'মোঃ সায়েদুর রহমান\nবিশজিত তালুকদার'],
-    ['বুধবার', 'মোঃ সায়েদুর রহমান\nবিশজিত তালুকদার', 'মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম'],
-    ['বৃহস্পতিবার', 'মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম', 'মোঃ সায়েদুর রহমান\nমোসাঃ ফতিমা আক্তার'],
-    ['শুক্রবার', 'মোসাঃ ফতিমা আক্তার', 'মোঃ সায়েদুর রহমান'],
-    ['শনিবার', 'মোঃ সায়েদুর রহমান\nমোসাঃ ফতিমা আক্তার', 'বিশজিত তালুকদার']
-  ];
-  const getGridTemplateColumns = (schedule) => `repeat(${schedule[0].length}, 1fr)`;
+ 
+  const getGridTemplateColumns = (PharmacySectionSchedule) => `repeat(${PharmacySectionSchedule[0].length}, 1fr)`;
 
 
   return (
@@ -36,8 +27,8 @@ const PharmacySchedule = () => {
 
          </div>
         
-    <div className="grid  border border-gray-300"style={{ gridTemplateColumns: getGridTemplateColumns(schedule) }}>
-      {schedule.map((row, rowIndex) => (
+    <div className="grid  border border-gray-300"style={{ gridTemplateColumns: getGridTemplateColumns(PharmacySectionSchedule) }}>
+      {PharmacySectionSchedule.map((row, rowIndex) => (
         row.map((cell, cellIndex) => (
           <div 
             key={`${rowIndex}-${cellIndex}`} 

@@ -9,6 +9,10 @@ import MedicalCenter from "../components/dashboard/Admin/MedicalCenter";
 import AllUsers from "../components/dashboard/Admin/AllUsers";
 import UserApproval from "../components/dashboard/Admin/UserApproval";
 import DutyRosterDoctor from "../components/dashboard/Admin/DutyRosterDoctor";
+import DutyRosterHomeo from "../components/dashboard/Admin/DutyRosterHomeo";
+import DutyRosterNurse from "../components/dashboard/Admin/DutyRosterNurse";
+import DutyRosterPharmacy from "../components/dashboard/Admin/DutyRosterPharmacy";
+
 
 
 
@@ -69,6 +73,9 @@ const Dashboard = () => {
             <Route path="/All-Users" element={<AllUsers />} />
             <Route path="/User-Approval" element={<UserApproval />} />
             <Route path="/Doctor" element={<DutyRosterDoctor />} />
+            <Route path="/Homeopathy-Section" element={<DutyRosterHomeo />} />
+            <Route path="/Nursing-section" element={<DutyRosterNurse />} />
+            <Route path="/Pharmacy-Section" element={<DutyRosterPharmacy />} />
           </Routes>
         </div>
       </div>

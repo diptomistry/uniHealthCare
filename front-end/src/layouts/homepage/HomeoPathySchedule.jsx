@@ -1,18 +1,10 @@
 import React from 'react';
+import { HomeoSchedule } from '../../assets/dashboard';
 
 const HomeoPathySchedule = () => {
-  const schedule = [
-    ['বার', 'সকাল ৮.০০-দুপুর ২.০০টা', 'দুপুর ২.০০-বিকাল ৬.০০টা'],
-    ['রবিবার', 'জান্নাতুল ফেরদৌসি \nইয়াসমিন হক বিল্কিস', 'মোস্তাফিজুর রহমান'],
-    ['সোমবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন জাহান'],
-    ['মঙ্গলবার', 'জান্নাতুল ফেরদৌসি', 'শরীফ হোসাইন'],
-    ['বুধবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন হক বিল্কিস'],
-    ['বৃহস্পতিবার', 'ইয়াসমিন জাহান', 'শরীফ হোসাইন'],
-    ['শুক্রবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন জাহান'],
-    ['শনিবার', 'ইয়াসমিন জাহান', 'সৈয়দ চন্দ্র দত্ত'],
-  ];
 
-  const columnCount = schedule[0].length;
+
+  const columnCount = HomeoSchedule[0].length;
 
   return (
     <div className='flex flex-col gap-5'>
@@ -36,7 +28,7 @@ const HomeoPathySchedule = () => {
         className="grid border border-gray-300" 
         style={{ gridTemplateColumns: `repeat(${columnCount}, 1fr)` }}
       >
-        {schedule.map((row, rowIndex) =>
+        {HomeoSchedule.map((row, rowIndex) =>
           row.map((cell, cellIndex) => (
             <div
               key={`${rowIndex}-${cellIndex}`}
