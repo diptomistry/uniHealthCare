@@ -12,11 +12,13 @@ const HomeoPathySchedule = () => {
     ['শনিবার', 'ইয়াসমিন জাহান', 'সৈয়দ চন্দ্র দত্ত'],
   ];
 
+  const columnCount = schedule[0].length;
+
   return (
     <div className='flex flex-col gap-5'>
       <div className='flex flex-row justify-between'>
         <div>
-          <h2 className="text-sm md:text-2xl font-hindSiliguri text-textColor">ডাক্তারদের ডিউটি রোস্টার</h2>
+          <h2 className="text-sm md:text-2xl font-hindSiliguri text-textColor">হোমিও ডাক্তারদের ডিউটি রোস্টার</h2>
         </div>
         <div className='flex flex-row gap-2'>
           <div className='flex gap-2'>
@@ -30,7 +32,10 @@ const HomeoPathySchedule = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 border border-gray-300">
+      <div 
+        className="grid border border-gray-300" 
+        style={{ gridTemplateColumns: `repeat(${columnCount}, 1fr)` }}
+      >
         {schedule.map((row, rowIndex) =>
           row.map((cell, cellIndex) => (
             <div

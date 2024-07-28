@@ -15,12 +15,7 @@ import {
   AiOutlinePlusCircle,
   AiOutlineDelete,
 } from "react-icons/ai";
-import {
-  
-  BsChatQuote,
-  BsCurrencyDollar,
-  BsShield,
-} from "react-icons/bs";
+import { BsChatQuote, BsCurrencyDollar, BsShield } from "react-icons/bs";
 import { MdOutlineMedicalServices } from "react-icons/md";
 import { RiStethoscopeLine, RiNurseLine, RiStockLine } from "react-icons/ri";
 import {
@@ -44,6 +39,160 @@ import product4 from "./img/doc4.jpg";
 import product5 from "./img/doc2.jpg";
 import product6 from "./img/doc3.jpg";
 import product7 from "./img/doc3.jpg";
+export const AloSchedule = [
+  [
+    "বার",
+    "সকাল ৮.০০-দুপুর ২.০০টা",
+    "দুপুর ২.০০-বিকাল ৬.০০টা",
+    "বিকাল ৬.০০-রাত ১০.০০টা",
+  ],
+  [
+    "রবিবার",
+    "জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)",
+    "মোস্তাফিজুর রহমান (নিউরোলজিস্ট)",
+    "ইয়াসমিন হক বিল্কিস (গাইনোকোলজিস্ট)",
+  ],
+  [
+    "সোমবার",
+    "জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)",
+    "ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)",
+    "মোস্তাফিজুর রহমান (নিউরোলজিস্ট)",
+  ],
+  [
+    "মঙ্গলবার",
+    "জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)",
+    "শরীফ হোসাইন (অর্থোপেডিক সার্জন)",
+    "মোস্তাফিজুর রহমান (নিউরোলজিস্ট)",
+  ],
+  [
+    "বুধবার",
+    "জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)",
+    "ইয়াসমিন হক বিল্কিস (গাইনোকোলজিস্ট)",
+    "সৈয়দ চন্দ্র দত্ত (ডার্মাটোলজিস্ট)",
+  ],
+  [
+    "বৃহস্পতিবার",
+    "ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)",
+    "শরীফ হোসাইন (অর্থোপেডিক সার্জন)",
+    "সৈয়দ চন্দ্র দত্ত (ডার্মাটোলজিস্ট)",
+  ],
+  [
+    "শুক্রবার",
+    "জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)",
+    "ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)",
+    "শরীফ হোসাইন (অর্থোপেডিক সার্জন)",
+  ],
+  [
+    "শনিবার",
+    "ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)",
+    "সৈয়দ চন্দ্র দত্ত (ডার্মাটোলজিস্ট)",
+    "ইয়াসমিন হক বিল্কিস (গাইনোকোলজিস্ট)",
+  ],
+];
+
+export const AloSchedule2 = [
+  [
+    "বার",
+    "প্যাথলজি বিভাগ",
+    "চক্ষু বিভাগ",
+    "দন্ত বিভাগ",
+    "নাক, কান, গলা",
+    "আল্ট্রাসনোগ্রাফী",
+    "ফিজিওথেরাপি",
+    "সময়",
+  ],
+  [
+    "রবিবার",
+    "ড. মোঃ আব্দুল কাদের",
+    "ড. মোঃ আব্দুল কাদের",
+    "ড. মোঃ আব্দুল কাদের",
+    "ড. মোঃ আব্দুল কাদের",
+    "ড. মোঃ আব্দুল কাদের",
+    "ড. মোঃ আব্দুল কাদের",
+    "সকাল ৮.০০-দুপুর ২.০০টা",
+  ],
+  [
+    "সোমবার",
+    "ড. ফারজানা হক",
+    "ড. রাশেদা খাতুন",
+    "ড. কামরুল হাসান",
+    "ড. সোহেল আহমেদ",
+    "ড. মেহেদী হাসান",
+    "ড. সাদিয়া আক্তার",
+    "সকাল ৯.০০-দুপুর ৩.০০টা",
+  ],
+  [
+    "মঙ্গলবার",
+    "ড. আরিফুর রহমান",
+    "ড. নুসরাত জাহান",
+    "ড. এম. এ. গনি",
+    "ড. হাসান মাহমুদ",
+    "ড. ফাহিমা আক্তার",
+    "ড. আফরোজা বেগম",
+    "সকাল ১০.০০-দুপুর ৪.০০টা",
+  ],
+  [
+    "বুধবার",
+    "ড. শফিকুল ইসলাম",
+    "ড. সাবরিনা সুলতানা",
+    "ড. আতিকুর রহমান",
+    "ড. মুনিরা পারভিন",
+    "ড. শামসুজ্জামান",
+    "ড. নাজমা সুলতানা",
+    "সকাল ১১.০০-দুপুর ৫.০০টা",
+  ],
+  [
+    "বৃহস্পতিবার",
+    "ড. মাহবুবুল আলম",
+    "ড. হাসিনা আক্তার",
+    "ড. কাসেম আলী",
+    "ড. ফারহানা ইয়াসমিন",
+    "ড. জাকির হোসেন",
+    "ড. সুলতানা রাজিয়া",
+    "সকাল ৮.০০-দুপুর ২.০০টা",
+  ],
+  [
+    "শুক্রবার",
+    "ড. আনিসুর রহমান",
+    "ড. ফাতেমা বেগম",
+    "ড. মিজানুর রহমান",
+    "ড. নাসরিন সুলতানা",
+    "ড. মোস্তাফিজুর রহমান",
+    "ড. ফারহানা হক",
+    "সকাল ৯.০০-দুপুর ৩.০০টা",
+  ],
+  [
+    "শনিবার",
+    "ড. মমতাজ বেগম",
+    "ড. রুবিনা ইয়াসমিন",
+    "ড. কামরুল ইসলাম",
+    "ড. সোহেল রানা",
+    "ড. শামীম আহমেদ",
+    "ড. লুবনা আক্তার",
+    "সকাল ১০.০০-দুপুর ৪.০০টা",
+  ],
+];
+
+export const AloSchedule3 = [
+  [
+    "রবিবার",
+    "সোমবার",
+    "মঙ্গলবার",
+    "বুধবার",
+    "বৃহস্পতিবার",
+    "শুক্রবার",
+    "শনিবার",
+  ],
+  [
+    "ড. মোঃ আব্দুল কাদের\n0123123123123",
+    "ড. ফারজানা হক\n012938210938210",
+    "ড. আরিফুর রহমান\n1203812038",
+    "ড. শফিকুল ইসলাম\n123123212131",
+    "ড. মাহবুবুল আলম\n1231238120",
+    "ড. আনিসুর রহমান\n12312301280",
+    "ড. মমতাজ বেগম\n1230123808120",
+  ],
+];
 // profilesData.js
 export const profiles = [
   {
@@ -53,7 +202,7 @@ export const profiles = [
     image: avatar,
     address: "Chatakpur-3, Dhangadhi Kailali",
     phone: "+977 9955221114",
-    email: "john@example.com"
+    email: "john@example.com",
   },
   {
     id: 2,
@@ -62,7 +211,7 @@ export const profiles = [
     image: avatar2,
     address: "123 Design St, Artville",
     phone: "+1 234-567-8901",
-    email: "jane@example.com"
+    email: "jane@example.com",
   },
   {
     id: 3,
@@ -71,8 +220,8 @@ export const profiles = [
     image: avatar3,
     address: "456 Manager Ave, Leadtown",
     phone: "+1 987-654-3210",
-    email: "bob@example.com"
-  }
+    email: "bob@example.com",
+  },
 ];
 export const gridOrderImage = (props) => (
   <div>
@@ -95,7 +244,6 @@ export const gridOrderStatus = (props) => (
 );
 const gridPatientEmail = (props) => (
   <div className="flex items-center justify-center gap-2 w-full">
-   
     <a
       href={`https://mail.google.com/mail/?view=cm&fs=1&to=${props.Email}`}
       target="_blank"
@@ -107,7 +255,6 @@ const gridPatientEmail = (props) => (
     </a>
   </div>
 );
-
 
 export const ordersGrid = [
   {
@@ -145,9 +292,7 @@ export const ordersGrid = [
     editType: "numericedit",
     width: "150",
   },
- 
 
-  
   {
     field: "AppointmentDate",
     headerText: "Date",
@@ -161,7 +306,6 @@ export const ordersGrid = [
     textAlign: "Center",
     width: "120",
   },
-
 ];
 export const contextMenuItems = [
   "AutoFit",
@@ -953,7 +1097,6 @@ const gridEmployeeCountry = (props) => (
 );
 const gridEmployeeEmail = (props) => (
   <div className="flex items-center justify-center gap-2 w-full">
-   
     <a
       href={`https://mail.google.com/mail/?view=cm&fs=1&to=${props.email}`}
       target="_blank"
@@ -965,8 +1108,6 @@ const gridEmployeeEmail = (props) => (
     </a>
   </div>
 );
-
-
 
 const messageIconTemplate = () => {
   return (
@@ -1854,7 +1995,6 @@ export const links = [
         name: "User-Approval",
         icon: <AiOutlineCheckCircle />,
       },
-      
     ],
   },
   {

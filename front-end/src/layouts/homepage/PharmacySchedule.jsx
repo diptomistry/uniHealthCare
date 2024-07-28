@@ -11,6 +11,8 @@ const PharmacySchedule = () => {
     ['শুক্রবার', 'মোসাঃ ফতিমা আক্তার', 'মোঃ সায়েদুর রহমান'],
     ['শনিবার', 'মোঃ সায়েদুর রহমান\nমোসাঃ ফতিমা আক্তার', 'বিশজিত তালুকদার']
   ];
+  const getGridTemplateColumns = (schedule) => `repeat(${schedule[0].length}, 1fr)`;
+
 
   return (
     <div className='flex flex-col gap-5'>
@@ -34,7 +36,7 @@ const PharmacySchedule = () => {
 
          </div>
         
-    <div className="grid grid-cols-3  border border-gray-300">
+    <div className="grid  border border-gray-300"style={{ gridTemplateColumns: getGridTemplateColumns(schedule) }}>
       {schedule.map((row, rowIndex) => (
         row.map((cell, cellIndex) => (
           <div 
