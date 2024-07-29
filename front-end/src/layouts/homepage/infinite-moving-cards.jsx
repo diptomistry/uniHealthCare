@@ -63,10 +63,10 @@ function InfiniteMovingCards({
                 {item.quote}
               </span>
             </div>
-            <div className="mt-auto flex">
+            <div className="mt-auto flex justify-between">
             
               <span className="text-sm leading-[1.6] text-gray-400 font-normal block">
-              {item.title}<span className="ml-1 mr-1">from</span>
+              {item.title}
               </span>
               <span className="text-sm leading-[1.6] text-brightColor font-normal block">
                 {item.name}

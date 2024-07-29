@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../homepage/Button'
+
 
 const ProfileCard = ({ profile }) => {
   return (
@@ -30,7 +30,9 @@ const ProfileCard = ({ profile }) => {
             </tbody>
           </table>
          <div className='flex justify-between p-5'>
-         <Button title="Accept" />
+         <button className=" bg-primaryColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out">
+        Accept
+      </button>
          <button
               type="button"
               className="bg-red-400 text-white px-4 py-2  rounded-md hover:bg-red-500"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '../homepage/Button';
+
 
 
 const DynamicTable = ({ AloSchedule,Title }) => {
@@ -43,11 +43,17 @@ const DynamicTable = ({ AloSchedule,Title }) => {
       <div className='flex flex-col md:flex-row gap-5 md:gap-0  mb-4 justify-between'>
       
        <div className='flex gap-2'>
-       <button onClick={addRow} ><Button title={'Add a Row'}/></button>
+       <button className=" bg-primaryColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out" onClick={addRow}>
+       Add a Row
+      </button>
+     
        <button onClick={deleteRow} className='px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded'>Delete a Row</button>
        </div>
       <div className='flex gap-2'>
-      <button onClick={addColumn} ><Button title={'Add a Column'}/></button>
+      <button className=" bg-primaryColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out" onClick={addColumn}>
+      Add a Column
+      </button>
+     
       <button onClick={deleteColumn} className='px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded'>Delete a Column</button>
       </div>
       </div>
