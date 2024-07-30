@@ -4,7 +4,6 @@ import {
   FiUsers,
   FiClipboard,
   FiCreditCard,
-  FiCamera,
   FiCalendar,
 } from "react-icons/fi";
 import {
@@ -25,7 +24,7 @@ import {
   FaPills,
   FaMoneyBillWave,
 } from "react-icons/fa";
-import { GrLocation } from "react-icons/gr";
+import { GrLocation,GrBlog } from "react-icons/gr";
 import { LuMessageSquarePlus } from "react-icons/lu";
 import { GiMedicines } from 'react-icons/gi';
 
@@ -2148,8 +2147,8 @@ export const links = [
         icon: <AiOutlineInfoCircle />,
       },
       {
-        name: "Photo-Gallery",
-        icon: <FiCamera />,
+        name: "Blog",
+        icon: <GrBlog />,
       },
       {
         name: "Quote-Section",
