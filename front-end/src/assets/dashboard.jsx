@@ -39,6 +39,27 @@ import product4 from "./img/doc4.jpg";
 import product5 from "./img/doc2.jpg";
 import product6 from "./img/doc3.jpg";
 import product7 from "./img/doc3.jpg";
+import mortaza1 from "./img/mortaza1.jpg";
+import mortaza2 from "./img/mortaza2.jpg";
+import mortaza3 from "./img/mortaza3.jpg";
+import mortaza4 from "./img/mortaza4.jpg";
+import mortaza5 from "./img/mortaza5.jpg";
+import mortaza6 from "./img/mortaza6.jpg";
+import mortaza7 from "./img/mortaza7.jpg";
+import mortaza8 from "./img/mortaza8.jpg";
+import mortaza9 from "./img/mortaza9.jpg";
+
+export const mortazaImages = [
+  mortaza1,
+  mortaza2,
+  mortaza3,
+  mortaza4,
+  mortaza5,
+  mortaza6,
+  mortaza7,
+  mortaza8,
+  mortaza9,
+];
 
 export const aboutUsData = {
   aboutUs: "ঢাকা বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার বিশ্ববিদ্যালয়ের ছাত্র, শিক্ষক ও কর্মচারী এবং শিক্ষক ও কর্মচারীদের পরিবারের সদস্যদের বিনামূল্যে চিকিৎসা সেবা এবং বিনামূল্যে প্যাথলজিকাল পরীক্ষা প্রদান করে। ঢাকা বিশ্ববিদ্যালয় চিকিৎসা কেন্দ্র বর্তমান শহিদ বুদ্ধিজীবী ডা. মোহাম্মদ মোর্তজা মেডিকেল সেন্টার ২৪ঘণ্টা রোটেশনের ভিত্তিতে ডাক্তার-নার্সের মাধ্যমে তাৎক্ষণিক প্রাথমিক স্বাস্থ্য সেবা দিয়ে আসছে। সর্বমোট এগারোটি বিভাগ রয়েছে।",

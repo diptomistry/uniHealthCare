@@ -1,40 +1,26 @@
+
+
 import React from "react";
 import { TECarousel, TECarouselItem } from "tw-elements-react";
+import { mortazaImages } from "../../assets/dashboard";
 
 export default function CarouselCrossfade() {
   return (
     <TECarousel showControls showIndicators crossfade ride="carousel">
-      <div className="relative rounded-lg w-full overflow-hidden after:clear-both after:block after:content-['']">
-        <TECarouselItem
-          itemID={1}
-          className="relative float-left -mr-[100%] hidden w-full !transform-none transition-opacity duration-[100ms] ease-in-out motion-reduce:transition-none"
-        >
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp"
-            className="block w-full"
-            alt="Wild Landscape"
-          />
-        </TECarouselItem>
-        <TECarouselItem
-          itemID={2}
-          className="relative float-left -mr-[100%] hidden w-full !transform-none opacity-0 transition-opacity duration-[100ms] ease-in-out motion-reduce:transition-none"
-        >
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/slides/042.webp"
-            className="block w-full"
-            alt="Camera"
-          />
-        </TECarouselItem>
-        <TECarouselItem
-          itemID={3}
-          className="relative float-left -mr-[100%] hidden w-full !transform-none opacity-0 transition-opacity duration-[100ms] ease-in-out motion-reduce:transition-none"
-        >
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/slides/043.webp"
-            className="block w-full"
-            alt="Exotic Fruits"
-          />
-        </TECarouselItem>
+      <div className="relative rounded-lg w-full h-96 overflow-hidden after:clear-both after:block after:content-['']">
+        {mortazaImages.map((image, index) => (
+          <TECarouselItem
+            key={index}
+            itemID={index + 1}
+            className="relative float-left -mr-[100%] hidden w-full !transform-none transition-opacity duration-[100ms] ease-in-out motion-reduce:transition-none"
+          >
+            <img
+              src={image}
+              className="block w-full"
+              alt={`Slide ${index + 1}`}
+            />
+          </TECarouselItem>
+        ))}
       </div>
     </TECarousel>
   );
