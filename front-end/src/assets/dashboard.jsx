@@ -32,6 +32,8 @@ import avatar from "./img/doc1.jpg";
 import avatar2 from "./img/doc2.jpg";
 import avatar3 from "./img/doc3.jpg";
 import avatar4 from "./img/doc4.jpg";
+import avatar5 from "./img/doc5.jpg";
+import avatar6 from "./img/doc6.jpg";
 import product1 from "./img/doc1.jpg";
 import product2 from "./img/doc2.jpg";
 import product3 from "./img/doc3.jpg";
@@ -47,7 +49,84 @@ import mortaza5 from "./img/mortaza5.jpg";
 import mortaza6 from "./img/mortaza6.jpg";
 import mortaza7 from "./img/mortaza7.jpg";
 import mortaza8 from "./img/mortaza8.jpg";
-import mortaza9 from "./img/mortaza9.jpg";
+import blogImg1 from "./img/blog1.jpg";
+import blogImg2 from "./img/blog2.jpg";
+import blogImg3 from "./img/blog3.jpg";
+import blogImg4 from "./img/blog4.jpg";
+import blogImg5 from "./img/blog5.jpg";
+import blogImg6 from "./img/blog6.jpg";
+export const DoctorsData = [
+  {
+    img: avatar,
+    name: "Dr. Serena Mitchell",
+    specialties: "Orthopedic Surgeon",
+  },
+  {
+    img: avatar2,
+    name: "Dr. Julian Bennett",
+    specialties: "Cardiologist",
+  },
+  {
+    img: avatar3,
+    name: "Dr. Camila Rodriguez",
+    specialties: "Pediatrician",
+  },
+  {
+    img: avatar4,
+    name: "Dr. Victor Nguyen",
+    specialties: "Neurologist",
+  },
+  {
+    img: avatar5,
+    name: "Dr. Ethan Carter",
+    specialties: "Dermatologist",
+  },
+  {
+    img: avatar6,
+    name: "Dr. Olivia Martinez",
+    specialties: "Ophthalmologist",
+  },
+];
+
+export const BlogData = [
+  {
+    img: blogImg5,
+    title: "History of the Medical Center",
+    description: "Shaheed Dr. Muhammad Murtaza Medical Center is a medical center in Dhaka University. It was Established in 1922. The center is named after Dr. Muhammad Murtaza, who was killed by the Pakistani army in 1971 while he was serving as the Chief Medical Officer of the Dhaka University Medical Centre.",
+  },
+  {
+    img: blogImg1,
+    title: "হাসপাতালটির সার্বিক চিকিৎসা সেবা প্রদান ও পরিবেশ কতটুকু মানসম্মত? ",
+    description: "যেহেতু এটি একটি হাসপাতাল নয়, এটি একটি প্রাথমিক চিকিৎসা কেন্দ্র। সেহেতু চিকিৎসা সেবা প্রদান এবং পরিবেশ মানসম্মত। এর মান বৃদ্ধির জন্য আধুনিক যন্ত্রপাতি ও একটি ভবনের পরিকল্পনা প্রশাসনের কাছে দেওয়া হয়েছে ।",
+
+  },
+ 
+  {
+    img: blogImg3,
+    title: "ভবিষ্যতে কি ধরণের পরিকল্পনা রয়েছে এ হাসপাতালটি নিয়ে?",
+    description: "প্রয়োজনীয় লোকবল, আধুনিক যুগোপযোগী যন্ত্রপাতি, অবকাঠামোগত বিষয়ে প্রশাসনের কাজে প্রস্তাব করা হয়েছে।",
+  },
+  {
+    img: blogImg4,
+    title: "Why DU Medical Center is named after Dr Muhammad Murtaza?",
+    description: "Eleven renowned personalities today issued a statement expressing hope that the structures and installations built in the premises of Dhaka University -- on the occasion of the golden jubilee of Liberation War and centennial of DU -- be named after martyred university teachers and officials.It should be noted here that Dr. Murtaza was killed by the Pakistani army in 1971while he was serving as the Chief Medical Officer of the Dhaka University Medical Centre",
+  },
+  {
+    img: blogImg2,
+    title: "DU finally names its medical centre after martyr not industrialist",
+    description: "The university had allegedly decided to name the medical centre after businessman AK Azad, who is sponsoring the building's construction",
+  },
+  
+  {
+    img: blogImg6,
+    title: "Why DU Medical Center?",
+    description: "Many think public universities are meant for only providing education. Not exactly! These days, students come up with their basic health needs and university medical centres are supposed to address those. The Dhaka University Medical Centre is one of the oldest medical centres in Bangladesh.It provides primary health care services to the students, teachers, and staff of the university.",
+  },
+
+]
+
+
+
 
 export const mortazaImages = [
   mortaza1,
@@ -58,7 +137,7 @@ export const mortazaImages = [
   mortaza6,
   mortaza7,
   mortaza8,
-  mortaza9,
+ 
 ];
 
 export const aboutUsData = {

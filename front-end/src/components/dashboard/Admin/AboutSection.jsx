@@ -5,10 +5,6 @@ import { mortazaImages } from "../../../assets/dashboard";
 import { MdOutlineCloudUpload } from "react-icons/md";
 
 
-
-
-
-
 const AboutSection = () => {
   const [aboutUs, setAboutUs] = useState(aboutUsData.aboutUs);
   const [departments, setDepartments] = useState(aboutUsData.departments);
@@ -53,7 +49,7 @@ const AboutSection = () => {
   return (
     <div className="flex flex-col md:flex-row gap-10">
       <div className="w-full md:w-1/2">
-        <h2 className="text-2xl font-bold mb-4">About Us</h2>
+        <h2 className="text-2xl font-poppins font-semibold text-textColor flex justify-center mb-4">About Us</h2>
         <textarea
           value={aboutUs}
           onChange={handleAboutUsChange}
@@ -62,14 +58,14 @@ const AboutSection = () => {
         />
         <Button title={'Submit'} />
         <div className="mb-5">
-          <h2 className="text-2xl font-bold mb-4">Images</h2>
+          <h2 className="text-2xl font-poppins font-semibold text-textColor flex justify-center mt-4 mb-4">Images</h2>
           <div className="flex flex-wrap gap-6 mb-5">
             {images.map((image, index) => (
               <div
                 key={index}
                 className="relative"
               >
-                <img src={image} alt={`Image ${index}`} className="w-24 h-24 object-cover rounded" />
+                <img src={image} alt={`Image ${index}`} className="w-28 h-24 object-cover rounded" />
                 <button
                   onClick={() => handleRemoveImage(index)}
                   className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
@@ -101,7 +97,7 @@ const AboutSection = () => {
         </div>
       </div>
       <div className="w-full md:w-1/2">
-        <h2 className="text-2xl font-bold mb-4">বিভাগসমূহঃ</h2>
+        <h2 className="text-2xl font-hindSiliguri font-semibold text-textColor flex justify-center mb-4">বিভাগসমূহ</h2>
         <div className="flex flex-wrap gap-6 mb-5">
           {departments.map((dept, index) => (
             <div
@@ -133,6 +129,25 @@ const AboutSection = () => {
           >
             Add
           </button>
+        </div>
+        <div className="mb-2">
+            <h1 className="flex justify-center font-poppins font-semibold text-2xl mb-4 text-textColor">Services</h1>
+            <textarea
+            value={aboutUsData.doctorsTreatment}
+            rows="2"
+            className="w-full p-2 border border-gray-300 rounded mb-2"
+            />
+            <textarea
+            value={aboutUsData.MedicalTest}
+            rows="2"
+            className="w-full p-2 border border-gray-300 rounded mb-2"
+            />
+            <textarea
+            value={aboutUsData.Medicine}
+            rows="2"
+            className="w-full p-2 border border-gray-300 rounded mb-2"
+            />
+            <Button title={'Submit'} />
         </div>
       </div>
     </div>

@@ -5,16 +5,20 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { useStateContext } from "../contexts/ContextProvider";
 import Navbar from "../components/dashboard/Navbar";
-import MedicalCenter from "../components/dashboard/Admin/MedicalCenter";
-import AllUsers from "../components/dashboard/Admin/AllUsers";
-import UserApproval from "../components/dashboard/Admin/UserApproval";
-import DutyRosterDoctor from "../components/dashboard/Admin/DutyRosterDoctor";
-import DutyRosterHomeo from "../components/dashboard/Admin/DutyRosterHomeo";
-import DutyRosterNurse from "../components/dashboard/Admin/DutyRosterNurse";
-import DutyRosterPharmacy from "../components/dashboard/Admin/DutyRosterPharmacy";
-import Notice from "../components/dashboard/Admin/Notice";
-import AboutSection from "../components/dashboard/Admin/AboutSection";
 
+import {
+  AboutSection,
+  AllUsers,
+  DutyRosterDoctor,
+  DutyRosterHomeo,
+  DutyRosterNurse,
+  DutyRosterPharmacy,
+  MedicalCenter,
+  Notice,
+  UserApproval,
+  Blog,
+  QuoteSection
+} from "../components/dashboard/Admin";
 
 
 
@@ -80,6 +84,8 @@ const Dashboard = () => {
             <Route path="/Pharmacy-Section" element={<DutyRosterPharmacy />} />
             <Route path="/Notice" element={<Notice />} />
             <Route path="/About-Section" element={<AboutSection />} />
+            <Route path="/Blog" element={<Blog />} />
+            <Route path="/Quote-Section" element={<QuoteSection />} />
           </Routes>
         </div>
       </div>

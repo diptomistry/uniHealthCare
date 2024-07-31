@@ -5,40 +5,10 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import AdminQuote from "../../layouts/homepage/AdminQuote";
+import { DoctorsData } from "../../assets/dashboard";
 
 const Doctors = () => {
-  const data = [
-    {
-      img: "/src/assets/img/doc1.jpg",
-      name: "Dr. Serena Mitchell",
-      specialties: "Orthopedic Surgeon",
-    },
-    {
-      img: "/src/assets/img/doc2.jpg",
-      name: "Dr. Julian Bennett",
-      specialties: "Cardiologist",
-    },
-    {
-      img: "/src/assets/img/doc3.jpg",
-      name: "Dr. Camila Rodriguez",
-      specialties: "Pediatrician",
-    },
-    {
-      img: "/src/assets/img/doc4.jpg",
-      name: "Dr. Victor Nguyen",
-      specialties: "Neurologist",
-    },
-    {
-      img: "/src/assets/img/doc5.jpg",
-      name: "Dr. Ethan Carter",
-      specialties: "Dermatologist",
-    },
-    {
-      img: "/src/assets/img/doc6.jpg",
-      name: "Dr. Olivia Martinez",
-      specialties: "Ophthalmologist",
-    },
-  ];
+  
 
   const slider = useRef(null);
 
@@ -108,7 +78,7 @@ const Doctors = () => {
       </div>
       <div className=" mt-5">
         <Slider ref={slider} {...settings}>
-          {data.map((e, index) => (
+          {DoctorsData.map((e, index) => (
             <div
               className="h-[350px] text-black rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-2 cursor-pointer"
               key={index}
