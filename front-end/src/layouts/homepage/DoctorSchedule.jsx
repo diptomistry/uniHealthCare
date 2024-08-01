@@ -28,7 +28,7 @@ const DoctorScheduleTable = () => {
           row.map((cell, cellIndex) => (
             <div 
               key={`${rowIndex}-${cellIndex}`} 
-              className={`p-2 border border-gray-300 overflow-auto ${rowIndex === 0 ? 'font-bold bg-gray-100' : ''}`}
+              className={`p-2 border border-gray-300  ${rowIndex === 0 ? 'font-bold bg-gray-100' : ''}`}
             >
               {cell}
             </div>
@@ -41,7 +41,7 @@ const DoctorScheduleTable = () => {
           row.map((cell, cellIndex) => (
             <div 
               key={`${rowIndex}-${cellIndex}`} 
-              className={`p-2 border border-gray-300 overflow-auto ${rowIndex === 0 ? 'font-bold bg-gray-100' : ''}`}
+              className={`p-2 border border-gray-300  ${rowIndex === 0 ? 'font-bold bg-gray-100' : ''}`}
             >
               {cell}
             </div>
@@ -58,7 +58,7 @@ const DoctorScheduleTable = () => {
             row.map((cell, cellIndex) => (
               <div 
                 key={`${rowIndex}-${cellIndex}`} 
-                className={`p-2 border border-gray-300 overflow-auto ${rowIndex === 0 ? 'font-bold bg-gray-100' : ''}`}
+                className={`p-2 border border-gray-300  ${rowIndex === 0 ? 'font-bold bg-gray-100' : ''}`}
               >
                 {cell}
               </div>

@@ -9,12 +9,12 @@ import {
 import { FaUserDoctor } from "react-icons/fa6";
 import { RiNurseFill } from "react-icons/ri";
 import { MdLocalPharmacy } from "react-icons/md";
+import { GiMedicines } from 'react-icons/gi';
 import DoctorScheduleTable from "../../layouts/homepage/DoctorSchedule";
 import NursingSchedule from "../../layouts/homepage/NursingSchedule";
 import PharmacySchedule from "../../layouts/homepage/PharmacySchedule";
-import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { GiMedicines } from 'react-icons/gi';
 import HomeoPathySchedule from "../../layouts/homepage/HomeoPathySchedule";
+import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 export function TabsWithIcon() {
   const data = [
@@ -25,12 +25,10 @@ export function TabsWithIcon() {
       component: <DoctorScheduleTable />,
     },
     {
-      label:"Homeopathy Doctor",
-      value:"homeopathy",
-      icon: GiMedicines ,
+      label: "Homeopathy Doctor",
+      value: "homeopathy",
+      icon: GiMedicines,
       component: <HomeoPathySchedule />,
-
-
     },
     {
       label: "Nursing Section",
@@ -70,7 +68,9 @@ export function TabsWithIcon() {
         <TabsBody>
           {data.map(({ value, component }) => (
             <TabPanel key={value} value={value}>
-              {component}
+              <div className="overflow-x-auto">
+                {component}
+              </div>
             </TabPanel>
           ))}
         </TabsBody>
