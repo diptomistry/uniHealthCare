@@ -5,7 +5,7 @@ import MapComponent from "./MapComponent";
 const Contact = ({ closeForm }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="popup-form absolute mt-12 text-black">
+      <div className=" absolute mt-12 text-black">
         <form className="w-80 md:w-96 space-y-5 bg-white p-5 rounded-xl">
           <h1 className="text-4xl font-semibold text-center text-backgroundColor">
             Contact Info.
@@ -24,7 +24,7 @@ const Contact = ({ closeForm }) => {
             <Button title="Book Appointment" />
             <button
               type="button"
-              className="bg-backgroundColor text-white px-10 rounded-md active:bg-red-500"
+              className="bg-gray-600 text-white px-10 rounded-md hover:bg-red-400 active:bg-red-500"
               onClick={closeForm}
             >
               Close

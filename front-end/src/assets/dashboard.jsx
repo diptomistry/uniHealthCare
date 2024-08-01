@@ -24,9 +24,9 @@ import {
   FaPills,
   FaMoneyBillWave,
 } from "react-icons/fa";
-import { GrLocation,GrBlog } from "react-icons/gr";
+import { GrLocation, GrBlog } from "react-icons/gr";
 import { LuMessageSquarePlus } from "react-icons/lu";
-import { GiMedicines } from 'react-icons/gi';
+import { GiMedicines } from "react-icons/gi";
 
 import avatar from "./img/doc1.jpg";
 import avatar2 from "./img/doc2.jpg";
@@ -49,9 +49,8 @@ import mortaza5 from "./img/mortaza5.jpg";
 import mortaza6 from "./img/mortaza6.jpg";
 import mortaza7 from "./img/mortaza7.jpg";
 import mortaza8 from "./img/mortaza8.jpg";
-import blogImg1 from "./img/blog1.jpg";
 import blogImg2 from "./img/blog2.jpg";
-import blogImg3 from "./img/blog3.jpg";
+import FuturePlan from "./img/FuturePlan.png";
 import blogImg4 from "./img/blog4.jpg";
 import blogImg5 from "./img/blog5.jpg";
 import blogImg6 from "./img/blog6.jpg";
@@ -92,41 +91,57 @@ export const BlogData = [
   {
     img: blogImg5,
     title: "History of the Medical Center",
-    description: "Shaheed Dr. Muhammad Murtaza Medical Center is a medical center in Dhaka University. It was Established in 1922. The center is named after Dr. Muhammad Murtaza, who was killed by the Pakistani army in 1971 while he was serving as the Chief Medical Officer of the Dhaka University Medical Centre.",
+    description:
+      "Shaheed Dr. Muhammad Murtaza Medical Center is a medical center in Dhaka University. It was Established in 1922. The center is named after Dr. Muhammad Murtaza, who was killed by the Pakistani army in 1971 while he was serving as the Chief Medical Officer of the Dhaka University Medical Centre.",
   },
   {
-    img: blogImg1,
+    img: mortaza2,
     title: "হাসপাতালটির সার্বিক চিকিৎসা সেবা প্রদান ও পরিবেশ কতটুকু মানসম্মত? ",
-    description: "যেহেতু এটি একটি হাসপাতাল নয়, এটি একটি প্রাথমিক চিকিৎসা কেন্দ্র। সেহেতু চিকিৎসা সেবা প্রদান এবং পরিবেশ মানসম্মত। এর মান বৃদ্ধির জন্য আধুনিক যন্ত্রপাতি ও একটি ভবনের পরিকল্পনা প্রশাসনের কাছে দেওয়া হয়েছে ।",
-
+    description:
+      "যেহেতু এটি একটি হাসপাতাল নয়, এটি একটি প্রাথমিক চিকিৎসা কেন্দ্র। সেহেতু চিকিৎসা সেবা প্রদান এবং পরিবেশ মানসম্মত। এর মান বৃদ্ধির জন্য আধুনিক যন্ত্রপাতি ও একটি ভবনের পরিকল্পনা প্রশাসনের কাছে দেওয়া হয়েছে ।",
   },
- 
+
   {
-    img: blogImg3,
+    img: FuturePlan,
     title: "ভবিষ্যতে কি ধরণের পরিকল্পনা রয়েছে এ হাসপাতালটি নিয়ে?",
-    description: "প্রয়োজনীয় লোকবল, আধুনিক যুগোপযোগী যন্ত্রপাতি, অবকাঠামোগত বিষয়ে প্রশাসনের কাজে প্রস্তাব করা হয়েছে।",
+    description:
+      "প্রয়োজনীয় লোকবল, আধুনিক যুগোপযোগী যন্ত্রপাতি, অবকাঠামোগত বিষয়ে প্রশাসনের কাজে প্রস্তাব করা হয়েছে।",
   },
   {
     img: blogImg4,
     title: "Why DU Medical Center is named after Dr Muhammad Murtaza?",
-    description: "Eleven renowned personalities today issued a statement expressing hope that the structures and installations built in the premises of Dhaka University -- on the occasion of the golden jubilee of Liberation War and centennial of DU -- be named after martyred university teachers and officials.It should be noted here that Dr. Murtaza was killed by the Pakistani army in 1971while he was serving as the Chief Medical Officer of the Dhaka University Medical Centre",
+    description:
+      "Eleven renowned personalities today issued a statement expressing hope that the structures and installations built in the premises of Dhaka University -- on the occasion of the golden jubilee of Liberation War and centennial of DU -- be named after martyred university teachers and officials.It should be noted here that Dr. Murtaza was killed by the Pakistani army in 1971while he was serving as the Chief Medical Officer of the Dhaka University Medical Centre",
   },
   {
     img: blogImg2,
     title: "DU finally names its medical centre after martyr not industrialist",
-    description: "The university had allegedly decided to name the medical centre after businessman AK Azad, who is sponsoring the building's construction",
+    description: `The university had allegedly decided to name the medical centre after businessman AK Azad, who is sponsoring the building's construction.
+    \n
+    After demands raised from several Dhaka University (DU) teachers and family members of a martyred doctor, who lost his life during the liberation war of 1971, the DU authorities have finally named its medical centre after him.
+  \n
+    Speaking to Dhaka Tribune, DU Vice-Chancellor (VC) Prof Akhtaruzzaman said that the medical centre would be named as “Shaheed Dr Mohammad Mortuza Medical Centre.”
+   \n
+    The DU Syndicate, the highest governing body of the university, took the decision on May 24, stepping back from its February 28 decision of naming it after an industrialist.
+   \n
+    Earlier, businessman AK Azad sent a “conditional” approach letter under the letterhead of Ha-meem group, saying he wanted to build a four-storey medical centre with a foundation of six floors for DU officials and students, on condition that the building was named after him.
+   \n
+    Azad, the DU Alumni Association president, is managing director of Ha-meem Group -- one of the largest Bangladeshi conglomerates in the textile and garments sector.
+   \n
+    The DU registrar accepted the letter on February 22. It was presented at the Syndicate meeting on February 28.
+   \n
+    Following the meeting, on March 11, a letter was sent by the chief engineer of DU notifying AK Azad that the DU syndicate body had accepted the proposal and the medical centre would be named after him.
+   \n
+    However, a number of DU teachers opposed the decision. Among them was Pro-VC (Administration) Prof Muhammad Samad, who wrote to the VC stating that Azad had been given permission illegally by the chief engineer. He requested the DU VC to rescind the decision.`,
   },
-  
+
   {
     img: blogImg6,
     title: "Why DU Medical Center?",
-    description: "Many think public universities are meant for only providing education. Not exactly! These days, students come up with their basic health needs and university medical centres are supposed to address those. The Dhaka University Medical Centre is one of the oldest medical centres in Bangladesh.It provides primary health care services to the students, teachers, and staff of the university.",
+    description:
+      "Many think public universities are meant for only providing education. Not exactly! These days, students come up with their basic health needs and university medical centres are supposed to address those. The Dhaka University Medical Centre is one of the oldest medical centres in Bangladesh.It provides primary health care services to the students, teachers, and staff of the university.",
   },
-
-]
-
-
-
+];
 
 export const mortazaImages = [
   mortaza1,
@@ -137,11 +152,11 @@ export const mortazaImages = [
   mortaza6,
   mortaza7,
   mortaza8,
- 
 ];
 
 export const aboutUsData = {
-  aboutUs: "ঢাকা বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার বিশ্ববিদ্যালয়ের ছাত্র, শিক্ষক ও কর্মচারী এবং শিক্ষক ও কর্মচারীদের পরিবারের সদস্যদের বিনামূল্যে চিকিৎসা সেবা এবং বিনামূল্যে প্যাথলজিকাল পরীক্ষা প্রদান করে। ঢাকা বিশ্ববিদ্যালয় চিকিৎসা কেন্দ্র বর্তমান শহিদ বুদ্ধিজীবী ডা. মোহাম্মদ মোর্তজা মেডিকেল সেন্টার ২৪ঘণ্টা রোটেশনের ভিত্তিতে ডাক্তার-নার্সের মাধ্যমে তাৎক্ষণিক প্রাথমিক স্বাস্থ্য সেবা দিয়ে আসছে। সর্বমোট এগারোটি বিভাগ রয়েছে।",
+  aboutUs:
+    "ঢাকা বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার বিশ্ববিদ্যালয়ের ছাত্র, শিক্ষক ও কর্মচারী এবং শিক্ষক ও কর্মচারীদের পরিবারের সদস্যদের বিনামূল্যে চিকিৎসা সেবা এবং বিনামূল্যে প্যাথলজিকাল পরীক্ষা প্রদান করে। ঢাকা বিশ্ববিদ্যালয় চিকিৎসা কেন্দ্র বর্তমান শহিদ বুদ্ধিজীবী ডা. মোহাম্মদ মোর্তজা মেডিকেল সেন্টার ২৪ঘণ্টা রোটেশনের ভিত্তিতে ডাক্তার-নার্সের মাধ্যমে তাৎক্ষণিক প্রাথমিক স্বাস্থ্য সেবা দিয়ে আসছে। সর্বমোট এগারোটি বিভাগ রয়েছে।",
   departments: [
     "বহি:বিভাগ",
     "প্যাথলজি বিভাগ",
@@ -153,95 +168,173 @@ export const aboutUsData = {
     "নার্সিং বিভাগ",
     "ডিসপেনসারি বিভাগ",
     "ফিজিওথেরাপি বিভাগ",
-    "হোমিও বিভাগ"
+    "হোমিও বিভাগ",
   ],
-  doctorsTreatment:'এ্যালোপ্যাথিক ১৯ জন ডাক্তার এবং হোমিও ইউনিটে ০৬ জন ডাক্তার সার্ভিস দিয়ে থাকেন , সংক্রামক রোগীদের জন্য ওয়ার্ডে ২৪ টি বেড রয়েছে',
-  MedicalTest:'তিন ধরনের পরীক্ষা করা হয়- Urine Test, Hematological Test and Stool Test. প্যাথলজি বিভাগে পরীক্ষা করা হয়।',
-  Medicine:'উচ্চ মানের সকল প্রয়োজনীয় ঔষধ এবং দ্রুত ফার্মাসিউটিক্যাল পরিষেবার ব্যবস্থা আছে।'
-
+  doctorsTreatment:
+    "এ্যালোপ্যাথিক ১৯ জন ডাক্তার এবং হোমিও ইউনিটে ০৬ জন ডাক্তার সার্ভিস দিয়ে থাকেন , সংক্রামক রোগীদের জন্য ওয়ার্ডে ২৪ টি বেড রয়েছে",
+  MedicalTest:
+    "তিন ধরনের পরীক্ষা করা হয়- Urine Test, Hematological Test and Stool Test. প্যাথলজি বিভাগে পরীক্ষা করা হয়।",
+  Medicine:
+    "উচ্চ মানের সকল প্রয়োজনীয় ঔষধ এবং দ্রুত ফার্মাসিউটিক্যাল পরিষেবার ব্যবস্থা আছে।",
 };
 
 export const noticeInfo = [
   {
-    quote: "বিশ্ববিদ্যালয়ের মেডিকেল সেন্টারে নতুন এমআরআই মেশিন স্থাপন করা হয়েছে, যা উন্নত প্রযুক্তির। এই মেশিনটি উন্নত এবং সঠিক নির্ণয় প্রদান করবে, যা শিক্ষার্থী এবং কর্মীদের জন্য বিশেষ সুবিধাজনক।",
+    quote:
+      "বিশ্ববিদ্যালয়ের মেডিকেল সেন্টারে নতুন এমআরআই মেশিন স্থাপন করা হয়েছে, যা উন্নত প্রযুক্তির। এই মেশিনটি উন্নত এবং সঠিক নির্ণয় প্রদান করবে, যা শিক্ষার্থী এবং কর্মীদের জন্য বিশেষ সুবিধাজনক।",
     name: "ডা. মোহাম্মদ আরিফ",
     title: "নতুন এমআরআই মেশিন",
     vanishDate: "2023-12-31",
   },
- 
+
   {
-    quote: "মেডিকেল ক্যাম্প আগামী শনিবার, সকাল ১০টা থেকে বিকেল ৪টা পর্যন্ত অনুষ্ঠিত হবে। এই ক্যাম্পে বিনামূল্যে স্বাস্থ্য পরীক্ষা, ঔষধ প্রদান এবং চিকিৎসার পরামর্শ দেওয়া হবে। সবাইকে উপস্থিত থাকার জন্য অনুরোধ করা যাচ্ছে।",
+    quote:
+      "মেডিকেল ক্যাম্প আগামী শনিবার, সকাল ১০টা থেকে বিকেল ৪টা পর্যন্ত অনুষ্ঠিত হবে। এই ক্যাম্পে বিনামূল্যে স্বাস্থ্য পরীক্ষা, ঔষধ প্রদান এবং চিকিৎসার পরামর্শ দেওয়া হবে। সবাইকে উপস্থিত থাকার জন্য অনুরোধ করা যাচ্ছে।",
     name: "ডা. তানভীর আহমেদ",
     title: "মেডিকেল ক্যাম্প",
     vanishDate: "2023-07-29",
   },
   {
-    quote: "রক্তদান কর্মসূচি: আগামী মঙ্গলবার, সকাল ৯টা থেকে দুপুর ১টা পর্যন্ত। রক্তদানের মাধ্যমে আমরা অনেক জীবন বাঁচাতে পারি। সবাইকে রক্তদানে অংশগ্রহণের জন্য আমন্ত্রণ জানানো হচ্ছে।",
+    quote:
+      "রক্তদান কর্মসূচি: আগামী মঙ্গলবার, সকাল ৯টা থেকে দুপুর ১টা পর্যন্ত। রক্তদানের মাধ্যমে আমরা অনেক জীবন বাঁচাতে পারি। সবাইকে রক্তদানে অংশগ্রহণের জন্য আমন্ত্রণ জানানো হচ্ছে।",
     name: "ডা. ফারহান হোসেন",
     title: "রক্তদান কর্মসূচি",
     vanishDate: "2023-07-25",
   },
   {
-    quote: "স্বাস্থ্য সচেতনতা সপ্তাহ শুরু হবে আগামী ১লা আগস্ট থেকে। এই সপ্তাহে বিভিন্ন কর্মসূচি এবং সেমিনার অনুষ্ঠিত হবে, যেখানে স্বাস্থ্য সচেতনতা বৃদ্ধি এবং স্বাস্থ্যকর জীবনযাপন নিয়ে আলোচনা করা হবে। সকল শিক্ষার্থী এবং কর্মীদের এই সপ্তাহে সক্রিয় অংশগ্রহণের জন্য আমন্ত্রণ জানানো হচ্ছে। আমরা আশা করি এই কর্মসূচির মাধ্যমে আমাদের কমিউনিটির সবাই স্বাস্থ্য সচেতনতা বৃদ্ধি করতে পারবে এবং স্বাস্থ্যকর জীবনযাপন সম্পর্কে আরও জানতে পারবে। এই সপ্তাহের বিভিন্ন কর্মসূচির মধ্যে রয়েছে স্বাস্থ্য পরীক্ষা, রক্তদান ক্যাম্প, স্বাস্থ্য সচেতনতা সেমিনার, এবং স্বাস্থ্যকর খাদ্যাভ্যাস নিয়ে কর্মশালা। আমরা আশা করি এই সপ্তাহের কর্মসূচিতে সক্রিয় অংশগ্রহণের মাধ্যমে সকলেই স্বাস্থ্য সচেতনতা বৃদ্ধি করতে পারবে এবং আমাদের কমিউনিটির স্বাস্থ্য অবস্থার উন্নতি করতে পারবে।",    name: "ডা. সামিয়া ইসলাম",
+    quote:
+      "স্বাস্থ্য সচেতনতা সপ্তাহ শুরু হবে আগামী ১লা আগস্ট থেকে। এই সপ্তাহে বিভিন্ন কর্মসূচি এবং সেমিনার অনুষ্ঠিত হবে, যেখানে স্বাস্থ্য সচেতনতা বৃদ্ধি এবং স্বাস্থ্যকর জীবনযাপন নিয়ে আলোচনা করা হবে। সকল শিক্ষার্থী এবং কর্মীদের এই সপ্তাহে সক্রিয় অংশগ্রহণের জন্য আমন্ত্রণ জানানো হচ্ছে। আমরা আশা করি এই কর্মসূচির মাধ্যমে আমাদের কমিউনিটির সবাই স্বাস্থ্য সচেতনতা বৃদ্ধি করতে পারবে এবং স্বাস্থ্যকর জীবনযাপন সম্পর্কে আরও জানতে পারবে। এই সপ্তাহের বিভিন্ন কর্মসূচির মধ্যে রয়েছে স্বাস্থ্য পরীক্ষা, রক্তদান ক্যাম্প, স্বাস্থ্য সচেতনতা সেমিনার, এবং স্বাস্থ্যকর খাদ্যাভ্যাস নিয়ে কর্মশালা। আমরা আশা করি এই সপ্তাহের কর্মসূচিতে সক্রিয় অংশগ্রহণের মাধ্যমে সকলেই স্বাস্থ্য সচেতনতা বৃদ্ধি করতে পারবে এবং আমাদের কমিউনিটির স্বাস্থ্য অবস্থার উন্নতি করতে পারবে।",
+    name: "ডা. সামিয়া ইসলাম",
     title: "স্বাস্থ্য সচেতনতা সপ্তাহ",
     vanishDate: "2023-08-01",
   },
   {
-    quote: "নতুন স্বাস্থ্য পরামর্শ বুথ উদ্বোধন করা হবে ১৫ই সেপ্টেম্বর। এই বুথে শিক্ষার্থী এবং কর্মীরা বিনামূল্যে স্বাস্থ্য পরামর্শ পেতে পারেন। এছাড়াও, স্বাস্থ্য সচেতনতার জন্য বিভিন্ন কর্মসূচি চালু থাকবে।",
+    quote:
+      "নতুন স্বাস্থ্য পরামর্শ বুথ উদ্বোধন করা হবে ১৫ই সেপ্টেম্বর। এই বুথে শিক্ষার্থী এবং কর্মীরা বিনামূল্যে স্বাস্থ্য পরামর্শ পেতে পারেন। এছাড়াও, স্বাস্থ্য সচেতনতার জন্য বিভিন্ন কর্মসূচি চালু থাকবে।",
     name: "ডা. আফরোজা সুলতানা",
     title: "স্বাস্থ্য পরামর্শ বুথ",
     vanishDate: "2023-09-15",
   },
   {
-    quote: "বিশ্ববিদ্যালয়ের মেডিকেল সেন্টারে নতুন স্বাস্থ্য কর্মসূচি চালু হয়েছে, যা শিক্ষার্থী এবং কর্মীদের মানসিক স্বাস্থ্য উন্নয়নে সহায়তা করবে। সপ্তাহে দুই দিন মানসিক স্বাস্থ্য বিশেষজ্ঞদের সাথে বিনামূল্যে পরামর্শ পাওয়া যাবে।",
+    quote:
+      "বিশ্ববিদ্যালয়ের মেডিকেল সেন্টারে নতুন স্বাস্থ্য কর্মসূচি চালু হয়েছে, যা শিক্ষার্থী এবং কর্মীদের মানসিক স্বাস্থ্য উন্নয়নে সহায়তা করবে। সপ্তাহে দুই দিন মানসিক স্বাস্থ্য বিশেষজ্ঞদের সাথে বিনামূল্যে পরামর্শ পাওয়া যাবে।",
     name: "ডা. কামরুল হাসান",
     title: "নতুন মানসিক স্বাস্থ্য কর্মসূচি",
     vanishDate: "2023-11-30",
   },
   {
-    quote: "শীতকালীন ফ্লু প্রতিরোধের জন্য বিনামূল্যে ভ্যাকসিন প্রদান কর্মসূচি চালু করা হয়েছে। এই কর্মসূচির আওতায় শিক্ষার্থী এবং কর্মীদের বিনামূল্যে ফ্লু ভ্যাকসিন প্রদান করা হবে।",
+    quote:
+      "শীতকালীন ফ্লু প্রতিরোধের জন্য বিনামূল্যে ভ্যাকসিন প্রদান কর্মসূচি চালু করা হয়েছে। এই কর্মসূচির আওতায় শিক্ষার্থী এবং কর্মীদের বিনামূল্যে ফ্লু ভ্যাকসিন প্রদান করা হবে।",
     name: "ডা. নাসরিন সুলতানা",
     title: "ফ্লু ভ্যাকসিন প্রদান",
     vanishDate: "2023-10-15",
   },
   {
-    quote: "বিশ্ববিদ্যালয়ের মেডিকেল সেন্টারে নতুন আপডেটেড হেলথ কার্ড সিস্টেম চালু হয়েছে। এই সিস্টেমের মাধ্যমে শিক্ষার্থী এবং কর্মীরা দ্রুত এবং সহজে স্বাস্থ্য সম্পর্কিত তথ্য এবং সেবা পেতে পারবেন।",
+    quote:
+      "বিশ্ববিদ্যালয়ের মেডিকেল সেন্টারে নতুন আপডেটেড হেলথ কার্ড সিস্টেম চালু হয়েছে। এই সিস্টেমের মাধ্যমে শিক্ষার্থী এবং কর্মীরা দ্রুত এবং সহজে স্বাস্থ্য সম্পর্কিত তথ্য এবং সেবা পেতে পারবেন।",
     name: "ডা. মাহমুদুল হক",
     title: "হেলথ কার্ড সিস্টেম",
     vanishDate: "2023-12-31",
   },
 ];
 
-
 export const PharmacySectionSchedule = [
-  ['বার', 'সকাল ৮.৩০-দুপুর ২.৩০টা পর্যন্ত', 'দুপুর ২.৩০-রাত ৯.৩০টা পর্যন্ত'],
-  ['রবিবার', 'মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম', 'মোসাঃ ফতিমা আক্তার\nবিশজিত তালুকদার'],
-  ['সোমবার', 'মোঃ রুবেল মাহমুদ\nবিশজিত তালুকদার', 'মোসাঃ ফতিমা আক্তার\nমোঃ শাহজুল আলম'],
-  ['মঙ্গলবার', 'মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম', 'মোঃ সায়েদুর রহমান\nবিশজিত তালুকদার'],
-  ['বুধবার', 'মোঃ সায়েদুর রহমান\nবিশজিত তালুকদার', 'মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম'],
-  ['বৃহস্পতিবার', 'মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম', 'মোঃ সায়েদুর রহমান\nমোসাঃ ফতিমা আক্তার'],
-  ['শুক্রবার', 'মোসাঃ ফতিমা আক্তার', 'মোঃ সায়েদুর রহমান'],
-  ['শনিবার', 'মোঃ সায়েদুর রহমান\nমোসাঃ ফতিমা আক্তার', 'বিশজিত তালুকদার']
+  ["বার", "সকাল ৮.৩০-দুপুর ২.৩০টা পর্যন্ত", "দুপুর ২.৩০-রাত ৯.৩০টা পর্যন্ত"],
+  [
+    "রবিবার",
+    "মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম",
+    "মোসাঃ ফতিমা আক্তার\nবিশজিত তালুকদার",
+  ],
+  [
+    "সোমবার",
+    "মোঃ রুবেল মাহমুদ\nবিশজিত তালুকদার",
+    "মোসাঃ ফতিমা আক্তার\nমোঃ শাহজুল আলম",
+  ],
+  [
+    "মঙ্গলবার",
+    "মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম",
+    "মোঃ সায়েদুর রহমান\nবিশজিত তালুকদার",
+  ],
+  [
+    "বুধবার",
+    "মোঃ সায়েদুর রহমান\nবিশজিত তালুকদার",
+    "মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম",
+  ],
+  [
+    "বৃহস্পতিবার",
+    "মোঃ রুবেল মাহমুদ\nমোঃ শাহজুল আলম",
+    "মোঃ সায়েদুর রহমান\nমোসাঃ ফতিমা আক্তার",
+  ],
+  ["শুক্রবার", "মোসাঃ ফতিমা আক্তার", "মোঃ সায়েদুর রহমান"],
+  ["শনিবার", "মোঃ সায়েদুর রহমান\nমোসাঃ ফতিমা আক্তার", "বিশজিত তালুকদার"],
 ];
 export const NursingSectionSchedule = [
-  ['বার', 'সকাল ৮.০০-দুপুর ২.০০টা', 'দুপুর ২.০০-বিকাল ৬.০০টা', 'বিকাল ৬.০০-রাত ১০.০০টা', 'রাত ১০.০০ থেকে সকাল ৮.০০টা'],
-  ['রবিবার', 'জান্নাতুল ফেরদৌসি', 'মোস্তাফিজুর রহমান', 'মোস্তাফিজুর রহমান', 'ইয়াসমিন হক বিল্কিস'],
-  ['সোমবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন জাহান', 'শরীফ হোসাইন', 'মোস্তাফিজুর রহমান'],
-  ['মঙ্গলবার', 'জান্নাতুল ফেরদৌসি', 'শরীফ হোসাইন', 'শরীফ হোসাইন', 'মোস্তাফিজুর রহমান'],
-  ['বুধবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন হক বিল্কিস', 'ইয়াসমিন হক বিল্কিস', 'সৈয়দ চন্দ্র দত্ত'],
-  ['বৃহস্পতিবার', 'ইয়াসমিন জাহান', 'শরীফ হোসাইন', 'শরীফ হোসাইন', 'সৈয়দ চন্দ্র দত্ত'],
-  ['শুক্রবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন জাহান', 'শরীফ হোসাইন', 'শরীফ হোসাইন'],
-  ['শনিবার', 'ইয়াসমিন জাহান', 'সৈয়দ চন্দ্র দত্ত', 'সৈয়দ চন্দ্র দত্ত', 'ইয়াসমিন হক বিল্কিস']
+  [
+    "বার",
+    "সকাল ৮.০০-দুপুর ২.০০টা",
+    "দুপুর ২.০০-বিকাল ৬.০০টা",
+    "বিকাল ৬.০০-রাত ১০.০০টা",
+    "রাত ১০.০০ থেকে সকাল ৮.০০টা",
+  ],
+  [
+    "রবিবার",
+    "জান্নাতুল ফেরদৌসি",
+    "মোস্তাফিজুর রহমান",
+    "মোস্তাফিজুর রহমান",
+    "ইয়াসমিন হক বিল্কিস",
+  ],
+  [
+    "সোমবার",
+    "জান্নাতুল ফেরদৌসি",
+    "ইয়াসমিন জাহান",
+    "শরীফ হোসাইন",
+    "মোস্তাফিজুর রহমান",
+  ],
+  [
+    "মঙ্গলবার",
+    "জান্নাতুল ফেরদৌসি",
+    "শরীফ হোসাইন",
+    "শরীফ হোসাইন",
+    "মোস্তাফিজুর রহমান",
+  ],
+  [
+    "বুধবার",
+    "জান্নাতুল ফেরদৌসি",
+    "ইয়াসমিন হক বিল্কিস",
+    "ইয়াসমিন হক বিল্কিস",
+    "সৈয়দ চন্দ্র দত্ত",
+  ],
+  [
+    "বৃহস্পতিবার",
+    "ইয়াসমিন জাহান",
+    "শরীফ হোসাইন",
+    "শরীফ হোসাইন",
+    "সৈয়দ চন্দ্র দত্ত",
+  ],
+  [
+    "শুক্রবার",
+    "জান্নাতুল ফেরদৌসি",
+    "ইয়াসমিন জাহান",
+    "শরীফ হোসাইন",
+    "শরীফ হোসাইন",
+  ],
+  [
+    "শনিবার",
+    "ইয়াসমিন জাহান",
+    "সৈয়দ চন্দ্র দত্ত",
+    "সৈয়দ চন্দ্র দত্ত",
+    "ইয়াসমিন হক বিল্কিস",
+  ],
 ];
 export const HomeoSchedule = [
-  ['বার', 'সকাল ৮.০০-দুপুর ২.০০টা', 'দুপুর ২.০০-বিকাল ৬.০০টা'],
-  ['রবিবার', 'জান্নাতুল ফেরদৌসি \nইয়াসমিন হক বিল্কিস', 'মোস্তাফিজুর রহমান'],
-  ['সোমবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন জাহান'],
-  ['মঙ্গলবার', 'জান্নাতুল ফেরদৌসি', 'শরীফ হোসাইন'],
-  ['বুধবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন হক বিল্কিস'],
-  ['বৃহস্পতিবার', 'ইয়াসমিন জাহান', 'শরীফ হোসাইন'],
-  ['শুক্রবার', 'জান্নাতুল ফেরদৌসি', 'ইয়াসমিন জাহান'],
-  ['শনিবার', 'ইয়াসমিন জাহান', 'সৈয়দ চন্দ্র দত্ত'],
+  ["বার", "সকাল ৮.০০-দুপুর ২.০০টা", "দুপুর ২.০০-বিকাল ৬.০০টা"],
+  ["রবিবার", "জান্নাতুল ফেরদৌসি \nইয়াসমিন হক বিল্কিস", "মোস্তাফিজুর রহমান"],
+  ["সোমবার", "জান্নাতুল ফেরদৌসি", "ইয়াসমিন জাহান"],
+  ["মঙ্গলবার", "জান্নাতুল ফেরদৌসি", "শরীফ হোসাইন"],
+  ["বুধবার", "জান্নাতুল ফেরদৌসি", "ইয়াসমিন হক বিল্কিস"],
+  ["বৃহস্পতিবার", "ইয়াসমিন জাহান", "শরীফ হোসাইন"],
+  ["শুক্রবার", "জান্নাতুল ফেরদৌসি", "ইয়াসমিন জাহান"],
+  ["শনিবার", "ইয়াসমিন জাহান", "সৈয়দ চন্দ্র দত্ত"],
 ];
 export const AloSchedule = [
   [
