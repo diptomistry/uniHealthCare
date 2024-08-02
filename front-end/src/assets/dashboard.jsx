@@ -64,7 +64,7 @@ export const DoctorsData = [
     img: avatar2,
     name: "Dr. Julian Bennett",
     specialties: "Cardiologist",
-  },
+  },    
   {
     img: avatar3,
     name: "Dr. Camila Rodriguez",

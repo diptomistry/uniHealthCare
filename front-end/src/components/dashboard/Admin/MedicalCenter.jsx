@@ -43,9 +43,9 @@ const MedicalCenter = ({darkMode}) => {
         </div>
        
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full ">
           {dashData.map((item) => (
-            <div key={item.title} className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 pt-9 rounded-2xl shadow-md flex flex-col justify-between">
+            <div key={item.title} className="bg-white hover:scale-105 dark:text-gray-200 dark:bg-secondary-dark-bg p-4 pt-9 rounded-2xl shadow-md flex flex-col justify-between">
               <button
                 type="button"
                 style={{ color: item.iconColor, backgroundColor: item.iconBg }}
