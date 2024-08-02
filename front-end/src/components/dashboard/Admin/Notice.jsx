@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { noticeInfo as initialNotices } from '../../../assets/dashboard';
 import { FaEdit } from 'react-icons/fa';
 
@@ -7,6 +7,7 @@ const NoticeInfoDisplay = () => {
   const [newNotice, setNewNotice] = useState({ quote: '', name: '', title: '', vanishDate: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+  const editFieldRef = useRef(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +34,11 @@ const NoticeInfoDisplay = () => {
     setNewNotice(notices[index]);
     setIsEditing(true);
     setEditIndex(index);
+    if (editFieldRef.current) {
+      const yOffset = -80; // Adjust this value to scroll higher
+      const yPosition = editFieldRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: yPosition, behavior: 'smooth' });
+    }
   };
 
   const deleteNotice = (index) => {
@@ -42,8 +48,8 @@ const NoticeInfoDisplay = () => {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-4">{isEditing ? 'Edit Notice' : 'Add a New Notice'}</h2>
+      <div ref={editFieldRef} className="mb-6">
+        <h2 className="text-2xl font-semibold text-gray-700 mb-4">{isEditing ? 'Edit Notice' : 'Add a New Notice'}</h2>
         <div className="grid grid-cols-1 gap-4 mb-4">
           <textarea
             name="quote"
@@ -86,20 +92,21 @@ const NoticeInfoDisplay = () => {
           {isEditing ? 'Save Changes' : 'Add Notice'}
         </button>
       </div>
-
+      <h1 className="text-2xl text-gray-700 font-semibold mb-4">Current Notices</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+      
         {notices.map((item, index) => (
           <div key={index} className="relative p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
             <p className="text-gray-700 mb-4">{item.quote}</p>
-            <h4 className="text-lg font-bold text-primaryColor">{item.name}</h4>
+            <h4 className="text-lg font-bold text-textColor">{item.name}</h4>
             <h5 className="text-md text-gray-500 italic">{item.title}</h5>
             <p className="text-sm text-gray-400">Vanish Date: {item.vanishDate}</p>
             <div className="absolute top-2 right-2 flex space-x-2">
               <button
                 onClick={() => editNotice(index)}
-                className="text-gray-500 hover:text-blue-700"
+                className="text-backgroundColor hover:text-hoverColor"
               >
-               <FaEdit/>
+                <FaEdit />
               </button>
               <button
                 onClick={() => deleteNotice(index)}

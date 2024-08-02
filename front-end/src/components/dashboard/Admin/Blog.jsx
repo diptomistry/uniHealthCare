@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BlogData } from '../../../assets/dashboard';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import PrimaryButton from '../../../layouts/dashboard/PrimaryButton';
+import CustomModal from '../../../models/CustomModal';
 
 const Blog = () => {
   const [blogs, setBlogs] = useState(BlogData);
@@ -15,6 +16,14 @@ const Blog = () => {
   };
 
   const handleSave = () => {
+    const { title, description, img } = editForm;
+
+    // Validation: Check if any field is empty
+    if (!title || !description || !img) {
+      alert('All fields (Title, Description, Image) must be filled out.');
+      return;
+    }
+
     if (isAdding) {
       setBlogs([...blogs, editForm]);
       setIsAdding(false);
@@ -91,44 +100,44 @@ const Blog = () => {
         );
       })}
 
-      {(editingIndex !== null || isAdding) && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000]">
-          <div className="bg-white p-5 rounded-lg">
-            <h2 className="text-xl font-bold mb-4">{isAdding ? 'Add New Blog' : 'Edit Blog'}</h2>
-            <input
-              className="border p-2 w-full mb-4"
-              type="text"
-              name="title"
-              value={editForm.title}
-              onChange={handleChange}
-              placeholder="Title"
-            />
-            <textarea
-              className="border p-2 w-full mb-4"
-              name="description"
-              value={editForm.description}
-              onChange={handleChange}
-              placeholder="Description"
-              rows={5}
-            />
+      <CustomModal
+        isOpen={editingIndex !== null || isAdding}
+        onRequestClose={() => {
+          setEditingIndex(null);
+          setIsAdding(false);
+        }}
+      >
+        <h2 className="text-xl font-bold mb-4">{isAdding ? 'Add New Blog' : 'Edit Blog'}</h2>
+        <input
+          className="border p-2 w-full mb-4"
+          type="text"
+          name="title"
+          value={editForm.title}
+          onChange={handleChange}
+          placeholder="Title"
+        />
+        <textarea
+          className="border p-2 w-full mb-4"
+          name="description"
+          value={editForm.description}
+          onChange={handleChange}
+          placeholder="Description"
+          rows={5}
+        />
         <label className="block mb-2 text-gray-400">{isAdding ? 'Choose image' : 'Change image'}</label>
-
-            <input
-              className="border p-2 w-full mb-4"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-            {editForm.img && <img className="w-[400px] h-60 rounded-xl mb-4" src={editForm.img} alt="Preview" />}
-            <button onClick={handleSave}>
-              <PrimaryButton title="Save" bgColor="bg-brightColor hover:bg-hoverColor" />
-            </button>
-            <button className="bg-red-400 hover:bg-red-500 text-white p-2 rounded ml-2" onClick={() => { setEditingIndex(null); setIsAdding(false); }}>
-              Cancel
-            </button>
-          </div>
+        <input
+          className="border p-2 w-full mb-4"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        {editForm.img && <img className="w-[400px] h-60 rounded-xl mb-4" src={editForm.img} alt="Preview" />}
+        <div className="flex justify-end">
+          <button onClick={handleSave}>
+            <PrimaryButton title="Save" bgColor="bg-brightColor hover:bg-hoverColor" />
+          </button>
         </div>
-      )}
+      </CustomModal>
     </div>
   );
 };

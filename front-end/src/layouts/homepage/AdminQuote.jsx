@@ -18,9 +18,11 @@ const AdminQuote = () => {
             <h3 className="text-xl font-semibold">Dr. Mohammad Tanvir Ali</h3>
           </div>
           <blockquote className="mt-4 text-gray-700 italic">
-            "Our organizational culture fosters creativity and innovation with 
-            endless opportunities and rewards. At Therap, your ideas will 
-            matter and make a difference."
+            "As a medical officer, I believe in the power of preventive care to build a healthier community.
+             Early detection, regular check-ups, and education are key to managing health effectively.
+              Our goal is to empower individuals with the knowledge and resources they need to make informed decisions.
+               By working together, we can improve health outcomes and enhance quality of life for everyone.
+                Let's prioritize wellness and take proactive steps towards a healthier future."
           </blockquote>
         </div>
       </div>
