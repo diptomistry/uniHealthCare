@@ -9,6 +9,8 @@ import PatientAccumulationDoughnut from '../charts/PatientGraphPie';
 import PatientGraphSplineArea from '../charts/PatientGraph';
 import DoctorColumnPlacemen from '../charts/DoctorStatColumnPlacemen';
 import AppointmentData from './AppointmentData';
+import MonthlySalesGraph from '../charts/MonthlySalesGraph ';
+import TopSellingMedicinesDoughnut from '../charts/TopSellingMedicinesDoughnut';
 
 
 
@@ -73,10 +75,25 @@ const MedicalCenter = ({darkMode}) => {
         <PatientAccumulationDoughnut/>
         
         </div>
+        
           </div>
+        
+
+         
+          
           <div className="flex justify-center items-center bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md w-full">
   <DoctorColumnPlacemen />
 </div>
+<div className="bg-white  flex flex-col  md:flex-row dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md">
+        <div className='w-full md:w-1/2 '>
+        <MonthlySalesGraph/>
+        </div>
+        <div className='  '>
+        <TopSellingMedicinesDoughnut/>
+        
+        </div>
+        
+          </div>
 
 
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md">

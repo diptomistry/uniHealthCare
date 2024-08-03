@@ -3,7 +3,7 @@ import CustomModal from './CustomModal';
 import { IoIosWarning } from "react-icons/io";
 
 
-const DeleteConfirmationModal = ({ isOpen, onRequestClose, itemName, onConfirmDelete }) => {
+const DeleteConfirmationModal = ({ isOpen, onRequestClose, itemName, onConfirmDelete,title }) => {
   return (
     <CustomModal
       isOpen={isOpen}
@@ -13,7 +13,7 @@ const DeleteConfirmationModal = ({ isOpen, onRequestClose, itemName, onConfirmDe
       <h2 className="text-2xl font-bold mb-4">Delete Confirmation</h2>
       <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 flex items-center" role="alert">
        <IoIosWarning className="text-2xl mr-2 text-yellow-500" />
-        <p>Are you sure you want to delete '{itemName}'?</p>
+        <p>Are you sure you want to delete {title} '{itemName}'?</p>
       </div>
       <div className="flex justify-end w-full">
         <button

@@ -2102,6 +2102,20 @@ export const patientDataPie = [
   { x: "Nurse", y: 10, text: "Nurse: 10%" },
   { x: "Others", y: 15, text: "Others: 15%" },
 ];
+// Sample data for top 10 most selling medicines
+export const top10MedicineSales = [
+  { x: 'Medicine A', y: 1200 },
+  { x: 'Medicine B', y: 1100 },
+  { x: 'Medicine C', y: 1000 },
+  { x: 'Medicine D', y: 950 },
+  { x: 'Medicine E', y: 900 },
+  { x: 'Medicine F', y: 850 },
+  { x: 'Medicine G', y: 800 },
+  { x: 'Medicine H', y: 750 },
+  { x: 'Medicine I', y: 700 },
+  { x: 'Medicine J', y: 650 },
+];
+
 
 export let PatientData = [
   { x: new Date(2023, 0, 1), y: 120 }, // January
@@ -2117,6 +2131,22 @@ export let PatientData = [
   { x: new Date(2023, 10, 1), y: 220 }, // November
   { x: new Date(2023, 11, 1), y: 230 }, // December
 ];
+// Sample monthly sales data for 2023
+export const SalesData = [
+  { x: new Date(2023, 0, 1), y: 50 },
+  { x: new Date(2023, 1, 1), y: 75 },
+  { x: new Date(2023, 2, 1), y: 60 },
+  { x: new Date(2023, 3, 1), y: 80 },
+  { x: new Date(2023, 4, 1), y: 95 },
+  { x: new Date(2023, 5, 1), y: 90 },
+  { x: new Date(2023, 6, 1), y: 85 },
+  { x: new Date(2023, 7, 1), y: 100 },
+  { x: new Date(2023, 8, 1), y: 110 },
+  { x: new Date(2023, 9, 1), y: 120 },
+  { x: new Date(2023, 10, 1), y: 130 },
+  { x: new Date(2023, 11, 1), y: 140 },
+];
+
 export const SparklineAreaData = [
   { x: "Jan", yval: 2 },
   { x: "Feb", yval: 6 },

@@ -151,6 +151,7 @@ const NoticeInfoDisplay = () => {
         isOpen={isDeleteModalOpen}
         onRequestClose={closeDeleteModal}
         itemName={deleteIndex !== null ? notices[deleteIndex].title : ''}
+        title="the Notice"
         onConfirmDelete={confirmDelete}
       />
     </div>

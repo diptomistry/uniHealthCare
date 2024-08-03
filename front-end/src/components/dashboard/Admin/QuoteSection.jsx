@@ -42,12 +42,7 @@ const QuoteSection = () => {
               alt="Chief Medical Officer"
               className="w-48 h-48 rounded-full border-4 border-yellow-400"
             />
-            <button
-              onClick={openModal}
-              className="absolute top-0 right-0 p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition duration-300"
-            >
-              <FaEdit className="text-gray-700" />
-            </button>
+           
           </div>
           <div className="flex-grow">
             <div className="bg-lime-200 py-2 px-4 rounded-lg">
@@ -56,6 +51,12 @@ const QuoteSection = () => {
             <blockquote className="mt-4 text-gray-700 italic">
               {quote}
             </blockquote>
+            <button
+              onClick={openModal}
+              className="absolute top-0 right-0 p-2 m-2 bg-gray-200 rounded-full hover:bg-gray-300 transition duration-300"
+            >
+              <FaEdit className="text-gray-700" />
+            </button>
           </div>
         </div>
       </div>

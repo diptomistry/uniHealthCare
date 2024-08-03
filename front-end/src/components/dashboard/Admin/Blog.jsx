@@ -158,6 +158,7 @@ const Blog = () => {
       <DeleteConfirmationModal
         isOpen={deleteIndex !== null}
         onRequestClose={() => setDeleteIndex(null)}
+        title='the Blog'
         itemName={deleteIndex !== null ? blogs[deleteIndex].title : ''}
         onConfirmDelete={handleConfirmDelete}
       />

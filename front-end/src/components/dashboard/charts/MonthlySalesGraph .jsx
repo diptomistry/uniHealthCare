@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   ChartComponent,
   SeriesCollectionDirective,
@@ -11,15 +10,14 @@ import {
   Legend,
 } from "@syncfusion/ej2-react-charts";
 import { Browser } from "@syncfusion/ej2-base";
-import { PatientData } from "../../../assets/dashboard";
-
+import { SalesData } from "../../../assets/dashboard"; // Update this path according to your project structure
 
 const SAMPLE_CSS = `
     .control-fluid {
         padding: 0px !important;
     }`;
 
-const PatientGraphSplineArea = () => {
+const MonthlySalesGraph = () => {
   const onChartLoad = (args) => {
     let chart = document.getElementById("charts");
     chart.setAttribute("title", "");
@@ -41,7 +39,7 @@ const PatientGraphSplineArea = () => {
       <style>{SAMPLE_CSS}</style>
       <div className="control-section">
         <ChartComponent
-          id="charts2"
+          id="druGcharts"
           style={{ textAlign: "center" }}
           primaryXAxis={{
             valueType: "DateTime",
@@ -60,19 +58,17 @@ const PatientGraphSplineArea = () => {
           width={Browser.isDevice ? "100%" : "75%"}
           legendSettings={{ enableHighlight: true }}
           chartArea={{ border: { width: 0 } }}
-          title="Patient Statistics for 2023"
+          title="Monthly Sales of Medicine for 2023"
           loaded={onChartLoad.bind(this)}
           tooltip={{ enable: true }}
         >
-          <Inject
-            services={[SplineAreaSeries, DateTime, Tooltip, Legend]}
-          />
+          <Inject services={[SplineAreaSeries, DateTime, Tooltip, Legend]} />
           <SeriesCollectionDirective>
             <SeriesDirective
-              dataSource={PatientData}
+              dataSource={SalesData}
               xName="x"
               yName="y"
-              name="Patients"
+              name="Sales"
               marker={{
                 visible: true,
                 isFilled: true,
@@ -84,7 +80,7 @@ const PatientGraphSplineArea = () => {
               type="SplineArea"
               width={2}
               border={{ width: 2 }}
-            ></SeriesDirective>
+            />
           </SeriesCollectionDirective>
         </ChartComponent>
       </div>
@@ -92,4 +88,4 @@ const PatientGraphSplineArea = () => {
   );
 };
 
-export default PatientGraphSplineArea;
+export default MonthlySalesGraph;
