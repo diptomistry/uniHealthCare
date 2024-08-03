@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { noticeInfo as initialNotices } from '../../../assets/dashboard';
 import { FaEdit } from 'react-icons/fa';
+import DeleteConfirmationModal from '../../../models/DeleteConfirmationModal';
 
 const NoticeInfoDisplay = () => {
   const [notices, setNotices] = useState(initialNotices);
@@ -8,6 +9,8 @@ const NoticeInfoDisplay = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const editFieldRef = useRef(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -41,9 +44,22 @@ const NoticeInfoDisplay = () => {
     }
   };
 
-  const deleteNotice = (index) => {
-    const updatedNotices = notices.filter((_, i) => i !== index);
-    setNotices(updatedNotices);
+  const openDeleteModal = (index) => {
+    setDeleteIndex(index);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setDeleteIndex(null);
+  };
+
+  const confirmDelete = () => {
+    if (deleteIndex !== null) {
+      const updatedNotices = notices.filter((_, i) => i !== deleteIndex);
+      setNotices(updatedNotices);
+      closeDeleteModal();
+    }
   };
 
   return (
@@ -109,7 +125,7 @@ const NoticeInfoDisplay = () => {
                 <FaEdit />
               </button>
               <button
-                onClick={() => deleteNotice(index)}
+                onClick={() => openDeleteModal(index)}
                 className="text-red-500 hover:text-red-700"
               >
                 <svg
@@ -131,6 +147,12 @@ const NoticeInfoDisplay = () => {
           </div>
         ))}
       </div>
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onRequestClose={closeDeleteModal}
+        itemName={deleteIndex !== null ? notices[deleteIndex].title : ''}
+        onConfirmDelete={confirmDelete}
+      />
     </div>
   );
 };

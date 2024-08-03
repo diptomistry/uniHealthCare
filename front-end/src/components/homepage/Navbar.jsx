@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-scroll";
 import Button from "../../layouts/homepage/Button";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import Contact from "../../models/homepage/Contact";
+import CustomModal from "../../models/CustomModal";
 import logo from "../../assets/img/logoo.svg";
+import MapComponent from "../../models/homepage/MapComponent";
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
@@ -27,159 +28,98 @@ const Navbar = () => {
   };
 
   return (
-    <div className=" fixed w-full z-30 text-white  ">
-    
-        <div className=" flex flex-row justify-between p-5 md:px-32 px-5 bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
-          <div className=" flex flex-row items-center cursor-pointer">
-            <img src={logo} alt="logo" className=" w-16 h-16" />
-            <Link to="home" spy={true} smooth={true} duration={500}>
-              <div className="flex flex-col">
-                <h1 className=" text-2xl text-gray-900  font-semibold">
-                  Medical Care
-                </h1>
-                <p className=" text-sm text-gray-900 ml-1">
-                  University of Dhaka
-                </p>
-              </div>
-            </Link>
-          </div>
-
-          <nav className=" hidden lg:flex flex-row items-center text-lg font-medium gap-8">
-            <Link
-              to="home"
-              spy={true}
-              smooth={true}
-              duration={500}
-              className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
-            >
-              Home
-            </Link>
-            <Link
-              to="about"
-              spy={true}
-              smooth={true}
-              duration={500}
-              className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
-            >
-              About Us
-            </Link>
-            <Link
-              to="dutyRoster"
-              spy={true}
-              smooth={true}
-              duration={500}
-              className=" hover:text-hoverColor text-brightColor  transition-all cursor-pointer"
-            >
-              Duty Roster
-            </Link>
-         
-            <Link
-              to="doctors"
-              spy={true}
-              smooth={true}
-              duration={500}
-              className=" hover:text-hoverColor text-brightColor  transition-all cursor-pointer"
-            >
-              Doctors
-            </Link>
-            <Link
-              to="blog"
-              spy={true}
-              smooth={true}
-              duration={500}
-              className=" hover:text-hoverColor text-brightColor  transition-all cursor-pointer"
-            >
-              Blog
-            </Link>
-          </nav>
-
-          <div className=" hidden lg:flex">
-            <button
-              className="bg-brightColor text-white px-8 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out"
-              onClick={openForm}
-            >
-              Contact Us
-            </button>
-          </div>
-
-          {showForm && <Contact closeForm={closeForm} />}
-
-          <div className=" lg:hidden flex items-center mr-28">
-            {menu ? (
-              <AiOutlineClose size={28} color="black" onClick={handleChange} />
-            ) : (
-              <AiOutlineMenu size={28} color="black" onClick={handleChange} />
-            )}
-          </div>
+    <div className="fixed w-full z-30 text-white">
+      <div className="flex flex-row justify-between p-5 md:px-32 px-5 bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+        <div className="flex flex-row items-center cursor-pointer">
+          <img src={logo} alt="logo" className="w-16 h-16" />
+          <Link to="home" spy={true} smooth={true} duration={500}>
+            <div className="flex flex-col">
+              <h1 className="text-2xl text-gray-900 font-semibold">Medical Care</h1>
+              <p className="text-sm text-gray-900 ml-1">University of Dhaka</p>
+            </div>
+          </Link>
         </div>
-        <div
-          className={`${
-            menu ? "translate-x-0" : "-translate-x-full"
-          } lg:hidden flex flex-col absolute bg-gray-200 text-white left-0 top-24 font-semibold text-2xl text-center pt-8 pb-4 gap-8 w-full h-fit transition-transform duration-300`}
-        >
-          <Link
-            to="home"
-            spy={true}
-            smooth={true}
-            duration={500}
-            className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
-            onClick={closeMenu}
-          >
+
+        <nav className="hidden lg:flex flex-row items-center text-lg font-medium gap-8">
+          <Link to="home" spy={true} smooth={true} duration={500} className="hover:text-hoverColor text-brightColor transition-all cursor-pointer">
             Home
           </Link>
-          <Link
-            to="about"
-            spy={true}
-            smooth={true}
-            duration={500}
-            className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
-            onClick={closeMenu}
-          >
+          <Link to="about" spy={true} smooth={true} duration={500} className="hover:text-hoverColor text-brightColor transition-all cursor-pointer">
             About Us
           </Link>
-          <Link
-            to="dutyRoster"
-            spy={true}
-            smooth={true}
-            duration={500}
-            className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
-            onClick={closeMenu}
-          >
+          <Link to="dutyRoster" spy={true} smooth={true} duration={500} className="hover:text-hoverColor text-brightColor transition-all cursor-pointer">
             Duty Roster
           </Link>
-      
-          <Link
-            to="doctors"
-            spy={true}
-            smooth={true}
-            duration={500}
-            className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
-            onClick={closeMenu}
-          >
+          <Link to="doctors" spy={true} smooth={true} duration={500} className="hover:text-hoverColor text-brightColor transition-all cursor-pointer">
             Doctors
           </Link>
-          <Link
-            to="blog"
-            spy={true}
-            smooth={true}
-            duration={500}
-            className=" hover:text-hoverColor text-brightColor transition-all cursor-pointer"
-            onClick={closeMenu}
-          >
+          <Link to="blog" spy={true} smooth={true} duration={500} className="hover:text-hoverColor text-brightColor transition-all cursor-pointer">
             Blog
           </Link>
+        </nav>
 
-          <div className=" lg:hidden">
-            <button
-              className="bg-brightColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out"
-              onClick={openForm}
-            >
-              Contact Us
-            </button>
-          </div>
+        <div className="hidden lg:flex">
+          <button className="bg-brightColor text-white px-8 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out" onClick={openForm}>
+            Contact Us
+          </button>
+        </div>
+
+        <div className="lg:hidden flex items-center mr-28">
+          {menu ? (
+            <AiOutlineClose size={28} color="black" onClick={handleChange} />
+          ) : (
+            <AiOutlineMenu size={28} color="black" onClick={handleChange} />
+          )}
+        </div>
+      </div>
+      <div className={`${menu ? "translate-x-0" : "-translate-x-full"} lg:hidden flex flex-col absolute bg-gray-200 text-white left-0 top-24 font-semibold text-2xl text-center pt-8 pb-4 gap-8 w-full h-fit transition-transform duration-300`}>
+        <Link to="home" spy={true} smooth={true} duration={500} className="hover:text-hoverColor text-brightColor transition-all cursor-pointer" onClick={closeMenu}>
+          Home
+        </Link>
+        <Link to="about" spy={true} smooth={true} duration={500} className="hover:text-hoverColor text-brightColor transition-all cursor-pointer" onClick={closeMenu}>
+          About Us
+        </Link>
+        <Link to="dutyRoster" spy={true} smooth={true} duration={500} className="hover:text-hoverColor text-brightColor transition-all cursor-pointer" onClick={closeMenu}>
+          Duty Roster
+        </Link>
+        <Link to="doctors" spy={true} smooth={true} duration={500} className="hover:text-hoverColor text-brightColor transition-all cursor-pointer" onClick={closeMenu}>
+          Doctors
+        </Link>
+        <Link to="blog" spy={true} smooth={true} duration={500} className="hover:text-hoverColor text-brightColor transition-all cursor-pointer" onClick={closeMenu}>
+          Blog
+        </Link>
+
+        <div className="lg:hidden">
+          <button className="bg-brightColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out" onClick={openForm}>
+            Contact Us
+          </button>
         </div>
       </div>
 
+      <CustomModal isOpen={showForm} onRequestClose={closeForm}>
+        <div className="text-black">
+          <form className=" space-y-5 bg-white p-5 rounded-xl">
+            <h1 className="text-4xl font-semibold text-center text-backgroundColor">Contact Information</h1>
+            <div className="flex justify-center">
+              Dhaka 1000, Bangladesh
+              <br />
+              Near the Science Annex Building
+              <br />
+              cmo.dumc@gmail.com
+              <br />
+              +88 09666 911 463 (Ext.)
+            </div>
+            <MapComponent />
+            
+              <button className="w-full ">
+              <Button title="Book Appointment" />
+              </button>
+             
+            
+          </form>
+        </div>
+      </CustomModal>
+    </div>
   );
 };
 

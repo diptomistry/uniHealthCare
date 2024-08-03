@@ -12,16 +12,18 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     width: '80%',
-    maxWidth: '600px',
+    maxWidth: '800px',
+    maxHeight: '90vh',
     zIndex: 1000,
     padding: '20px',
+    position: 'relative',
   },
   overlay: {
     zIndex: 1000,
   },
 };
 
-const CustomModal = ({ isOpen, onRequestClose, children }) => {
+const CustomModal = ({ isOpen, onRequestClose, children,ChildrenStyle }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -31,11 +33,13 @@ const CustomModal = ({ isOpen, onRequestClose, children }) => {
     >
       <button
         onClick={onRequestClose}
-        className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 transition duration-300"
+        className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 transition duration-300 z-50"
       >
         <FaTimes className="text-2xl" />
       </button>
-      {children}
+      <div className={`max-h-[80vh] ${ChildrenStyle}`} > {/* Added margin to the top */}
+        {children}
+      </div>
     </Modal>
   );
 };

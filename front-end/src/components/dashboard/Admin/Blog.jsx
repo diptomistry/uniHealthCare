@@ -3,12 +3,27 @@ import { BlogData } from '../../../assets/dashboard';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import PrimaryButton from '../../../layouts/dashboard/PrimaryButton';
 import CustomModal from '../../../models/CustomModal';
+import DeleteConfirmationModal from '../../../models/DeleteConfirmationModal';
 
 const Blog = () => {
   const [blogs, setBlogs] = useState(BlogData);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editForm, setEditForm] = useState({ title: '', description: '', img: '' });
   const [isAdding, setIsAdding] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
+
+  const handleDeleteClick = (index) => {
+    setDeleteIndex(index);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteIndex !== null) {
+      const updatedBlogs = blogs.filter((_, i) => i !== deleteIndex);
+      setBlogs(updatedBlogs);
+      setDeleteIndex(null);
+    }
+  };
+
 
   const handleEdit = (index) => {
     setEditingIndex(index);
@@ -78,8 +93,10 @@ const Blog = () => {
                 {blog.title}
               </h1>
               <div className="flex space-x-2">
-                <FaEdit className="text-textColor dark:text-white cursor-pointer" onClick={() => handleEdit(index)} />
-                <FaTrash className="text-red-500 cursor-pointer" onClick={() => handleDelete(index)} />
+              <div className="flex space-x-2">
+          <FaEdit className="text-textColor dark:text-white cursor-pointer" onClick={() => handleEdit(index)} />
+          <FaTrash className="text-red-500 cursor-pointer" onClick={() => handleDeleteClick(index)} />
+        </div>
               </div>
             </div>
             <div className="flex flex-col md:flex-row">
@@ -134,10 +151,16 @@ const Blog = () => {
         {editForm.img && <img className="w-[400px] h-60 rounded-xl mb-4" src={editForm.img} alt="Preview" />}
         <div className="flex justify-end">
           <button onClick={handleSave}>
-            <PrimaryButton title="Save" bgColor="bg-brightColor hover:bg-hoverColor" />
+            <PrimaryButton title="Save" bgColor="bg-primaryColor hover:bg-hoverColor" />
           </button>
         </div>
       </CustomModal>
+      <DeleteConfirmationModal
+        isOpen={deleteIndex !== null}
+        onRequestClose={() => setDeleteIndex(null)}
+        itemName={deleteIndex !== null ? blogs[deleteIndex].title : ''}
+        onConfirmDelete={handleConfirmDelete}
+      />
     </div>
   );
 };
