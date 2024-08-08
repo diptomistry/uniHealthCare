@@ -4,14 +4,14 @@ import {
 } from '@syncfusion/ej2-react-charts';
 import { Browser } from '@syncfusion/ej2-base';
 
-import { cardiologyData,ophthalmologyData,dentalData,entData } from "../../../assets/dashboard";
+import { cardiologyDataYearly, ophthalmologyDataYearly, dentalDataYearly, entDataYearly } from "../../../assets/dashboard";
 
 const SAMPLE_CSS = `
     .control-fluid {
         padding: 0px !important;
     }`;
 
-const DoctorColumnPlacement = () => {
+const DoctorColumnPlacementYearly = () => {
     const onChartLoad = (args) => {
         let chart = document.getElementById('charts');
         chart.setAttribute('title', '');
@@ -25,24 +25,24 @@ const DoctorColumnPlacement = () => {
     };
 
     return (
-        <div className='control-pane '>
+        <div className='control-pane'>
             <style>{SAMPLE_CSS}</style>
             <div className=''>
-                <ChartComponent id='charts3' style={{ textAlign: "center" }} load={load.bind(this)}
+                <ChartComponent id='charts3Yearly' style={{ textAlign: "center" }} load={load.bind(this)}
                     primaryXAxis={{ valueType: 'Category', majorTickLines: { width: 0 }, minorTickLines: { width: 0 }, interval: 1, majorGridLines: { width: 0 } }}
-                    primaryYAxis={{ majorTickLines: { width: 0 }, lineStyle: { width: 0 }, title: 'রোগীর সংখ্যা' }}
+                    primaryYAxis={{ majorTickLines: { width: 0 }, lineStyle: { width: 0 }, title: 'Patient Count' }}
                     chartArea={{ border: { width: 0 } }} enableSideBySidePlacement={false}
-                    title='বিভাগ অনুযায়ী রোগী পরিসংখ্যান (জানুয়ারি - ডিসেম্বর)'
+                    title='Patient Statistics by Department (Yearly)'
                     tooltip={{ enable: true, shared: true }} width={Browser.isDevice ? '100%' : '100%'} loaded={onChartLoad.bind(this)}>
                     <Inject services={[ColumnSeries, DataLabel, Category, Tooltip, Legend]} />
                     <SeriesCollectionDirective>
-                        <SeriesDirective dataSource={cardiologyData} xName='x' yName='y' name='কার্ডিওলজি বিভাগ' type='Column' columnWidth={0.6} 
+                        <SeriesDirective dataSource={cardiologyDataYearly} xName='x' yName='y' name='Cardiology Department' type='Column' columnWidth={0.6} 
                             marker={{ dataLabel: { visible: true, position: 'Top', font: { fontWeight: '600', color: '#ffffff' } } }} />
-                        <SeriesDirective dataSource={dentalData} xName='x' yName='y' name='দন্ত বিভাগ' type='Column' columnWidth={0.6} 
+                        <SeriesDirective dataSource={dentalDataYearly} xName='x' yName='y' name='Dental Department' type='Column' columnWidth={0.6} 
                             marker={{ dataLabel: { visible: true, position: 'Top', font: { fontWeight: '600', color: '#ffffff' } } }} />
-                        <SeriesDirective dataSource={ophthalmologyData} xName='x' yName='y' name='চক্ষু বিভাগ' type='Column' columnWidth={0.6} 
+                        <SeriesDirective dataSource={ophthalmologyDataYearly} xName='x' yName='y' name='Ophthalmology Department' type='Column' columnWidth={0.6} 
                             marker={{ dataLabel: { visible: true, position: 'Top', font: { fontWeight: '600', color: '#ffffff' } } }} />
-                        <SeriesDirective dataSource={entData} xName='x' yName='y' name='নাক, কান, গলা বিভাগ' type='Column' columnWidth={0.6} 
+                        <SeriesDirective dataSource={entDataYearly} xName='x' yName='y' name='ENT Department' type='Column' columnWidth={0.6} 
                             marker={{ dataLabel: { visible: true, position: 'Top', font: { fontWeight: '600', color: '#ffffff' } } }} />
                     </SeriesCollectionDirective>
                 </ChartComponent>
@@ -51,4 +51,4 @@ const DoctorColumnPlacement = () => {
     );
 };
 
-export default DoctorColumnPlacement;
+export default DoctorColumnPlacementYearly;

@@ -57,7 +57,7 @@ const PatientGraphSplineArea = () => {
             minorTickLines: { width: 0 },
           }}
           load={load.bind(this)}
-          width={Browser.isDevice ? "100%" : "75%"}
+         width={Browser.isDevice ? "100%" : "90%"}
           legendSettings={{ enableHighlight: true }}
           chartArea={{ border: { width: 0 } }}
           title="Patient Statistics for 2023"

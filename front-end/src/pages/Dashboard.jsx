@@ -55,7 +55,7 @@ const Dashboard = () => {
         </TooltipComponent>
       </div>
       {activeMenu ? (
-        <div className="w-64 fixed  max-md:z-[10000000] dark:bg-secondary-dark-bg bg-white duration-300 " style={{ boxShadow: '0px 7px 30px 0px rgba(113, 122, 131, 0.11)' }}>
+        <div className="w-64 fixed  max-md:z-[10000000] dark:bg-secondary-dark-bg bg-white duration-300 z-[1000] " style={{ boxShadow: '0px 7px 30px 0px rgba(113, 122, 131, 0.11)' }}>
           {" "}
           <Sidebar />
         </div>

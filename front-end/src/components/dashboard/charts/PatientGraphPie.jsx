@@ -4,10 +4,7 @@ import { Browser } from '@syncfusion/ej2-base';
 import { patientDataPie } from '../../../assets/dashboard';
 
 const PatientAccumulationDoughnut = () => {
-    const onChartLoad = (args) => {
-        document.getElementById('pie-chart').setAttribute('title', '');
-    };
-
+ 
     const load = (args) => {
         let selectedTheme = location.hash.split('/')[1];
         selectedTheme = selectedTheme ? selectedTheme : 'Material';
@@ -30,7 +27,7 @@ const PatientAccumulationDoughnut = () => {
                     }}
                     enableSmartLabels={true}
                     load={load.bind(this)}
-                    loaded={onChartLoad.bind(this)}
+                  ///  loaded={onChartLoad.bind(this)}
                     enableBorderOnMouseMove={false}
                     legendSettings={{ visible: false }}
                 >

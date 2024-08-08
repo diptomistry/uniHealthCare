@@ -17,7 +17,7 @@ import {
   barPrimaryYAxis,
 } from "../../../assets/dashboard";
 
-const PatientBar = () => {
+const PatientStatBar = () => {
   const currentMode = "Dark";
 
   return (
@@ -47,4 +47,4 @@ const PatientBar = () => {
   );
 };
 
-export default PatientBar;
+export default PatientStatBar;

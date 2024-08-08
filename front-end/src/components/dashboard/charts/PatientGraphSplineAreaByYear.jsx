@@ -10,15 +10,19 @@ import {
   Legend,
 } from "@syncfusion/ej2-react-charts";
 import { Browser } from "@syncfusion/ej2-base";
-import { SalesData } from "../../../assets/dashboard"; // Update this path according to your project structure
+import { yearlyPatientData } from "../../../assets/dashboard";
+
 
 const SAMPLE_CSS = `
     .control-fluid {
         padding: 0px !important;
     }`;
 
-const MonthlySalesGraph = () => {
- 
+const PatientGraphSplineAreaByYear = () => {
+  const onChartLoad = (args) => {
+    let chart = document.getElementById("charts");
+    chart.setAttribute("title", "");
+  };
 
   const load = (args) => {
     let selectedTheme = location.hash.split("/")[1];
@@ -36,13 +40,13 @@ const MonthlySalesGraph = () => {
       <style>{SAMPLE_CSS}</style>
       <div className="control-section">
         <ChartComponent
-          id="druGcharts"
+          id="charts2"
           style={{ textAlign: "center" }}
           primaryXAxis={{
             valueType: "DateTime",
-            labelFormat: "MMM",
+            labelFormat: "yyyy",
             majorGridLines: { width: 0 },
-            intervalType: "Months",
+            intervalType: "Years",
             edgeLabelPlacement: "Shift",
           }}
           primaryYAxis={{
@@ -55,17 +59,19 @@ const MonthlySalesGraph = () => {
           width={Browser.isDevice ? "100%" : "90%"}
           legendSettings={{ enableHighlight: true }}
           chartArea={{ border: { width: 0 } }}
-          title="Monthly Dispensation of Medicine for 2023"
-         
+          title="Patient Statistics by Year"
+          loaded={onChartLoad.bind(this)}
           tooltip={{ enable: true }}
         >
-          <Inject services={[SplineAreaSeries, DateTime, Tooltip, Legend]} />
+          <Inject
+            services={[SplineAreaSeries, DateTime, Tooltip, Legend]}
+          />
           <SeriesCollectionDirective>
             <SeriesDirective
-              dataSource={SalesData}
+              dataSource={yearlyPatientData}
               xName="x"
               yName="y"
-              name="Dispensation"
+              name="Patients"
               marker={{
                 visible: true,
                 isFilled: true,
@@ -77,7 +83,7 @@ const MonthlySalesGraph = () => {
               type="SplineArea"
               width={2}
               border={{ width: 2 }}
-            />
+            ></SeriesDirective>
           </SeriesCollectionDirective>
         </ChartComponent>
       </div>
@@ -85,4 +91,4 @@ const MonthlySalesGraph = () => {
   );
 };
 
-export default MonthlySalesGraph;
+export default PatientGraphSplineAreaByYear;

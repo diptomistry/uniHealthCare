@@ -2033,6 +2033,16 @@ export const employeesData = [
     EmployeeImage: avatar2,
   },
 ];
+export const patientDataByYear = [
+  
+  { x: '2019', students: 40, teachers: 30, others: 30 },
+  { x: '2020', students: 35, teachers: 35, others: 30 },
+  { x: '2021', students: 45, teachers: 25, others: 30 },
+  { x: '2022', students: 50, teachers: 20, others: 30 },
+  { x: '2023', students: 55, teachers: 25, others: 20 },
+  
+];
+
 
 // Sample data for patients checked by doctors in different departments for each month
 export let cardiologyData = [
@@ -2094,6 +2104,43 @@ export let entData = [
   { x: "Nov", y: 30 },
   { x: "Dec", y: 32 },
 ];
+//yearly
+export const cardiologyDataYearly = [
+  { x: '2018', y: 1200 },
+  { x: '2019', y: 1350 },
+  { x: '2020', y: 1400 },
+  { x: '2021', y: 1250 },
+  { x: '2022', y: 1500 },
+  { x: '2023', y: 1600 }
+];
+
+export const dentalDataYearly = [
+  { x: '2018', y: 800 },
+  { x: '2019', y: 950 },
+  { x: '2020', y: 1000 },
+  { x: '2021', y: 1100 },
+  { x: '2022', y: 1200 },
+  { x: '2023', y: 1300 }
+];
+
+export const ophthalmologyDataYearly = [
+  { x: '2018', y: 900 },
+  { x: '2019', y: 1000 },
+  { x: '2020', y: 1100 },
+  { x: '2021', y: 1050 },
+  { x: '2022', y: 1150 },
+  { x: '2023', y: 1250 }
+];
+
+export const entDataYearly = [
+  { x: '2018', y: 700 },
+  { x: '2019', y: 750 },
+  { x: '2020', y: 800 },
+  { x: '2021', y: 850 },
+  { x: '2022', y: 900 },
+  { x: '2023', y: 950 }
+];
+
 // patientData.js
 export const patientDataPie = [
   { x: "Student", y: 40, text: "Student: 40%" },
@@ -2116,7 +2163,14 @@ export const top10MedicineSales = [
   { x: 'Medicine J', y: 650 },
 ];
 
-
+export const yearlyPatientData = [
+  { x: new Date(2018, 0, 1), y: 300 },
+  { x: new Date(2019, 0, 1), y: 400 },
+  { x: new Date(2020, 0, 1), y: 350 },
+  { x: new Date(2021, 0, 1), y: 450 },
+  { x: new Date(2022, 0, 1), y: 500 },
+  { x: new Date(2023, 0, 1), y: 550 },
+];
 export let PatientData = [
   { x: new Date(2023, 0, 1), y: 120 }, // January
   { x: new Date(2023, 1, 1), y: 150 }, // February
