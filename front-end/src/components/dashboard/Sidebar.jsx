@@ -43,7 +43,7 @@ const Sidebar = () => {
       <div className='flex justify-between items-center'>
         <Link to='/dashboard' onClick={handleCloseSideBar} className="items-center gap-3 ml-[19px] mt-4 flex text-xl font-semibold tracking-tight dark:text-white text-slate-900">
           <MdAdminPanelSettings size={activeMenu ? 30 : 34} />
-          {activeMenu && <span>Admin Panel</span>}
+          {activeMenu && <span className='uppercase'>{userType} Panel</span>}
         </Link>
         <TooltipComponent content="Menu" position="BottomCenter">
           <button

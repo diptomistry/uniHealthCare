@@ -1,9 +1,9 @@
 import React from 'react';
 import { AccumulationChartComponent, AccumulationSeriesCollectionDirective, AccumulationSeriesDirective, PieSeries, AccumulationDataLabel, Inject } from '@syncfusion/ej2-react-charts';
 import { Browser } from '@syncfusion/ej2-base';
-import { patientDataPie } from '../../../assets/dashboard';
+import { PharmacyCustomerByCatData } from '../../../assets/dashboard';
 
-const PatientAccumulationDoughnut = () => {
+const PharmacyCustomerByCat = () => {
  
     const load = (args) => {
         let selectedTheme = location.hash.split('/')[1];
@@ -19,9 +19,9 @@ const PatientAccumulationDoughnut = () => {
         <div className='control-pane'>
             <div className='control-section'>
                 <AccumulationChartComponent
-                    id="pie-chart"
+                    id="pie-chart2"
                     centerLabel={{
-                        text: 'Gender Wise<br>Patient Statistics<br>This Year',
+                        text: 'Catagory Wise<br>Customer Statistics<br>This Year',
                         hoverTextFormat: '${point.x}<br>${point.y}%',
                         textStyle: { fontWeight: '600', size: Browser.isDevice ? '7px' : '15px' }
                     }}
@@ -34,7 +34,7 @@ const PatientAccumulationDoughnut = () => {
                     <Inject services={[PieSeries, AccumulationDataLabel]} />
                     <AccumulationSeriesCollectionDirective>
                         <AccumulationSeriesDirective
-                            dataSource={patientDataPie}
+                            dataSource={PharmacyCustomerByCatData}
                             xName='x'
                             yName='y'
                             innerRadius='65%'
@@ -56,4 +56,4 @@ const PatientAccumulationDoughnut = () => {
     );
 };
 
-export default PatientAccumulationDoughnut;
+export default PharmacyCustomerByCat;

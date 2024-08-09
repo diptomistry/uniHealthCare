@@ -54,36 +54,64 @@ import FuturePlan from "./img/FuturePlan.png";
 import blogImg4 from "./img/blog4.jpg";
 import blogImg5 from "./img/blog5.jpg";
 import blogImg6 from "./img/blog6.jpg";
-export const DoctorsData = [
-  {
-    img: avatar,
-    name: "Dr. Serena Mitchell",
-    specialties: "Orthopedic Surgeon",
+/*
+ {
+    title: "Medicine-Management",
+    links: [
+      {
+        name: "Current Stock",
+        icon: <RiStockLine />,
+      },
+      {
+        name: "Stock Update",
+        icon: <AiOutlineSchedule />,
+      },
+    ],
   },
+ */
+export const DoctorsData = [
+ 
   {
     img: avatar2,
     name: "Dr. Julian Bennett",
     specialties: "Cardiologist",
-  },    
+    rating: 4.3,
+    rank: 2,
+  }, 
+  {
+    img: avatar,
+    name: "Dr. Serena Mitchell",
+    specialties: "Orthopedic Surgeon",
+    rating: 4.5,
+    rank: 1,
+  },   
   {
     img: avatar3,
     name: "Dr. Camila Rodriguez",
     specialties: "Pediatrician",
+    rating: 4.2,
+    rank: 3,
   },
   {
     img: avatar4,
     name: "Dr. Victor Nguyen",
     specialties: "Neurologist",
+    rating: 4.1,
+    rank: 4,
   },
   {
     img: avatar5,
     name: "Dr. Ethan Carter",
     specialties: "Dermatologist",
+    rating: 4.0,
+    rank: 5,
   },
   {
     img: avatar6,
     name: "Dr. Olivia Martinez",
     specialties: "Ophthalmologist",
+    rating: 3.9,
+    rank: 6,
   },
 ];
 
@@ -2143,10 +2171,8 @@ export const entDataYearly = [
 
 // patientData.js
 export const patientDataPie = [
-  { x: "Student", y: 40, text: "Student: 40%" },
-  { x: "Teacher", y: 20, text: "Teacher: 20%" },
-  { x: "Staff", y: 15, text: "Staff: 15%" },
-  { x: "Nurse", y: 10, text: "Nurse: 10%" },
+  { x: "Male", y: 60, text: "Male: 60%" },
+  { x: "Female", y: 25, text: "Female: 25%" },
   { x: "Others", y: 15, text: "Others: 15%" },
 ];
 // Sample data for top 10 most selling medicines
@@ -2162,6 +2188,12 @@ export const top10MedicineSales = [
   { x: 'Medicine I', y: 700 },
   { x: 'Medicine J', y: 650 },
 ];
+export const PharmacyCustomerByCatData = [
+  { x: "Student", y: 60, text: "Student: 60%" },
+  { x: "Teacher", y: 25, text: "Teacher: 25%" },
+  { x: "Others", y: 15, text: "Others: 15%" },
+];
+
 
 export const yearlyPatientData = [
   { x: new Date(2018, 0, 1), y: 300 },
@@ -2218,22 +2250,22 @@ export const SparklineAreaData = [
 
 export const stackedChartData = [
   [
-    { x: "Jan", y: 111.1 },
-    { x: "Feb", y: 127.3 },
-    { x: "Mar", y: 143.4 },
-    { x: "Apr", y: 159.9 },
-    { x: "May", y: 159.9 },
-    { x: "Jun", y: 159.9 },
-    { x: "July", y: 159.9 },
+    { x: "2017", y: 111.1 },
+    { x: "2018", y: 127.3 },
+    { x: "2019", y: 143.4 },
+    { x: "2020", y: 159.9 },
+    { x: "2021", y: 159.9 },
+    { x: "2022", y: 159.9 },
+    { x: "2023", y: 159.9 },
   ],
   [
-    { x: "Jan", y: 211.1 },
-    { x: "Feb", y: 127.3 },
-    { x: "Mar", y: 143.4 },
-    { x: "Apr", y: 159.9 },
-    { x: "May", y: 159.9 },
-    { x: "Jun", y: 159.9 },
-    { x: "July", y: 159.9 },
+    { x: "2017", y: 211.1 },
+    { x: "2018", y: 127.3 },
+    { x: "2019", y: 143.4 },
+    { x: "2020", y: 159.9 },
+    { x: "2021", y: 159.9 },
+    { x: "2022", y: 159.9 },
+    { x: "2023", y: 159.9 },
   ],
 ];
 export const stackedCustomSeries = [
@@ -2399,19 +2431,7 @@ export const links = [
       },
     ],
   },
-  {
-    title: "Medicine-Management",
-    links: [
-      {
-        name: "Current Stock",
-        icon: <RiStockLine />,
-      },
-      {
-        name: "Stock Update",
-        icon: <AiOutlineSchedule />,
-      },
-    ],
-  },
+ 
   {
     title: "Public Information",
     links: [
@@ -2439,7 +2459,7 @@ export const doctorLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "Medical-Center",
+        name: "Home",
         icon: <FiHome />,
       },
     ],
@@ -2448,11 +2468,11 @@ export const doctorLinks = [
     title: "Prescription",
     links: [
       {
-        name: "New Requests",
+        name: "New-Requests",
         icon: <AiOutlineFileAdd />, // Icon for new prescription requests
       },
       {
-        name: "Already Prescribed",
+        name: "Already-Prescribed",
         icon: <AiOutlineCheckCircle />, // Icon for already prescribed items
       },
     ],
@@ -2462,11 +2482,11 @@ export const doctorLinks = [
     title: "Medicine Management",
     links: [
       {
-        name: "Current Stock",
+        name: "Current-Stock",
         icon: <RiStockLine />,
       },
       {
-        name: "Stock Update",
+        name: "Stock-Update",
         icon: <AiOutlineSchedule />,
       },
     ],

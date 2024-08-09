@@ -1,15 +1,12 @@
 import React, { useRef } from "react";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
-import AdminQuote from "../../layouts/homepage/AdminQuote";
-import { DoctorsData } from "../../assets/dashboard";
+import { FaArrowLeft, FaArrowRight, FaCrown } from "react-icons/fa";
 
-const Doctors = () => {
+import { DoctorsData } from "../../../assets/dashboard";
+
+const TopRatedDoctors = () => {
   const slider = useRef(null);
-
+  const sortedDoctors = [...DoctorsData].sort((a, b) => a.rank - b.rank);
   const settings = {
     accessibility: true,
     dots: true,
@@ -18,6 +15,7 @@ const Doctors = () => {
     arrows: false,
     slidesToShow: 3,
     slidesToScroll: 1,
+
     responsive: [
       {
         breakpoint: 1023,
@@ -46,19 +44,11 @@ const Doctors = () => {
       },
     ],
   };
-
   return (
-    <div className=" min-h-screen  bg-gray-100 flex flex-col lg:px-32 px-5 pt-10">
-      <div>
+    <div className="">
+      <div className="mb-10">
         <div className=" flex flex-col items-center lg:flex-row justify-between mb-10 lg:mb-0">
-          <div>
-            <h1 className=" text-4xl font-semibold text-center lg:text-start">
-              Our Doctors
-            </h1>
-            <p className=" mt-2 text-center lg:text-start">
-              We Nurture Well-Being
-            </p>
-          </div>
+          <div></div>
           <div className="flex gap-5 mt-4 lg:mt-0">
             <button
               className=" bg-[#d5f2ec] text-backgroundColor px-4 py-2 rounded-lg active:bg-[#ade9dc]"
@@ -74,13 +64,18 @@ const Doctors = () => {
             </button>
           </div>
         </div>
-        <div className=" mt-5">
+        <div className="max-w-[900px] mx-auto mt-5">
           <Slider ref={slider} {...settings}>
-            {DoctorsData.map((e, index) => (
-              <div
-                className="h-[350px] text-black rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-2 cursor-pointer"
+            {sortedDoctors.map((e, index) => (
+                <div
+                className="h-[350px] text-black rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-2 cursor-pointer relative"
                 key={index}
               >
+                {e.rank === 1 && (
+                  <div className="absolute top-2 right-2 text-yellow-500">
+                    <FaCrown size={30} />
+                  </div>
+                )}
                 <div>
                   <img
                     src={e.img}
@@ -92,17 +87,36 @@ const Doctors = () => {
                 <div className=" flex flex-col justify-center items-center">
                   <h1 className=" font-semibold text-xl pt-4">{e.name}</h1>
                   <h3 className=" pt-2">{e.specialties}</h3>
+
+                  <div class="flex items-center mt-2">
+                    <svg
+                      class="w-4 h-4 text-yellow-300 me-1"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 22 20"
+                    >
+                      <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                    </svg>
+                    <p class="ms-2 text-sm font-bold text-gray-900 dark:text-white">
+                      {e.rating}
+                    </p>
+                    <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                    <a
+                      href="#"
+                      class="text-sm font-medium text-gray-900 hover:no-underline dark:text-white"
+                    >
+                      Rank:{e.rank}
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
           </Slider>
         </div>
       </div>
-      <div className="mt-8 p-2">
-        <AdminQuote />
-      </div>
     </div>
   );
 };
 
-export default Doctors;
+export default TopRatedDoctors;

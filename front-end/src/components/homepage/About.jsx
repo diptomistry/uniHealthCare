@@ -18,9 +18,9 @@ const About = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <div className="flex flex-col lg:flex-row gap-2 flex-grow px-5 lg:px-20 mt-12">
-        <div className="lg:w-2/3 flex flex-col shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-lg">
+    <div className="min-h-screen  bg-gray-50 flex">
+      <div className="flex flex-col mb-10 lg:flex-row gap-2 flex-grow px-5 lg:px-20 mt-12">
+        <div className="lg:w-2/3  flex flex-col shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-lg">
           <div className="bg-blue-200 flex-1 flex items-center justify-center rounded-lg">
             <div className="flex ml-8">
               <div className="flex basis-full">
