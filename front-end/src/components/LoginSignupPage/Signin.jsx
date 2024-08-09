@@ -68,7 +68,7 @@ const Signin = ({ isSignUpMode, openForm }) => {
               Forgot password?
             </button>
           </div>
-         <Link to="/dashboard/Medical-Center">
+         <Link to="/dashboard/Home">
          <button type="submit" className="w-full mt-8 text-white bg-brightColor hover:bg-hoverColor focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             Sign in
           </button>

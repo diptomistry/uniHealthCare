@@ -1,9 +1,11 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React from "react";
+import { Link, NavLink } from "react-router-dom";
 import { MdAdminPanelSettings, MdOutlineCancel } from "react-icons/md";
-import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-import { useStateContext } from '../../contexts/ContextProvider';
-import { links, doctorLinks } from '../../assets/dashboard';
+import { TooltipComponent } from "@syncfusion/ej2-react-popups";
+import { useStateContext } from "../../contexts/ContextProvider";
+import { links, doctorLinks } from "../../assets/dashboard";
+
+import avatar from "../../assets/img/doc1.jpg";
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize } = useStateContext();
@@ -14,22 +16,23 @@ const Sidebar = () => {
     }
   };
 
-  const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white bg-brightColor text-md m-2';
-  const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 hover:bg-brightColor m-2';
+  const activeLink =
+    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white bg-brightColor text-md m-2";
+  const normalLink =
+    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 hover:bg-brightColor m-2";
 
-  
-  const userType = 'admin';//<Sidebar userType="doctor" />
+  const userType = "doctor"; // Example userType, should be passed as a prop or context
   const getMenuItems = (userType) => {
     switch (userType) {
-      case 'admin':
+      case "admin":
         return links;
-      case 'doctor':
+      case "doctor":
         return doctorLinks;
-      case 'staff':
+      case "staff":
         return staffLinks;
-      case 'student':
+      case "student":
         return studentLinks;
-      case 'guest':
+      case "guest":
         return guestLinks;
       default:
         return [];
@@ -39,12 +42,18 @@ const Sidebar = () => {
   const menuItems = getMenuItems(userType);
 
   return (
-    <div className='h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 border-r-2 '>
-      <div className='flex justify-between items-center'>
-        <Link to='/dashboard' onClick={handleCloseSideBar} className="items-center gap-3 ml-[19px] mt-4 flex text-xl font-semibold tracking-tight dark:text-white text-slate-900">
-          <MdAdminPanelSettings size={activeMenu ? 30 : 34} />
-          {activeMenu && <span className='uppercase'>{userType} Panel</span>}
-        </Link>
+    <div className="h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 border-r-2">
+      <div className="flex justify-between items-center">
+        {userType === "admin" && (
+          <Link
+            to="/dashboard"
+            onClick={handleCloseSideBar}
+            className="items-center gap-3 ml-[19px] mt-4 flex text-xl font-semibold tracking-tight dark:text-white text-slate-900"
+          >
+            <MdAdminPanelSettings size={activeMenu ? 30 : 34} />
+            {activeMenu && <span className="">Admin Panel</span>}
+          </Link>
+        )}
         <TooltipComponent content="Menu" position="BottomCenter">
           <button
             type="button"
@@ -55,33 +64,68 @@ const Sidebar = () => {
           </button>
         </TooltipComponent>
       </div>
-      <div className='mt-10'>
+
+      {/* Profile Section */}
+      {userType !== "admin" && activeMenu && (
+        <div className="flex flex-col items-center mt-8 mb-6 bg-gray-200 p-10 rounded-2xl">
+          <div className="relative">
+            
+            <img
+                src={avatar}
+                alt="avatar"
+                className="w-24 h-24 flex items-center justify-center  border-zinc-500 border-4 rounded-full object-cover"
+              />
+          </div>
+
+          <div className="text-center mt-2">
+            <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+              Dr. Marttin Deo
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Cardiology
+            </p>
+          </div>
+        </div>
+      )}
+      <div className="mt-10">
         {menuItems.map((item) => (
           <div key={item.title}>
-            {activeMenu && <p className='text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase'>{item.title}</p>}
-            {item.links.map((link) => (
+            {activeMenu && (
+              <p className="text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase">
+                {item.title}
+              </p>
+            )}
+            {item.links.map((link) =>
               activeMenu ? (
                 <NavLink
                   to={`/dashboard/${link.name}`}
                   key={link.name}
                   onClick={handleCloseSideBar}
-                  className={({ isActive }) => (isActive ? activeLink : normalLink)}
+                  className={({ isActive }) =>
+                    isActive ? activeLink : normalLink
+                  }
                 >
                   {link.icon}
                   <span className="capitalize">{link.name}</span>
                 </NavLink>
               ) : (
-                <TooltipComponent key={link.name} content={link.name} position="BottomCenter">
+                <TooltipComponent
+                  key={link.name}
+                  content={link.name}
+                  position="BottomCenter"
+                >
                   <NavLink
                     to={`/dashboard/${link.name}`}
                     onClick={handleCloseSideBar}
-                    className={({ isActive }) => (isActive ? activeLink : normalLink)}
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
                   >
                     {React.cloneElement(link.icon, { size: 24 })}
                   </NavLink>
                 </TooltipComponent>
               )
-            ))}
+            )}
           </div>
         ))}
       </div>
@@ -90,4 +134,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-

@@ -2478,32 +2478,7 @@ export const doctorLinks = [
     ],
   },
 
-  {
-    title: "Medicine Management",
-    links: [
-      {
-        name: "Current-Stock",
-        icon: <RiStockLine />,
-      },
-      {
-        name: "Stock-Update",
-        icon: <AiOutlineSchedule />,
-      },
-    ],
-  },
-  {
-    title: "Blogs",
-    links: [
-      {
-        name: "Add",
-        icon: <AiOutlinePlusCircle />, // Icon for adding new blog entries
-      },
-      {
-        name: "Delete",
-        icon: <AiOutlineDelete />, // Icon for deleting blog entries
-      },
-    ],
-  },
+
 ];
 export const chatData = [
   {

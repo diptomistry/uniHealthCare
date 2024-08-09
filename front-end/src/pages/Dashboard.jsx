@@ -5,6 +5,7 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { useStateContext } from "../contexts/ContextProvider";
 import Navbar from "../components/dashboard/Navbar";
+import Home from "../components/dashboard/doctor/Home";
 
 import {
   AboutSection,
@@ -86,6 +87,7 @@ const Dashboard = () => {
             <Route path="/About-Section" element={<AboutSection />} />
             <Route path="/Blog" element={<Blog />} />
             <Route path="/Quote-Section" element={<QuoteSection />} />
+            <Route path="/Home" element={<Home />} />
           </Routes>
         </div>
       </div>
