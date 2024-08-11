@@ -54,6 +54,15 @@ import FuturePlan from "./img/FuturePlan.png";
 import blogImg4 from "./img/blog4.jpg";
 import blogImg5 from "./img/blog5.jpg";
 import blogImg6 from "./img/blog6.jpg";
+export const reviews=[
+  { id: 1, name: "John Doe", review: "Great service!", rating: 5, image: avatar },
+  { id: 2, name: "Jane Smith", review: "Very professional.", rating: 4, image: avatar2 },
+  { id: 3, name: "Bob Johnson", review: "", rating: 5, image: avatar3 },
+  { id: 1, name: "John Doe", review: "Great service!", rating: 5, image: avatar },
+  { id: 2, name: "Jane Smith", review: "Very professional.", rating: 4, image: avatar2 },
+  { id: 3, name: "Bob Johnson", review: "", rating: 5, image: avatar3 },
+  // Add more reviews as needed
+]
 /*
  {
     title: "Medicine-Management",
@@ -2175,6 +2184,11 @@ export const patientDataPie = [
   { x: "Female", y: 25, text: "Female: 25%" },
   { x: "Others", y: 15, text: "Others: 15%" },
 ];
+export const patientDataDoctorPie = [
+  { x: "New Patients", y: 40, text: "New Patients: 70%" },
+  { x: "Old Patients", y: 30, text: "Old Patients: 30%" },
+  
+];
 // Sample data for top 10 most selling medicines
 export const top10MedicineSales = [
   { x: 'Medicine A', y: 1200 },
@@ -2204,6 +2218,20 @@ export const yearlyPatientData = [
   { x: new Date(2023, 0, 1), y: 550 },
 ];
 export let PatientData = [
+  { x: new Date(2023, 0, 1), y: 120 }, // January
+  { x: new Date(2023, 1, 1), y: 150 }, // February
+  { x: new Date(2023, 2, 1), y: 170 }, // March
+  { x: new Date(2023, 3, 1), y: 130 }, // April
+  { x: new Date(2023, 4, 1), y: 180 }, // May
+  { x: new Date(2023, 5, 1), y: 160 }, // June
+  { x: new Date(2023, 6, 1), y: 190 }, // July
+  { x: new Date(2023, 7, 1), y: 210 }, // August
+  { x: new Date(2023, 8, 1), y: 170 }, // September
+  { x: new Date(2023, 9, 1), y: 200 }, // October
+  { x: new Date(2023, 10, 1), y: 220 }, // November
+  { x: new Date(2023, 11, 1), y: 230 }, // December
+];
+export let PatientDataDoctor2 = [
   { x: new Date(2023, 0, 1), y: 120 }, // January
   { x: new Date(2023, 1, 1), y: 150 }, // February
   { x: new Date(2023, 2, 1), y: 170 }, // March
