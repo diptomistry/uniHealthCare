@@ -1,20 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import List from "./List";
-import { patientsDataDoctor, patientsDataDoctorGrid } from "../../../assets/dashboard";
+import {
+  patientsDataDoctor,
+  patientsDataDoctorGrid,
+} from "../../../assets/dashboard";
 import CustomModal from "../../../models/CustomModal";
 import DrugPrescription from "./prescription/DrugPrescription";
 import PrimaryButton from "../../../layouts/dashboard/PrimaryButton";
+import PastHistory from "./prescription/PastHistory";
+import { CSSTransition } from "react-transition-group"; // For animation
+import GeneralButton from "../../../layouts/doctor/GeneralButton";
 
 const NewRequests = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showHistory, setShowHistory] = useState(false); // Track whether to show history or prescription
   const [medicines, setMedicines] = useState([]);
 
   const toolbarOptions = ["Search", "PdfExport", "ExcelExport", "CsvExport"];
 
   const handlePrescribeClick = (patient) => {
     setSelectedPatient(patient); // Set the selected patient
+    setShowHistory(false); // Ensure we're showing the prescription form
     setIsModalOpen(true); // Open the modal
+  };
+
+  const handleHistoryClick = () => {
+    setShowHistory(true); // Switch to show history
   };
 
   const closeModal = () => {
@@ -74,49 +86,59 @@ const NewRequests = () => {
                   </button>
                 </div>
                 <div className="flex justify-center">
-                  <button
-                    type="button"
-                    className="bg-slate-300 text-center w-48 rounded-2xl h-14 relative font-sans text-black text-xl font-semibold group"
-                  >
-                    <div className="bg-secondaryColor rounded-xl h-12 w-1/4 flex items-center justify-center absolute right-1 top-[4px] group-hover:w-[184px] z-10 duration-500">
-                      <svg
-                        width="25px"
-                        height="25px"
-                        viewBox="0 0 1024 1024"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fill="#000000"
-                          d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"
-                        ></path>
-                        <path
-                          fill="#000000"
-                          d="M786.752 512 521.344 246.656a32 32 0 0 1 45.312-45.312l288 288a32 32 0 0 1 0 45.312l-288 288a32 32 0 0 1-45.312-45.312L786.752 512z"
-                        ></path>
-                      </svg>
-                    </div>
-                    <p className="translate-x-[-8px]">History</p>
-                  </button>
+                  {!showHistory ? (
+                    <GeneralButton
+                      label="History"
+                      onClick={handleHistoryClick}
+                      iconDirection="right"
+                    />
+                  ) : (
+                    <GeneralButton
+                      label="Go Back"
+                      onClick={() => setShowHistory(false)}
+                      iconDirection="left"
+                    />
+                  )}
                 </div>
               </div>
             </div>
-            <DrugPrescription getMedicines={getMedicines} />
-            <button
-              className="w-full mt-5"
-              onClick={() => {
-                console.log(
-                  "Submitting prescription for",
-                  selectedPatient.PatientName,
-                  medicines
-                );
-                closeModal();
-              }}
+
+            {/* Transition between DrugPrescription and PastHistory */}
+            <CSSTransition
+              in={!showHistory}
+              timeout={300}
+              classNames="slide"
+              unmountOnExit
             >
-              <PrimaryButton
-                title="Submit Prescription"
-                bgColor="bg-primaryColor hover:bg-hoverColor w-full"
-              />
-            </button>
+              <DrugPrescription getMedicines={getMedicines} />
+            </CSSTransition>
+            <CSSTransition
+              in={showHistory}
+              timeout={300}
+              classNames="slide"
+              unmountOnExit
+            >
+              <PastHistory />
+            </CSSTransition>
+
+            {!showHistory && (
+              <button
+                className="w-full mt-5"
+                onClick={() => {
+                  console.log(
+                    "Submitting prescription for",
+                    selectedPatient.PatientName,
+                    medicines
+                  );
+                  closeModal();
+                }}
+              >
+                <PrimaryButton
+                  title="Submit Prescription"
+                  bgColor="bg-primaryColor hover:bg-hoverColor w-full"
+                />
+              </button>
+            )}
           </div>
         )}
       </CustomModal>
@@ -125,4 +147,3 @@ const NewRequests = () => {
 };
 
 export default NewRequests;
-

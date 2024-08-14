@@ -589,15 +589,15 @@ export const gridPatientImage = (props) => (
     />
   </div>
 );
-export const gridPatientStatus = (props) => {
+
+export const gridPatientStatus = (props) => (
   <div
-  type="button"
-  style={{ background: props.StatusBg }}
-  className="text-white py-1 px-2 capitalize rounded-2xl text-md"
->
-  {props.Status}
-</div>
-};
+    style={{ background: props.StatusBg }}
+    className="text-white py-1 px-2 capitalize rounded-2xl text-md"
+  >
+    {props.Status}
+  </div>
+);
 
 const gridPatientEmail = (props) => (
   <div className="flex items-center justify-center gap-2 w-full">
@@ -724,7 +724,6 @@ export const patientsDataDoctorGrid = [
     width: "120",
     textAlign: "Center",
   },
-
 ];
 export const patientsDataDoctor = [
   {
@@ -733,7 +732,6 @@ export const patientsDataDoctor = [
     PhoneNum: "01774407895",
     PatientName: "Dipto",
     Gender: "Dhaka",
-    Status: "Prescribe",
     StatusBg: "#03C9D7",
     PatientImage: product6,
   },
@@ -743,7 +741,6 @@ export const patientsDataDoctor = [
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
     Gender: "Delhi",
-    Status: "Prescribe",
     StatusBg: "#03C9D7",
     PatientImage: product5,
   },
@@ -753,7 +750,6 @@ export const patientsDataDoctor = [
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
     Gender: "New York",
-    Status: "Prescribe",
     StatusBg: "#03C9D7",
     PatientImage: product7,
   },
@@ -763,7 +759,6 @@ export const patientsDataDoctor = [
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
     Gender: "Germany",
-    Status: "Prescribe",
     StatusBg: "#03C9D7",
     PatientImage: product4,
   },
@@ -773,7 +768,6 @@ export const patientsDataDoctor = [
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
     Gender: "Spain",
-    Status: "Prescribe",
     StatusBg: "#03C9D7",
     PatientImage: product1,
   },
@@ -783,7 +777,6 @@ export const patientsDataDoctor = [
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
     Gender: "USA",
-    Status: "Prescribe",
     StatusBg: "#03C9D7",
     PatientImage: product2,
   },
@@ -793,7 +786,6 @@ export const patientsDataDoctor = [
     PhoneNum: 17.99,
     PatientName: "Skincare",
     Gender: "USA",
-    Status: "Prescribe",
     StatusBg: "#03C9D7",
     PatientImage: product3,
   },
@@ -802,7 +794,6 @@ export const patientsData = [
   {
     AppointmentDate: 10248,
     Email: "Vinet@gmail.com",
-
     PhoneNum: 32.38,
     PatientName: "Fresh Tomato",
     Gender: "USA",

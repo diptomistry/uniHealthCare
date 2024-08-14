@@ -1,8 +1,9 @@
 import React from "react";
-import PatientPrescriptionForm from "./prescription/PatientPrescriptionFormPast";
+import PatientPrescriptionForm from "./PatientPrescriptionFormPast";
 
-const AlreadyPrescribed = () => {
+const PastHistory = () => {
   const prescriptionData1 = {
+    title: "Prescription-1",
     medicineName: "Plane Napa",
     quantity: "1-0-1",
     duration: "2",
@@ -11,6 +12,7 @@ const AlreadyPrescribed = () => {
     additionalInstructions: "Stay hydrated and rest well.",
   };
   const prescriptionData2 = {
+    title: "Prescription-2",
     medicineName: "Plane Napa",
     quantity: "1-0-1",
     duration: "2",
@@ -26,4 +28,4 @@ const AlreadyPrescribed = () => {
   )
 }
 
-export default AlreadyPrescribed
+export default PastHistory
