@@ -8,6 +8,7 @@ import { PatientDataDoctor2 } from "../../../assets/dashboard";
 
 
 
+
 const Home = () => {
   const ratingData = {
     totalRating: 4.95,
@@ -169,7 +170,7 @@ const Home = () => {
     <div className="basis-full">
     <GenericPieChart 
             data={patientDataDoctorPie} 
-            title="Patient Statistics"
+            title="Patient Statistics<br>2023"
             centerLabel="Gender Wise<br>Patient Statistics<br>This Year"
         />
     </div>

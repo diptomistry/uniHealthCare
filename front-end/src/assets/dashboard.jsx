@@ -54,15 +54,39 @@ import FuturePlan from "./img/FuturePlan.png";
 import blogImg4 from "./img/blog4.jpg";
 import blogImg5 from "./img/blog5.jpg";
 import blogImg6 from "./img/blog6.jpg";
-export const reviews=[
-  { id: 1, name: "John Doe", review: "Great service!", rating: 5, image: avatar },
-  { id: 2, name: "Jane Smith", review: "Very professional.", rating: 4, image: avatar2 },
+export const reviews = [
+  {
+    id: 1,
+    name: "John Doe",
+    review: "Great service!",
+    rating: 5,
+    image: avatar,
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    review: "Very professional.",
+    rating: 4,
+    image: avatar2,
+  },
   { id: 3, name: "Bob Johnson", review: "", rating: 5, image: avatar3 },
-  { id: 1, name: "John Doe", review: "Great service!", rating: 5, image: avatar },
-  { id: 2, name: "Jane Smith", review: "Very professional.", rating: 4, image: avatar2 },
+  {
+    id: 1,
+    name: "John Doe",
+    review: "Great service!",
+    rating: 5,
+    image: avatar,
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    review: "Very professional.",
+    rating: 4,
+    image: avatar2,
+  },
   { id: 3, name: "Bob Johnson", review: "", rating: 5, image: avatar3 },
   // Add more reviews as needed
-]
+];
 /*
  {
     title: "Medicine-Management",
@@ -79,21 +103,20 @@ export const reviews=[
   },
  */
 export const DoctorsData = [
- 
   {
     img: avatar2,
     name: "Dr. Julian Bennett",
     specialties: "Cardiologist",
     rating: 4.3,
     rank: 2,
-  }, 
+  },
   {
     img: avatar,
     name: "Dr. Serena Mitchell",
     specialties: "Orthopedic Surgeon",
     rating: 4.5,
     rank: 1,
-  },   
+  },
   {
     img: avatar3,
     name: "Dr. Camila Rodriguez",
@@ -557,25 +580,37 @@ export const profiles = [
     email: "bob@example.com",
   },
 ];
-export const gridOrderImage = (props) => (
+export const gridPatientImage = (props) => (
   <div>
     <img
       className="rounded-xl h-20 md:ml-3"
-      src={props.ProductImage}
+      src={props.PatientImage}
       alt="order-item"
     />
   </div>
 );
+export const gridPatientStatus = (props) => {
+  const { onPrescribeClick, Status, StatusBg, PatientName } = props;
 
-export const gridOrderStatus = (props) => (
-  <button
-    type="button"
-    style={{ background: props.StatusBg }}
-    className="text-white py-1 px-2 capitalize rounded-2xl text-md"
-  >
-    {props.Status}
-  </button>
-);
+  return Status === "Prescribe" ? (
+    <button
+      type="button"
+      style={{ background: StatusBg }}
+      className="text-white py-1 px-2 capitalize rounded-2xl text-md"
+      onClick={() => onPrescribeClick(props)} // Use the function here
+    >
+      {Status}
+    </button>
+  ) : (
+    <div
+      style={{ background: StatusBg }}
+      className="text-white py-1 px-2 capitalize rounded-2xl text-md"
+    >
+      {Status}
+    </div>
+  );
+};
+
 const gridPatientEmail = (props) => (
   <div className="flex items-center justify-center gap-2 w-full">
     <a
@@ -589,11 +624,10 @@ const gridPatientEmail = (props) => (
     </a>
   </div>
 );
-
-export const ordersGrid = [
+export const patientsGrid = [
   {
     headerText: " ",
-    template: gridOrderImage,
+    template: gridPatientImage,
     textAlign: "Center",
     width: "120",
   },
@@ -605,8 +639,8 @@ export const ordersGrid = [
     textAlign: "Center",
   },
   {
-    field: "Location",
-    headerText: "Location",
+    field: "Gender",
+    headerText: "Gender",
     width: "150",
     textAlign: "Center",
   },
@@ -635,7 +669,7 @@ export const ordersGrid = [
   },
   {
     headerText: "Status",
-    template: gridOrderStatus,
+    template: gridPatientStatus,
     field: "PatientName",
     textAlign: "Center",
     width: "120",
@@ -659,97 +693,214 @@ export const contextMenuItems = [
   "LastPage",
   "NextPage",
 ];
-export const ordersData = [
+export const patientsDataDoctorGrid = [
+  {
+    headerText: " ",
+    template: gridPatientImage,
+    textAlign: "Center",
+    width: "120",
+  },
+  {
+    field: "PatientName",
+    headerText: "Patient ",
+    width: "150",
+    editType: "dropdownedit",
+    textAlign: "Center",
+  },
+  {
+    field: "Gender",
+    headerText: "Gender",
+    width: "150",
+    textAlign: "Center",
+  },
+
+  {
+    field: "Email",
+    headerText: "Email",
+    width: "150",
+    textAlign: "Center",
+    template: gridPatientEmail,
+  },
+  {
+    field: "PhoneNum",
+    headerText: "Phone Number",
+    format: "C2",
+    textAlign: "Center",
+    editType: "numericedit",
+    width: "150",
+  },
+
+  {
+    field: "AppointmentDate",
+    headerText: "Date",
+    width: "120",
+    textAlign: "Center",
+  },
+
+];
+export const patientsDataDoctor = [
+  {
+    AppointmentDate: 10248,
+    Email: "diptomistry50@gmail.com",
+    PhoneNum: "01774407895",
+    PatientName: "Dipto",
+    Gender: "Dhaka",
+    Status: "Prescribe",
+    StatusBg: "#03C9D7",
+    PatientImage: product6,
+  },
+  {
+    AppointmentDate: 345653,
+    Email: "Carson Darrin",
+    PhoneNum: 56.34,
+    PatientName: "Butter Scotch",
+    Gender: "Delhi",
+    Status: "Prescribe",
+    StatusBg: "#03C9D7",
+    PatientImage: product5,
+  },
+  {
+    AppointmentDate: 390457,
+    Email: "Fran Perez",
+    PhoneNum: 93.31,
+    PatientName: "Candy Gucci",
+    Gender: "New York",
+    Status: "Prescribe",
+    StatusBg: "#03C9D7",
+    PatientImage: product7,
+  },
+  {
+    AppointmentDate: 893486,
+    Email: "Anika Viseer",
+    PhoneNum: 93.31,
+    PatientName: "Night Lamp",
+    Gender: "Germany",
+    Status: "Prescribe",
+    StatusBg: "#03C9D7",
+    PatientImage: product4,
+  },
+  {
+    AppointmentDate: 748975,
+    Email: "Miron Vitold",
+    PhoneNum: 23.99,
+    PatientName: "Healthcare Erbology",
+    Gender: "Spain",
+    Status: "Prescribe",
+    StatusBg: "#03C9D7",
+    PatientImage: product1,
+  },
+  {
+    AppointmentDate: 94757,
+    Email: "Omar Darobe",
+    PhoneNum: 95.99,
+    PatientName: "Makeup Lancome Rouge",
+    Gender: "USA",
+    Status: "Prescribe",
+    StatusBg: "#03C9D7",
+    PatientImage: product2,
+  },
+  {
+    AppointmentDate: 944895,
+    Email: "Lulia albu",
+    PhoneNum: 17.99,
+    PatientName: "Skincare",
+    Gender: "USA",
+    Status: "Prescribe",
+    StatusBg: "#03C9D7",
+    PatientImage: product3,
+  },
+];
+export const patientsData = [
   {
     AppointmentDate: 10248,
     Email: "Vinet@gmail.com",
 
     PhoneNum: 32.38,
     PatientName: "Fresh Tomato",
-    Location: "USA",
+    Gender: "USA",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage: product6,
+    PatientImage: product6,
   },
   {
     AppointmentDate: 345653,
     Email: "Carson Darrin",
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
-    Location: "Delhi",
+    Gender: "Delhi",
     Status: "completed",
     StatusBg: "#8BE78B",
-    ProductImage: product5,
+    PatientImage: product5,
   },
   {
     AppointmentDate: 390457,
     Email: "Fran Perez",
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
-    Location: "New York",
+    Gender: "New York",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage: product7,
+    PatientImage: product7,
   },
   {
     AppointmentDate: 893486,
     Email: "Anika Viseer",
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
-    Location: "Germany",
+    Gender: "Germany",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage: product4,
+    PatientImage: product4,
   },
   {
     AppointmentDate: 748975,
     Email: "Miron Vitold",
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
-    Location: "Spain",
+    Gender: "Spain",
     Status: "rejected",
     StatusBg: "red",
-    ProductImage: product1,
+    PatientImage: product1,
   },
   {
     AppointmentDate: 94757,
     Email: "Omar Darobe",
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage: product2,
+    PatientImage: product2,
   },
   {
     AppointmentDate: 944895,
     Email: "Lulia albu",
     PhoneNum: 17.99,
     PatientName: "Skincare",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage: product3,
+    PatientImage: product3,
   },
   {
     AppointmentDate: 845954,
     Email: "Penjani",
     PhoneNum: 59.99,
     PatientName: "Headphone",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#8BE78B",
-    ProductImage: product4,
+    PatientImage: product4,
   },
   {
     AppointmentDate: 845954,
     Email: "Jie Yan",
     PhoneNum: 87.99,
     PatientName: "Shoes",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage:
+    PatientImage:
       "https://cdn.shopclues.com/images1/thumbnails/104158/320/320/148648730-104158193-1592481791.jpg",
   },
   {
@@ -757,10 +908,10 @@ export const ordersData = [
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage:
+    PatientImage:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
@@ -768,10 +919,10 @@ export const ordersData = [
     Email: "Miron",
     PhoneNum: 87.99,
     PatientName: "Ice Cream",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage:
+    PatientImage:
       "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dairy-free-ice-cream-eae372d.jpg",
   },
   {
@@ -779,10 +930,10 @@ export const ordersData = [
     Email: "Frank",
     PhoneNum: 84.99,
     PatientName: "Pan Cake",
-    Location: "Delhi",
+    Gender: "Delhi",
     Status: "completed",
     StatusBg: "#8BE78B",
-    ProductImage:
+    PatientImage:
       "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
   },
   {
@@ -790,10 +941,10 @@ export const ordersData = [
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage:
+    PatientImage:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
@@ -802,90 +953,90 @@ export const ordersData = [
 
     PhoneNum: 32.38,
     PatientName: "Fresh Tomato",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage: product6,
+    PatientImage: product6,
   },
   {
     AppointmentDate: 345653,
     Email: "Carson Darrin",
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
-    Location: "Delhi",
+    Gender: "Delhi",
     Status: "completed",
     StatusBg: "#8BE78B",
-    ProductImage: product5,
+    PatientImage: product5,
   },
   {
     AppointmentDate: 390457,
     Email: "Fran Perez",
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
-    Location: "New York",
+    Gender: "New York",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage: product7,
+    PatientImage: product7,
   },
   {
     AppointmentDate: 893486,
     Email: "Anika Viseer",
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
-    Location: "Germany",
+    Gender: "Germany",
     Status: "completed",
     StatusBg: "#8BE78B",
-    ProductImage: product4,
+    PatientImage: product4,
   },
   {
     AppointmentDate: 748975,
     Email: "Miron Vitold",
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
-    Location: "Spain",
+    Gender: "Spain",
     Status: "rejected",
     StatusBg: "red",
-    ProductImage: product1,
+    PatientImage: product1,
   },
   {
     AppointmentDate: 94757,
     Email: "Omar Darobe",
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage: product2,
+    PatientImage: product2,
   },
   {
     AppointmentDate: 944895,
     Email: "Lulia albu",
     PhoneNum: 17.99,
     PatientName: "Skincare",
-    Location: "USA",
+    Gender: "USA",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage: product3,
+    PatientImage: product3,
   },
   {
     AppointmentDate: 845954,
     Email: "Penjani",
     PhoneNum: 59.99,
     PatientName: "Headphone",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#8BE78B",
-    ProductImage: product4,
+    PatientImage: product4,
   },
   {
     AppointmentDate: 845954,
     Email: "Jie Yan",
     PhoneNum: 87.99,
     PatientName: "Shoes",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage:
+    PatientImage:
       "https://cdn.shopclues.com/images1/thumbnails/104158/320/320/148648730-104158193-1592481791.jpg",
   },
   {
@@ -893,10 +1044,10 @@ export const ordersData = [
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage:
+    PatientImage:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
@@ -904,10 +1055,10 @@ export const ordersData = [
     Email: "Miron",
     PhoneNum: 87.99,
     PatientName: "Ice Cream",
-    Location: "USA",
+    Gender: "USA",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage:
+    PatientImage:
       "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dairy-free-ice-cream-eae372d.jpg",
   },
   {
@@ -915,10 +1066,10 @@ export const ordersData = [
     Email: "Frank",
     PhoneNum: 84.99,
     PatientName: "Pan Cake",
-    Location: "Delhi",
+    Gender: "Delhi",
     Status: "complete",
     StatusBg: "#8BE78B",
-    ProductImage:
+    PatientImage:
       "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
   },
   {
@@ -926,10 +1077,10 @@ export const ordersData = [
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage:
+    PatientImage:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
@@ -938,90 +1089,90 @@ export const ordersData = [
 
     PhoneNum: 32.38,
     PatientName: "Fresh Tomato",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage: product6,
+    PatientImage: product6,
   },
   {
     AppointmentDate: 345653,
     Email: "Carson Darrin",
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
-    Location: "Delhi",
+    Gender: "Delhi",
     Status: "complete",
     StatusBg: "#8BE78B",
-    ProductImage: product5,
+    PatientImage: product5,
   },
   {
     AppointmentDate: 390457,
     Email: "Fran Perez",
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
-    Location: "New York",
+    Gender: "New York",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage: product7,
+    PatientImage: product7,
   },
   {
     AppointmentDate: 893486,
     Email: "Anika Viseer",
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
-    Location: "Germany",
+    Gender: "Germany",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage: product4,
+    PatientImage: product4,
   },
   {
     AppointmentDate: 748975,
     Email: "Miron Vitold",
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
-    Location: "Spain",
+    Gender: "Spain",
     Status: "rejected",
     StatusBg: "red",
-    ProductImage: product1,
+    PatientImage: product1,
   },
   {
     AppointmentDate: 94757,
     Email: "Omar Darobe",
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage: product2,
+    PatientImage: product2,
   },
   {
     AppointmentDate: 944895,
     Email: "Lulia albu",
     PhoneNum: 17.99,
     PatientName: "Skincare",
-    Location: "USA",
+    Gender: "USA",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage: product3,
+    PatientImage: product3,
   },
   {
     AppointmentDate: 845954,
     Email: "Penjani",
     PhoneNum: 59.99,
     PatientName: "Headphone",
-    Location: "USA",
+    Gender: "USA",
     Status: "complete",
     StatusBg: "#8BE78B",
-    ProductImage: product4,
+    PatientImage: product4,
   },
   {
     AppointmentDate: 845954,
     Email: "Jie Yan",
     PhoneNum: 87.99,
     PatientName: "Shoes",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage:
+    PatientImage:
       "https://cdn.shopclues.com/images1/thumbnails/104158/320/320/148648730-104158193-1592481791.jpg",
   },
   {
@@ -1029,10 +1180,10 @@ export const ordersData = [
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage:
+    PatientImage:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
@@ -1040,10 +1191,10 @@ export const ordersData = [
     Email: "Miron",
     PhoneNum: 87.99,
     PatientName: "Ice Cream",
-    Location: "USA",
+    Gender: "USA",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage:
+    PatientImage:
       "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dairy-free-ice-cream-eae372d.jpg",
   },
   {
@@ -1051,10 +1202,10 @@ export const ordersData = [
     Email: "Frank",
     PhoneNum: 84.99,
     PatientName: "Pan Cake",
-    Location: "Delhi",
+    Gender: "Delhi",
     Status: "complete",
     StatusBg: "#8BE78B",
-    ProductImage:
+    PatientImage:
       "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
   },
   {
@@ -1062,10 +1213,10 @@ export const ordersData = [
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage:
+    PatientImage:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
@@ -1074,90 +1225,90 @@ export const ordersData = [
 
     PhoneNum: 32.38,
     PatientName: "Fresh Tomato",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage: product6,
+    PatientImage: product6,
   },
   {
     AppointmentDate: 345653,
     Email: "Carson Darrin",
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
-    Location: "Delhi",
+    Gender: "Delhi",
     Status: "complete",
     StatusBg: "#8BE78B",
-    ProductImage: product5,
+    PatientImage: product5,
   },
   {
     AppointmentDate: 390457,
     Email: "Fran Perez",
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
-    Location: "New York",
+    Gender: "New York",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage: product7,
+    PatientImage: product7,
   },
   {
     AppointmentDate: 893486,
     Email: "Anika Viseer",
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
-    Location: "Germany",
+    Gender: "Germany",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage: product4,
+    PatientImage: product4,
   },
   {
     AppointmentDate: 748975,
     Email: "Miron Vitold",
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
-    Location: "Spain",
+    Gender: "Spain",
     Status: "rejected",
     StatusBg: "red",
-    ProductImage: product1,
+    PatientImage: product1,
   },
   {
     AppointmentDate: 94757,
     Email: "Omar Darobe",
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage: product2,
+    PatientImage: product2,
   },
   {
     AppointmentDate: 944895,
     Email: "Lulia albu",
     PhoneNum: 17.99,
     PatientName: "Skincare",
-    Location: "USA",
+    Gender: "USA",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage: product3,
+    PatientImage: product3,
   },
   {
     AppointmentDate: 845954,
     Email: "Penjani",
     PhoneNum: 59.99,
     PatientName: "Headphone",
-    Location: "USA",
+    Gender: "USA",
     Status: "complete",
     StatusBg: "#8BE78B",
-    ProductImage: product4,
+    PatientImage: product4,
   },
   {
     AppointmentDate: 845954,
     Email: "Jie Yan",
     PhoneNum: 87.99,
     PatientName: "Shoes",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage:
+    PatientImage:
       "https://cdn.shopclues.com/images1/thumbnails/104158/320/320/148648730-104158193-1592481791.jpg",
   },
   {
@@ -1165,10 +1316,10 @@ export const ordersData = [
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage:
+    PatientImage:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
@@ -1176,10 +1327,10 @@ export const ordersData = [
     Email: "Miron",
     PhoneNum: 87.99,
     PatientName: "Ice Cream",
-    Location: "USA",
+    Gender: "USA",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage:
+    PatientImage:
       "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dairy-free-ice-cream-eae372d.jpg",
   },
   {
@@ -1187,10 +1338,10 @@ export const ordersData = [
     Email: "Frank",
     PhoneNum: 84.99,
     PatientName: "Pan Cake",
-    Location: "Delhi",
+    Gender: "Delhi",
     Status: "complete",
     StatusBg: "#8BE78B",
-    ProductImage:
+    PatientImage:
       "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
   },
   {
@@ -1198,10 +1349,10 @@ export const ordersData = [
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage:
+    PatientImage:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
@@ -1210,90 +1361,90 @@ export const ordersData = [
 
     PhoneNum: 32.38,
     PatientName: "Fresh Tomato",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage: product6,
+    PatientImage: product6,
   },
   {
     AppointmentDate: 345653,
     Email: "Carson Darrin",
     PhoneNum: 56.34,
     PatientName: "Butter Scotch",
-    Location: "Delhi",
+    Gender: "Delhi",
     Status: "complete",
     StatusBg: "#8BE78B",
-    ProductImage: product5,
+    PatientImage: product5,
   },
   {
     AppointmentDate: 390457,
     Email: "Fran Perez",
     PhoneNum: 93.31,
     PatientName: "Candy Gucci",
-    Location: "New York",
+    Gender: "New York",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage: product7,
+    PatientImage: product7,
   },
   {
     AppointmentDate: 893486,
     Email: "Anika Viseer",
     PhoneNum: 93.31,
     PatientName: "Night Lamp",
-    Location: "Germany",
+    Gender: "Germany",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage: product4,
+    PatientImage: product4,
   },
   {
     AppointmentDate: 748975,
     Email: "Miron Vitold",
     PhoneNum: 23.99,
     PatientName: "Healthcare Erbology",
-    Location: "Spain",
+    Gender: "Spain",
     Status: "rejected",
     StatusBg: "red",
-    ProductImage: product1,
+    PatientImage: product1,
   },
   {
     AppointmentDate: 94757,
     Email: "Omar Darobe",
     PhoneNum: 95.99,
     PatientName: "Makeup Lancome Rouge",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage: product2,
+    PatientImage: product2,
   },
   {
     AppointmentDate: 944895,
     Email: "Lulia albu",
     PhoneNum: 17.99,
     PatientName: "Skincare",
-    Location: "USA",
+    Gender: "USA",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage: product3,
+    PatientImage: product3,
   },
   {
     AppointmentDate: 845954,
     Email: "Penjani",
     PhoneNum: 59.99,
     PatientName: "Headphone",
-    Location: "USA",
+    Gender: "USA",
     Status: "complete",
     StatusBg: "#8BE78B",
-    ProductImage: product4,
+    PatientImage: product4,
   },
   {
     AppointmentDate: 845954,
     Email: "Jie Yan",
     PhoneNum: 87.99,
     PatientName: "Shoes",
-    Location: "USA",
+    Gender: "USA",
     Status: "pending",
     StatusBg: "#FB9678",
-    ProductImage:
+    PatientImage:
       "https://cdn.shopclues.com/images1/thumbnails/104158/320/320/148648730-104158193-1592481791.jpg",
   },
   {
@@ -1301,10 +1452,10 @@ export const ordersData = [
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage:
+    PatientImage:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
   {
@@ -1312,10 +1463,10 @@ export const ordersData = [
     Email: "Miron",
     PhoneNum: 87.99,
     PatientName: "Ice Cream",
-    Location: "USA",
+    Gender: "USA",
     Status: "active",
     StatusBg: "#03C9D7",
-    ProductImage:
+    PatientImage:
       "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/dairy-free-ice-cream-eae372d.jpg",
   },
   {
@@ -1323,10 +1474,10 @@ export const ordersData = [
     Email: "Frank",
     PhoneNum: 84.99,
     PatientName: "Pan Cake",
-    Location: "Delhi",
+    Gender: "Delhi",
     Status: "complete",
     StatusBg: "#8BE78B",
-    ProductImage:
+    PatientImage:
       "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
   },
   {
@@ -1334,10 +1485,10 @@ export const ordersData = [
     Email: "Danai",
     PhoneNum: 122.99,
     PatientName: "Watch",
-    Location: "USA",
+    Gender: "USA",
     Status: "completed",
     StatusBg: "#FF5C8E",
-    ProductImage:
+    PatientImage:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
   },
 ];
@@ -2071,15 +2222,12 @@ export const employeesData = [
   },
 ];
 export const patientDataByYear = [
-  
-  { x: '2019', students: 40, teachers: 30, others: 30 },
-  { x: '2020', students: 35, teachers: 35, others: 30 },
-  { x: '2021', students: 45, teachers: 25, others: 30 },
-  { x: '2022', students: 50, teachers: 20, others: 30 },
-  { x: '2023', students: 55, teachers: 25, others: 20 },
-  
+  { x: "2019", students: 40, teachers: 30, others: 30 },
+  { x: "2020", students: 35, teachers: 35, others: 30 },
+  { x: "2021", students: 45, teachers: 25, others: 30 },
+  { x: "2022", students: 50, teachers: 20, others: 30 },
+  { x: "2023", students: 55, teachers: 25, others: 20 },
 ];
-
 
 // Sample data for patients checked by doctors in different departments for each month
 export let cardiologyData = [
@@ -2143,39 +2291,39 @@ export let entData = [
 ];
 //yearly
 export const cardiologyDataYearly = [
-  { x: '2018', y: 1200 },
-  { x: '2019', y: 1350 },
-  { x: '2020', y: 1400 },
-  { x: '2021', y: 1250 },
-  { x: '2022', y: 1500 },
-  { x: '2023', y: 1600 }
+  { x: "2018", y: 1200 },
+  { x: "2019", y: 1350 },
+  { x: "2020", y: 1400 },
+  { x: "2021", y: 1250 },
+  { x: "2022", y: 1500 },
+  { x: "2023", y: 1600 },
 ];
 
 export const dentalDataYearly = [
-  { x: '2018', y: 800 },
-  { x: '2019', y: 950 },
-  { x: '2020', y: 1000 },
-  { x: '2021', y: 1100 },
-  { x: '2022', y: 1200 },
-  { x: '2023', y: 1300 }
+  { x: "2018", y: 800 },
+  { x: "2019", y: 950 },
+  { x: "2020", y: 1000 },
+  { x: "2021", y: 1100 },
+  { x: "2022", y: 1200 },
+  { x: "2023", y: 1300 },
 ];
 
 export const ophthalmologyDataYearly = [
-  { x: '2018', y: 900 },
-  { x: '2019', y: 1000 },
-  { x: '2020', y: 1100 },
-  { x: '2021', y: 1050 },
-  { x: '2022', y: 1150 },
-  { x: '2023', y: 1250 }
+  { x: "2018", y: 900 },
+  { x: "2019", y: 1000 },
+  { x: "2020", y: 1100 },
+  { x: "2021", y: 1050 },
+  { x: "2022", y: 1150 },
+  { x: "2023", y: 1250 },
 ];
 
 export const entDataYearly = [
-  { x: '2018', y: 700 },
-  { x: '2019', y: 750 },
-  { x: '2020', y: 800 },
-  { x: '2021', y: 850 },
-  { x: '2022', y: 900 },
-  { x: '2023', y: 950 }
+  { x: "2018", y: 700 },
+  { x: "2019", y: 750 },
+  { x: "2020", y: 800 },
+  { x: "2021", y: 850 },
+  { x: "2022", y: 900 },
+  { x: "2023", y: 950 },
 ];
 
 // patientData.js
@@ -2187,27 +2335,25 @@ export const patientDataPie = [
 export const patientDataDoctorPie = [
   { x: "New Patients", y: 40, text: "New Patients: 70%" },
   { x: "Old Patients", y: 30, text: "Old Patients: 30%" },
-  
 ];
 // Sample data for top 10 most selling medicines
 export const top10MedicineSales = [
-  { x: 'Medicine A', y: 1200 },
-  { x: 'Medicine B', y: 1100 },
-  { x: 'Medicine C', y: 1000 },
-  { x: 'Medicine D', y: 950 },
-  { x: 'Medicine E', y: 900 },
-  { x: 'Medicine F', y: 850 },
-  { x: 'Medicine G', y: 800 },
-  { x: 'Medicine H', y: 750 },
-  { x: 'Medicine I', y: 700 },
-  { x: 'Medicine J', y: 650 },
+  { x: "Medicine A", y: 1200 },
+  { x: "Medicine B", y: 1100 },
+  { x: "Medicine C", y: 1000 },
+  { x: "Medicine D", y: 950 },
+  { x: "Medicine E", y: 900 },
+  { x: "Medicine F", y: 850 },
+  { x: "Medicine G", y: 800 },
+  { x: "Medicine H", y: 750 },
+  { x: "Medicine I", y: 700 },
+  { x: "Medicine J", y: 650 },
 ];
 export const PharmacyCustomerByCatData = [
   { x: "Student", y: 60, text: "Student: 60%" },
   { x: "Teacher", y: 25, text: "Teacher: 25%" },
   { x: "Others", y: 15, text: "Others: 15%" },
 ];
-
 
 export const yearlyPatientData = [
   { x: new Date(2018, 0, 1), y: 300 },
@@ -2459,7 +2605,7 @@ export const links = [
       },
     ],
   },
- 
+
   {
     title: "Public Information",
     links: [
@@ -2505,8 +2651,6 @@ export const doctorLinks = [
       },
     ],
   },
-
-
 ];
 export const chatData = [
   {
