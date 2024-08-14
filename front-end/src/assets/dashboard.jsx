@@ -590,25 +590,13 @@ export const gridPatientImage = (props) => (
   </div>
 );
 export const gridPatientStatus = (props) => {
-  const { onPrescribeClick, Status, StatusBg, PatientName } = props;
-
-  return Status === "Prescribe" ? (
-    <button
-      type="button"
-      style={{ background: StatusBg }}
-      className="text-white py-1 px-2 capitalize rounded-2xl text-md"
-      onClick={() => onPrescribeClick(props)} // Use the function here
-    >
-      {Status}
-    </button>
-  ) : (
-    <div
-      style={{ background: StatusBg }}
-      className="text-white py-1 px-2 capitalize rounded-2xl text-md"
-    >
-      {Status}
-    </div>
-  );
+  <div
+  type="button"
+  style={{ background: props.StatusBg }}
+  className="text-white py-1 px-2 capitalize rounded-2xl text-md"
+>
+  {props.Status}
+</div>
 };
 
 const gridPatientEmail = (props) => (
