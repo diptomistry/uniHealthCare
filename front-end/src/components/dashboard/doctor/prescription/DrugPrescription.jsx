@@ -270,7 +270,7 @@ const DrugPrescription = ({ getMedicines }) => {
             onChange={(e) => setManualMedicineName(e.target.value)}
           />
           <button
-            className="absolute top-1/2 transform -translate-y-1/2 right-0"
+            className="absolute -bottom-1 transform -translate-y-1/2 right-1"
             onClick={handleCancelManualEntry}
           >
             <IoMdCloseCircle className="text-red-500 text-2xl" />

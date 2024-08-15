@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import List from "./List";
 import {
-  patientsDataDoctor,
+  NewPatientsDataDoctor,
   patientsDataDoctorGrid,
 } from "../../../assets/dashboard";
 import CustomModal from "../../../models/CustomModal";
@@ -42,10 +42,11 @@ const NewRequests = () => {
     <div className="bg-white dark:bg-secondary-dark-bg rounded-2xl shadow-md p-10">
       <List
         title="New Requests"
-        patientsData={patientsDataDoctor}
+        patientsData={NewPatientsDataDoctor}
         patientsGrid={patientsDataDoctorGrid}
         toolbarOptions={toolbarOptions}
-        onPrescribeClick={handlePrescribeClick} // Pass the handler to List
+        onButtonClick={handlePrescribeClick} // Pass the handler to List
+        status="Prescribe"
       />
 
       <CustomModal

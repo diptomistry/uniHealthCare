@@ -6,6 +6,7 @@ const PastHistory = () => {
     title: "Prescription-1",
     medicines: [
       {
+        diagnosis: "Fever",
         name: "Plane Napa",
         quantity: "1-0-1",
         duration: "2",
@@ -13,6 +14,7 @@ const PastHistory = () => {
         time: "After Food",
       },
       {
+        diagnosis: "Cold",
         name: "Antibiotic X",
         quantity: "1-1-1",
         duration: "1",
@@ -27,6 +29,7 @@ const PastHistory = () => {
     title: "Prescription-2",
     medicines: [
       {
+        diagnosis: "Headache",
         name: "Painkiller Y",
         quantity: "0-1-1",
         duration: "5",

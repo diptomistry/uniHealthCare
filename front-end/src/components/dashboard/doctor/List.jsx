@@ -15,7 +15,7 @@ import {
   Inject,
 } from "@syncfusion/ej2-react-grids";
 
-const List = ({ title, patientsData, patientsGrid, toolbarOptions, onPrescribeClick }) => {
+const List = ({ status,title, patientsData, patientsGrid, toolbarOptions,onButtonClick }) => {
   const gridInstance = useRef(null); // Use ref to reference the grid instance
 
   const editing = { allowDeleting: true, allowEditing: true };
@@ -34,7 +34,7 @@ const List = ({ title, patientsData, patientsGrid, toolbarOptions, onPrescribeCl
 
   const handleButtonClick = (props) => {
     console.log("Button clicked for patient:", props);
-    onPrescribeClick(props); // Pass the patient data back to NewRequests
+    onButtonClick(props); // Pass the patient data back to NewRequests
   };
 
   return (
@@ -68,7 +68,7 @@ const List = ({ title, patientsData, patientsGrid, toolbarOptions, onPrescribeCl
                 className="text-white py-1 px-2 capitalize rounded-2xl text-md bg-[#03C9D7] hover:bg-hoverColor"
                 onClick={() => handleButtonClick(props)}
               >
-                Prescribe
+                {status}
               </button>
             )}
           />

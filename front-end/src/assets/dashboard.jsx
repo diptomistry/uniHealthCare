@@ -725,7 +725,72 @@ export const patientsDataDoctorGrid = [
     textAlign: "Center",
   },
 ];
-export const patientsDataDoctor = [
+export const NewPatientsDataDoctor = [
+  {
+    AppointmentDate: 10248,
+    Email: "diptomistry50@gmail.com",
+    PhoneNum: "01774407895",
+    PatientName: "Dipto",
+    Gender: "Dhaka",
+    StatusBg: "#03C9D7",
+    PatientImage: product6,
+  },
+  {
+    AppointmentDate: 345653,
+    Email: "Carson Darrin",
+    PhoneNum: 56.34,
+    PatientName: "Butter Scotch",
+    Gender: "Delhi",
+    StatusBg: "#03C9D7",
+    PatientImage: product5,
+  },
+  {
+    AppointmentDate: 390457,
+    Email: "Fran Perez",
+    PhoneNum: 93.31,
+    PatientName: "Candy Gucci",
+    Gender: "New York",
+    StatusBg: "#03C9D7",
+    PatientImage: product7,
+  },
+  {
+    AppointmentDate: 893486,
+    Email: "Anika Viseer",
+    PhoneNum: 93.31,
+    PatientName: "Night Lamp",
+    Gender: "Germany",
+    StatusBg: "#03C9D7",
+    PatientImage: product4,
+  },
+  {
+    AppointmentDate: 748975,
+    Email: "Miron Vitold",
+    PhoneNum: 23.99,
+    PatientName: "Healthcare Erbology",
+    Gender: "Spain",
+    StatusBg: "#03C9D7",
+    PatientImage: product1,
+  },
+  {
+    AppointmentDate: 94757,
+    Email: "Omar Darobe",
+    PhoneNum: 95.99,
+    PatientName: "Makeup Lancome Rouge",
+    Gender: "USA",
+    StatusBg: "#03C9D7",
+    PatientImage: product2,
+  },
+  {
+    AppointmentDate: 944895,
+    Email: "Lulia albu",
+    PhoneNum: 17.99,
+    PatientName: "Skincare",
+    Gender: "USA",
+    StatusBg: "#03C9D7",
+    PatientImage: product3,
+  },
+];
+export const AlreadyPrescribedPatientsDataDoctor = [
   {
     AppointmentDate: 10248,
     Email: "diptomistry50@gmail.com",
