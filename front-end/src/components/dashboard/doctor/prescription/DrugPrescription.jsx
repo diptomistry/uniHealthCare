@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import IncrementDecrementBtn from "./IncrementDecrementBtn";
 import Button from "../../../../layouts/dashboard/DutyRoster/Button";
 import { SearchResultsList } from "./SearchResultsList";
+import AddItemButton from "../../../../layouts/doctor/AddItemButton";
+import { IoMdCloseCircle } from "react-icons/io"; 
 const DrugPrescription = ({ getMedicines }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Days");
   const [beforeFood, setBeforeFood] = useState(false);
   const [afterFood, setAfterFood] = useState(false);
+  const [manualEntry, setManualEntry] = useState(false);
+  const [manualMedicineName, setManualMedicineName] = useState("");
 
   const options = ["Days", "Weeks", "Months", "Years"];
 
@@ -102,9 +106,18 @@ const DrugPrescription = ({ getMedicines }) => {
     handleafterBefore();
     handleFinalDuration();
     setShowSelectedItems(false);
-
+    if (manualEntry && !manualMedicineName.trim()) {
+      alert("Please enter a medicine name.");
+      return;
+    }
+    if (!manualEntry && (!selectedItems.length || !selectedItems[selectedItems.length - 1])) {
+      alert("Please select a medicine from the search results.");
+      return;
+    }
     const newData = [...data];
-    const lastSelectedItem = selectedItems[selectedItems.length - 1];
+    const lastSelectedItem = manualEntry
+      ? manualMedicineName
+      : selectedItems[selectedItems.length - 1];
     const existingItem = newData.find(
       (item) => item.selectedItems === lastSelectedItem
     );
@@ -138,6 +151,8 @@ const DrugPrescription = ({ getMedicines }) => {
     setData(newData);
     const dataToSend = newData.map(({ selectedItems, ...rest }) => rest);
     getMedicines(dataToSend);
+    setManualEntry(false);
+    setManualMedicineName("");
   };
   const handleDelete = (index) => {
     const newData = [...data];
@@ -148,8 +163,33 @@ const DrugPrescription = ({ getMedicines }) => {
     setAfterFood(false);
     setBeforeFood(false);
   };
+  const handleCancelManualEntry = () => {
+    setManualEntry(false);
+    setManualMedicineName("");
+  };
+  const handleRemoveLastSelectedMedicine = () => {
+    const updatedItems = [...selectedItems];
+    updatedItems.pop(); // Remove the last selected item
+    setSelectedItems(updatedItems);
+    setShowSelectedItems(updatedItems.length > 0);
+  };
   return (
     <div className="bg-blue-200 rounded-lg p-5 mt-5">
+      <div class="w-full mb-5  p-5 bg-white rounded-lg font-mono">
+        <label
+          class="block text-gray-700 text-sm font-bold mb-2"
+          for="unique-input"
+        >
+          Diagnosis:
+        </label>
+        <input
+          class="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out transform focus:-translate-y-1 focus:outline-blue-300 hover:shadow-lg hover:border-blue-300 bg-gray-100"
+          placeholder="Enter diagnosis here"
+          type="text"
+          id="unique-input"
+        />
+      </div>
+
       <div className="flex justify-between">
         <h3 className="text-lg font-semibold  flex mt-2">Drug Prescription</h3>
         <form className="max-w-md  ">
@@ -193,14 +233,51 @@ const DrugPrescription = ({ getMedicines }) => {
           />
         )}
       </div>
-      {showSelectedItems && (
-        <div className="flex bg-[#e8e2dc] border-[1px] border-backgroundColor gap-2 place-content-center">
-          {selectedItems.length > 0 && (
-            <div className="">{selectedItems[selectedItems.length - 1]}</div>
-          )}
+      {showSelectedItems && selectedItems.length > 0 && (
+        <div className="flex bg-[#e8e2dc] gap-2 place-content-center items-center mt-2 mb-2">
+          <div className="relative flex items-center">
+            <span>{selectedItems[selectedItems.length - 1]}</span>
+            <button
+              className="ml-2"
+              onClick={handleRemoveLastSelectedMedicine}
+            >
+              <IoMdCloseCircle className="text-red-500 text-xl" />
+            </button>
+          </div>
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-3 p-2 bg-backgroundColor/10 ">
+      {!manualEntry && (
+        /* From Uiverse.io by EmaCoto */
+       <div className="flex justify-end mb-2 ">
+        <button
+         onClick={() => setManualEntry(true)}
+        >
+  <AddItemButton title="Add Medicine Manually" />
+        </button>
+      
+       </div>
+      )}
+
+{manualEntry && (
+        <div className="mt-4 mb-2 relative">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Medicine Name:
+          </label>
+          <input
+            className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out transform focus:-translate-y-1 focus:outline-blue-300 hover:shadow-lg hover:border-blue-300 bg-gray-100"
+            placeholder="Enter medicine name"
+            value={manualMedicineName}
+            onChange={(e) => setManualMedicineName(e.target.value)}
+          />
+          <button
+            className="absolute top-1/2 transform -translate-y-1/2 right-0"
+            onClick={handleCancelManualEntry}
+          >
+            <IoMdCloseCircle className="text-red-500 text-2xl" />
+          </button>
+        </div>
+      )}
+      <div className="grid grid-cols-1 md:grid-cols-3 p-2 bg-backgroundColor/10 border-[1px] border-backgroundColor">
         <div className="flex flex-col justify-center items-center">
           <h1>Morning</h1>
           <IncrementDecrementBtn
@@ -223,18 +300,18 @@ const DrugPrescription = ({ getMedicines }) => {
           />
         </div>
       </div>
-      <div className="flex flex-col md:flex-row justify-between p-2 md:grid-cols-2 mt-3 bg-backgroundColor/10">
-      <div className="grid-cols-1 grid-rows-2 gap-2 ">
+      <div className="flex flex-col md:flex-row justify-between border-[1px] border-backgroundColor p-2 md:grid-cols-2 mt-3 bg-backgroundColor/10">
+        <div className="grid-cols-1 grid-rows-2 gap-2 ">
           <div className="flex gap-1 mb-1">
             <h1>Duration</h1>
             <div className="relative inline-block ml-1">
               <button
-                className="border text-sm text-teal-700  font-semibold  rounded inline-flex items-center"
+                className="border text-sm text-teal-700   font-semibold  rounded inline-flex items-center"
                 onClick={toggleDropdown}
               >
                 <span>{selectedOption}</span>
                 <svg
-                  className="ml-2 h-4 w-4 fill-current"
+                  className="ml-2 h-4 w-4 fill-current "
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                 >
@@ -242,12 +319,14 @@ const DrugPrescription = ({ getMedicines }) => {
                 </svg>
               </button>
               {isOpen && (
-                <div className="absolute right-0 mt-10 bg-white rounded-md shadow-lg  overflow-hidden z-10 w-[180px]">
+                <div className="absolute right-0 mt-10 bg-white rounded-md shadow-lg  overflow-hidden z-10 w-[180px] ">
                   {options.map((option) => (
                     <button
                       key={option}
-                      className={`w-full text-left px-4 py-2 hover:bg-backgroundColor border-2 ${
-                        option === selectedOption ? "bg-backgroundColor    " : " "
+                      className={`w-full text-left px-4 py-2 hover:bg-backgroundColor border-2  ${
+                        option === selectedOption
+                          ? "bg-backgroundColor    "
+                          : " "
                       }`}
                       onClick={() => selectOption(option)}
                     >
@@ -260,49 +339,48 @@ const DrugPrescription = ({ getMedicines }) => {
           </div>
           <input
             type="number"
-            className="w-[120px] h-8 text-center bg-white text-teal-700 font-bold border border-teal-700 mx-2 rounded-lg"
+            className="w-[120px] h-8 text-center bg-white text-teal-700 font-bold border border-gray-300 mx-2 rounded-lg focus:outline-blue-300 hover:shadow-lg hover:border-blue-300"
             value={duration}
             onChange={(e) => handleDuration(e.target.value)}
           />
         </div>
         <div className="mt-2">
-  <div className="flex items-center mt-2">
-    <input
-      type="radio"
-      id="beforeFood"
-      name="foodTiming"
-      checked={beforeFood}
-      onChange={(e) => {
-        setBeforeFood(e.target.checked);
-        setAfterFood(!e.target.checked);
-      }}
-      onClick={handleUnckeck}
-      className="mr-2"
-    />
-    <label htmlFor="beforeFood">Before Food</label>
-  </div>
-  <div className="flex items-center mb-2">
-    <input
-      type="radio"
-      id="afterFood"
-      name="foodTiming"
-      checked={afterFood}
-      onChange={(e) => {
-        setAfterFood(e.target.checked);
-        setBeforeFood(!e.target.checked);
-      }}
-      onClick={handleUnckeck}
-      className="mr-2"
-    />
-    <label htmlFor="afterFood">After Food</label>
-  </div>
-</div>
-<button className="flex items-center"
-        onClick={handleAddToMedicine}>
+          <div className="flex items-center mt-2">
+            <input
+              type="radio"
+              id="beforeFood"
+              name="foodTiming"
+              checked={beforeFood}
+              onChange={(e) => {
+                setBeforeFood(e.target.checked);
+                setAfterFood(!e.target.checked);
+              }}
+              onClick={handleUnckeck}
+              className="mr-2"
+            />
+            <label htmlFor="beforeFood">Before Food</label>
+          </div>
+          <div className="flex items-center mb-2">
+            <input
+              type="radio"
+              id="afterFood"
+              name="foodTiming"
+              checked={afterFood}
+              onChange={(e) => {
+                setAfterFood(e.target.checked);
+                setBeforeFood(!e.target.checked);
+              }}
+              onClick={handleUnckeck}
+              className="mr-2"
+            />
+            <label htmlFor="afterFood">After Food</label>
+          </div>
+        </div>
+        <button className="flex items-center" onClick={handleAddToMedicine}>
           <Button title="Add to Medicine" />
         </button>
       </div>
-    
+
       <div className="grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-2">
         {data.map((item, index) => (
           <div
@@ -331,15 +409,14 @@ const DrugPrescription = ({ getMedicines }) => {
           </div>
         ))}
       </div>
-      <div className="bg-blue-200 rounded-lg p-5 mt-5 ">
+      <div className="bg-blue-200 rounded-lg mt-5 ">
         <h3 className="text-lg font-semibold mb-2">Add Instructions</h3>
         <textarea
           rows="4"
-          className="border border-backgroundColor  rounded-md px-3 py-2 w-full"
+          className="border border-backgroundColor focus:outline-blue-300 hover:shadow-lg hover:border-blue-300  rounded-md px-3 py-2 w-full"
           placeholder="Enter instructions or notes..."
         />
       </div>
-     
     </div>
   );
 };

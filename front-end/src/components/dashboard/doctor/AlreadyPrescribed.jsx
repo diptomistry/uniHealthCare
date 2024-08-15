@@ -1,28 +1,8 @@
-import React from "react";
-import PatientPrescriptionForm from "./prescription/PatientPrescriptionFormPast";
+import React from 'react'
 
 const AlreadyPrescribed = () => {
-  const prescriptionData1 = {
-    medicineName: "Plane Napa",
-    quantity: "1-0-1",
-    duration: "2",
-    durationUnit: "Weeks",
-    time: "After Food",
-    additionalInstructions: "Stay hydrated and rest well.",
-  };
-  const prescriptionData2 = {
-    medicineName: "Plane Napa",
-    quantity: "1-0-1",
-    duration: "2",
-    durationUnit: "Weeks",
-    time: "After Food",
-    additionalInstructions: "Stay hydrated and rest well.",
-  };
   return (
-    <div className="flex flex-col gap-5">
-      <PatientPrescriptionForm prescriptionData={prescriptionData1} />
-      <PatientPrescriptionForm prescriptionData={prescriptionData2} />
-    </div>
+    <div>AlreadyPrescribed</div>
   )
 }
 
