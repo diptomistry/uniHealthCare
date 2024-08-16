@@ -6,13 +6,14 @@ import {
   FiCreditCard,
   FiCalendar,
 } from "react-icons/fi";
+
+
 import {
   AiOutlineCheckCircle,
-  AiOutlineSchedule,
+  
   AiOutlineInfoCircle,
   AiOutlineFileAdd,
-  AiOutlinePlusCircle,
-  AiOutlineDelete,
+  
 } from "react-icons/ai";
 import { BsChatQuote, BsCurrencyDollar, BsShield } from "react-icons/bs";
 import { MdOutlineMedicalServices } from "react-icons/md";
@@ -2677,7 +2678,7 @@ export const doctorLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "Home",
+        name: "Doctor-Home",
         icon: <FiHome />,
       },
     ],
@@ -2695,6 +2696,18 @@ export const doctorLinks = [
       },
     ],
   },
+];
+export const studentLinks = [
+  {
+    title: "Dashboard",
+    links: [
+      {
+        name: "Student-Home",
+        icon: <FiHome />,
+      },
+    ],
+  },
+ 
 ];
 export const chatData = [
   {

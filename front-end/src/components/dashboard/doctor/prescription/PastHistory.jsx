@@ -4,9 +4,9 @@ import PatientPrescriptionForm from "./PatientPrescriptionFormPast";
 const PastHistory = () => {
   const prescriptionData1 = {
     title: "Prescription-1",
+    diagnosis: "Fever and Cold", // Combined diagnosis
     medicines: [
       {
-        diagnosis: "Fever",
         name: "Plane Napa",
         quantity: "1-0-1",
         duration: "2",
@@ -14,7 +14,6 @@ const PastHistory = () => {
         time: "After Food",
       },
       {
-        diagnosis: "Cold",
         name: "Antibiotic X",
         quantity: "1-1-1",
         duration: "1",
@@ -27,9 +26,9 @@ const PastHistory = () => {
 
   const prescriptionData2 = {
     title: "Prescription-2",
+    diagnosis: "Headache",
     medicines: [
       {
-        diagnosis: "Headache",
         name: "Painkiller Y",
         quantity: "0-1-1",
         duration: "5",

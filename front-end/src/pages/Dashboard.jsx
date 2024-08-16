@@ -8,6 +8,7 @@ import Navbar from "../components/dashboard/Navbar";
 import Home from "../components/dashboard/doctor/Home";
 import NewRequests from "../components/dashboard/doctor/NewRequests";
 import ALreadyPrescribed from "../components/dashboard/doctor/AlreadyPrescribed";
+import StudentHome from "../components/dashboard/student/StudentHome";
 
 import {
   AboutSection,
@@ -89,9 +90,10 @@ const Dashboard = () => {
             <Route path="/About-Section" element={<AboutSection />} />
             <Route path="/Blog" element={<Blog />} />
             <Route path="/Quote-Section" element={<QuoteSection />} />
-            <Route path="/Home" element={<Home />} />
+            <Route path="/Doctor-Home" element={<Home />} />
             <Route path="/New-Requests" element={<NewRequests />} />
             <Route path="/Already-Prescribed" element={<ALreadyPrescribed />} />
+            <Route path="/Student-Home" element={<StudentHome />} />
           </Routes>
         </div>
       </div>
