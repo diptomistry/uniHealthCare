@@ -1,11 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const UserFilter = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   const categories = [
     { id: 'student', label: 'Student', count: 56 },
@@ -18,14 +33,14 @@ const UserFilter = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center p-4">
-      <div className="relative">
+    <div className="flex items-center justify-center ml-2 mb-1">
+      <div className="relative" ref={dropdownRef}>
         <button
           id="dropdownDefault"
           onClick={toggleDropdown}
           aria-expanded={isDropdownOpen}
           aria-haspopup="true"
-          className="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-backgroundColor font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center "
+          className="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
           type="button"
         >
           Filter by category
@@ -60,7 +75,7 @@ const UserFilter = () => {
                   <input
                     id={category.id}
                     type="checkbox"
-                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded  focus:ring-primaryColor  dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded  dark:bg-gray-600 dark:border-gray-500"
                   />
                   <label
                     htmlFor={category.id}

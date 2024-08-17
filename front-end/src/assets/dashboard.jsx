@@ -24,6 +24,7 @@ import {
   FaUsers,
   FaPills,
   FaMoneyBillWave,
+  FaPrescription
 } from "react-icons/fa";
 import { GrLocation, GrBlog } from "react-icons/gr";
 import { LuMessageSquarePlus } from "react-icons/lu";
@@ -2696,6 +2697,59 @@ export const doctorLinks = [
       },
     ],
   },
+];
+export const seniorOfficerLinks=[
+  {
+    title: "Dashboard",
+    links: [
+      {
+        name: "SeniorOfficer-Home",
+        icon: <FiHome />,
+      },
+    ],
+  },
+  {
+    title: "Medicine",
+    links: [
+      {
+        name: "Medicine-List",
+        icon: <FaPills />,
+      },
+    
+    ],
+  },
+
+];
+export const dispensaryLinks = [
+  {
+    title: "Dashboard",
+    links: [
+      {
+        name: "Dispensary-Home",
+        icon: <FiHome />,
+      },
+    ],
+  },
+  {
+    title:"Patient",
+    links:[
+      {
+        name:"Prescription",
+        icon:<FaPrescription/>
+      }
+    ]
+  },
+  {
+    title: "Medicine",
+    links: [
+      {
+        name: "Medicine-List",
+        icon: <FaPills />,
+      },
+    
+    ],
+  },
+
 ];
 export const studentLinks = [
   {
