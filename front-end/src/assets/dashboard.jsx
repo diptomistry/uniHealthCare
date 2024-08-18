@@ -29,6 +29,7 @@ import {
 import { GrLocation, GrBlog } from "react-icons/gr";
 import { LuMessageSquarePlus } from "react-icons/lu";
 import { GiMedicines } from "react-icons/gi";
+import { TbBrandBooking } from "react-icons/tb";
 
 import avatar from "./img/doc1.jpg";
 import avatar2 from "./img/doc2.jpg";
@@ -2673,6 +2674,16 @@ export const links = [
       },
     ],
   },
+  {
+    title:"Appointment",
+    links: [
+      {
+        name:"Book",
+        icon:<TbBrandBooking />,
+
+      }
+    ]
+  }
 ];
 export const doctorLinks = [
   {

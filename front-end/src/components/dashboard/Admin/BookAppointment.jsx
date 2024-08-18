@@ -3,7 +3,7 @@ import CustomModal from "../../../models/CustomModal";
 import BookingInfo from "../../../layouts/dashboard/Bookinginfo";
 import AppointmentModalData from "../../../models/dashboard/AppointModalData";
 
-const StudentHome = () => {
+const BookAppointment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
@@ -41,4 +41,4 @@ const StudentHome = () => {
   );
 };
 
-export default StudentHome;
+export default BookAppointment;

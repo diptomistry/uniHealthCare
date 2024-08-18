@@ -65,7 +65,7 @@ body {
 -- Start BackGround Animation 
 */
 .area {
-	background: #6cd2be;
+	background: #d8e2e0;
 	background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
 	width: 100%;
 	height: 100vh;
@@ -88,7 +88,7 @@ body {
 	list-style: none;
 	width: 20px;
 	height: 20px;
-	background: rgba(255, 255, 255, 0.2);
+	background: rgba(27, 158, 147, 0.2);
 	animation: animate 25s linear infinite;
 	bottom: -150px;
 }

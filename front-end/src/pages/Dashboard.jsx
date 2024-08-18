@@ -9,7 +9,7 @@ import Home from "../components/dashboard/doctor/Home";
 import NewRequests from "../components/dashboard/doctor/NewRequests";
 import ALreadyPrescribed from "../components/dashboard/doctor/AlreadyPrescribed";
 import StudentHome from "../components/dashboard/student/StudentHome";
-
+import BookAppointment from "../components/dashboard/Admin/BookAppointment";
 import {
   AboutSection,
   AllUsers,
@@ -94,6 +94,7 @@ const Dashboard = () => {
             <Route path="/New-Requests" element={<NewRequests />} />
             <Route path="/Already-Prescribed" element={<ALreadyPrescribed />} />
             <Route path="/Student-Home" element={<StudentHome />} />
+            <Route path="/Book" element={<BookAppointment />} />
           </Routes>
         </div>
       </div>
