@@ -21,7 +21,7 @@ const Sidebar = () => {
   const normalLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 hover:bg-brightColor m-2";
 
-  const userType = "doctor"; // Example userType, should be passed as a prop or context
+  const userType = "admin"; // Example userType, should be passed as a prop or context
   const getMenuItems = (userType) => {
     switch (userType) {
       case "admin":

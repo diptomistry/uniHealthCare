@@ -2708,6 +2708,16 @@ export const doctorLinks = [
       },
     ],
   },
+  {
+    title:"Appointment",
+    links: [
+      {
+        name:"BookD",
+        icon:<TbBrandBooking />,
+
+      }
+    ]
+  }
 ];
 export const seniorOfficerLinks=[
   {
@@ -2729,6 +2739,16 @@ export const seniorOfficerLinks=[
     
     ],
   },
+  {
+    title:"Appointment",
+    links: [
+      {
+        name:"BookSO",
+        icon:<TbBrandBooking />,
+
+      }
+    ]
+  }
 
 ];
 export const dispensaryLinks = [
@@ -2760,6 +2780,16 @@ export const dispensaryLinks = [
     
     ],
   },
+  {
+    title:"Appointment",
+    links: [
+      {
+        name:"BookDO",
+        icon:<TbBrandBooking />,
+
+      }
+    ]
+  }
 
 ];
 export const studentLinks = [
