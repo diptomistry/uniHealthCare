@@ -12,6 +12,9 @@ import StudentHome from "../components/dashboard/student/StudentHome";
 import BookAppointment from "../components/dashboard/Admin/BookAppointment";
 import BookD  from "../components/dashboard/doctor/BookAppointment";
 import BookDO from "../components/dashboard/dispensaryOfficer/BookAppointment";
+import Prescriptions from "../components/dashboard/dispensaryOfficer/Prescriptions";
+import ListofMedicine from "../components/dashboard/dispensaryOfficer/ListofMedicine";
+import Dispensary_Home from "../components/dashboard/dispensaryOfficer/Home";
 import {
   AboutSection,
   AllUsers,
@@ -99,6 +102,9 @@ const Dashboard = () => {
             <Route path="/Book" element={<BookAppointment />} />
             <Route path="/BookD" element={<BookD />}/>
             <Route path="/BookDO" element={<BookDO />}/>
+            <Route path="/Prescription" element={<Prescriptions />} />
+            <Route path="/Medicine-List" element={<ListofMedicine />} />
+            <Route path="/Dispensary-Home" element={<Dispensary_Home />} />
           </Routes>
         </div>
       </div>

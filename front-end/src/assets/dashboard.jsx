@@ -7,24 +7,23 @@ import {
   FiCalendar,
 } from "react-icons/fi";
 
-
 import {
   AiOutlineCheckCircle,
-  
   AiOutlineInfoCircle,
   AiOutlineFileAdd,
-  
 } from "react-icons/ai";
 import { BsChatQuote, BsCurrencyDollar, BsShield } from "react-icons/bs";
-import { MdOutlineMedicalServices } from "react-icons/md";
+import { MdOutlineMedicalServices,MdOutlineSick } from "react-icons/md";
 import { RiStethoscopeLine, RiNurseLine, RiStockLine } from "react-icons/ri";
+import { CgDanger } from "react-icons/cg";
 import {
   FaUserMd,
   FaUserNurse,
   FaUsers,
   FaPills,
   FaMoneyBillWave,
-  FaPrescription
+  FaPrescription,
+  FaExclamationTriangle 
 } from "react-icons/fa";
 import { GrLocation, GrBlog } from "react-icons/gr";
 import { LuMessageSquarePlus } from "react-icons/lu";
@@ -726,6 +725,103 @@ export const patientsDataDoctorGrid = [
     headerText: "Date",
     width: "120",
     textAlign: "Center",
+  },
+];
+export const medicineData = [
+  
+  {
+    medicineName: "Paracetamol",
+    batchNo: "B12345",
+    expiryDate: "2024-12-31",
+    quantity: 100,
+    Status: "Available",
+    StatusBg: "#8BE78B",
+  },
+  {
+    medicineName: "Napa",
+    batchNo: "B12345",
+    expiryDate: "2024-12-31",
+    quantity: 0,
+    Status: "Out of Stock",
+    StatusBg: "#E35335",
+  },
+  {
+    medicineName: "Napa Extra",
+    batchNo: "B12345",
+    expiryDate: "2024-12-31",
+    quantity: 10,
+    Status: "Low Stock",
+    StatusBg: "#FB9678",
+  },
+  {
+    medicineName: "Ibuprofen",
+    batchNo: "I67890",
+    expiryDate: "2023-09-15",
+    quantity: 50,
+    Status: "pending",
+    StatusBg: "skyblue",
+  },
+  {
+    medicineName: "Amoxicillin",
+    batchNo: "A98765",
+    expiryDate: "2025-06-20",
+    quantity: 30,
+    Status: "Expired",
+    StatusBg: "red",
+  },
+  // Add more medicine data as needed
+];
+export const gridImage = (props) => {
+  const firstLetter = props.medicineName.charAt(0).toUpperCase();
+
+  return (
+    <div
+      className="rounded-xl h-20 w-20 md:ml-3 flex items-center justify-center bg-purple-200 text-purple-800 font-bold text-3xl"
+      style={{ backgroundColor: '#E0E7FF' }}
+    >
+      {firstLetter}
+    </div>
+  );
+};
+
+export const medicineGrid = [
+  {
+    headerText: " ",
+    template: gridImage,
+    textAlign: "Center",
+    width: "120",
+  },
+  {
+    field: "medicineName",
+    headerText: "Medicine Name",
+    width: "150",
+    textAlign: "Center",
+  },
+  {
+    field: "batchNo",
+    headerText: "Batch No",
+    width: "120",
+    textAlign: "Center",
+  },
+  {
+    field: "expiryDate",
+    headerText: "Expiry Date",
+    width: "150",
+    textAlign: "Center",
+    format: "yMd",
+  },
+  {
+    field: "quantity",
+    headerText: "Quantity",
+    width: "100",
+    textAlign: "Center",
+  },
+  {
+    field: "Status",
+    headerText: "Status",
+    width: "120",
+    textAlign: "Center",
+    template: gridPatientStatus,
   },
 ];
 export const NewPatientsDataDoctor = [
@@ -2380,21 +2476,21 @@ export const patientDataPie = [
   { x: "Others", y: 15, text: "Others: 15%" },
 ];
 export const patientDataDoctorPie = [
-  { x: "New Patients", y: 40, text: "New Patients: 70%" },
+  { x: "New Patients", y: 70, text: "New Patients: 70%" },
   { x: "Old Patients", y: 30, text: "Old Patients: 30%" },
 ];
 // Sample data for top 10 most selling medicines
 export const top10MedicineSales = [
-  { x: "Medicine A", y: 1200 },
-  { x: "Medicine B", y: 1100 },
-  { x: "Medicine C", y: 1000 },
-  { x: "Medicine D", y: 950 },
-  { x: "Medicine E", y: 900 },
-  { x: "Medicine F", y: 850 },
-  { x: "Medicine G", y: 800 },
-  { x: "Medicine H", y: 750 },
-  { x: "Medicine I", y: 700 },
-  { x: "Medicine J", y: 650 },
+  { x: "Medicine A", y: 12,text:"Medicine A: 1200" },
+  { x: "Medicine B", y: 11 ,text:"Medicine B: 1100"},
+  { x: "Medicine C", y: 10,text:"Medicine C: 1000" },
+  { x: "Medicine D", y: 9,text:"Medicine D: 950" },
+  { x: "Medicine E", y: 9,text:"Medicine E: 900" },
+  { x: "Medicine F", y: 8,text:"Medicine F: 850" },
+  { x: "Medicine G", y: 8,text:"Medicine G: 800" },
+  { x: "Medicine H", y: 7,text:"Medicine H: 750" },
+  { x: "Medicine I", y: 7,text:"Medicine I: 700" },
+  { x: "Medicine J", y: 9,text:"Medicine J: 650" },
 ];
 export const PharmacyCustomerByCatData = [
   { x: "Student", y: 60, text: "Student: 60%" },
@@ -2531,6 +2627,44 @@ export const stackedPrimaryYAxis = {
   minorTickLines: { width: 0 },
   labelFormat: "{value}",
 };
+export const pharmacyData = [
+  {
+    icon: <MdOutlineSick />,
+    amount: "39,354",
+    percentage: "-4%",
+    title: "Total Patients This Week",
+    iconColor: "#03C9D7",
+    iconBg: "#E5FAFB",
+    pcColor: "red-600",
+  },
+  {
+    icon: <FaPills />,
+    amount: "4,396",
+    percentage: "+23%",
+    title: "Low Stock Medicine",
+    iconColor: "rgb(255, 244, 229)",
+    iconBg: "rgb(254, 201, 15)",
+    pcColor: "green-600",
+  },
+  {
+    icon: <FaExclamationTriangle />,
+    amount: "423,39",
+    percentage: "+38%",
+    title: "Out of Stock Medicine",
+    iconColor: "rgb(228, 106, 118)",
+    iconBg: "rgb(255, 244, 229)",
+    pcColor: "green-600",
+  },
+  {
+    icon: <CgDanger />,
+    amount: "39,354",
+    percentage: "-12%",
+    title: "Expired Medicine",
+    iconColor: "rgb(255, 99, 132)",
+    iconBg: "rgb(255, 235, 238)",
+    pcColor: "red-700",
+  },
+];
 
 export const dashData = [
   {
@@ -2675,15 +2809,14 @@ export const links = [
     ],
   },
   {
-    title:"Appointment",
+    title: "Appointment",
     links: [
       {
-        name:"Book",
-        icon:<TbBrandBooking />,
-
-      }
-    ]
-  }
+        name: "Book",
+        icon: <TbBrandBooking />,
+      },
+    ],
+  },
 ];
 export const doctorLinks = [
   {
@@ -2709,17 +2842,16 @@ export const doctorLinks = [
     ],
   },
   {
-    title:"Appointment",
+    title: "Appointment",
     links: [
       {
-        name:"BookD",
-        icon:<TbBrandBooking />,
-
-      }
-    ]
-  }
+        name: "BookD",
+        icon: <TbBrandBooking />,
+      },
+    ],
+  },
 ];
-export const seniorOfficerLinks=[
+export const seniorOfficerLinks = [
   {
     title: "Dashboard",
     links: [
@@ -2736,20 +2868,17 @@ export const seniorOfficerLinks=[
         name: "Medicine-List",
         icon: <FaPills />,
       },
-    
     ],
   },
   {
-    title:"Appointment",
+    title: "Appointment",
     links: [
       {
-        name:"BookSO",
-        icon:<TbBrandBooking />,
-
-      }
-    ]
-  }
-
+        name: "BookSO",
+        icon: <TbBrandBooking />,
+      },
+    ],
+  },
 ];
 export const dispensaryLinks = [
   {
@@ -2762,13 +2891,13 @@ export const dispensaryLinks = [
     ],
   },
   {
-    title:"Patient",
-    links:[
+    title: "Patient",
+    links: [
       {
-        name:"Prescription",
-        icon:<FaPrescription/>
-      }
-    ]
+        name: "Prescription",
+        icon: <FaPrescription />,
+      },
+    ],
   },
   {
     title: "Medicine",
@@ -2777,20 +2906,17 @@ export const dispensaryLinks = [
         name: "Medicine-List",
         icon: <FaPills />,
       },
-    
     ],
   },
   {
-    title:"Appointment",
+    title: "Appointment",
     links: [
       {
-        name:"BookDO",
-        icon:<TbBrandBooking />,
-
-      }
-    ]
-  }
-
+        name: "BookDO",
+        icon: <TbBrandBooking />,
+      },
+    ],
+  },
 ];
 export const studentLinks = [
   {
@@ -2802,7 +2928,6 @@ export const studentLinks = [
       },
     ],
   },
- 
 ];
 export const chatData = [
   {

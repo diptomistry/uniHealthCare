@@ -171,7 +171,7 @@ const Home = () => {
     <GenericPieChart 
             data={patientDataDoctorPie} 
             title="Patient Statistics<br>2023"
-            centerLabel="Gender Wise<br>Patient Statistics<br>This Year"
+           
         />
     </div>
     <div className="basis-full">
