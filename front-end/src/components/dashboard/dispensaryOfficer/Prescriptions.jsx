@@ -2,8 +2,9 @@ import React,{useState} from 'react'
 import { AlreadyPrescribedPatientsDataDoctor } from '../../../assets/dashboard'
 import { patientsDataDoctorGrid } from '../../../assets/dashboard'
 import List from '../doctor/List'
-import PrescriptionTemplate from '../doctor/prescription/PrescriptionTemplate'
+
 import CustomModal from '../../../models/CustomModal'
+import PrescribedMedicines from '../../../layouts/dispensaryOfficer/PrescribedMedicines'
 const Prescriptions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
@@ -35,7 +36,7 @@ const Prescriptions = () => {
         ChildrenStyle="overflow-y-auto"
       >
         {selectedPatient && (
-          <PrescriptionTemplate data={selectedPatient} userType={'dispensary-officer'} />
+          <PrescribedMedicines data={selectedPatient}  />
         )}
       
       </CustomModal>
