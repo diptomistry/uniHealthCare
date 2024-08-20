@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { noticeInfo as initialNotices } from '../../../assets/dashboard';
 import { FaEdit } from 'react-icons/fa';
 import DeleteConfirmationModal from '../../../models/DeleteConfirmationModal';
 
 const NoticeInfoDisplay = () => {
   const [notices, setNotices] = useState(initialNotices);
-  const [newNotice, setNewNotice] = useState({ quote: '', name: '', title: '', vanishDate: '' });
+  const [newNotice, setNewNotice] = useState({ quote: '', name: '', title: '', vanishDate: null });
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const editFieldRef = useRef(null);
@@ -15,6 +17,10 @@ const NoticeInfoDisplay = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewNotice({ ...newNotice, [name]: value });
+  };
+
+  const handleDateChange = (date) => {
+    setNewNotice({ ...newNotice, vanishDate: date });
   };
 
   const addOrEditNotice = () => {
@@ -29,12 +35,15 @@ const NoticeInfoDisplay = () => {
       } else {
         setNotices([...notices, newNotice]);
       }
-      setNewNotice({ quote: '', name: '', title: '', vanishDate: '' }); // Reset form
+      setNewNotice({ quote: '', name: '', title: '', vanishDate: null }); // Reset form
     }
   };
 
   const editNotice = (index) => {
-    setNewNotice(notices[index]);
+    setNewNotice({
+      ...notices[index],
+      vanishDate: notices[index].vanishDate ? new Date(notices[index].vanishDate) : null,
+    });
     setIsEditing(true);
     setEditIndex(index);
     if (editFieldRef.current) {
@@ -90,15 +99,12 @@ const NoticeInfoDisplay = () => {
             placeholder="Title"
             className="p-2 border border-gray-300 rounded-md"
           />
-          <input
-            name="vanishDate"
-            className="p-2 border border-gray-300 rounded-md"
-            type="text"
-            value={newNotice.vanishDate}
-            onFocus={(e) => (e.currentTarget.type = 'date')}
-            onBlur={(e) => (e.currentTarget.type = 'text')}
-            onChange={handleInputChange}
-            placeholder="Vanish Date"
+          <DatePicker
+            selected={newNotice.vanishDate}
+            onChange={handleDateChange}
+            placeholderText="Vanish Date"
+            className="p-2 border border-gray-300 rounded-md w-full"
+            dateFormat="MMMM d, yyyy"
           />
         </div>
         <button
@@ -110,13 +116,14 @@ const NoticeInfoDisplay = () => {
       </div>
       <h1 className="text-2xl text-gray-700 font-semibold mb-4">Current Notices</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-      
         {notices.map((item, index) => (
           <div key={index} className="relative p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
             <p className="text-gray-700 mb-4">{item.quote}</p>
             <h4 className="text-lg font-bold text-textColor">{item.name}</h4>
             <h5 className="text-md text-gray-500 italic">{item.title}</h5>
-            <p className="text-sm text-gray-400">Vanish Date: {item.vanishDate}</p>
+            <p className="text-sm text-gray-400">
+              Vanish Date: {item.vanishDate ? new Date(item.vanishDate).toLocaleDateString() : 'N/A'}
+            </p>
             <div className="absolute top-2 right-2 flex space-x-2">
               <button
                 onClick={() => editNotice(index)}

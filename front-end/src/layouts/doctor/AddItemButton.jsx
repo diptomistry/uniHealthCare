@@ -5,10 +5,10 @@ const AddItemButton = ({title}) => {
     <div>
       {" "}
       <button
-        class="  rounded-lg relative w-80 h-10 cursor-pointer flex items-center border border-primaryColor bg-secondaryColor group hover:bg-primaryColor active:bg-primaryColor active:border-green-500"
+        class="rounded-lg relative w-64 sm:w-80 h-10 cursor-pointer flex items-center border border-primaryColor bg-secondaryColor group hover:bg-primaryColor active:bg-primaryColor active:border-green-500"
        
       >
-        <span class="text-gray-200 font-semibold ml-8 transform group-hover:translate-x-20 transition-all duration-300">
+        <span class="text-gray-200 md:text-md text-sm font-semibold ml-8 transform group-hover:translate-x-20 transition-all duration-300">
           {title}
         </span>
         <span class="absolute right-0 h-full w-10 rounded-lg bg-primaryColor flex items-center justify-center transform group-hover:translate-x-0 group-hover:w-full transition-all duration-300">

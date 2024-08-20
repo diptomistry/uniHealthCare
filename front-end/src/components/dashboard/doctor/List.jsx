@@ -13,9 +13,10 @@ import {
   Toolbar,
   Search,
   Inject,
+  Edit,
 } from "@syncfusion/ej2-react-grids";
 
-const List = ({ status,title, patientsData, patientsGrid, toolbarOptions,onButtonClick }) => {
+const List = ({ status, title, patientsData, patientsGrid, toolbarOptions, onButtonClick }) => {
   const gridInstance = useRef(null); // Use ref to reference the grid instance
 
   const editing = { allowDeleting: true, allowEditing: true };
@@ -50,6 +51,7 @@ const List = ({ status,title, patientsData, patientsGrid, toolbarOptions,onButto
         allowSorting
         allowExcelExport
         allowPdfExport
+        allowDeleting
         editSettings={editing}
         toolbar={toolbarOptions}
         toolbarClick={toolbarClick}
@@ -59,19 +61,21 @@ const List = ({ status,title, patientsData, patientsGrid, toolbarOptions,onButto
           {patientsGrid.map((item, index) => (
             <ColumnDirective key={index} {...item} />
           ))}
-          <ColumnDirective
-            field="action"
-            headerText="Action"
-            width="120"
-            template={(props) => (
-              <button
-                className="text-white py-1 px-2 capitalize rounded-2xl text-md bg-[#03C9D7] hover:bg-hoverColor"
-                onClick={() => handleButtonClick(props)}
-              >
-                {status}
-              </button>
-            )}
-          />
+          {status && (
+            <ColumnDirective
+              field="action"
+              headerText="Action"
+              width="120"
+              template={(props) => (
+                <button
+                  className="text-white py-1 px-2 capitalize rounded-2xl text-md bg-[#03C9D7] hover:bg-hoverColor"
+                  onClick={() => handleButtonClick(props)}
+                >
+                  {status}
+                </button>
+              )}
+            />
+          )}
         </ColumnsDirective>
         <Inject
           services={[
@@ -84,6 +88,8 @@ const List = ({ status,title, patientsData, patientsGrid, toolbarOptions,onButto
             PdfExport,
             Toolbar,
             Search,
+            Edit
+            
           ]}
         />
       </GridComponent>
@@ -92,4 +98,3 @@ const List = ({ status,title, patientsData, patientsGrid, toolbarOptions,onButto
 };
 
 export default List;
-

@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { MdAdminPanelSettings, MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { links, doctorLinks } from "../../assets/dashboard";
+import { links, doctorLinks,studentLinks,dispensaryLinks,seniorOfficerLinks } from "../../assets/dashboard";
 
 import avatar from "../../assets/img/doc1.jpg";
 
@@ -21,7 +21,7 @@ const Sidebar = () => {
   const normalLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 hover:bg-brightColor m-2";
 
-  const userType = "admin"; // Example userType, should be passed as a prop or context
+  const userType = "senior-officer"; // Example userType, should be passed as a prop or context
   const getMenuItems = (userType) => {
     switch (userType) {
       case "admin":
@@ -32,8 +32,12 @@ const Sidebar = () => {
         return staffLinks;
       case "student":
         return studentLinks;
-      case "guest":
-        return guestLinks;
+      case "dispensary-officer":
+        return dispensaryLinks;
+      case "senior-officer":
+        return seniorOfficerLinks;
+      case "teacher":
+        return teacherLinks;
       default:
         return [];
     }
@@ -42,7 +46,7 @@ const Sidebar = () => {
   const menuItems = getMenuItems(userType);
 
   return (
-    <div className="h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 border-r-2">
+    <div className="h-screen  md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 border-r-2">
       <div className="flex justify-between items-center">
         {userType === "admin" && (
           <Link
@@ -105,11 +109,11 @@ const Sidebar = () => {
                 </div>
         </div>
       )}
-      <div className="mt-10">
+      <div className="mt-10 ">
         {menuItems.map((item) => (
           <div key={item.title}>
             {activeMenu && (
-              <p className="text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase">
+              <p className="text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase ">
                 {item.title}
               </p>
             )}

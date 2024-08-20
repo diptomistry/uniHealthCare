@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-
-import DateRangePicker from "../../../layouts/dashboard/mainContent/DatePicker";
 import { dashData } from "../../../assets/dashboard";
 import AppointmentData from "./AppointmentData";
 import CircularProgress from "../../../layouts/dashboard/mainContent/CircularProgress";
@@ -16,7 +14,8 @@ import SparkLine from "../charts/SparkLine";
 import Stacked from "../charts/Stacked";
 import PharmacyCustomerByCat from "../charts/PharmacyCustomerByCat";
 import TopRatedDoctors from "./TopRatedDoctors";
-
+import { MdOutlineSimCardDownload } from "react-icons/md";
+import ReportDateRange from "../../../layouts/dashboard/mainContent/ReportDateRange";
 import { FaCircleDot, FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const MedicalCenter = ({ darkMode }) => {
@@ -25,27 +24,33 @@ const MedicalCenter = ({ darkMode }) => {
   const handleStatTypeChange = (event) => {
     setPatientStatType(event.target.value);
   };
+  
 
   return (
     <div className="mt-24 ">
       <div className="flex flex-col">
         <div className="w-full flex flex-col md:flex-row items-center gap-4">
-          <div className="flex flex-col place-content-end mb-10 md:w-1/2">
-            <div className="font-poppins mb-10">
-              <h1 className="text-textColor dark:text-white font-semibold text-2xl">
-                Welcome back!
-                <br /> You have successfully logged in.
-                <br />
-              </h1>
-              <h1 className="dark:text-gray-400">
-                {" "}
-                If you need any assistance, use helper{" "}
-              </h1>
-              <span className="underline dark:text-gray-400 cursor-pointer hover:text-hoverColor dark:hover:text-hoverColor">
-                bot.
-              </span>
+          <div className="flex flex-col place-content-end md:w-1/2 ">
+            <div className=" flex  font-poppins border-b-4 border-gray-200">
+              <div className=" ">
+                <ReportDateRange />
+              </div>
+              <div className="mb-8 ml-5">
+                <button
+                  title="Save"
+                  class="cursor-pointer flex items-center fill-sky-400 bg-sky-950 hover:bg-sky-900 active:border active:border-sky-400 rounded-md duration-100 p-2 py-3"
+                >
+                  <MdOutlineSimCardDownload
+                    size={20}
+                    className="text-sky-400 mr-1"
+                  />
+                  <span class="text-sm text-sky-400 font-bold pr-1">
+                    Downloda Report
+                  </span>
+                </button>
+              </div>
             </div>
-            <DateRangePicker />
+           
           </div>
           <div className="bg-secondaryColor dark:text-gray-200 rounded-xl md:w-1/2 p-8 pt-9 mb-4 shadow-sm flex">
             <div>
@@ -92,20 +97,16 @@ const MedicalCenter = ({ darkMode }) => {
           ))}
         </div>
         <div className=" bg-white dark:bg-secondary-dark-bg mt-3 mb-3 rounded-2xl shadow-md">
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-900 mt-10 flex justify-center ">
-             Doctors Ranking
+          <h1 className="text-3xl font-semibold tracking-tight text-slate-900 mt-10 flex justify-center ">
+            Doctors Ranking
           </h1>
           <div className="lg:px-24">
             <TopRatedDoctors />
           </div>
-          
-         
         </div>
         <div className="bg-white dark:bg-secondary-dark-bg mt-3 mb-3 rounded-2xl shadow-md">
-          
           <AppointmentData />
         </div>
-      
 
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md  ">
           <h1 className="text-3xl font-semibold tracking-tight text-slate-900 flex justify-center mb-3">

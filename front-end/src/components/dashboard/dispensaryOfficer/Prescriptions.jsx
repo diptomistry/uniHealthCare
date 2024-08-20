@@ -1,13 +1,14 @@
 import React,{useState} from 'react'
 import { AlreadyPrescribedPatientsDataDoctor } from '../../../assets/dashboard'
 import { patientsDataDoctorGrid } from '../../../assets/dashboard'
-import List from './List'
-import PrescriptionTemplate from './prescription/PrescriptionTemplate'
+import List from '../doctor/List'
+
 import CustomModal from '../../../models/CustomModal'
-const AlreadyPrescribed = () => {
+import PrescribedMedicines from '../../../layouts/dispensaryOfficer/PrescribedMedicines'
+const Prescriptions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
-  const toolbarOptions = ["Search", "PdfExport", "ExcelExport", "CsvExport"];
+  const toolbarOptions = ["Search",];
   const handleButtonClick = (patient) => {
     setSelectedPatient(patient);
     setIsModalOpen(true);
@@ -22,7 +23,7 @@ const AlreadyPrescribed = () => {
   return (
      <div className="bg-white dark:bg-secondary-dark-bg rounded-2xl shadow-md p-10">
     <List
-      title="Already Prescribed"
+      title="Prescriptions"
       patientsData={AlreadyPrescribedPatientsDataDoctor}
       patientsGrid={patientsDataDoctorGrid}
       toolbarOptions={toolbarOptions}
@@ -35,11 +36,12 @@ const AlreadyPrescribed = () => {
         ChildrenStyle="overflow-y-auto"
       >
         {selectedPatient && (
-          <PrescriptionTemplate data={selectedPatient} />
+          <PrescribedMedicines data={selectedPatient}  />
         )}
+      
       </CustomModal>
     </div>
   )
 }
 
-export default AlreadyPrescribed
+export default Prescriptions
