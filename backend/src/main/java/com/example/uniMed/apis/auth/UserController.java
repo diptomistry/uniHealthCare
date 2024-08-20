@@ -17,24 +17,59 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create-user")
-    public Map<String, Object> createUser(@RequestParam("file") MultipartFile file,
-                             @RequestParam String confirm_pass,
-                             @RequestParam String email,
-                             @RequestParam Date dob,
-                             @RequestParam String name,
-                             @RequestParam String gender,
-                             @RequestParam String user_type,
-                             @RequestParam String password,
-                             @RequestParam(required = false) Long department_id,
-                             @RequestParam(required = false) String session,
-                             @RequestParam(required = false) String registrationNo,
-                             @RequestParam(required = false) String registeredFrom,
-                             @RequestParam(required = false) String phone) {
-       
-            System.out.println("Creating user");
-            return userService.createUser(file,password, confirm_pass, email, dob, name, gender, user_type, department_id, session, registrationNo, registeredFrom, phone);
-       
+public Map<String, Object> createUser
+// (@RequestPart("body") Map<String, String> body, 
+// @RequestPart(value = "file", required = false) MultipartFile file)
+(
+                             @RequestBody Map<String, String> body)
+ {
+
+     MultipartFile file = null;
+    String email = body.get("email");
+    String password = body.get("password");
+    String confirmPass = body.get("confirmPass");
+    String name = body.get("name");
+    String dob = body.get("dob");
+    System.out.println(dob);
+    Date dateOfBirth;
+    try {
+        dateOfBirth = Date.valueOf(dob);
+    } catch (IllegalArgumentException e) {
+        dateOfBirth=null;
+        
     }
+
+    String gender = body.get("gender");
+    String userType = body.get("userType");
+
+    Long departmentId;
+    String session;
+    String registrationNo;
+    try {
+         session = body.get("session");
+         registrationNo = body.get("registrationNo");
+        departmentId = Long.parseLong(body.get("departmentId"));
+    } catch (NumberFormatException e) {
+        departmentId = null;
+        session = null;
+        registrationNo = null;
+    }
+   
+    
+    String registeredFrom = body.get("registeredFrom");
+    String phone = body.get("phone");
+    System.out.println("Creating user");
+    System.out.println(body);
+   
+
+          
+
+    
+
+    System.out.println("Creating user");
+
+    return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, departmentId, session, registrationNo, registeredFrom, phone);
+}
 
     @PostMapping("/update-user")
     public Map<String, Object> updateUser(@RequestParam("file") MultipartFile file,
@@ -46,7 +81,9 @@ public class UserController {
                              @RequestParam(required = false) String session,
                              @RequestParam(required = false) String registrationNo,
                              @RequestParam(required = false) String phone) {
-        try {
+        try {   
+            
+
             return userService.updateUser(file, user_id, email, dob, name, department, session, registrationNo, phone, file);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
@@ -125,6 +162,7 @@ public class UserController {
         if (!response.containsKey("success")) {
             response.put("success", false);
             response.put("message", "Failed to get doctors");
+
         }
         return response;
     }
