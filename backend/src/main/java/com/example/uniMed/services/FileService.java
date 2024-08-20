@@ -25,6 +25,9 @@ public class FileService {
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
+        if (file == null) {
+            return serverUrl + "/uploads/default.png";
+        }
 
         // Generate a unique filename
         String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();

@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.uniMed.models.Doctors;
 import com.example.uniMed.models.Role;
 import com.example.uniMed.models.Student;
+import com.example.uniMed.security.JwtHelper;
 import com.example.uniMed.models.User;
 import com.example.uniMed.repositories.EmailSender;
 import com.example.uniMed.repositories.auth.DoctorRepository;
@@ -63,6 +64,7 @@ public class UserService {
                 response.put("message", "Password does not match");
                 return response;
             }
+            
 
             Optional<User> existingUser = userRepository.findByEmail(email);
             if (existingUser.isPresent()) {
@@ -73,11 +75,11 @@ public class UserService {
 
             String filePath;
        
-                 filePath = (file != null) ? fileService.saveFile(file) : "default/avatar.jpeg";
+                 filePath =  fileService.saveFile(file);
             
 
             String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-            String token = BCrypt.hashpw(email, BCrypt.gensalt());
+            String token = new JwtHelper().generateToken(email);
             String status = "Pending";
             if ("student".equals(userType) || "teacher".equals(userType) || "staff".equals(userType)) {
                 status = "Approved";
@@ -104,7 +106,9 @@ public class UserService {
                     response.put("message", "Department, session, and registration number must be provided for students");
                     return response;
                 }
-                Student student = new Student(newUser.getId(), departmentId, session, registrationNo);
+                System.out.println("------->Creating student");
+                System.out.println("---->id: "+newUser.getId());
+                Student student = new Student(newUser, departmentId, session, registrationNo);
                 studentRepository.save(student);
             } else if ("doctor".equals(userType)) {
 
