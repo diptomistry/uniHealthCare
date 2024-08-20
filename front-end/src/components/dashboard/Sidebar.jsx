@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { MdAdminPanelSettings, MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { links, doctorLinks,studentLinks,dispensaryLinks,seniorOfficerLinks } from "../../assets/dashboard";
+import { links, doctorLinks,studentLinks,dispensaryLinks,seniorOfficerLinks,teacherLinks } from "../../assets/dashboard";
 
 import avatar from "../../assets/img/doc1.jpg";
 
@@ -21,7 +21,7 @@ const Sidebar = () => {
   const normalLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 hover:bg-brightColor m-2";
 
-  const userType = "senior-officer"; // Example userType, should be passed as a prop or context
+  const userType = "teacher"; // Example userType, should be passed as a prop or context
   const getMenuItems = (userType) => {
     switch (userType) {
       case "admin":

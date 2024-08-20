@@ -9,15 +9,16 @@ import Home from "../components/dashboard/doctor/Home";
 import NewRequests from "../components/dashboard/doctor/NewRequests";
 import ALreadyPrescribed from "../components/dashboard/doctor/AlreadyPrescribed";
 import StudentHome from "../components/dashboard/student/StudentHome";
-import BookAppointment from "../components/dashboard/Admin/BookAppointment";
-import BookD  from "../components/dashboard/doctor/BookAppointment";
-import BookDO from "../components/dashboard/dispensaryOfficer/BookAppointment";
+import BookA from "../components/dashboard/Admin/BookA";
+import BookD from "../components/dashboard/doctor/BookD";
+import BookDO from "../components/dashboard/dispensaryOfficer/BookDO";
 import Prescriptions from "../components/dashboard/dispensaryOfficer/Prescriptions";
 import ListofMedicine from "../components/dashboard/dispensaryOfficer/ListofMedicine";
 import Dispensary_Home from "../components/dashboard/dispensaryOfficer/Home";
 import AcceptMedicine from "../components/dashboard/seniorOfficer/AcceptMedicine";
-import BookSO from "../components/dashboard/seniorOfficer/BookAppointment";
-import HomeSO from "../components/dashboard/seniorOfficer/Home";
+import BookSO from "../components/dashboard/seniorOfficer/BookSO";
+import TeacherHome from "../components/dashboard/teacher/TeacherHome";
+
 import {
   AboutSection,
   AllUsers,
@@ -102,15 +103,16 @@ const Dashboard = () => {
             <Route path="/New-Requests" element={<NewRequests />} />
             <Route path="/Already-Prescribed" element={<ALreadyPrescribed />} />
             <Route path="/Student-Home" element={<StudentHome />} />
-            <Route path="/Book" element={<BookAppointment />} />
+            <Route path="/Book" element={<BookA />} />
             <Route path="/BookD" element={<BookD />}/>
             <Route path="/BookDO" element={<BookDO />}/>
             <Route path="/Prescription" element={<Prescriptions />} />
             <Route path="/Request-Medicine" element={<ListofMedicine />} />
             <Route path="/Dispensary-Home" element={<Dispensary_Home />} />
             <Route path="/Accept-Request" element={<AcceptMedicine/>}/>
-            <Route path="/BookSO" element={<BookSO/>}/>
-            <Route path="/SeniorOfficer-Home" element={<HomeSO/>}/>
+            <Route path="/SeniorOfficer-Home" element={<BookSO/>}/>
+            <Route path="/Teacher-Home" element={<TeacherHome/>}/>
+          
           </Routes>
         </div>
       </div>

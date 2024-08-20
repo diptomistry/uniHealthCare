@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import CustomModal from "../../../models/CustomModal";
-import BookingInfo from "../../../layouts/dashboard/Bookinginfo";
-import AppointmentModalData from "../../../models/dashboard/AppointModalData";
+import CustomModal from "../../models/CustomModal";
+import BookingInfo from "../../layouts/dashboard/Bookinginfo";
+import AppointmentModalData from "../../models/dashboard/AppointModalData";
 
 const BookAppointment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

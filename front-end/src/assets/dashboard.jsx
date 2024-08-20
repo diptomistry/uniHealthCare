@@ -2870,15 +2870,7 @@ export const seniorOfficerLinks = [
       },
     ],
   },
-  {
-    title: "Appointment",
-    links: [
-      {
-        name: "BookSO",
-        icon: <TbBrandBooking />,
-      },
-    ],
-  },
+
 ];
 export const dispensaryLinks = [
   {
@@ -2929,6 +2921,18 @@ export const studentLinks = [
     ],
   },
 ];
+export const teacherLinks=[
+  {
+    title: "Dashboard",
+    links: [
+      {
+        name: "Teacher-Home",
+        icon: <FiHome />,
+      },
+    ],
+  },
+];
+
 export const chatData = [
   {
     image: avatar2,
