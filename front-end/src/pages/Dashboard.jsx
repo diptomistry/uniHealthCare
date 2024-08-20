@@ -15,6 +15,9 @@ import BookDO from "../components/dashboard/dispensaryOfficer/BookAppointment";
 import Prescriptions from "../components/dashboard/dispensaryOfficer/Prescriptions";
 import ListofMedicine from "../components/dashboard/dispensaryOfficer/ListofMedicine";
 import Dispensary_Home from "../components/dashboard/dispensaryOfficer/Home";
+import AcceptMedicine from "../components/dashboard/seniorOfficer/AcceptMedicine";
+import BookSO from "../components/dashboard/seniorOfficer/BookAppointment";
+import HomeSO from "../components/dashboard/seniorOfficer/Home";
 import {
   AboutSection,
   AllUsers,
@@ -103,8 +106,11 @@ const Dashboard = () => {
             <Route path="/BookD" element={<BookD />}/>
             <Route path="/BookDO" element={<BookDO />}/>
             <Route path="/Prescription" element={<Prescriptions />} />
-            <Route path="/Medicine-List" element={<ListofMedicine />} />
+            <Route path="/Request-Medicine" element={<ListofMedicine />} />
             <Route path="/Dispensary-Home" element={<Dispensary_Home />} />
+            <Route path="/Accept-Request" element={<AcceptMedicine/>}/>
+            <Route path="/BookSO" element={<BookSO/>}/>
+            <Route path="/SeniorOfficer-Home" element={<HomeSO/>}/>
           </Routes>
         </div>
       </div>

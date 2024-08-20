@@ -2865,7 +2865,7 @@ export const seniorOfficerLinks = [
     title: "Medicine",
     links: [
       {
-        name: "Medicine-List",
+        name: "Accept-Request",
         icon: <FaPills />,
       },
     ],
@@ -2903,7 +2903,7 @@ export const dispensaryLinks = [
     title: "Medicine",
     links: [
       {
-        name: "Medicine-List",
+        name: "Request-Medicine",
         icon: <FaPills />,
       },
     ],
