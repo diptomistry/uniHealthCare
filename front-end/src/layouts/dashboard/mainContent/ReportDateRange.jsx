@@ -28,7 +28,7 @@ const ReportDateRange = () => {
   }, []);
 
   return (
-    <div className="relative inline-block text-left z-[10000]" ref={dropdownRef}>
+    <div className="relative inline-block text-left " ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className="flex items-center px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"

@@ -18,6 +18,7 @@ import Dispensary_Home from "../components/dashboard/dispensaryOfficer/Home";
 import AcceptMedicine from "../components/dashboard/seniorOfficer/AcceptMedicine";
 import BookSO from "../components/dashboard/seniorOfficer/BookSO";
 import TeacherHome from "../components/dashboard/teacher/TeacherHome";
+import ChatBot from "../models/dashboard/ChatBot";
 
 import {
   AboutSection,
@@ -51,7 +52,10 @@ const Dashboard = () => {
   };
   return (
     <div className="flex relative dark:bg-main-dark-bg">
+       
       <div className="fixed right-4 bottom-4" style={{ zIndex: "10000" }}>
+      
+    
         <TooltipComponent content="Change Mode" position="Top">
           <button
             type="button"
@@ -67,6 +71,12 @@ const Dashboard = () => {
           </button>
         </TooltipComponent>
       </div>
+      <div className="fixed right-20 bottom-36 z-[10000]">
+        <TooltipComponent content="ChatBot" position="Top">
+          <ChatBot />
+        </TooltipComponent>
+      </div>
+     
       {activeMenu ? (
         <div className="w-64 fixed  max-md:z-[10000000] dark:bg-secondary-dark-bg bg-white duration-300 z-[1000] " style={{ boxShadow: '0px 7px 30px 0px rgba(113, 122, 131, 0.11)' }}>
           {" "}
