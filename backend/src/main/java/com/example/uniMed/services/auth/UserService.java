@@ -52,7 +52,7 @@ public class UserService {
                                           String name,
                                           String gender,
                                           String userType,
-                                          Long departmentId,
+                                          String departmentId,
                                           String session,
                                           String registrationNo,
                                           String registeredFrom,

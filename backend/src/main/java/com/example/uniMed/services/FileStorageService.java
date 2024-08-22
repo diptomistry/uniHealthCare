@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+
 
 @Service
 public class FileStorageService {
+
+
+    FileService fileService = new FileService();
 
     private final Path fileStorageLocation;
 
@@ -26,9 +29,8 @@ public class FileStorageService {
 
     public String storeFile(MultipartFile file) {
         try {
-            Path targetLocation = this.fileStorageLocation.resolve(file.getOriginalFilename());
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            return targetLocation.toString();
+           
+            return fileService.saveFile(file);
         } catch (IOException ex) {
             throw new RuntimeException("Could not store file " + file.getOriginalFilename() + ". Please try again!", ex);
         }
