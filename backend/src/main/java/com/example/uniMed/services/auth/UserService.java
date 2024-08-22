@@ -12,9 +12,10 @@ import com.example.uniMed.security.JwtHelper;
 import com.example.uniMed.models.User;
 import com.example.uniMed.repositories.EmailSender;
 import com.example.uniMed.repositories.auth.DoctorRepository;
-import com.example.uniMed.repositories.auth.RoleRepository;
+
 import com.example.uniMed.repositories.auth.StudentRepository;
 import com.example.uniMed.repositories.auth.UserRepo;
+import com.example.uniMed.repositories.auth.role.RoleRepository;
 import com.example.uniMed.services.FileService;
 
 import java.security.NoSuchAlgorithmException;
@@ -51,7 +52,7 @@ public class UserService {
                                           String name,
                                           String gender,
                                           String userType,
-                                          Long departmentId,
+                                          String departmentId,
                                           String session,
                                           String registrationNo,
                                           String registeredFrom,

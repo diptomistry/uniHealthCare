@@ -2,23 +2,30 @@ package com.example.uniMed.apis;
 
 
 
-import com.example.uniMed.services.FileStorageService;
+
+import com.example.uniMed.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/files")
 public class FileUploadController {
 
     @Autowired
-    private FileStorageService fileStorageService;
+    private FileService fileService;
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
-        return fileStorageService.storeFile(file);
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        try {
+            String fileUrl = fileService.saveFile(file);
+            return ResponseEntity.ok(fileUrl);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("File upload failed: " + e.getMessage());
+        }
     }
-
-    // Other endpoints...
 }
 

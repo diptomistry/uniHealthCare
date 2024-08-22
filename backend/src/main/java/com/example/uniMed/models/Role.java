@@ -15,6 +15,9 @@ public class Role {
         this.roleName = "student";
        
     }
+    public Role(String roleName) {
+        this.roleName = roleName;
+    }
      public Role(Integer userRoleId) {
        
     }

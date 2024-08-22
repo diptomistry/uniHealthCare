@@ -19,7 +19,7 @@ public class Student {
     public Student() {}
 
     // Constructor with fields
-    public Student(User user, Long departmentId, String session, String registrationNo) {
+    public Student(User user, String departmentId, String session, String registrationNo) {
         this.user = user;
         this.department = departmentId.toString();  // Assuming department is stored as a string
         this.session = session;
