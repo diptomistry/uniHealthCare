@@ -1,10 +1,10 @@
 import React from 'react'
 import BookAppointment from '../BookAppointment'
 
-const StudentHome = () => {
+const BookSO = () => {
   return (
-    <div><BookAppointment /></div>
+    <div><BookAppointment/></div>
   )
 }
 
-export default StudentHome
+export default BookSO

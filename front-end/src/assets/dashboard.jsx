@@ -2870,15 +2870,7 @@ export const seniorOfficerLinks = [
       },
     ],
   },
-  {
-    title: "Appointment",
-    links: [
-      {
-        name: "BookSO",
-        icon: <TbBrandBooking />,
-      },
-    ],
-  },
+
 ];
 export const dispensaryLinks = [
   {
@@ -2929,7 +2921,97 @@ export const studentLinks = [
     ],
   },
 ];
+export const teacherLinks=[
+  {
+    title: "Dashboard",
+    links: [
+      {
+        name: "Teacher-Home",
+        icon: <FiHome />,
+      },
+    ],
+  },
+];
+
 export const chatData = [
+  {
+    image: avatar2,
+    name: "Fahim Alif",
+    messages: [
+      { text: "Hey, how are you?", time: "9:00 AM" },
+      { text: "I'm good, thanks!", time: "9:07 AM" },
+      { text: "Congratulate him", time: "9:08 AM" },
+     
+    ],
+    replies: [
+      { text: "I'm good, thanks!What About You?", time: "9:05 AM" },
+      { text: "Ok", time: "9:10 AM" },
+    ],
+  },
+  {
+    image: avatar3,
+    name: "Salma Akter",
+    messages: [
+      { text: "Salma sent you a new message", time: "11:56 AM" },
+      { text: "Can you check the document?", time: "12:00 PM" },
+    ],
+    replies: [
+      { text: "Sure, I'll check it now.", time: "12:05 PM" },
+    ],
+  },
+  {
+    image: avatar4,
+    name: "Harisul Islam",
+    messages: [
+      { text: "Check your earnings", time: "4:39 AM" },
+      { text: "Your report is ready", time: "4:45 AM" },
+    ],
+    replies: [
+      { text: "Thanks for the update!", time: "4:50 AM" },
+    ],
+  },
+  {
+    image: avatar,
+    name: "Tanvir Hasan",
+    messages: [
+      { text: "Assign her new tasks", time: "1:12 AM" },
+      { text: "Please review the task list", time: "1:15 AM" },
+    ],
+    replies: [
+      { text: "Will do, right away.", time: "1:20 AM" },
+    ],
+  },
+  {
+    image: avatar2,
+    name: "Fahim Alif",
+    messages: [
+      { text: "Hey, how are you?", time: "9:00 AM" },
+      { text: "I'm good, thanks!", time: "9:07 AM" },
+      { text: "Congratulate him", time: "9:08 AM" },
+     
+    ],
+    replies: [
+      { text: "I'm good, thanks!What About You?", time: "9:05 AM" },
+      { text: "Ok", time: "9:10 AM" },
+    ],
+  },
+  {
+    image: avatar2,
+    name: "Fahim Alif",
+    messages: [
+      { text: "Hey, how are you?", time: "9:00 AM" },
+      { text: "I'm good, thanks!", time: "9:07 AM" },
+      { text: "Congratulate him", time: "9:08 AM" },
+     
+    ],
+    replies: [
+      { text: "I'm good, thanks!What About You?", time: "9:05 AM" },
+      { text: "Ok", time: "9:10 AM" },
+    ],
+  },
+];
+
+export const notiData = [
   {
     image: avatar2,
     message: "Roman Joined the Team!",
@@ -2938,8 +3020,26 @@ export const chatData = [
   },
   {
     image: avatar3,
-    message: "New message received",
-    desc: "Salma sent you new message",
+    message: "New medicine",
+    desc: "Senior Officer 5 added new medicine",
+    time: "11:56 AM",
+  },
+  {
+    image: avatar4,
+    message: "New Payment received",
+    desc: "Check your earnings",
+    time: "4:39 AM",
+  },
+  {
+    image: avatar,
+    message: "Jolly completed tasks",
+    desc: "Assign her new tasks",
+    time: "1:12 AM",
+  },
+  {
+    image: avatar3,
+    message: "New medicine",
+    desc: "Senior Officer 5 added new medicine",
     time: "11:56 AM",
   },
   {

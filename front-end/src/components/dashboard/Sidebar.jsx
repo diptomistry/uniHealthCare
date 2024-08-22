@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { MdAdminPanelSettings, MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { links, doctorLinks,studentLinks,dispensaryLinks,seniorOfficerLinks } from "../../assets/dashboard";
+import { links, doctorLinks,studentLinks,dispensaryLinks,seniorOfficerLinks,teacherLinks } from "../../assets/dashboard";
 
 import avatar from "../../assets/img/doc1.jpg";
 

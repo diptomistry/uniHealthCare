@@ -9,15 +9,17 @@ import Home from "../components/dashboard/doctor/Home";
 import NewRequests from "../components/dashboard/doctor/NewRequests";
 import ALreadyPrescribed from "../components/dashboard/doctor/AlreadyPrescribed";
 import StudentHome from "../components/dashboard/student/StudentHome";
-import BookAppointment from "../components/dashboard/Admin/BookAppointment";
-import BookD  from "../components/dashboard/doctor/BookAppointment";
-import BookDO from "../components/dashboard/dispensaryOfficer/BookAppointment";
+import BookA from "../components/dashboard/Admin/BookA";
+import BookD from "../components/dashboard/doctor/BookD";
+import BookDO from "../components/dashboard/dispensaryOfficer/BookDO";
 import Prescriptions from "../components/dashboard/dispensaryOfficer/Prescriptions";
 import ListofMedicine from "../components/dashboard/dispensaryOfficer/ListofMedicine";
 import Dispensary_Home from "../components/dashboard/dispensaryOfficer/Home";
 import AcceptMedicine from "../components/dashboard/seniorOfficer/AcceptMedicine";
-import BookSO from "../components/dashboard/seniorOfficer/BookAppointment";
-import HomeSO from "../components/dashboard/seniorOfficer/Home";
+import BookSO from "../components/dashboard/seniorOfficer/BookSO";
+import TeacherHome from "../components/dashboard/teacher/TeacherHome";
+import ChatBot from "../models/dashboard/ChatBot";
+
 import {
   AboutSection,
   AllUsers,
@@ -50,7 +52,10 @@ const Dashboard = () => {
   };
   return (
     <div className="flex relative dark:bg-main-dark-bg">
+       
       <div className="fixed right-4 bottom-4" style={{ zIndex: "10000" }}>
+      
+    
         <TooltipComponent content="Change Mode" position="Top">
           <button
             type="button"
@@ -66,6 +71,12 @@ const Dashboard = () => {
           </button>
         </TooltipComponent>
       </div>
+      <div className="fixed right-20 bottom-36 z-[10000]">
+        <TooltipComponent content="ChatBot" position="Top">
+          <ChatBot />
+        </TooltipComponent>
+      </div>
+     
       {activeMenu ? (
         <div className="w-64 fixed  max-md:z-[10000000] dark:bg-secondary-dark-bg bg-white duration-300 z-[1000] " style={{ boxShadow: '0px 7px 30px 0px rgba(113, 122, 131, 0.11)' }}>
           {" "}
@@ -102,15 +113,16 @@ const Dashboard = () => {
             <Route path="/New-Requests" element={<NewRequests />} />
             <Route path="/Already-Prescribed" element={<ALreadyPrescribed />} />
             <Route path="/Student-Home" element={<StudentHome />} />
-            <Route path="/Book" element={<BookAppointment />} />
+            <Route path="/Book" element={<BookA />} />
             <Route path="/BookD" element={<BookD />}/>
             <Route path="/BookDO" element={<BookDO />}/>
             <Route path="/Prescription" element={<Prescriptions />} />
             <Route path="/Request-Medicine" element={<ListofMedicine />} />
             <Route path="/Dispensary-Home" element={<Dispensary_Home />} />
             <Route path="/Accept-Request" element={<AcceptMedicine/>}/>
-            <Route path="/BookSO" element={<BookSO/>}/>
-            <Route path="/SeniorOfficer-Home" element={<HomeSO/>}/>
+            <Route path="/SeniorOfficer-Home" element={<BookSO/>}/>
+            <Route path="/Teacher-Home" element={<TeacherHome/>}/>
+          
           </Routes>
         </div>
       </div>
