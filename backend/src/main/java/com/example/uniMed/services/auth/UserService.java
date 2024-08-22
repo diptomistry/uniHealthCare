@@ -327,6 +327,11 @@ public class UserService {
             response.put("message", "Invalid username or password");
             return response;
         }
+        //generate token
+        String token = new JwtHelper().generateToken(email);
+        user.setToken(token);
+        System.out.println("Token: "+token);
+
     
         // Build the response
         response.put("success", true);

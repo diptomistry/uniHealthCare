@@ -1,0 +1,60 @@
+package com.example.uniMed.apis.publics.about_us;
+
+
+
+import com.example.uniMed.models.Blog;
+import com.example.uniMed.services.publics.about_us.BlogService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/blogs")
+public class BlogController {
+
+    @Autowired
+    private BlogService blogService;
+
+    @GetMapping
+    public List<Blog> getAllBlogs() {
+        return blogService.getAllBlogs();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Blog> getBlogById(@PathVariable Long id) {
+        Optional<Blog> blog = blogService.getBlogById(id);
+        if (blog.isPresent()) {
+            return ResponseEntity.ok(blog.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping
+    public Blog createBlog(@RequestBody Blog blog) {
+        return blogService.createBlog(blog);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Blog> updateBlog(@PathVariable Long id, @RequestBody Blog blogDetails) {
+        Optional<Blog> updatedBlog = blogService.updateBlog(id, blogDetails);
+        if (updatedBlog.isPresent()) {
+            return ResponseEntity.ok(updatedBlog.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBlog(@PathVariable Long id) {
+        if (blogService.deleteBlog(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}
