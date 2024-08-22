@@ -110,7 +110,7 @@ const Chat = () => {
                   <div
                     className={`max-w-[70%] rounded-lg p-2 ${
                       selectedChat.replies.includes(item)
-                        ? 'bg-blue-500 text-white'
+                        ? 'bg-primaryColor text-white'
                         : 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white'
                     }`}
                   >

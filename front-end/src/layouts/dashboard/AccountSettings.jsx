@@ -36,7 +36,7 @@ function AccountSettings() {
       <div className="grid grid-cols-8 pt-3 sm:grid-cols-10">
         <div className="relative my-4 w-56 sm:hidden">
           <input className="peer hidden" type="checkbox" name="select-1" id="select-1" />
-          <label htmlFor="select-1" className="flex w-full cursor-pointer select-none rounded-lg border p-2 px-3 text-sm text-gray-700 ring-blue-700 peer-checked:ring">
+          <label htmlFor="select-1" className="flex w-full cursor-pointer select-none rounded-lg border p-2 px-3 text-sm text-gray-700 ring-brightColor peer-checked:ring">
             {activeSection}
           </label>
           <svg
@@ -51,19 +51,19 @@ function AccountSettings() {
           </svg>
           <ul className="max-h-0 select-none flex-col overflow-hidden rounded-b-lg shadow-md transition-all duration-300 peer-checked:max-h-56 peer-checked:py-3">
             <li
-              className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-blue-700 hover:text-white"
+              className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-brightColor hover:text-white"
               onClick={() => handleSectionChange('Accounts')}
             >
               Accounts
             </li>
             <li
-              className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-blue-700 hover:text-white"
+              className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-brightColor hover:text-white"
               onClick={() => handleSectionChange('Personal Info.')}
             >
               Personal Info.
             </li>
             <li
-              className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-blue-700 hover:text-white"
+              className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-brightColor hover:text-white"
               onClick={() => handleSectionChange('Image')}
             >
               Image
@@ -75,7 +75,7 @@ function AccountSettings() {
           <ul>
             <li
               className={`mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${
-                activeSection === 'Accounts' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'
+                activeSection === 'Accounts' ? 'border-l-brightColor text-brightColor' : 'border-transparent hover:border-l-brightColor hover:text-brightColor'
               }`}
               onClick={() => handleSectionChange('Accounts')}
             >
@@ -83,7 +83,7 @@ function AccountSettings() {
             </li>
             <li
               className={`mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${
-                activeSection === 'Personal Info.' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'
+                activeSection === 'Personal Info.' ? 'border-l-brightColor text-brightColor' : 'border-transparent hover:border-l-brightColor hover:text-brightColor'
               }`}
               onClick={() => handleSectionChange('Personal Info.')}
             >
@@ -91,7 +91,7 @@ function AccountSettings() {
             </li>
             <li
               className={`mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${
-                activeSection === 'Image' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'
+                activeSection === 'Image' ? 'border-l-brightColor text-brightColor' : 'border-transparent hover:border-l-brightColor hover:text-brightColor'
               }`}
               onClick={() => handleSectionChange('Image')}
             >
@@ -113,7 +113,7 @@ function AccountSettings() {
                 <p className="text-gray-600">
                   Your email address is <strong>john.doe@company.com</strong>
                 </p>
-                <button className="inline-flex text-sm font-semibold text-blue-600 underline decoration-2" onClick={handleChangeEmail}>
+                <button className="inline-flex text-sm font-semibold text-primaryColor underline decoration-2" onClick={handleChangeEmail}>
                   Change
                 </button>
               </div>
@@ -124,7 +124,7 @@ function AccountSettings() {
                 <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
                   <label htmlFor="login-password">
                     <span className="text-sm text-gray-500">Current Password</span>
-                    <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+                    <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-primaryColor">
                       <input
                         type={passwordVisible ? 'text' : 'password'}
                         id="login-password"
@@ -135,7 +135,7 @@ function AccountSettings() {
                   </label>
                   <label htmlFor="new-password">
                     <span className="text-sm text-gray-500">New Password</span>
-                    <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+                    <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-primaryColor">
                       <input
                         type={passwordVisible ? 'text' : 'password'}
                         id="new-password"
@@ -160,9 +160,9 @@ function AccountSettings() {
                 </TooltipComponent>
               </div>
               <p className="mt-2">
-                Can't remember your current password? <a className="text-sm font-semibold text-blue-600 underline decoration-2" href="#">Recover Account</a>
+                Can't remember your current password? <a className="text-sm font-semibold text-brightColor underline decoration-2" href="#">Recover Account</a>
               </p>
-              <button className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white" onClick={handleChangePassword}>
+              <button className="mt-4 rounded-lg bg-primaryColor hover:bg-hoverColor px-4 py-2 text-white" onClick={handleChangePassword}>
                 Save Password
               </button>
               <hr className="mt-4 mb-8" />
