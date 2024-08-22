@@ -1,15 +1,19 @@
 import React, { useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import  UserContext  from './UserProvider';
+import { Navigate} from 'react-router-dom';
+import { UserContext } from './UserProvider';
+import Dashboard from '../../pages/Dashboard';
+
 
 const ProtectedRoute = () => {
   const { user } = useContext(UserContext);
 
+
   if (!user) {
-    return <Navigate to="/get-started" replace />;
+   
+    return <Navigate to="/" replace />;
   }
 
-  return <Outlet />;
+  return <Dashboard />;
 };
 
 export default ProtectedRoute;

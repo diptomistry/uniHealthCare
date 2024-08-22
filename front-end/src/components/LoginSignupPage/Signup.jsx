@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import AddressAutocomplete from './AddressAutocomplete';
-
+import axios from 'axios';
 const Signup = ({ userType, handleUserTypeChange }) => {
   const [address, setAddress] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [selectedGender, setSelectedGender] = useState('');
   const [signature, setSignature] = useState(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [dob, setDob] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
+  const [registrationNo, setRegistrationNo] = useState('');
+  const [session, setSession] = useState('');
 
   const handleAddressSelect = (selectedAddress) => {
     setAddress(selectedAddress);
@@ -14,9 +22,65 @@ const Signup = ({ userType, handleUserTypeChange }) => {
   const handleSignatureChange = (event) => {
     setSignature(event.target.files[0]);
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    // Create a JSON object to send as the POST request body
+    const data = {
+      name,
+      email,
+      phone,
+      dob,
+      gender: selectedGender,
+      userType,
+      password,
+      confirmPass,
+      address,
+      registeredFrom: 'web',
+    };
+
+    if (userType === 'student') {
+      data.departmentId = 1;///
+      data.session = session;
+      data.registrationNo = registrationNo;
+    }
+
+    if (userType === 'doctor') {
+      data.departmentId = selectedDepartment;
+      // Assuming the signature is required to be converted to base64 string
+      // You can use libraries like FileReader to convert it before sending
+    }
+
+    try {
+      console.log('Sending data:', data);
+      const response = await axios.post('http://localhost:8000/api/auth/create-user', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      alert('User created successfully:');
+      setAddress('');
+      setSelectedDepartment('');
+      setSelectedGender('');
+      setSignature(null);
+      setName('');
+      setEmail('');
+      setPhone('');
+      setDob('');
+      setPassword('');
+      setConfirmPass('');
+      setRegistrationNo('');
+      setSession('');
+      // Handle response
+      console.log('User created successfully:', response.data);
+    } catch (error) {
+      alert('Error creating user:');
+      // Handle error
+      console.error('Error creating user:', error.response?.data || error.message);
+    }
+  };
   return (
-    <form action="#">
+    <form onSubmit={handleSubmit}>
       <div className="flex flex-col items-center">
         <div className="text-center">
           <h1 className="text-2xl xl:text-4xl font-extrabold text-textColor">
@@ -51,6 +115,8 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                 className="py-3 px-2 bg-[#d5f2ec] rounded-lg"
                 type="text"
                 placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             )}
             {userType === "student" && (
@@ -59,11 +125,15 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
                   type="text"
                   placeholder="Your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
                 <input
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
                   type="text"
                   placeholder="Dept name"
+                  value={selectedDepartment}
+                  onChange={(e) => setSelectedDepartment(e.target.value)}
                 />
               </div>
             )}
@@ -74,11 +144,15 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
                   type="email"
                   placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
                   type="tel"
                   placeholder="Enter your phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
             )}
@@ -89,11 +163,15 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg"
                   type="email"
                   placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg"
                   type="tel"
                   placeholder="Enter your phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </>
             )}
@@ -120,11 +198,15 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
                   type="number"
                   placeholder="Reg. Number"
+                  value={registrationNo}
+                  onChange={(e) => setRegistrationNo(e.target.value)}
                 />
                 <input
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
                   type="text"
                   placeholder="Session"
+                  value={session}
+                  onChange={(e) => setSession(e.target.value)}
                 />
               </div>
             )}
@@ -136,6 +218,8 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                 onFocus={(e) => (e.currentTarget.type = "date")}
                 onBlur={(e) => (e.currentTarget.type = "text")}
                 placeholder="DOB"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
               />
               <select
                 id="gender"
@@ -155,11 +239,15 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                 className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
                 type="password"
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <input
                 className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
                 type="password"
                 placeholder="Confirm Pass..."
+                value={confirmPass}
+                onChange={(e) => setConfirmPass(e.target.value)}
               />
             </div>
 

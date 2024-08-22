@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "../components/dashboard/Sidebar";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -19,6 +19,7 @@ import AcceptMedicine from "../components/dashboard/seniorOfficer/AcceptMedicine
 import BookSO from "../components/dashboard/seniorOfficer/BookSO";
 import TeacherHome from "../components/dashboard/teacher/TeacherHome";
 import ChatBot from "../models/dashboard/ChatBot";
+//import { UserContext } from "../services/auth/UserProvider";
 
 import {
   AboutSection,
@@ -39,7 +40,8 @@ import {
 const Dashboard = () => {
   const { activeMenu } = useStateContext();
   const [darkMode, setDarkMode] = useState(false);
-
+///  const { user } = useContext(UserContext);
+///console.log(user);
   const toggleMode = () => {
     setDarkMode(!darkMode);
   localStorage.setItem("darkMode", JSON.stringify(!darkMode));
