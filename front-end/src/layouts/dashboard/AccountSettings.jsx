@@ -188,11 +188,14 @@ function AccountSettings() {
               </div>
             </>
           )}
-
-          {activeSection === 'Personal Info.' && <PersonalInfo />}
-          {activeSection === 'Image' && <Image />}
+  {activeSection === 'Personal Info.' && <PersonalInfo />}
+         <div className='flex justify-center'>
+       
+         {activeSection === 'Image' && <Image />}
+         </div>
         </div>
       </div>
+      
     </div>
   );
 }
