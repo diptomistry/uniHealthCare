@@ -1,8 +1,9 @@
 package com.example.uniMed.apis.publics.about_us;
 
 import com.example.uniMed.models.AboutUs;
-import com.example.uniMed.models.Image;
+import com.example.uniMed.services.FileService;
 import com.example.uniMed.services.publics.about_us.AboutUsService;
+import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -18,6 +21,9 @@ public class AboutUsController {
 
     @Autowired
     private AboutUsService aboutUsService;
+
+    @Autowired
+    private FileService fileService;
 
     @GetMapping
     public List<AboutUs> getAllAboutUs() {
@@ -28,7 +34,13 @@ public class AboutUsController {
     public ResponseEntity<AboutUs> getAboutUsById(@PathVariable Long id) {
         Optional<AboutUs> aboutUs = aboutUsService.getAboutUsById(id);
         if (aboutUs.isPresent()) {
-            return ResponseEntity.ok(aboutUs.get());
+            AboutUs entity = aboutUs.get();
+            AboutUs dto = new AboutUs(
+                entity.getId(),
+                entity.getDescription(),
+                entity.getImageUrls() // Assuming getImageUrls() returns a List<String>
+            );
+            return ResponseEntity.ok(dto);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -57,14 +69,24 @@ public class AboutUsController {
             return ResponseEntity.notFound().build();
         }
     }
-   @PostMapping("/upload-image/{id}")
-    public ResponseEntity<AboutUs> addImage(@PathVariable Long id, @RequestBody Image image) {
-        Optional<AboutUs> updatedAboutUs = aboutUsService.addImageToAboutUs(id, image);
+
+    @PostMapping("/upload-image/{id}")
+    public ResponseEntity<AboutUs> addImage(@PathVariable Long id, @RequestBody String imageUrl) {
+        Optional<AboutUs> updatedAboutUs = aboutUsService.addImageToAboutUs(id, imageUrl);
         if (updatedAboutUs.isPresent()) {
             return ResponseEntity.ok(updatedAboutUs.get());
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("/delete-image/{id}")
+   public ResponseEntity<AboutUs> deleteImage(@PathVariable Long id, @RequestBody String imageUrl) {
+       Optional<AboutUs> updatedAboutUs = aboutUsService.deleteImageFromAboutUs(id, imageUrl);
+       if (updatedAboutUs.isPresent()) {
+           return ResponseEntity.ok(updatedAboutUs.get());
+       } else {
+           return ResponseEntity.notFound().build();
+       }
+   }
     
 }

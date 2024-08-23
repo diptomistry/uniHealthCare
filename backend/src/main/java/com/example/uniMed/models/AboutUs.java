@@ -1,7 +1,5 @@
 package com.example.uniMed.models;
 
-
-
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -9,22 +7,29 @@ import java.util.List;
 @Table(name = "about_us")
 public class AboutUs {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "about_us_id")
-    private List<Image> images;
+    @ElementCollection
+    @CollectionTable(name = "about_us_images", joinColumns = @JoinColumn(name = "about_us_id"))
+    @Column(name = "image_url")
+    private List<String> imageUrls;
 
     public AboutUs() {
     }
 
-    public AboutUs(String description, List<Image> images) {
+    public AboutUs(Long id, String description, List<String> imageUrls) {
+        this.id = id;
         this.description = description;
-        this.images = images;
+        this.imageUrls = imageUrls;
+    }
+    public AboutUs(String description, List<String> imageUrls) {
+        this.description = description;
+        this.imageUrls = imageUrls;
     }
 
     public Long getId() {
@@ -43,11 +48,11 @@ public class AboutUs {
         this.description = description;
     }
 
-    public List<Image> getImages() {
-        return images;
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
 
-    public void setImages(List<Image> images) {
-        this.images = images;
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 }
