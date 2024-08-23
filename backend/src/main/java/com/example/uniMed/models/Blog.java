@@ -2,6 +2,8 @@ package com.example.uniMed.models;
 
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +22,8 @@ public class Blog
     private String title;
     private String description;
     private String image;
+     @JsonProperty("isBlog")
+
     private boolean isBlog;
 
     public Blog() {

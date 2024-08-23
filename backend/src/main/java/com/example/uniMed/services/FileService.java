@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.net.URL;
 import java.util.UUID;
 
 @Service
@@ -40,5 +41,18 @@ public class FileService {
 
         // Return the full URL
         return serverUrl + "/uploads/" + filename;
+    }
+    public void deleteFile(String fileUrl) throws IOException {
+        // Extract the filename from the URL
+       
+        URL url = new URL(fileUrl);
+        System.out.println("url: " + url);
+        String filename = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
+        System.out.println("filename: " + filename);
+        // Resolve the file path
+        Path filePath = Paths.get(uploadDir).resolve(filename);
+
+        // Delete the file
+        Files.delete(filePath);
     }
 }

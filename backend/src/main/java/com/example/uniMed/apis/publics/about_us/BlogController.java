@@ -36,6 +36,9 @@ public class BlogController {
 
     @PostMapping
     public Blog createBlog(@RequestBody Blog blog) {
+        System.out.println(blog.isBlog());
+        System.out.println("Blog object: " + blog);
+        System.out.println("isBlog: " + blog.isBlog());
         return blogService.createBlog(blog);
     }
 

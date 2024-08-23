@@ -52,5 +52,4 @@ public class DoctorSlot {
         this.dutyRoster = dutyRoster;
     }
 
-    // Getters and setters
 }
