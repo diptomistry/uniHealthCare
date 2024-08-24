@@ -11,11 +11,12 @@ import com.example.uniMed.models.Student;
 import com.example.uniMed.security.JwtHelper;
 import com.example.uniMed.models.User;
 import com.example.uniMed.repositories.EmailSender;
-import com.example.uniMed.repositories.auth.DoctorRepository;
+
 
 import com.example.uniMed.repositories.auth.StudentRepository;
 import com.example.uniMed.repositories.auth.UserRepo;
 import com.example.uniMed.repositories.auth.role.RoleRepository;
+import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
 import com.example.uniMed.services.FileService;
 
 import java.security.NoSuchAlgorithmException;

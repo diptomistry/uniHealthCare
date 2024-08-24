@@ -30,6 +30,14 @@ public class AboutUsService {
     public AboutUs createAboutUs(AboutUs aboutUs) {
         return aboutUsRepository.save(aboutUs);
     }
+    public AboutUs updateSingleAboutUs(Long id,String description) {
+        AboutUs aboutUs = aboutUsRepository.findById(id).get();
+        if (aboutUs == null) {
+            return null;
+        }
+        aboutUs.setDescription(description);
+        return aboutUsRepository.save(aboutUs);
+    }
 
     public Optional<AboutUs> updateAboutUs(Long id, AboutUs aboutUsDetails) {
         return aboutUsRepository.findById(id).map(aboutUs -> {
