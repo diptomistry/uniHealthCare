@@ -45,10 +45,12 @@ public Map<String, Object> createUser
     String departmentName;
     String session;
     String registrationNo;
+    String departmentId=null;
     try {
          session = body.get("session");
          registrationNo = body.get("registrationNo");
          departmentName = body.get("departmentName");
+         departmentId = body.get("departmentId");
     } catch (NumberFormatException e) {
         departmentName = null;
         session = null;
@@ -68,7 +70,7 @@ public Map<String, Object> createUser
 
     System.out.println("Creating user");
 
-    return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, departmentName, session, registrationNo, registeredFrom, phone);
+    return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, departmentId, session, registrationNo, registeredFrom, phone);
 }
 
     @PostMapping("/update-user")

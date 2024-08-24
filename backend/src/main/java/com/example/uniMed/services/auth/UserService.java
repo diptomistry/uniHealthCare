@@ -11,11 +11,12 @@ import com.example.uniMed.models.Student;
 import com.example.uniMed.security.JwtHelper;
 import com.example.uniMed.models.User;
 import com.example.uniMed.repositories.EmailSender;
-import com.example.uniMed.repositories.auth.DoctorRepository;
+
 
 import com.example.uniMed.repositories.auth.StudentRepository;
 import com.example.uniMed.repositories.auth.UserRepo;
 import com.example.uniMed.repositories.auth.role.RoleRepository;
+import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
 import com.example.uniMed.services.FileService;
 
 import java.security.NoSuchAlgorithmException;
@@ -119,10 +120,17 @@ public class UserService {
                     response.put("message", "Specialization must be provided for doctors");
                     return response;
                 }
-                System.out.println("------->Creating doctor");
+                System.out.println("------->Creating doctor");try{
 
-                Doctors doctor = new Doctors(newUser, departmentId);
+                Doctors doctor = new Doctors(newUser, Long.parseLong(departmentId));
                 doctorRepository.save(doctor);
+                }catch(Exception e){
+                    userRepository.delete(newUser);
+                    System.out.println("Error: "+e.getMessage());
+                    response.put("success", false);
+                    response.put("message", "An error occurred while creating the doctor: " + e.getMessage());
+                    return response;
+                }
             }
 
             response.put("success", true);

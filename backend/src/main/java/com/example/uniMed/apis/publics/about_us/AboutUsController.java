@@ -9,10 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -65,6 +66,17 @@ public class AboutUsController {
     public ResponseEntity<Void> deleteAboutUs(@PathVariable Long id) {
         if (aboutUsService.deleteAboutUs(id)) {
             return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+     @PostMapping("/update-single-about-us/{id}")
+    public ResponseEntity<AboutUs> updateSingleAboutUs(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+        String description = payload.get("description");
+        System.out.println("Description: " + description);
+        AboutUs updatedAboutUs = aboutUsService.updateSingleAboutUs(id, description);
+        if (updatedAboutUs != null) {
+            return ResponseEntity.ok(updatedAboutUs);
         } else {
             return ResponseEntity.notFound().build();
         }

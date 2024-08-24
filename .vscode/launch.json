@@ -2,6 +2,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "UniMedApplication",
+            "request": "launch",
+            "mainClass": "com.example.uniMed.UniMedApplication"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-UniMedApplication<uniMed>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
