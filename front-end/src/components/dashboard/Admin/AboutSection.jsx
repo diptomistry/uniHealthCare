@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { aboutUsData } from "../../../assets/dashboard";
 import Button from "../../../layouts/dashboard/DutyRoster/Button";
-import { mortazaImages } from "../../../assets/dashboard";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import DeleteConfirmationModal from "../../../models/DeleteConfirmationModal";
 
@@ -9,10 +8,45 @@ const AboutSection = () => {
   const [aboutUs, setAboutUs] = useState(aboutUsData.aboutUs);
   const [departments, setDepartments] = useState(aboutUsData.departments);
   const [newDepartment, setNewDepartment] = useState("");
-  const [images, setImages] = useState(mortazaImages);
+  const [images, setImages] = useState([]);
+  
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteItemType, setDeleteItemType] = useState(null);
   const [deleteItemIndex, setDeleteItemIndex] = useState(null);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await fetch("http://localhost:8000/api/about-us/1", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error text:", errorText);
+          throw new Error("Failed to fetch image URLs");
+        }
+
+        const data = await response.json();
+
+        const parsedImageUrls = data.imageUrls.map((img) => {
+          const parsedUrlObj = JSON.parse(img);
+          return parsedUrlObj.imageUrl;
+        });
+
+        setImages(parsedImageUrls);
+      } catch (error) {
+        console.error("Error fetching images:", error.message);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   const handleAboutUsChange = (e) => {
     setAboutUs(e.target.value);
@@ -30,11 +64,36 @@ const AboutSection = () => {
     setDeleteItemIndex(null);
   };
 
-  const confirmDelete = () => {
-    if (deleteItemType === 'department') {
+  const confirmDelete = async () => {
+    if (deleteItemType === "department") {
       setDepartments(departments.filter((_, i) => i !== deleteItemIndex));
-    } else if (deleteItemType === 'image') {
-      setImages(images.filter((_, i) => i !== deleteItemIndex));
+    } else if (deleteItemType === "image") {
+      const imageUrlToDelete = images[deleteItemIndex];
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await fetch(
+          "http://localhost:8000/api/about-us/delete-image/1",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ imageUrl: imageUrlToDelete }),
+          }
+        );
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error text:", errorText);
+          throw new Error(`Failed to delete image with status ${response.status}`);
+        }
+
+        setImages(images.filter((_, i) => i !== deleteItemIndex));
+      } catch (error) {
+        console.error("Error deleting image:", error.message);
+      }
     }
     closeDeleteModal();
   };
@@ -56,11 +115,66 @@ const AboutSection = () => {
     }
   };
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = async (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map(file => URL.createObjectURL(file));
-    setImages(prevImages => [...prevImages, ...newImages]);
+    const token = localStorage.getItem("token");
+
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        // Step 1: Upload the image to get its URL
+        const uploadResponse = await fetch(
+          "http://localhost:8000/api/files/upload",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          }
+        );
+       // console.log("Upload response:", uploadResponse);
+        if (!uploadResponse.ok) {
+          const errorText = await uploadResponse.text();
+          console.error("Upload response:", errorText);
+          throw new Error(
+            `Image upload failed with status ${uploadResponse.status}`
+          );
+        }
+
+        // Parse the response as text, not JSON
+        const url = await uploadResponse.text();
+
+        // Step 2: Post the image URL to the About Us API
+        const saveResponse = await fetch(
+          "http://localhost:8000/api/about-us/upload-image/1",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ imageUrl: url }),
+          }
+        );
+
+        if (!saveResponse.ok) {
+          const errorText = await saveResponse.text();
+          console.error("Save response:", errorText);
+          throw new Error(
+            `Failed to save image URL with status ${saveResponse.status}`
+          );
+        }
+
+        setImages((prevImages) => [...prevImages, url]);
+      } catch (error) {
+        console.error("Error uploading image:", error.message);
+      }
+    }
   };
+  
 
   return (
     <div className="flex flex-col md:flex-row gap-10">

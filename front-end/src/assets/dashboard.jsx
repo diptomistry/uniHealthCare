@@ -12,10 +12,10 @@ import {
   AiOutlineInfoCircle,
   AiOutlineFileAdd,
 } from "react-icons/ai";
-import { BsChatQuote, BsCurrencyDollar, BsShield } from "react-icons/bs";
+import { BsChatQuote } from "react-icons/bs";
 import { MdOutlineMedicalServices,MdOutlineSick } from "react-icons/md";
-import { RiStethoscopeLine, RiNurseLine, RiStockLine } from "react-icons/ri";
-import { CgDanger } from "react-icons/cg";
+import { RiStethoscopeLine, RiNurseLine, RiTaskLine } from "react-icons/ri";
+import { CgDanger,CgProfile } from "react-icons/cg";
 import {
   FaUserMd,
   FaUserNurse,
@@ -56,6 +56,69 @@ import FuturePlan from "./img/FuturePlan.png";
 import blogImg4 from "./img/blog4.jpg";
 import blogImg5 from "./img/blog5.jpg";
 import blogImg6 from "./img/blog6.jpg";
+export const AdminTasks = [
+  {
+    id: 1,
+    title: "Task 1",
+    heading: "Approve new users",
+    description: "Approve new users from 'User Management' section who have requested to join the platform",
+  },
+  {
+    id: 2,
+    title: "Task 2",
+    heading: "Check duty rosters if any changes are needed",
+    description: "Check duty rosters and make changes if needed. Make sure to inform the concerned person about the changes.",
+  },
+  {
+    id: 3,
+    title: "Task 3",
+    heading: "Check public information if any changes are needed",
+    description: "Check public information and make changes if needed. Make sure to inform the concerned person about the changes.",
+  },
+];
+export const GeneralTasks = [
+  {
+    id: 1,
+    title: "Task 1",
+    heading: "Check prescription",
+    description: "Check prescription and follow doctors advice.Take medicines as prescribed.", 
+  },
+];
+export const DispensaryOfficerTasks = [
+  {
+    id: 1,
+    title: "Task 1",
+    heading: "Check stock",
+    description: "Check stock and update if needed. Make sure to inform the concerned person about the changes.",
+  },
+];
+export const StaffTasks = [
+  {
+    id: 1,
+    title: "Task 1",
+    heading: "Check Tasks given by Admin",
+    description: " Check tasks given by admin and complete them on time.",
+  },
+];
+export const SeniorOfficerTasks = [
+  {
+    id: 1,
+    title: "Task 1",
+    heading: "Accept or Reject Medicine Request",
+    description: "Accept or Reject Medicine Request from 'Accept Medicine' section.",
+  },
+]; 
+export const doctorTasks = [ 
+  {
+    id: 1,
+    title: "Task 1",
+    heading: "Check new Patient requests",
+    description: "Check new Patient requests from 'New Requests' section and prescribe medicines.",
+  },
+];
+
+
+
 export const reviews = [
   {
     id: 1,
@@ -3057,21 +3120,15 @@ export const notiData = [
 ];
 export const userProfileData = [
   {
-    icon: <BsCurrencyDollar />,
+    icon: <CgProfile />,
     title: "My Profile",
     desc: "Account Settings",
     iconColor: "#03C9D7",
     iconBg: "#E5FAFB",
   },
+  
   {
-    icon: <BsShield />,
-    title: "My Inbox",
-    desc: "Messages & Emails",
-    iconColor: "rgb(0, 194, 146)",
-    iconBg: "rgb(235, 250, 242)",
-  },
-  {
-    icon: <FiCreditCard />,
+    icon: <RiTaskLine />,
     title: "My Tasks",
     desc: "To-do and Daily Tasks",
     iconColor: "rgb(255, 244, 229)",

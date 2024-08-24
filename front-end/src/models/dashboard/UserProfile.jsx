@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 import { userProfileData } from '../../assets/dashboard';
 import Button from '../../layouts/dashboard/Button';
 import CustomModal from '../CustomModal';
 import avatar from '../../assets/img/doc1.jpg';
 import AccountSettings from '../../layouts/dashboard/AccountSettings';
-
+import MyTask from '../../layouts/dashboard/MyTask';
+import { UserContext } from '../../services/auth/UserProvider';
 const UserProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [clickProfile, setClickProfile] = useState(false);
+  const [clickTask, setClickTask] = useState(false);
+  const { logout } = useContext(UserContext);
 
   const handleSettingsClick = (item) => {
-    if (item.title === "My Profile") {
+    if (item.title === "My Profile"||item.title === "My Tasks") {
       setIsModalOpen(true);
+      if(item.title === "My Profile"){
+        setClickProfile(true)
+        setClickTask(false)
+    }
+    else{
+      setClickTask(true)
+      setClickProfile(false)
+    }
     }
   };
 
@@ -66,6 +78,10 @@ const UserProfile = () => {
         ))}
       </div>
       <div className="mt-5">
+        <button
+        className='w-full'
+        onClick={logout}
+        >
         <Button
           color="white"
           bgColor={'#03C9D7'}
@@ -73,12 +89,18 @@ const UserProfile = () => {
           borderRadius="10px"
           width="full"
         />
+        </button>
       </div>
 
       {/* Render the CustomModal */}
-      {isModalOpen && (
+      {isModalOpen && clickProfile && (
         <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
         <AccountSettings />
+        </CustomModal>
+      )}
+      {isModalOpen && clickTask && (
+        <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
+        <MyTask />
         </CustomModal>
       )}
     </div>
