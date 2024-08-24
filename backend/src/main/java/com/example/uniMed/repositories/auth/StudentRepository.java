@@ -12,6 +12,14 @@ import com.example.uniMed.models.Student;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, String> {
 
+    
+
+
+
+
+    Student findByUserId(Long userId);
+
+
     // Additional query methods if needed
     @Modifying
     @Query("UPDATE Student s SET s.department = :department WHERE s.id = :studentId")

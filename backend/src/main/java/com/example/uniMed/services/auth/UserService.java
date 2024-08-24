@@ -195,15 +195,36 @@ public class UserService {
 
     @Transactional
     public Map<String, Object> deleteUser(Long userId) {
+        System.out.println("Deleting user");
+        System.out.println("User ID: "+userId);
         Map<String, Object> response = new HashMap<>();
         try {
-            userRepository.deleteUserData(userId);
-            userRepository.deleteById(userId);
+            User user = userRepository.findById(userId).get();
+            if (user == null) {
+                response.put("success", false);
+                response.put("message", "User does not exist");
+                return response;
+            }
+            System.out.println("User found");
+            System.out.println("Role: "+user.getRole().getRoleName());
+           
+
+            
+            if(user.getRole().getRoleName().equals("student")){
+                Student student = studentRepository.findByUserId(userId);
+                studentRepository.delete(student);
+            }
+            else if(user.getRole().getRoleName().equals("doctor")){
+                Doctors doctor = doctorRepository.findByUserId(userId);
+                doctorRepository.delete(doctor);
+            }
+
+            userRepository.delete(user);
             response.put("success", true);
             response.put("message", "User and all related records deleted successfully");
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "An error occurred while deleting the user");
+            response.put("message", "An error occurred while deleting the user + " + e.getMessage());
         }
         return response;
     }
@@ -218,11 +239,14 @@ public class UserService {
         }
 
         User user = userOpt.get();
+        System.out.println("Status: "+status);
+        System.out.println("User: "+user.getEmail());
         user.setStatus(status);
         userRepository.save(user);
 
         response.put("success", true);
         response.put("message", "User status updated successfully");
+        response.put("data", userRepository.findById(userId).get());
         return response;
     }
 
@@ -373,8 +397,17 @@ public class UserService {
 
     public Map<String, Object> getDoctors() {
         Map<String, Object> response = new HashMap<>();
-        response.put("success", false);
-        response.put("message", "Method not implemented for getDoctors");
+        try{
+        List<Doctors> doctors = doctorRepository.findAll();
+        response.put("success", true);
+        response.put("message", "Doctors retrieved successfully");
+        response.put("data", doctors);
         return response;
+        }
+        catch(Exception e){
+            response.put("success", false);
+            response.put("message", "Failed to get doctors");
+            return response;
+        }
     }
 }

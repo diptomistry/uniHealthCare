@@ -8,6 +8,9 @@ import com.example.uniMed.services.auth.UserService;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -96,12 +99,16 @@ public Map<String, Object> createUser
     }
 
     @PostMapping("/delete-user")
-    public Map<String, Object> deleteUser(@RequestParam Long user_id) {
+    public Map<String, Object> deleteUser(@RequestBody Map<String, Long> body) {
+        Long user_id = body.get("user_id");
         return userService.deleteUser(user_id);
     }
 
     @PostMapping("/update-status")
-    public Map<String, Object> updateStatus(@RequestParam Long user_id, @RequestParam String status) {
+    public Map<String, Object> updateStatus(@RequestBody Map<String, Object> body) {
+        Long user_id = Long.parseLong(body.get("user_id").toString());
+        System.out.println("User id: " + user_id);
+        String status = (body.get("status").toString());
         return userService.updateUserStatus(user_id, status);
     }
 
@@ -157,7 +164,10 @@ public Map<String, Object> createUser
             return response;
         }
     }
-
+    @GetMapping("/get-all-users")
+    public Map<String,Object> getAllUsersMap(){
+        return userService.getAllUsers();
+    }
     @GetMapping("/get-doctors")
     public Map<String, Object> getDoctors() {
         Map<String, Object> response = userService.getDoctors();

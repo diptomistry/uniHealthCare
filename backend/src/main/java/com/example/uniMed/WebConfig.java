@@ -6,17 +6,24 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.example.uniMed.security.CustomInterceptor;
 import com.example.uniMed.security.TokenVerifierInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
       @Autowired
     private TokenVerifierInterceptor tokenVerifierInterceptor;
+    @Autowired
+    private CustomInterceptor customInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(customInterceptor)
+                .addPathPatterns("/api/**");
+
         registry.addInterceptor(tokenVerifierInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/auth/**").excludePathPatterns("/api/departments/**").excludePathPatterns("/api/roles/**"); // Exclude /auth/** paths
+                .excludePathPatterns("/api/auth/**", "/api/departments/**", "/api/roles/**"); // Exclude /auth/** paths
     }
 
     @Override

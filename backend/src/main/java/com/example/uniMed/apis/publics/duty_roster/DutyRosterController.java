@@ -19,7 +19,7 @@ public class DutyRosterController {
             @PathVariable Long slotId,
             @RequestBody Map<String, List<Long>> request) {
         List<Long> doctorIds = request.get("doctorIds");
-        System.out.println(doctorIds);
+        
         Slot updatedSlot = dutyRosterService.assignDoctorsToSlot(slotId, doctorIds);
         return ResponseEntity.ok(updatedSlot);
     }

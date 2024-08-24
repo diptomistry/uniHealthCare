@@ -49,6 +49,7 @@ public class AboutUsService {
 
     public boolean deleteAboutUs(Long id) {
         return aboutUsRepository.findById(id).map(aboutUs -> {
+            
             aboutUsRepository.delete(aboutUs);
             return true;
         }).orElse(false);
