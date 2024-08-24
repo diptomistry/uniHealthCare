@@ -12,6 +12,9 @@ public class AboutUs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Lob
+   
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @ElementCollection
