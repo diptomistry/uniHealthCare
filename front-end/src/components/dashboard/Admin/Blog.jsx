@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { BlogData } from '../../../assets/dashboard';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import PrimaryButton from '../../../layouts/dashboard/PrimaryButton';
@@ -6,11 +6,34 @@ import CustomModal from '../../../models/CustomModal';
 import DeleteConfirmationModal from '../../../models/DeleteConfirmationModal';
 
 const Blog = () => {
-  const [blogs, setBlogs] = useState(BlogData);
+  const [blogs, setBlogs] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editForm, setEditForm] = useState({ title: '', description: '', img: '' });
   const [isAdding, setIsAdding] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
+  //useeffect to fetch blogdata from http://localhost:8000/api/blogs with token
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/blogs', {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setBlogs(data);
+        //console.log(data.img);
+
+      } catch (error) {
+        console.error('An error occurred while fetching blog data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+
 
   const handleDeleteClick = (index) => {
     setDeleteIndex(index);
@@ -30,26 +53,79 @@ const Blog = () => {
     setEditForm(blogs[index]);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const { title, description, img } = editForm;
-
+    const token = localStorage.getItem('token');
+  
     // Validation: Check if any field is empty
     if (!title || !description || !img) {
       alert('All fields (Title, Description, Image) must be filled out.');
       return;
     }
-
-    if (isAdding) {
-      setBlogs([...blogs, editForm]);
-      setIsAdding(false);
-    } else {
-      const updatedBlogs = [...blogs];
-      updatedBlogs[editingIndex] = editForm;
-      setBlogs(updatedBlogs);
-      setEditingIndex(null);
+  
+    try {
+      let imageUrl = img;
+  
+      // If the image is a base64 string, upload it to the server
+      if (img.startsWith('data:image')) {
+        const formData = new FormData();
+        const blob = await fetch(img).then(res => res.blob());
+        formData.append('file', blob);
+  
+        const uploadResponse = await fetch('http://localhost:8000/api/files/upload', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+  
+       // const uploadData = await uploadResponse.json();
+        //imageUrl = uploadData; // Assuming the response contains a `url` field with the image URL
+         imageUrl = await uploadResponse.text();
+      }
+  
+      const blogData = { title, description, image: imageUrl };
+  
+      let response;
+      if (isAdding) {
+        console.log('hello',blogData);
+       
+        // Creating a new blog
+        response = await fetch('http://localhost:8000/api/blogs', {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(blogData),
+        });
+        const newBlog = await response.json();
+        setBlogs([...blogs, newBlog]);
+        setIsAdding(false);
+      } else {
+        // Updating an existing blog
+        response = await fetch(`http://localhost:8000/api/blogs/${blogs[editingIndex].id}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(blogData),
+        });
+        const updatedBlog = await response.json();
+        const updatedBlogs = [...blogs];
+        updatedBlogs[editingIndex] = updatedBlog;
+        setBlogs(updatedBlogs);
+        setEditingIndex(null);
+      }
+      setEditForm({ title: '', description: '', img: '' });
+    } catch (error) {
+      console.error('An error occurred while saving the blog:', error);
     }
-    setEditForm({ title: '', description: '', img: '' });
   };
+  
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -84,7 +160,7 @@ const Blog = () => {
         </button>
       </div>
       {blogs.map((blog, index) => {
-        const descriptionParagraphs = blog.description.split('\n');
+          const descriptionParagraphs = (blog.description || '').split('\n');
 
         return (
           <div key={index} className="flex flex-col mb-5">
@@ -102,7 +178,7 @@ const Blog = () => {
             <div className="flex flex-col md:flex-row">
               <img
                 className="w-[400px] h-60 md:h-72 rounded-xl"
-                src={blog.img}
+                src={blog.image}
                 alt="Blog"
               />
               <div className="text-lg md:ml-5 text-textColor overflow-auto border-b-2 max-h-72 md:max-h-96 dark:text-gray-200">
