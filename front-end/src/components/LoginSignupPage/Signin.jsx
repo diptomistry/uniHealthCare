@@ -30,7 +30,7 @@ const Signin = ({ isSignUpMode, openForm }) => {
         alert('Login successful');
         login(data.data); // Update global user state
         localStorage.setItem('token', data.data.token);
-        navigate('/dashboard');
+        navigate('/dashboard/' + links); // Redirect to dashboard
       } else {
         setError('Login failed. Please check your credentials.');
       }
@@ -38,6 +38,30 @@ const Signin = ({ isSignUpMode, openForm }) => {
       setError('An error occurred during login. Please try again.');
     }
   };
+  const { user } = useContext(UserContext);
+  const userType = user.role.roleName; // Example userType, should be passed as a prop or context
+  const getMenuItems = (userType) => {
+    switch (userType) {
+      case "admin":
+        return 'Medical-Center';
+      case "doctor":
+        return 'doctor-home';
+      case "staff":
+        return 'staff-home';
+      case "student":
+        return 'student-home';
+      case "dispensary-officer":
+        return 'dispensary-home';
+      case "senior-officer":
+        return 'senior-officer-home';
+      case "teacher":
+        return 'teacher-home';
+      default:
+        return [];
+    }
+  };
+
+  const links = getMenuItems(userType);
 
   return (
     <div

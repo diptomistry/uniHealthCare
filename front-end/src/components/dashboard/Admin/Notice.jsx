@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaEdit } from 'react-icons/fa';
 import DeleteConfirmationModal from '../../../models/DeleteConfirmationModal';
-import { noticeInfo } from '../../../assets/dashboard';
+//import { noticeInfo } from '../../../assets/dashboard';
 
 const NoticeInfoDisplay = () => {
   const [notices, setNotices] = useState([]);

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { MdAdminPanelSettings, MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { links, doctorLinks,studentLinks,dispensaryLinks,seniorOfficerLinks,teacherLinks } from "../../assets/dashboard";
-
+import { UserContext } from "../../services/auth/UserProvider";
 import avatar from "../../assets/img/doc1.jpg";
 
 const Sidebar = () => {
@@ -20,8 +20,8 @@ const Sidebar = () => {
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white bg-brightColor text-md m-2";
   const normalLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 hover:bg-brightColor m-2";
-
-  const userType = "admin"; // Example userType, should be passed as a prop or context
+  const { user } = useContext(UserContext);
+  const userType = user.role.roleName; // Example userType, should be passed as a prop or context
   const getMenuItems = (userType) => {
     switch (userType) {
       case "admin":

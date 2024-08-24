@@ -6,7 +6,7 @@ import Dashboard from '../../pages/Dashboard';
 
 const ProtectedRoute = () => {
   const { user } = useContext(UserContext);
-
+//console.log('hello',user.role);
 
   if (!user) {
    
