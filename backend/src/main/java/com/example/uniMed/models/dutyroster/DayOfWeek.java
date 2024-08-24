@@ -2,19 +2,23 @@ package com.example.uniMed.models.dutyroster;
 
 import jakarta.persistence.*;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
+@Table(name = "day_of_week")
 public class DayOfWeek {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name; // E.g., "Monday"
+    @Column(name = "name")
+    private String name; 
     public DayOfWeek() {
     }
     public DayOfWeek(String name) {
         this.name = name;
     }
-
+ 
+    @JsonManagedReference
     @OneToMany(mappedBy = "dayOfWeek")
     private List<Slot> slots;
 

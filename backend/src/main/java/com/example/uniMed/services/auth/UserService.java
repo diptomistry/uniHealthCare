@@ -120,10 +120,17 @@ public class UserService {
                     response.put("message", "Specialization must be provided for doctors");
                     return response;
                 }
-                System.out.println("------->Creating doctor");
+                System.out.println("------->Creating doctor");try{
 
-                Doctors doctor = new Doctors(newUser, departmentId);
+                Doctors doctor = new Doctors(newUser, Long.parseLong(departmentId));
                 doctorRepository.save(doctor);
+                }catch(Exception e){
+                    userRepository.delete(newUser);
+                    System.out.println("Error: "+e.getMessage());
+                    response.put("success", false);
+                    response.put("message", "An error occurred while creating the doctor: " + e.getMessage());
+                    return response;
+                }
             }
 
             response.put("success", true);

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 @RestController
 @RequestMapping("/api/roster")
 public class DutyRosterController {
@@ -16,7 +17,9 @@ public class DutyRosterController {
     @PostMapping("/slots/{slotId}/doctors")
     public ResponseEntity<Slot> assignDoctorsToSlot(
             @PathVariable Long slotId,
-            @RequestBody List<Long> doctorIds) {
+            @RequestBody Map<String, List<Long>> request) {
+        List<Long> doctorIds = request.get("doctorIds");
+        System.out.println(doctorIds);
         Slot updatedSlot = dutyRosterService.assignDoctorsToSlot(slotId, doctorIds);
         return ResponseEntity.ok(updatedSlot);
     }
@@ -33,6 +36,7 @@ public ResponseEntity<Slot> createSlot(
         slotRequest.getTimeSlot(), 
         slotRequest.getDayOfWeekId(), 
         slotRequest.getDoctorIds());
+        
     
     return ResponseEntity.status(HttpStatus.CREATED).body(createdSlot);
 }

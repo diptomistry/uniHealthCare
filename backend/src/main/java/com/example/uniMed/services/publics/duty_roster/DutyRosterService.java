@@ -24,6 +24,12 @@ public class DutyRosterService {
     public Slot assignDoctorsToSlot(Long slotId, List<Long> doctorIds) {
         Slot slot = slotRepository.findById(slotId).orElseThrow(() -> new RuntimeException("Slot not found"));
         List<Doctors> doctors = doctorRepository.findAllById(doctorIds);
+        System.out.println(
+            "Doctors: " + doctors.size() + ", doctorIds: " + doctorIds.size() + ", slotId: " + slotId
+        );
+      for (Doctors doctor : doctors) {
+            System.out.println("Doctor: " + doctor.getDoctorID());
+        }
         slot.setDoctors(doctors);
         return slotRepository.save(slot);
     }
@@ -38,6 +44,9 @@ public class DutyRosterService {
             .orElseThrow(() -> new RuntimeException("Day of week not found"));
         
         List<Doctors> doctors = doctorRepository.findAllById(doctorIds);
+        if (doctors.size() != doctorIds.size()) {
+            throw new RuntimeException("Some doctors not found");
+        }
         
         Slot slot = new Slot();
         slot.setTimeSlot(timeSlot);

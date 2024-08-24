@@ -4,11 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Doctors {
-    public Doctors(Object id, String user_type) {
-        this.doctorID = (Integer) id;
-        //TODO Auto-generated constructor stub
-    }
-
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer doctorID;
@@ -36,6 +32,24 @@ public class Doctors {
     public Doctors(User newUser, Long departmentId) {
         this.user = newUser;
         this.department = new Department(departmentId);
-        //TODO Auto-generated constructor stub
     }
+    public Integer getDoctorID() {
+        return doctorID;
+    }
+    public void setDoctorID(Integer doctorID) {
+        this.doctorID = doctorID;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public Department getDepartment() {
+        return department;
+    }
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+    
 }

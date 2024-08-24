@@ -3,19 +3,22 @@ package com.example.uniMed.models.dutyroster;
 import java.util.List;
 
 import jakarta.persistence.*;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 import com.example.uniMed.models.Doctors;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 @Entity
+@Table(name = "slot")
+
 public class Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String timeSlot; // E.g., "09:00-12:00"
+  
+    @Column(name = "time_slot")
+    private String timeSlot;
 
     @ManyToMany
     @JoinTable(
@@ -23,8 +26,9 @@ public class Slot {
       joinColumns = @JoinColumn(name = "slot_id"), 
       inverseJoinColumns = @JoinColumn(name = "doctor_id"))
     private List<Doctors> doctors;
-
+    
     @ManyToOne
+      @JsonBackReference
     @JoinColumn(name = "day_of_week_id")
     private DayOfWeek dayOfWeek;
 
@@ -35,6 +39,14 @@ public class Slot {
     public void setId(Long id) {
       this.id = id;
     }
+      public Slot(String timeSlot, List<Doctors> doctors, DayOfWeek dayOfWeek) {
+        this.timeSlot = timeSlot;
+        this.doctors = doctors;
+        this.dayOfWeek = dayOfWeek;
+    }
+    public Slot() {
+    }
+
 
     public String getTimeSlot() {
       return timeSlot;
@@ -61,5 +73,5 @@ public class Slot {
     }
     
 
-    // Getters and Setters
+   
 }
