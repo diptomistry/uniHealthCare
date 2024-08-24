@@ -1,20 +1,18 @@
-import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../../services/auth/UserProvider';// Adjust the path as necessary
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../services/auth/UserProvider';
 
 const Signin = ({ isSignUpMode, openForm }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  
-  const { login } = useContext(UserContext); // Get login function from context
+  const [userType, setUserType] = useState('');
+  const { login } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log('email:', email);
-      console.log('password:', password);
       const response = await fetch('http://localhost:8000/api/auth/login', {
         method: 'POST',
         headers: {
@@ -26,11 +24,11 @@ const Signin = ({ isSignUpMode, openForm }) => {
       const data = await response.json();
 
       if (data.success) {
-        console.log(data.data);
+        setUserType(data.data.role.roleName);
         alert('Login successful');
-        login(data.data); // Update global user state
+
+        login(data.data); 
         localStorage.setItem('token', data.data.token);
-        navigate('/dashboard/' + links); // Redirect to dashboard
       } else {
         setError('Login failed. Please check your credentials.');
       }
@@ -38,30 +36,33 @@ const Signin = ({ isSignUpMode, openForm }) => {
       setError('An error occurred during login. Please try again.');
     }
   };
-  const { user } = useContext(UserContext);
-  const userType = user.role.roleName; // Example userType, should be passed as a prop or context
-  const getMenuItems = (userType) => {
-    switch (userType) {
-      case "admin":
-        return 'Medical-Center';
-      case "doctor":
-        return 'doctor-home';
-      case "staff":
-        return 'staff-home';
-      case "student":
-        return 'student-home';
-      case "dispensary-officer":
-        return 'dispensary-home';
-      case "senior-officer":
-        return 'senior-officer-home';
-      case "teacher":
-        return 'teacher-home';
-      default:
-        return [];
-    }
-  };
 
-  const links = getMenuItems(userType);
+ 
+
+  useEffect(() => {
+    if (userType==='admin') {
+      navigate('/dashboard/Medical-Center');
+    }
+    else if (userType==='doctor') {
+      navigate('/dashboard/doctor-home');
+    }
+    else if (userType==='staff') {
+      navigate('/dashboard/staff-home');
+    }
+    else if (userType==='student') {
+      navigate('/dashboard/Student-Home');
+    }
+    else if (userType==='dispensary officer') {
+      navigate('/dashboard/dispensary-home');
+    }
+    else if (userType==='senior officer') {
+      navigate('/dashboard/senior-officer-home');
+    }
+    else if (userType==='teacher') {
+      navigate('/dashboard/teacher-home');
+    }
+
+  }, [userType, navigate]);
 
   return (
     <div
