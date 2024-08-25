@@ -20,17 +20,16 @@ public class Slot {
     @Column(name = "time_slot")
     private String timeSlot;
 
+    @ManyToOne
+    @JoinColumn(name = "day_of_week_id", referencedColumnName = "id")
+    private DayOfWeek dayOfWeek;
+
     @ManyToMany
     @JoinTable(
       name = "slot_doctor", 
       joinColumns = @JoinColumn(name = "slot_id"), 
       inverseJoinColumns = @JoinColumn(name = "doctor_id"))
     private List<Doctors> doctors;
-    
-    @ManyToOne
-      @JsonBackReference
-    @JoinColumn(name = "day_of_week_id")
-    private DayOfWeek dayOfWeek;
 
     public Long getId() {
       return id;
@@ -64,14 +63,12 @@ public class Slot {
       this.doctors = doctors;
     }
 
-    public DayOfWeek getDayOfWeek() {
+   public DayOfWeek getDayOfWeek() {
       return dayOfWeek;
     }
 
     public void setDayOfWeek(DayOfWeek dayOfWeek) {
       this.dayOfWeek = dayOfWeek;
     }
-    
-
    
 }

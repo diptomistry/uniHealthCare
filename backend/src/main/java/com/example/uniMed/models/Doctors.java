@@ -1,5 +1,9 @@
 package com.example.uniMed.models;
 
+import java.util.List;
+
+import com.example.uniMed.models.dutyroster.Slot;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -17,6 +21,11 @@ public class Doctors {
     @JoinColumn(name = "departmentID")
     private Department department;
 
+    @ManyToMany(mappedBy = "doctors")
+    private List<Slot> slots;
+
+    // Constructors
+   
     public Doctors(Integer doctorID, User user, Department department) {
         this.doctorID = doctorID;
         this.user = user;

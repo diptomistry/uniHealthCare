@@ -3,6 +3,7 @@ package com.example.uniMed.models.dutyroster;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "day_of_week")
@@ -10,17 +11,23 @@ public class DayOfWeek {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
-    private String name; 
+
+    private String name; // E.g., "Sunday", "Monday", etc.
+
+    @OneToMany(mappedBy = "dayOfWeek")
+     @JsonIgnore
+    private List<Slot> slots;
+
+
     public DayOfWeek() {
+    }
+    public DayOfWeek(String name, List<Slot> slots) {
+        this.name = name;
+        this.slots = slots;
     }
     public DayOfWeek(String name) {
         this.name = name;
     }
- 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "dayOfWeek")
-    private List<Slot> slots;
 
     public Long getId() {
         return id;

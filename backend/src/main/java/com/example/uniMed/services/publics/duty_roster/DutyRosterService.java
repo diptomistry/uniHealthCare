@@ -18,49 +18,33 @@ public class DutyRosterService {
     private DoctorRepository doctorRepository;
 
     @Autowired
-    private SlotRepository slotRepository;
-
-    @Autowired
     private DayOfWeekRepository dayOfWeekRepository;
 
-    public Slot assignDoctorsToSlot(Long slotId, List<Long> doctorIds) {
-        Slot slot = slotRepository.findById(slotId).orElseThrow(() -> new RuntimeException("Slot not found"));
-        List<Doctors> doctors = doctorRepository.findAllById(doctorIds);
-        System.out.println(
-            "Doctors: " + doctors.size() + ", doctorIds: " + doctorIds.size() + ", slotId: " + slotId
-        );
-      for (Doctors doctor : doctors) {
-            System.out.println("Doctor: " + doctor.getDoctorID());
-        }
-        slot.setDoctors(doctors);
-        return slotRepository.save(slot);
-    }
+    @Autowired
+    private SlotRepository slotRepository;
 
-    public List<Slot> getSlotsForDay(Long dayOfWeekId) {
-        DayOfWeek dayOfWeek = dayOfWeekRepository.findById(dayOfWeekId)
-            .orElseThrow(() -> new RuntimeException("Day of week not found"));
-        return dayOfWeek.getSlots();
-    }
+    // Create a new slot
     public Slot createSlot(String timeSlot, Long dayOfWeekId, List<Long> doctorIds) {
         DayOfWeek dayOfWeek = dayOfWeekRepository.findById(dayOfWeekId)
-            .orElseThrow(() -> new RuntimeException("Day of week not found"));
-        
+                .orElseThrow(() -> new RuntimeException("Day of week not found"));
+
         List<Doctors> doctors = doctorRepository.findAllById(doctorIds);
-        if (doctors.size() != doctorIds.size()) {
-            throw new RuntimeException("Some doctors not found");
-        }
-        
+
         Slot slot = new Slot();
         slot.setTimeSlot(timeSlot);
         slot.setDayOfWeek(dayOfWeek);
         slot.setDoctors(doctors);
-        
+
         return slotRepository.save(slot);
     }
 
-    public List<Slot> getAllSlots() {
-        return slotRepository.findAll();
+    // Get all slots for a specific day
+    public List<Slot> getSlotsByDay(Long dayOfWeekId) {
+        return slotRepository.findByDayOfWeekId(dayOfWeekId);
     }
-   
-    // Additional methods for creating slots, days, and doctors
+
+    // Get the full duty roster
+    public List<DayOfWeek> getFullDutyRoster() {
+        return dayOfWeekRepository.findAll();
+    }
 }

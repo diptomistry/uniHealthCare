@@ -15,45 +15,54 @@ public class DutyRosterController {
 
     @Autowired
     private DutyRosterService dutyRosterService;
-    @Autowired
-    private DayOfWeekRepository dayOfWeekRepository;
 
-    @PostMapping("/slots/{slotId}/doctors")
-    public ResponseEntity<Slot> assignDoctorsToSlot(
-            @PathVariable Long slotId,
-            @RequestBody Map<String, List<Long>> request) {
-        List<Long> doctorIds = request.get("doctorIds");
+    // DTO for creating a slot
+    public static class SlotRequest {
+        private String timeSlot;
+        private Long dayOfWeekId;
+        private List<Long> doctorIds;
+        public String getTimeSlot() {
+            return timeSlot;
+        }
+        public void setTimeSlot(String timeSlot) {
+            this.timeSlot = timeSlot;
+        }
+        public Long getDayOfWeekId() {
+            return dayOfWeekId;
+        }
+        public void setDayOfWeekId(Long dayOfWeekId) {
+            this.dayOfWeekId = dayOfWeekId;
+        }
+        public List<Long> getDoctorIds() {
+            return doctorIds;
+        }
+        public void setDoctorIds(List<Long> doctorIds) {
+            this.doctorIds = doctorIds;
+        }
         
-        Slot updatedSlot = dutyRosterService.assignDoctorsToSlot(slotId, doctorIds);
-        return ResponseEntity.ok(updatedSlot);
+
+       
+    }
+
+    @PostMapping("/slots")
+    public ResponseEntity<Slot> createSlot(@RequestBody SlotRequest slotRequest) {
+        Slot slot = dutyRosterService.createSlot(
+                slotRequest.getTimeSlot(),
+                slotRequest.getDayOfWeekId(),
+                slotRequest.getDoctorIds()
+        );
+        return ResponseEntity.ok(slot);
     }
 
     @GetMapping("/days/{dayOfWeekId}/slots")
-    public ResponseEntity<List<Slot>> getSlotsForDay(@PathVariable Long dayOfWeekId) {
-        List<Slot> slots = dutyRosterService.getSlotsForDay(dayOfWeekId);
+    public ResponseEntity<List<Slot>> getSlotsByDay(@PathVariable Long dayOfWeekId) {
+        List<Slot> slots = dutyRosterService.getSlotsByDay(dayOfWeekId);
         return ResponseEntity.ok(slots);
     }
-    @PostMapping("/slots")
-public ResponseEntity<Slot> createSlot(
-        @RequestBody SlotRequest slotRequest) {
-    Slot createdSlot = dutyRosterService.createSlot(
-        slotRequest.getTimeSlot(), 
-        slotRequest.getDayOfWeekId(), 
-        slotRequest.getDoctorIds());
-        
-    
-    return ResponseEntity.status(HttpStatus.CREATED).body(createdSlot);
-}
-@GetMapping("/slots")
-public ResponseEntity<List<Slot>> getAllSlots() {
-    List<Slot> slots = dutyRosterService.getAllSlots();
-    return ResponseEntity.ok(slots);
-}
 
-@GetMapping("/slots-by-week")
-public ResponseEntity<List<DayOfWeek>> getSlotsByWeek() {
-    List<DayOfWeek> daysOfWeek = dayOfWeekRepository.findAll();
-    return ResponseEntity.ok(daysOfWeek);
-}
-    // Additional endpoints for managing doctors, slots, and days of the week
+    @GetMapping("/full-roster")
+    public ResponseEntity<List<DayOfWeek>> getFullDutyRoster() {
+        List<DayOfWeek> roster = dutyRosterService.getFullDutyRoster();
+        return ResponseEntity.ok(roster);
+    }
 }

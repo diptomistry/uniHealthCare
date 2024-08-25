@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
@@ -112,11 +115,16 @@ public Map<String, Object> createUser
         return userService.updateUserStatus(user_id, status);
     }
 
+
+  
+    
     @PostMapping("/update-role")
     public Map<String, Object> updateRole(@RequestParam Long user_id, @RequestParam Integer role_id) {
         return userService.updateUserRole(user_id, role_id);
     }@PostMapping("/send-otp")
-    public Map<String, Object> sendOtp(@RequestParam String email, @RequestParam boolean debug) {
+    public Map<String, Object> sendOtp(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        boolean debug = Boolean.parseBoolean(body.get("debug"));
         try {
             return userService.sendOtp(email, debug);
         } catch (Exception e) {
