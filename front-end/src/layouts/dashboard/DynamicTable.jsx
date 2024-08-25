@@ -57,7 +57,7 @@ const DynamicTable = ({ AloSchedule,Title }) => {
       <button onClick={deleteColumn} className='px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded'>Delete a Column</button>
       </div>
       </div>
-      <div className="grid border border-gray-300" style={{ gridTemplateColumns: `repeat(${tableData[0].length}, 1fr)` }}>
+      <div className="grid border border-gray-300" style={{ gridTemplateColumns: `repeat(${tableData[0]?.length || 1}, 1fr)` }}>
         {tableData.map((row, rowIndex) => (
           row.map((cell, colIndex) => (
             <div 

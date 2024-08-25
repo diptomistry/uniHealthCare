@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import ChangePassword from "./ChangePassword";
 
-const EmailRecoveryOTP = () => {
+const EmailRecoveryOTP = ({ otp, email }) => {  // Added `email` as a prop
+  const [enteredOTP, setEnteredOTP] = useState(""); // State to store the entered OTP
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [timer, setTimer] = useState(30); // 30 seconds timer
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [resendError, setResendError] = useState("");
+ const [ResetOtp, setResetOtp] = useState(null); // State to store the OTP
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       const form = document.getElementById("otp-form");
       const inputs = [...form.querySelectorAll("input[type=text]")];
-      const submit = form.querySelector("button[type=submit]");
 
       if (
         !/^[0-9]{1}$/.test(e.key) &&
@@ -30,15 +36,15 @@ const EmailRecoveryOTP = () => {
     const handleInput = (e) => {
       const form = document.getElementById("otp-form");
       const inputs = [...form.querySelectorAll("input[type=text]")];
-      const submit = form.querySelector("button[type=submit]");
       const { target } = e;
       const index = inputs.indexOf(target);
       if (target.value) {
         if (index < inputs.length - 1) {
           inputs[index + 1].focus();
         } else {
-          submit.focus();
+          form.querySelector("button[type=submit]").focus();
         }
+        setEnteredOTP(inputs.map(input => input.value).join("")); // Update entered OTP
       }
     };
 
@@ -48,16 +54,6 @@ const EmailRecoveryOTP = () => {
 
     const handlePaste = (e) => {
       e.preventDefault();
-      const form = document.getElementById("otp-form");
-      const inputs = [...form.querySelectorAll("input[type=text]")];
-      const submit = form.querySelector("button[type=submit]");
-      const text = e.clipboardData.getData("text");
-      if (!new RegExp(`^[0-9]{${inputs.length}}$`).test(text)) {
-        return;
-      }
-      const digits = text.split("");
-      inputs.forEach((input, index) => (input.value = digits[index]));
-      submit.focus();
     };
 
     const form = document.getElementById("otp-form");
@@ -79,12 +75,9 @@ const EmailRecoveryOTP = () => {
       });
     };
   }, []);
-  const [showChangePassword, setShowChangePassword] = useState(false);
-  const [timer, setTimer] = useState(10); // 1 minute in seconds
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   useEffect(() => {
     let interval;
-
     if (timer > 0) {
       interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer - 1);
@@ -92,18 +85,58 @@ const EmailRecoveryOTP = () => {
     } else {
       setIsButtonDisabled(true);
     }
-
     return () => clearInterval(interval);
   }, [timer]);
-  const handleResendCode = () => {
-    // Code to resend the verification code
-    setTimer(10); // Reset the timer to 1 minute
-    setIsButtonDisabled(false);
+
+  const handleResendCode = async () => {
+    if (timer > 0) return; 
+    setResendError(""); // Reset any previous error before the request
+    try {
+      console.log(email);
+      const response = await fetch("http://localhost:8000/api/auth/send-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          debug: false, // Set to true if you need to debug the OTP
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log("OTP resent successfully");
+        setResetOtp(data.otp);
+        setTimer(30);
+        setIsButtonDisabled(false);
+        setEnteredOTP(""); // Clear the entered OTP
+        // Clear input fields
+        const inputs = document.querySelectorAll("#otp-form input[type=text]");
+        inputs.forEach(input => input.value = "");
+      } else {
+        console.log("here2");
+        setResendError(data.message || "Failed to resend OTP. Please try again.");
+      }
+    } catch (error) {
+      setResendError("An error occurred while resending the OTP. Please try again.");
+    }
+  };
+  
+
+  const handleVerifyOTP = (e) => {
+    e.preventDefault();
+    if (enteredOTP === otp.toString() || enteredOTP === ResetOtp?.toString())  { // Compare entered OTP with the sent OTP
+      setShowChangePassword(true);
+    } else {
+      alert("Invalid OTP. Please try again.");
+    }
   };
 
   return (
     <div>
-      {showChangePassword && <ChangePassword />}
+      {showChangePassword && <ChangePassword email={email} />}
       {!showChangePassword && (
         <div className="max-w-md mx-auto text-center bg-white px-4 sm:px-8 py-10 rounded-xl shadow mt-2">
           <header className="mb-8">
@@ -112,10 +145,10 @@ const EmailRecoveryOTP = () => {
               Enter the 4-digit verification code that was sent to your email.
             </p>
           </header>
-          <form id="otp-form">
+          <form id="otp-form" onSubmit={handleVerifyOTP}>
             <div className="max-w-[260px] mx-auto mt-4">
               <a className="w-full mb-4 inline-flex justify-center whitespace-nowrap rounded-lg bg-blue-100 px-3.5 py-2.5 text-sm font-medium text-gray-700 shadow-sm shadow-indigo-950/10 ">
-                {isButtonDisabled ? "Code is not valid now  " : `${timer}`}
+                {isButtonDisabled ? "Code is not valid now" : `${timer}`}
               </a>
             </div>
             <div className="flex items-center justify-center gap-3">
@@ -146,7 +179,7 @@ const EmailRecoveryOTP = () => {
                 <button
                   type="submit"
                   className="w-full inline-flex justify-center whitespace-nowrap rounded-lg bg-indigo-500 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm shadow-indigo-950/10 hover:bg-indigo-600 focus:outline-none focus:ring focus:ring-indigo-300 focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300 transition-colors duration-150"
-                  onClick={() => setShowChangePassword(true)}
+                  
                 >
                   Verify Email
                 </button>
@@ -180,6 +213,11 @@ const EmailRecoveryOTP = () => {
                   Resend
                 </a>
               </div>
+            )}
+            {resendError && (
+              <p className="text-red-500 text-center mt-2">
+                {resendError}
+              </p>
             )}
           </div>
         </div>

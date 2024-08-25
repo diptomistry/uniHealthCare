@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import log from "../assets/img/signin3.svg";
 import register from "../assets/img/signup.svg";
-
+import FullScreenLoader from "../components/LoginSignupPage/FullScreenLoader";
 import EmailRecovery from "../components/LoginSignupPage/EmailRecovery";
 import EmailRecoveryOTP from "../components/LoginSignupPage/EmailRecoveryOTP";
 import Signin from "../components/LoginSignupPage/Signin";
@@ -12,6 +12,7 @@ const SlidingLoginSignup = () => {
   const [userType, setUserType] = useState("");
   const [emailRecovery, setEmailRecovery] = useState(false);
   const [emailRecoveryOTP, setEmailRecoveryOTP] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const openForm = () => {
     setEmailRecovery(true);
   };
@@ -25,9 +26,9 @@ const SlidingLoginSignup = () => {
   };
   const handleUserTypeChange = (e) => {
     setUserType(e.target.value);
-    if (e.target.value !== "doctor") {
-      setDepartment("");
-    }
+    // if (e.target.value !== "doctor") {
+    //   setDepartment("");
+    // }
   };
 
   return (
@@ -39,6 +40,7 @@ const SlidingLoginSignup = () => {
             : ""
         }`}
       >
+        {isLoading && <FullScreenLoader />}
         {emailRecovery && <EmailRecovery closeForm={closeForm} />}
         <div className="absolute w-full h-full top-0 left-0">
           <div
@@ -81,6 +83,7 @@ const SlidingLoginSignup = () => {
                 <Signup
                   userType={userType}
                   handleUserTypeChange={handleUserTypeChange}
+                  setIsLoading={setIsLoading}
                 />
               )}
             </div>
