@@ -2,9 +2,9 @@ package com.example.uniMed.init;
 
 
 import com.example.uniMed.models.Role;
-import com.example.uniMed.models.dutyroster.DayOfWeek;
+
 import com.example.uniMed.repositories.auth.role.RoleRepository;
-import com.example.uniMed.repositories.publics.duty_roster.DayOfWeekRepository;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,9 +19,6 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private RoleRepository roleRepository;
 
-    @Autowired
-    private DayOfWeekRepository dayOfWeekRepository;
-
     @Override
     public void run(String... args) throws Exception {
         List<Role> roles= Arrays.asList(
@@ -34,20 +31,7 @@ public class DataInitializer implements CommandLineRunner {
                 new Role("staff"),
                 new Role("teacher")
         );
-        List<DayOfWeek> days = Arrays.asList(
-                new DayOfWeek("Monday"),
-                new DayOfWeek("Tuesday"),
-                new DayOfWeek("Wednesday"),
-                new DayOfWeek("Thursday"),
-                new DayOfWeek("Friday"),
-                new DayOfWeek("Saturday"),
-                new DayOfWeek("Sunday")
-        );
-        for (DayOfWeek day : days) {
-            if (!dayOfWeekRepository.existsByName(day.getName())) {
-                dayOfWeekRepository.save(day);
-            }
-        }
+      
       
 
 

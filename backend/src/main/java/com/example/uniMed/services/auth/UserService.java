@@ -44,6 +44,21 @@ public class UserService {
     @Autowired
     private FileService fileService;
 
+    public Map<String,Object> getUser (Long userId){
+        Map<String, Object> response = new HashMap<>();
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isPresent()){
+            response.put("success", true);
+            response.put("message", "User found");
+            response.put("data", user.get());
+        }
+        else{
+            response.put("success", false);
+            response.put("message", "User not found");
+        }
+        return response;
+    }
+
  @Transactional
     public Map<String, Object> createUser(MultipartFile file,
                                           String password,
