@@ -25,7 +25,7 @@ const Signin = ({ isSignUpMode, openForm }) => {
 
       if (data.success) {
         setUserType(data.data.role.roleName);
-        alert('Login successful');
+       // alert('Login successful');
 
         login(data.data); 
         localStorage.setItem('token', data.data.token);

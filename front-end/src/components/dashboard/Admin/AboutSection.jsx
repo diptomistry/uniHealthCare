@@ -5,11 +5,11 @@ import { MdOutlineCloudUpload } from "react-icons/md";
 import DeleteConfirmationModal from "../../../models/DeleteConfirmationModal";
 
 const AboutSection = () => {
-  const [aboutUs, setAboutUs] = useState(aboutUsData.aboutUs);
-  const [departments, setDepartments] = useState(aboutUsData.departments);
+  const [aboutUs, setAboutUs] = useState("");
+  const [departments, setDepartments] = useState([]);
   const [newDepartment, setNewDepartment] = useState("");
   const [images, setImages] = useState([]);
-  
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteItemType, setDeleteItemType] = useState(null);
   const [deleteItemIndex, setDeleteItemIndex] = useState(null);
@@ -17,7 +17,6 @@ const AboutSection = () => {
   useEffect(() => {
     const fetchImages = async () => {
       const token = localStorage.getItem("token");
-
       try {
         const response = await fetch("http://localhost:8000/api/about-us/1", {
           method: "GET",
@@ -33,7 +32,7 @@ const AboutSection = () => {
         }
 
         const data = await response.json();
-
+        setAboutUs(data.description);
         const parsedImageUrls = data.imageUrls.map((img) => {
           const parsedUrlObj = JSON.parse(img);
           return parsedUrlObj.imageUrl;
@@ -44,6 +43,33 @@ const AboutSection = () => {
         console.error("Error fetching images:", error.message);
       }
     };
+    //to fetch department data:post:localhost:8000/api/departments
+    const fetchDepartments = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch("http://localhost:8000/api/departments", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error text:", errorText);
+          throw new Error("Failed to fetch department data");
+        }
+        const data = await response.json();
+        const departmentData = data.map((department) => ({
+          id: department.departmentID,
+          name: department.name,
+        }));
+
+        setDepartments(departmentData);
+      } catch (error) {
+        console.error("Error fetching departments:", error.message);
+      }
+    };
+    fetchDepartments();
 
     fetchImages();
   }, []);
@@ -66,7 +92,32 @@ const AboutSection = () => {
 
   const confirmDelete = async () => {
     if (deleteItemType === "department") {
-      setDepartments(departments.filter((_, i) => i !== deleteItemIndex));
+      const departmentIdToDelete = departments[deleteItemIndex].id;
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/departments/${departmentIdToDelete}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error text:", errorText);
+          throw new Error(
+            `Failed to delete department with status ${response.status}`
+          );
+        }
+
+        setDepartments(departments.filter((_, i) => i !== deleteItemIndex));
+      } catch (error) {
+        console.error("Error deleting department:", error.message);
+      }
     } else if (deleteItemType === "image") {
       const imageUrlToDelete = images[deleteItemIndex];
       const token = localStorage.getItem("token");
@@ -87,7 +138,9 @@ const AboutSection = () => {
         if (!response.ok) {
           const errorText = await response.text();
           console.error("Error text:", errorText);
-          throw new Error(`Failed to delete image with status ${response.status}`);
+          throw new Error(
+            `Failed to delete image with status ${response.status}`
+          );
         }
 
         setImages(images.filter((_, i) => i !== deleteItemIndex));
@@ -98,10 +151,42 @@ const AboutSection = () => {
     closeDeleteModal();
   };
 
-  const handleAddDepartment = () => {
+  const handleAddDepartment = async () => {
     if (newDepartment.trim()) {
-      setDepartments([...departments, newDepartment.trim()]);
-      setNewDepartment("");
+      const token = localStorage.getItem("token");
+      const newDeptData = {
+        name: newDepartment.trim(),
+        description: "",
+        image: "",
+      };
+
+      try {
+        const response = await fetch("http://localhost:8000/api/departments", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newDeptData),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error text:", errorText);
+          throw new Error(
+            `Failed to add department with status ${response.status}`
+          );
+        }
+
+        // Assuming the response contains the added department's details
+        const addedDepartment = await response.json();
+
+        // Update the state with the newly added department
+        setDepartments([...departments, addedDepartment.name]);
+        setNewDepartment(""); // Clear the input field
+      } catch (error) {
+        console.error("Error adding department:", error.message);
+      }
     }
   };
 
@@ -135,7 +220,7 @@ const AboutSection = () => {
             body: formData,
           }
         );
-       // console.log("Upload response:", uploadResponse);
+        // console.log("Upload response:", uploadResponse);
         if (!uploadResponse.ok) {
           const errorText = await uploadResponse.text();
           console.error("Upload response:", errorText);
@@ -174,30 +259,66 @@ const AboutSection = () => {
       }
     }
   };
-  
+  const handleAboutUsSubmit = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/about-us/update-single-about-us/1",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ description: aboutUs }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error text:", errorText);
+        throw new Error(
+          `Failed to update About Us with status ${response.status}`
+        );
+      }
+
+      alert("About Us updated successfully!");
+    } catch (error) {
+      console.error("Error updating About Us:", error.message);
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-10">
       <div className="w-full md:w-1/2">
-        <h2 className="text-2xl font-poppins font-semibold text-textColor flex justify-center mb-4">About Us</h2>
+        <h2 className="text-2xl font-poppins font-semibold text-textColor flex justify-center mb-4">
+          About Us
+        </h2>
         <textarea
           value={aboutUs}
           onChange={handleAboutUsChange}
           rows="8"
           className="w-full p-2 border border-gray-300 rounded mb-2"
         />
-        <Button title={'Submit'} />
+        <button onClick={handleAboutUsSubmit} className="w-full">
+          {" "}
+          <Button title={"Submit"} />
+        </button>
         <div className="mb-5">
-          <h2 className="text-2xl font-poppins font-semibold text-textColor flex justify-center mt-4 mb-4">Images</h2>
+          <h2 className="text-2xl font-poppins font-semibold text-textColor flex justify-center mt-4 mb-4">
+            Images
+          </h2>
           <div className="flex flex-wrap gap-6 mb-5">
             {images.map((image, index) => (
-              <div
-                key={index}
-                className="relative"
-              >
-                <img src={image} alt={`Image ${index}`} className="w-28 h-24 object-cover rounded" />
+              <div key={index} className="relative">
+                <img
+                  src={image}
+                  alt={`Image ${index}`}
+                  className="w-28 h-24 object-cover rounded"
+                />
                 <button
-                  onClick={() => openDeleteModal('image', index)}
+                  onClick={() => openDeleteModal("image", index)}
                   className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
                 >
                   ×
@@ -225,21 +346,23 @@ const AboutSection = () => {
         </div>
       </div>
       <div className="w-full md:w-1/2">
-        <h2 className="text-2xl font-hindSiliguri font-semibold text-textColor flex justify-center mb-4">বিভাগসমূহ</h2>
+        <h2 className="text-2xl font-hindSiliguri font-semibold text-textColor flex justify-center mb-4">
+          বিভাগসমূহ
+        </h2>
         <div className="flex flex-wrap gap-6 mb-5">
-          {departments.map((dept, index) => (
-            <div
-              key={index}
-              className="flex items-center bg-gray-100 rounded-full px-3 py-1"
+          {departments.map((department, index) => (
+            <li
+              key={department.id}
+              className="flex justify-between items-center bg-gray-100 rounded-full px-3 py-1"
             >
-              <span>{dept}</span>
+              <span>{department.name}</span>
               <button
-                onClick={() => openDeleteModal('department', index)}
+                onClick={() => openDeleteModal("department", index)}
                 className="ml-2 text-red-500 font-bold"
               >
                 ×
               </button>
-            </div>
+            </li>
           ))}
         </div>
         <div className="flex gap-2 mb-6">
@@ -259,7 +382,9 @@ const AboutSection = () => {
           </button>
         </div>
         <div className="mb-2">
-          <h1 className="flex justify-center font-poppins font-semibold text-2xl mb-4 text-textColor">Services</h1>
+          <h1 className="flex justify-center font-poppins font-semibold text-2xl mb-4 text-textColor">
+            Services
+          </h1>
           <textarea
             value={aboutUsData.doctorsTreatment}
             rows="2"
@@ -275,13 +400,17 @@ const AboutSection = () => {
             rows="2"
             className="w-full p-2 border border-gray-300 rounded mb-2"
           />
-          <Button title={'Submit'} />
+          <Button title={"Submit"} />
         </div>
       </div>
       <DeleteConfirmationModal
         isOpen={isDeleteModalOpen}
         onRequestClose={closeDeleteModal}
-        itemName={deleteItemType === 'department' ? departments[deleteItemIndex] : 'the image'}
+        itemName={
+          deleteItemType === "department"
+            ? departments[deleteItemIndex].name
+            : "the image"
+        }
         onConfirmDelete={confirmDelete}
       />
     </div>
