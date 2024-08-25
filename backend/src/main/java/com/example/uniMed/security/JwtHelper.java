@@ -33,7 +33,7 @@ public class JwtHelper {
         Date now = new Date(nowMillis);
     
         // Set token expiration time (e.g., 1 hour)
-        long expMillis = nowMillis + 3600000; // 1 hour
+        long expMillis = nowMillis + 3600000* 24;// 
         Date exp = new Date(expMillis);
         Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     

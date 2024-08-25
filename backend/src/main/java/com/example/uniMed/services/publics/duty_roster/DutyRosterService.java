@@ -1,6 +1,7 @@
 package com.example.uniMed.services.publics.duty_roster;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.example.uniMed.models.Doctors;
 import com.example.uniMed.models.dutyroster.DayOfWeek;
@@ -9,6 +10,7 @@ import com.example.uniMed.repositories.publics.duty_roster.DayOfWeekRepository;
 import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
 import com.example.uniMed.repositories.publics.duty_roster.SlotRepository;
 import java.util.List;
+import java.util.Map;
 @Service
 public class DutyRosterService {
 
@@ -56,5 +58,9 @@ public class DutyRosterService {
         return slotRepository.save(slot);
     }
 
+    public List<Slot> getAllSlots() {
+        return slotRepository.findAll();
+    }
+   
     // Additional methods for creating slots, days, and doctors
 }
