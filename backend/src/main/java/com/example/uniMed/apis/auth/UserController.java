@@ -22,6 +22,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/get-user")
+    public Map<String, Object> getUser(@RequestBody Map<String, Long> body) {
+        Long user_id = body.get("user_id");
+        return userService.getUser(user_id);
+    }
+
     @PostMapping("/create-user")
 public Map<String, Object> createUser
 // (@RequestPart("body") Map<String, String> body, 
@@ -81,14 +87,16 @@ public Map<String, Object> createUser
 
     @PostMapping("/update-user")
     public Map<String, Object> updateUser(@RequestParam("file") MultipartFile file,
-                             @RequestParam Long user_id,
-                             @RequestParam(required = false) String email,
-                             @RequestParam(required = false) String dob,
-                             @RequestParam(required = false) String name,
-                             @RequestParam(required = false) String department,
-                             @RequestParam(required = false) String session,
-                             @RequestParam(required = false) String registrationNo,
-                             @RequestParam(required = false) String phone) {
+                             @RequestBody Map<String, Object> body) {
+        Long user_id = Long.parseLong(body.get("user_id").toString());
+        String email = body.get("email").toString();
+        String dob = body.get("dob").toString();
+        String name = body.get("name").toString();
+        String department = body.get("department").toString();
+        String session = body.get("session").toString();
+        String registrationNo = body.get("registrationNo").toString();
+        String phone = body.get("phone").toString();
+        
         try {   
             
 
@@ -148,7 +156,12 @@ public Map<String, Object> createUser
     }
 
     @PostMapping("/reset-password")
-    public Map<String, Object> resetPassword(@RequestParam String email, @RequestParam String current_pass, @RequestParam String confirm_pass) {
+    public Map<String, Object> resetPassword(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        String current_pass = body.get("current_pass");
+        String confirm_pass = body.get("confirm_pass");
+
+        
         try {
             return userService.resetPassword(email, current_pass, confirm_pass);
         } catch (Exception e) {
