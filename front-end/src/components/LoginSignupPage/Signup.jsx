@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AddressAutocomplete from "./AddressAutocomplete";
 import axios from "axios";
 import CustomModal from "../../models/CustomModal";
+
 const Signup = ({ userType, handleUserTypeChange, setIsLoading }) => {
   const [address, setAddress] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
