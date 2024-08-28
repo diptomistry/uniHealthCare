@@ -106,6 +106,8 @@ The AI chatbot is a Python-based component integrated into the main application.
 - Chatbot: Adjust the `intents.json` file to customize the chatbot's responses and capabilities.
 
 ## 🤝 Contributors
+1. Diptajoy Mistry
+2. Rasel Hossen
 
 
 
