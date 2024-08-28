@@ -9,3 +9,6 @@ venv/
 # IDE settings
 .idea/
 .vscode/
+
+# Data file
+data.path
