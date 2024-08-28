@@ -1,9 +1,8 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import AddressAutocomplete from "./AddressAutocomplete";
 import axios from "axios";
 import CustomModal from "../../models/CustomModal";
-import FullScreenLoader from "./FullScreenLoader";
-const Signup = ({ userType, handleUserTypeChange,setIsLoading  }) => {
+const Signup = ({ userType, handleUserTypeChange, setIsLoading }) => {
   const [address, setAddress] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
@@ -19,7 +18,7 @@ const Signup = ({ userType, handleUserTypeChange,setIsLoading  }) => {
   const [otp, setOtp] = useState(""); // State to hold the OTP
   const [verifyotp, setVerifyOtp] = useState(null); // State to hold the OTP
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false); // State to manage OTP modal visibility
-  const [timer, setTimer] = useState(30); 
+  const [timer, setTimer] = useState(30);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   //const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +57,6 @@ const Signup = ({ userType, handleUserTypeChange,setIsLoading  }) => {
       );
 
       if (response.data.success) {
-        
         setTimer(30); // Reset the timer
         alert("OTP sent successfully");
         setVerifyOtp(response.data.otp); // Save the expected OTP in state
@@ -70,8 +68,7 @@ const Signup = ({ userType, handleUserTypeChange,setIsLoading  }) => {
         error.response?.data || error.message
       );
       alert("Error sending OTP");
-    }
-    finally {
+    } finally {
       setIsLoading(false); // Hide loading animation
     }
   };
@@ -99,9 +96,7 @@ const Signup = ({ userType, handleUserTypeChange,setIsLoading  }) => {
     setSignature(event.target.files[0]);
   };
   const handleSubmit = async (e) => {
-  
-
-    // Create a JSON object to send as the POST request body
+    // Create a JSON object to send as the POST request body to the backend
     const data = {
       name,
       email,
@@ -164,7 +159,6 @@ const Signup = ({ userType, handleUserTypeChange,setIsLoading  }) => {
   };
   return (
     <form onSubmit={(e) => e.preventDefault()}>
-      
       <div className="flex flex-col items-center">
         <div className="text-center">
           <h1 className="text-2xl xl:text-4xl font-extrabold text-textColor">
@@ -407,7 +401,9 @@ const Signup = ({ userType, handleUserTypeChange,setIsLoading  }) => {
             </button>
           </form>
           {timer > 0 ? (
-            <p className="text-gray-600 mt-4">OTP will expire in {timer} seconds</p>
+            <p className="text-gray-600 mt-4">
+              OTP will expire in {timer} seconds
+            </p>
           ) : (
             <p className="text-red-500 mt-4">OTP expired. Please try again.</p>
           )}
