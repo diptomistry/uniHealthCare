@@ -1,33 +1,112 @@
-# Chatbot Deployment 
+
+# Full Stack Application
+
+This project is a comprehensive full-stack application .
+
+## 🚀 Tech Stack
+
+- **Frontend**: React.js with Tailwind CSS
+- **Backend**: Spring Boot
+- **Database**: MySQL
+- **AI Chatbot**: Python
+
+## 🌐 Full Stack Setup
+
+### Frontend (React.js & Tailwind CSS)
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd fron-tend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+The application will be available at `http://localhost:5173`.
+
+### Backend (Spring Boot)
+
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+
+2. Build the project:
+   ```bash
+   ./mvnw clean install
+   ```
+
+3. Run the Spring Boot application:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+
+The backend server will start on `http://localhost:8000`.
+
+### Database (MySQL)
+
+1. Ensure MySQL is installed and running on your system.
+
+2. Update the `application.properties` file in the Spring Boot project with your MySQL credentials and database name.
+
+## 🤖 AI Chatbot Setup (zBOT)
+
+The AI chatbot is a Python-based component integrated into the main application. Follow these steps to set it up:
+
+1. Create a virtual environment:
+   ```bash
+   cd zBOT
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install Flask torch torchvision nltk
+   ```
+
+3. Install NLTK package:
+   ```bash
+   python
+   >>> import nltk
+   >>> nltk.download('punkt')
+   >>> exit()
+   ```
+
+4. Customize the `intents.json` file to define chatbot intents and responses.
+
+5. Train the model:
+   ```bash
+   python train.py
+   ```
+
+6. Test the chatbot:
+   ```bash
+   python chat.py
+   ```
+
+## 📚 Usage
+
+1. Start the backend server and ensure the database is running.
+2. Launch the frontend application.
+3. Access the application through your web browser at `http://localhost:3000`.
+4. The AI chatbot can be interacted with through the designated chat interface in the application.
+
+## 🔧 Configuration
+
+- Frontend: Modify the `.env` file in the frontend directory to set any necessary environment variables.
+- Backend: Update `application.properties` or `application.yml` in the Spring Boot project to configure database connections and other settings.
+- Chatbot: Adjust the `intents.json` file to customize the chatbot's responses and capabilities.
+
+## 🤝 Contributors
 
 
-## Initial Setup of zBOT:
 
 
-Create a virtual environment
-```
-$ cd zBOT
-$ python3 -m venv venv
-$ . venv/bin/activate
-```
-Install dependencies
-```
-$ (venv) pip install Flask torch torchvision nltk
-```
-Install nltk package
-```
-$ (venv) python
->>> import nltk
->>> nltk.download('punkt')
-```
-Modify `intents.json` with different intents and responses for the Chatbot
-
-Run
-```
-$ (venv) python train.py
-```
-This will dump data.pth file. And then run
-the following command to test it in the console.
-```
-$ (venv) python chat.py
-```
