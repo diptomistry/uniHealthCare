@@ -9,7 +9,7 @@ This project is a comprehensive full-stack application .
 - **Backend**: Spring Boot
 - **Database**: MySQL
 - **AI Chatbot**: Python 
-- **AI API**:Gemini
+- **AI API**: Gemini
 
 
 ## 🌐 Full Stack Setup
