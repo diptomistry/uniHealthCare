@@ -92,6 +92,28 @@ The AI chatbot is a Python-based component integrated into the main application.
    python chat.py
    ```
 
+## 🩺 Disease Diagnosis with Gemini AI
+
+We have integrated the Gemini AI API into our application to provide disease diagnosis capabilities. The AI can suggest the appropriate department for a patient based on their symptoms.
+
+1. Create a virtual environment:
+   ```bash
+   cd GeminiAiApi
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install Flask google-generativeai
+   ```
+3. Set up the Flask API to interact with Gemini AI:
+   ```bash
+   python DiagnoseDisease.py
+   ```
+
+
+
 ## 📚 Usage
 
 1. Start the backend server and ensure the database is running.
@@ -104,6 +126,8 @@ The AI chatbot is a Python-based component integrated into the main application.
 - Frontend: Modify the `.env` file in the frontend directory to set any necessary environment variables.
 - Backend: Update `application.properties` or `application.yml` in the Spring Boot project to configure database connections and other settings.
 - Chatbot: Adjust the `intents.json` file to customize the chatbot's responses and capabilities.
+
+
 
 ## 🤝 Contributors
 1. Diptajoy Mistry
