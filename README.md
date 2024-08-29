@@ -18,7 +18,7 @@ This project is a comprehensive full-stack application .
 
 1. Navigate to the frontend directory:
    ```bash
-   cd fron-tend
+   cd front-end
    ```
 
 2. Install dependencies:
