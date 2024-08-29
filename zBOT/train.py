@@ -6,7 +6,7 @@ import torch # type: ignore
 import torch.nn as nn # type: ignore
 from torch.utils.data import Dataset, DataLoader # type: ignore
 
-from nltk_utils import bag_of_words, tokenize, stem
+from nltk_utils import bag_of_words, tokenize, lemmatize
 from model import NeuralNet
 
 with open('intents.json', 'r') as f:
@@ -28,16 +28,16 @@ for intent in intents['intents']:
         # add to xy pair
         xy.append((w, tag))#pattern and corresponding tag
 
-# stem and lower each word
+# lematize and lower each word
 ignore_words = ['?', '.', '!', ',', ';', ':']
-all_words = [stem(w) for w in all_words if w not in ignore_words]#stemming
+all_words = [lemmatize(w) for w in all_words if w not in ignore_words]#lemmatize the words and remove the ignore words
 # remove duplicates and sort
 all_words = sorted(set(all_words))#unique words by 'set' and then sorted
 tags = sorted(set(tags))
 
 print(len(xy), "patterns")
 print(len(tags), "tags:", tags)
-print(len(all_words), "unique stemmed words:", all_words)
+print(len(all_words), "unique lematized words:", all_words)
 
 # create training data
 X_train = []

@@ -1,46 +1,43 @@
 import numpy as np # type: ignore
 import nltk # type: ignore
 nltk.download('punkt')
-nltk.download('punkt_tab')
-from nltk.stem.porter import PorterStemmer # type: ignore
-stemmer = PorterStemmer()
+nltk.download('wordnet')  # Download WordNet data for lemmatization
 
+from nltk.stem import WordNetLemmatizer # type: ignore
+from nltk.tokenize import word_tokenize # type: ignore
+
+lemmatizer = WordNetLemmatizer()
 
 def tokenize(sentence):
     """
-    split sentence into array of words/tokens
-    a token can be a word or punctuation character, or number
-    example:
-    sentence = "how are you?"
-    words = tokenize(sentence)  # words = ["how", "are", "you", "?"]
+    Split sentence into an array of words/tokens
+    A token can be a word or punctuation character, or number
     """
-    return nltk.word_tokenize(sentence)
+    return word_tokenize(sentence)
 
-
-def stem(word):
+def lemmatize(word):
     """
-    stemming = find the root form of the word
-    examples:
+    Lemmatization = find the root form of the word
+    Examples:
     words = ["organize", "organizes", "organizing"]
-    words = [stem(w) for w in words]
+    words = [lemmatize(w) for w in words]
     -> ["organ", "organ", "organ"]
     """
-    return stemmer.stem(word.lower())
-
+    return lemmatizer.lemmatize(word.lower())
 
 def bag_of_words(tokenized_sentence, words):
     """
-    return bag of words array:
+    Return bag of words array:
     1 for each known word that exists in the sentence, 0 otherwise
-    example:
+    Example:
     sentence = ["hello", "how", "are", "you"]
     words = ["hi", "hello", "I", "you", "bye", "thank", "cool"]
     bog   = [  0 ,    1 ,    0 ,   1 ,    0 ,    0 ,      0]
     """
-    # stem each word
-    sentence_words = [stem(word) for word in tokenized_sentence] #example: ["hi", "how", "are", "you"]
-    # initialize bag with 0 for each word
-    bag = np.zeros(len(words), dtype=np.float32) #example: [0, 0, 0, 0, 0, 0, 0] //each element in the bag array will be a 32-bit floating point number(0 initially).
+    # Lemmatize each word
+    sentence_words = [lemmatize(word) for word in tokenized_sentence]
+    # Initialize bag with 0 for each word
+    bag = np.zeros(len(words), dtype=np.float32)
     for idx, w in enumerate(words):
         if w in sentence_words: 
             bag[idx] = 1
