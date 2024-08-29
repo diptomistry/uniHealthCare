@@ -8,7 +8,9 @@ This project is a comprehensive full-stack application .
 - **Frontend**: React.js with Tailwind CSS
 - **Backend**: Spring Boot
 - **Database**: MySQL
-- **AI Chatbot**: Python
+- **AI Chatbot**: Python 
+- **AI API**:Gemini
+
 
 ## 🌐 Full Stack Setup
 
