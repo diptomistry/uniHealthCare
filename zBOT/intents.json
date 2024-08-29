@@ -81,7 +81,8 @@
           "What can I do here?",
           "What services are available?",
           "What are the services provided?",
-          "What can I find here?"
+          "What can I find here?",
+          "What is the role of the medical center ?"
 
 
         ],
@@ -97,7 +98,9 @@
           "How to book a doctor?",
           "I want to see a doctor",
           "How to make an appointment?",
-          "How to schedule a consultation?"
+          "How to schedule a consultation?",
+          "How to consult a doctor?",
+          "Appointment?"
           
         ],
         "responses": [
@@ -138,7 +141,8 @@
         "patterns": [
           "What tasks can I do as a staff member?",
           "What can staff members do?",
-          "Staff permissions"
+          "Staff permissions",
+          "what can a staff do?"
         ],
         "responses": [
           "As a staff member, you can do appointments, assist in daily tasks, and perform duties assigned by the admin."
@@ -231,7 +235,7 @@
       {
         "tag": "medical_center_history",
         "patterns": [
-          "What is the history of the Shaheed Dr. Muhammad Murtaza Medical Center?",
+          "What is the history of the  Medical Center?",
           "Tell me about the history of the medical center.",
           "When was the medical center established?",
           "Why is the medical center named after Dr. Muhammad Murtaza?"
@@ -295,6 +299,7 @@
           "What services does the medical center provide?",
           "How does the medical center benefit students and staff?",
           "Why does Dhaka University have a medical center?"
+          
         ],
         "responses": [
           "The Dhaka University Medical Center provides primary health care services to students, teachers, and staff. It addresses basic health needs and supports the well-being of the university community."
@@ -306,7 +311,8 @@
           "Tell me about the Dhaka University Medical Center.",
           "What services are provided by the medical center?",
           "What is the purpose of the medical center?",
-          "Give me information about the Dhaka University Medical Center."
+          "Give me information about the Dhaka University Medical Center.",
+          "Dhaka University Medical Center"
         ],
         "responses": [
           "The Dhaka University Medical Center provides free medical services and free pathological tests to students, teachers, employees, and their family members. The center, now named the Shaheed Buddhijibi Dr. Muhammad Murtaza Medical Center, offers immediate primary health care through doctors and nurses on a 24-hour rotation basis. It has a total of eleven departments."

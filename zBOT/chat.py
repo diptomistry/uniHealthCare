@@ -1,11 +1,15 @@
+from flask import Flask, request, jsonify
 import random
 import json
 
 import torch # type: ignore
-
+from flask_cors import CORS 
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
 from spellchecker import SpellChecker
+
+app = Flask(__name__)
+CORS(app) 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')#if gpu is available then cuda else cpu,cuda is faster than cpu
 
 with open('intents.json', 'r') as json_data:
@@ -60,8 +64,17 @@ def get_response(msg):
     
     return random.choice(fallback_responses)
 
+@app.route('/chat', methods=['POST'])
+def chat():
+    try:
+        message = request.json['message']
+        response = get_response(message)
+        return jsonify({"response": response})
+    except:
+        return jsonify({"response": "Something went wrong! Please try again."})
 
 if __name__ == "__main__":
+    app.run(debug=True)
     print("Let's chat! (type 'quit' to exit)")
     while True:
         # sentence = "do you use credit cards?"
@@ -71,4 +84,5 @@ if __name__ == "__main__":
 
         resp = get_response(sentence)
         print(resp)
+   
 

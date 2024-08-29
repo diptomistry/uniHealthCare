@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef,useEffect } from "react";
 import { FiSend } from "react-icons/fi";
 
 
@@ -9,29 +9,53 @@ const ChatBot = () => {
     { sender: "AI", text: "Hi, how can I help you today?" },
   ]);
   const [newMessage, setNewMessage] = useState("");
-
+  const chatContainerRef = useRef(null); 
   const handleToggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (newMessage.trim()) {
       setMessages([...messages, { sender: "You", text: newMessage }]);
+      const userMessage = newMessage;
       setNewMessage("");
-      // Simulate AI response
-      setTimeout(() => {
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: userMessage }),
+        });
+
+        const data = await response.json();
+        console.log(data);
         setMessages((prevMessages) => [
           ...prevMessages,
           {
             sender: "AI",
-            text: "Sorry, I couldn't find any information in the documentation about that.",
+            text: data.response,
           },
         ]);
-      }, 1000);
+      } catch (error) {
+        console.error("Error communicating with the chatbot:", error);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            sender: "AI",
+            text: "Sorry, something went wrong.",
+          },
+        ]);
+      }
     }
   };
-
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]); 
   return (
     <div>
       <button
@@ -61,12 +85,12 @@ const ChatBot = () => {
         >
           {/* Heading */}
           <div className="flex flex-col space-y-1.5 pb-6">
-            <h2 className="font-semibold text-lg tracking-tight">Chatbot</h2>
-            <p className="text-sm text-[#6b7280] leading-3">Ask for any information related to DUMC</p>
+            <h2 className="font-semibold text-lg tracking-tight">zBOT</h2>
+            <p className="text-sm text-[#6b7280] leading-3">Ask for any information related to the Medical Center</p>
           </div>
 
           {/* Chat Container */}
-          <div className="pr-4 h-[474px] overflow-y-auto">
+          <div ref={chatContainerRef} className="pr-4 h-[474px] overflow-y-auto">
             {messages.map((message, index) => (
               <div key={index} className="flex gap-3 my-4 text-gray-600 text-sm flex-1">
                 <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
