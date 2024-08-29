@@ -20,8 +20,14 @@ def lemmatize(word):
     Lemmatization = find the root form of the word
     Examples:
     words = ["organize", "organizes", "organizing"]
-    words = [lemmatize(w) for w in words]
-    -> ["organ", "organ", "organ"]
+    "organize" → "organize"
+    "organizes" → "organize"
+    "organizing" → "organize"
+    "organ" remains "organ"
+    if we stem:
+    words = [stem(w) for w in words]
+        -> ["organ", "organ", "organ"]
+   
     """
     return lemmatizer.lemmatize(word.lower())
 

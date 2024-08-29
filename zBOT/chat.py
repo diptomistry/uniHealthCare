@@ -5,7 +5,7 @@ import torch # type: ignore
 
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
-
+from spellchecker import SpellChecker
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')#if gpu is available then cuda else cpu,cuda is faster than cpu
 
 with open('intents.json', 'r') as json_data:
@@ -27,8 +27,20 @@ model.load_state_dict(model_state)
 model.eval()
 
 #bot_name = "zBOT"
+fallback_responses = [
+    "I do not understand...",
+    "Can you please rephrase that?",
+    "I'm not sure I understand. Could you clarify?"
+]
+spell = SpellChecker()
 
+def correct_spelling(sentence):
+    """Correct the spelling of each word in the sentence."""
+    words = sentence.split()
+    corrected_sentence = ' '.join([spell.correction(word) for word in words])
+    return corrected_sentence
 def get_response(msg):
+    msg = correct_spelling(msg)
     sentence = tokenize(msg)
     X = bag_of_words(sentence, all_words)
     X = X.reshape(1, X.shape[0])#reshaping means converting 1D array to 2D array with 1 row (1 sample ex:"How can I book an appointment?") and X.shape[0](features) columns
@@ -46,7 +58,7 @@ def get_response(msg):
             if tag == intent["tag"]:
                 return random.choice(intent['responses'])
     
-    return "I do not understand..."
+    return random.choice(fallback_responses)
 
 
 if __name__ == "__main__":

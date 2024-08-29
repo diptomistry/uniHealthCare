@@ -1,10 +1,10 @@
-import numpy as np # type: ignore
+import numpy as np
 import random
 import json
 
-import torch # type: ignore
-import torch.nn as nn # type: ignore
-from torch.utils.data import Dataset, DataLoader # type: ignore
+import torch
+import torch.nn as nn
+from torch.utils.data import Dataset, DataLoader
 
 from nltk_utils import bag_of_words, tokenize, lemmatize
 from model import NeuralNet
@@ -26,41 +26,40 @@ for intent in intents['intents']:
         # add to our words list
         all_words.extend(w)
         # add to xy pair
-        xy.append((w, tag))#pattern and corresponding tag
+        xy.append((w, tag))
 
-# lematize and lower each word
+# stem and lower each word
 ignore_words = ['?', '.', '!', ',', ';', ':']
-all_words = [lemmatize(w) for w in all_words if w not in ignore_words]#lemmatize the words and remove the ignore words
-# remove duplicates and sort
-all_words = sorted(set(all_words))#unique words by 'set' and then sorted
+all_words = [lemmatize(w) for w in all_words if w not in ignore_words] #
+# remove duplicates(set) and sort
+all_words = sorted(set(all_words)) 
 tags = sorted(set(tags))
 
 print(len(xy), "patterns")
 print(len(tags), "tags:", tags)
-print(len(all_words), "unique lematized words:", all_words)
+print(len(all_words), "unique lemmatized words:", all_words)
 
 # create training data
 X_train = []
 y_train = []
-for (pattern_sentence, tag) in xy:#pattern and corresponding tag in xy is available
+#pattern and corresponding tag in xy is available
+for (pattern_sentence, tag) in xy:
     # X: bag of words for each pattern_sentence
     bag = bag_of_words(pattern_sentence, all_words)
     X_train.append(bag)
     # y: PyTorch CrossEntropyLoss needs only class labels, not one-hot
-    label = tags.index(tag)#example level 0:greeting, 1:goodbye, 2:thanks, 3:noanswer
+    label = tags.index(tag) #example level 0:greeting, 1:goodbye, 2:thanks, 3:noanswer
     y_train.append(label)
-
 #example: X_train = [[0, 1 , 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 1, 0], [0, 0, 0, 0, 0, 0, 1]]
 #example: y_train = [0, 1, 2]
-
 #np is faster than Python lists for numerical computations.
-X_train = np.array(X_train)#to convert list to numpy array for pytorch model training 
+X_train = np.array(X_train) #to convert list to numpy array for pytorch model training 
 y_train = np.array(y_train)
 
 # Hyper-parameters 
 num_epochs = 1000#number of times the model will see the entire dataset to learn the patterns
 batch_size = 8#number of samples to work through before updating the internal model parameters
-learning_rate = 0.001#how much the model will learn for each step#small updates to the weights during each iteration of training.
+learning_rate = 0.001#how much the model will learn for each step,small updates to the weights during each iteration of training.
 input_size = len(X_train[0])#number of features in the input data. In this case, it is the length of the bag of words.[0] because all the samples have the same number of features.ex: [0, 1 , 0, 1, 0, 0, 0] has 7 features.
 hidden_size = 8#number of neurons in the hidden layer
 output_size = len(tags)
@@ -71,7 +70,7 @@ class ChatDataset(Dataset):
     def __init__(self):#Stores the total number of samples in my dataset.
         self.n_samples = len(X_train)
         self.x_data = X_train# stores the input data
-        self.y_data = y_train# Stores the labels 
+        self.y_data = y_train# Stores the labels(output)
 
     # support indexing such that dataset[i] can be used to get i-th sample
     def __getitem__(self, index):
@@ -82,7 +81,6 @@ class ChatDataset(Dataset):
         return self.n_samples
 
 dataset = ChatDataset()#creates an instance of your dataset with X_train and y_train stored inside it.
-
 """
 dataLoader handles:
 Batching: Splits the data into batches of a specified size (batch_size),
@@ -94,9 +92,9 @@ Shuffling: Randomizes the order of the data at the beginning of each epoch,
 Parallel Data Loading: Can load data in parallel using multiple subprocesses,
            speeding up data loading (controlled by num_workers).
 """
-train_loader = DataLoader(dataset=dataset,#creates an iterable over the dataset.
-                          batch_size=batch_size,#meaning that during training, each batch will ideally contain 8(batch-size) samples.However, since our dataset has only 3 samples, the entire dataset will be treated as one batch in this case.
-                          shuffle=True,
+train_loader = DataLoader(dataset=dataset, #creates an iterable over the dataset.
+                          batch_size=batch_size, #meaning that during training, each batch will ideally contain 8(batch-size) samples.However, since our dataset has only 3 samples, the entire dataset will be treated as one batch in this case.
+                          shuffle=True, 
                           num_workers=0)#for multi-threading to speed up data loading by using multiple subprocesses.0 means that the data will be loaded in the main process.
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')#checks if a GPU is available and sets the device accordingly.
@@ -142,7 +140,6 @@ Every 100 epochs, the current loss value is printed.
  
 """
 print(f'final loss: {loss.item():.4f}')
-
 
 data = {
 "model_state": model.state_dict(),#stores the model's state dictionary, which contains the model's parameters(weights and biases).biase means the value of the neuron when the input is zero.
