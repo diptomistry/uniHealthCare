@@ -1,18 +1,19 @@
 import random
 import json
 
-import torch
+import torch # type: ignore
 
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')#if gpu is available then cuda else cpu,cuda is faster than cpu
 
 with open('intents.json', 'r') as json_data:
     intents = json.load(json_data)
 
 FILE = "data.pth"
-data = torch.load(FILE)
+data = torch.load(FILE, weights_only=True)#loading the model weights
+
 
 input_size = data["input_size"]
 hidden_size = data["hidden_size"]
@@ -25,22 +26,22 @@ model = NeuralNet(input_size, hidden_size, output_size).to(device)
 model.load_state_dict(model_state)
 model.eval()
 
-bot_name = "Sam"
+#bot_name = "zBOT"
 
 def get_response(msg):
     sentence = tokenize(msg)
     X = bag_of_words(sentence, all_words)
-    X = X.reshape(1, X.shape[0])
-    X = torch.from_numpy(X).to(device)
+    X = X.reshape(1, X.shape[0])#reshaping means converting 1D array to 2D array with 1 row (1 sample ex:"How can I book an appointment?") and X.shape[0](features) columns
+    X = torch.from_numpy(X).to(device)#converting numpy array to tensor to pass it to the model
 
     output = model(X)
-    _, predicted = torch.max(output, dim=1)
+    _, predicted = torch.max(output, dim=1)#getting the index of the maximum value in the output tensor .dimenstion is 1 because we are working with 1D array
 
-    tag = tags[predicted.item()]
+    tag = tags[predicted.item()]#getting the tag of the predicted value
 
-    probs = torch.softmax(output, dim=1)
-    prob = probs[0][predicted.item()]
-    if prob.item() > 0.75:
+    probs = torch.softmax(output, dim=1)#softmax function to get probability
+    prob = probs[0][predicted.item()]#getting the probability of the predicted value
+    if prob.item() > 0.75:#if probability is greater than 0.75 then only it will give response
         for intent in intents['intents']:
             if tag == intent["tag"]:
                 return random.choice(intent['responses'])
