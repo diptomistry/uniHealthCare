@@ -365,6 +365,19 @@
         "responses": [
           "The medical center provides high-quality essential medicines and ensures prompt pharmaceutical services."
         ]
+      },
+      {
+        "tag": "free_services",
+        "patterns": [
+          "Are there any free services available at the medical center?",
+          "What services are provided free of charge?",
+          "Tell me about the free services at the medical center.",
+          "Are there any services that don't require payment?"
+        ],
+        "responses": [
+          "The medical center provides free medical services and free pathological tests to students, teachers, employees, and their family members.Medicines are also free for students."
+        ]
+
       }
     ]
   }

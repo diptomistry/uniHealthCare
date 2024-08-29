@@ -84,9 +84,9 @@ const ChatBot = () => {
           className="fixed bottom-[calc(4rem+1.5rem)] right-16 mr-4 bg-white p-6 rounded-lg border border-[#e5e7eb] w-[440px] h-[634px]"
         >
           {/* Heading */}
-          <div className="flex flex-col space-y-1.5 pb-6">
-            <h2 className="font-semibold text-lg tracking-tight">zBOT</h2>
-            <p className="text-sm text-[#6b7280] leading-3">Ask for any information related to the Medical Center</p>
+          <div className="flex flex-col bg-slate-200  rounded-xl  space-y-1.5 pb-6">
+            <h2 className="font-semibold text-lg tracking-tight ml-2 mt-2">z-BOT</h2>
+            <p className="text-sm text-[#6b7280] leading-3 ml-2">Ask for any information related to the Medical Center</p>
           </div>
 
           {/* Chat Container */}
