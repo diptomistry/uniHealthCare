@@ -58,7 +58,7 @@ The backend server will start on `http://localhost:8000`.
 
 ## 🤖 AI Chatbot Setup (zBOT)
 
-The AI chatbot is a Python-based component integrated into the main application. Follow these steps to set it up:
+The AI chatbot, known as zBOT, is a Python-based component integrated into the main application. It utilizes a feed-forward neural network with two hidden layers for deep learning capabilities. Key preprocessing steps include tokenization, lemmatization, and spell correction to ensure effective text processing. Follow these steps to set it up
 
 1. Create a virtual environment:
    ```bash
