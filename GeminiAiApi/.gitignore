@@ -1,0 +1,14 @@
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Virtual environment
+env/
+venv/
+
+# IDE settings
+.idea/
+.vscode/
+
+# Data file
+data.path
