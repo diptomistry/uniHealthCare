@@ -461,6 +461,139 @@ export const HomeoSchedule = [
   ["শুক্রবার", "জান্নাতুল ফেরদৌসি", "ইয়াসমিন জাহান"],
   ["শনিবার", "ইয়াসমিন জাহান", "সৈয়দ চন্দ্র দত্ত"],
 ];
+export const CardioLogyDoctorDutyRoster = [
+  {
+    doctorName: 'Dr. John Doe',
+    day: 'Monday',
+    startTime: '09:00 AM',
+    endTime: '01:00 PM',
+  },
+  {
+    doctorName: 'Dr. Jane Smith',
+    day: 'Tuesday',
+    startTime: '11:00 AM',
+    endTime: '03:00 PM',
+  },
+  {
+    doctorName: 'Dr. Emily Johnson',
+    day: 'Wednesday',
+    startTime: '08:00 AM',
+    endTime: '12:00 PM',
+  },
+  {
+    doctorName: 'Dr. Michael Brown',
+    day: 'Thursday',
+    startTime: '10:00 AM',
+    endTime: '02:00 PM',
+  },
+  {
+    doctorName: 'Dr. Lisa White',
+    day: 'Friday',
+    startTime: '09:30 AM',
+    endTime: '01:30 PM',
+  },
+  {
+    doctorName: 'Dr. William Davis',
+    day: 'Saturday',
+    startTime: '08:00 AM',
+    endTime: '12:00 PM',
+  },
+  {
+    doctorName: 'Dr. John Doe',
+    day: 'Sunday',
+    startTime: '09:00 AM',
+    endTime: '01:00 PM',
+  },
+];
+export const DentalDoctorDutyRoster = [
+  {
+    doctorName: 'Dr. John Doe',
+    day: 'Monday',
+    startTime: '09:00 AM',
+    endTime: '01:00 PM',
+  },
+  {
+    doctorName: 'Dr. Jane Smith',
+    day: 'Tuesday',
+    startTime: '11:00 AM',
+    endTime: '03:00 PM',
+  },
+  {
+    doctorName: 'Dr. Emily Johnson',
+    day: 'Wednesday',
+    startTime: '08:00 AM',
+    endTime: '12:00 PM',
+  },
+  {
+    doctorName: 'Dr. Michael Brown',
+    day: 'Thursday',
+    startTime: '10:00 AM',
+    endTime: '02:00 PM',
+  },
+  {
+    doctorName: 'Dr. Lisa White',
+    day: 'Friday',
+    startTime: '09:30 AM',
+    endTime: '01:30 PM',
+  },
+  {
+    doctorName: 'Dr. William Davis',
+    day: 'Saturday',
+    startTime: '08:00 AM',
+    endTime: '12:00 PM',
+  },
+  {
+    doctorName: 'Dr. John Doe',
+    day: 'Sunday',
+    startTime: '09:00 AM',
+    endTime: '01:00 PM',
+  },
+];
+export const EyeDoctorDutyRoster = [
+  {
+    doctorName: 'Dr. John Doe',
+    day: 'Monday',
+    startTime: '09:00 AM',
+    endTime: '01:00 PM',
+  },
+  {
+    doctorName: 'Dr. Jane Smith',
+    day: 'Tuesday',
+    startTime: '11:00 AM',
+    endTime: '03:00 PM',
+  },
+  {
+    doctorName: 'Dr. Emily Johnson',
+    day: 'Wednesday',
+    startTime: '08:00 AM',
+    endTime: '12:00 PM',
+  },
+  {
+    doctorName: 'Dr. Michael Brown',
+    day: 'Thursday',
+    startTime: '10:00 AM',
+    endTime: '02:00 PM',
+  },
+  {
+    doctorName: 'Dr. Lisa White',
+    day: 'Friday',
+    startTime: '09:30 AM',
+    endTime: '01:30 PM',
+  },
+  {
+    doctorName: 'Dr. William Davis',
+    day: 'Saturday',
+    startTime: '08:00 AM',
+    endTime: '12:00 PM',
+  },
+  {
+    doctorName: 'Dr. John Doe',
+    day: 'Sunday',
+    startTime: '09:00 AM',
+    endTime: '01:00 PM',
+  },
+];
+
 export const AloSchedule = [
   [
     "বার",

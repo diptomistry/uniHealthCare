@@ -25,22 +25,21 @@ model = genai.GenerativeModel(
     model_name="gemini-1.5-flash",
     generation_config=generation_config,
     system_instruction=(
-        "We have a medical center in our university. The medical center has the following departments: "
-        "Cardiology Department, Dental Department, Ophthalmology Department, ENT (Ear, Nose, Throat) Department, "
-        "Physiotherapy Department, and Homeopathy Department. Patients will describe their symptoms, and you will "
-        "have to suggest the patient which department can solve their problem. Answer just the department name, nothing else. "
-        "If the user inputs irrelevant data that is not related to a health issue, ask them to submit relevant text. "
-        "Do not ever give any response except the two things: "
-        "1. Suggest the corresponding department if a health issue is submitted. "
-        "2. If the user submits something irrelevant to health issues, tell them to submit health-related issues."
+        "The user will provide you with symptoms and a list of available departments. "
+        "Your task is to suggest the appropriate department based on the symptoms provided. "
+        "If the user inputs unnecessary or irrelevant information that is not related to a health issue, "
+        "prompt them to provide health-related symptoms. "
+        "Your responses should be limited to one of two things: "
+        "1. Suggest the corresponding department based on the health issue provided. "
+        "2. If irrelevant data is provided, ask the user to submit health-related symptoms."
     ),
 )
 
 @app.route('/diagnose', methods=['POST'])
 def chat():
     data = request.json
-    user_input = data.get('user_input')  # Note: change 'message' to 'user_input' to match your JSON structure
-    
+    user_input = data.get('user_input')
+
     if not user_input:
         return jsonify({"error": "Input message is required."}), 400
 
@@ -49,20 +48,15 @@ def chat():
             {
                 "role": "user",
                 "parts": [
-                    "We have a medical center in our university. The medical center has the following departments: "
-                    "Cardiology Department, Dental Department, Ophthalmology Department, ENT (Ear, Nose, Throat) Department, "
-                    "Physiotherapy Department, and Homeopathy Department. Patients will describe their symptoms, and you will "
-                    "have to suggest which department can solve their problem. Answer just the department name, nothing else. "
-                    "If the user inputs irrelevant data that is not related to a health issue, ask them to submit relevant text. "
-                    "Do not ever give any response except the two things: "
-                    "1. Suggest the corresponding department if a health issue is submitted. "
-                    "2. If the user submits something irrelevant to health issues, tell them to submit health-related issues."
+                    "You will receive symptoms and a list of available departments. "
+                    "Your job is to suggest the appropriate department based on the symptoms. "
+                    "If the input is irrelevant to health issues, ask the user to provide health-related symptoms."
                 ],
             },
             {
                 "role": "model",
                 "parts": [
-                    "Okay, I'm ready. Tell me the patient's symptoms.\n",
+                    "Understood, I'm ready. Please provide the symptoms and available departments.\n",
                 ],
             },
         ]
