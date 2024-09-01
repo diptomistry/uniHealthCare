@@ -1,20 +1,94 @@
-import React, { useState } from 'react';
-import AddressAutocomplete from './AddressAutocomplete';
-import axios from 'axios';
-const Signup = ({ userType, handleUserTypeChange }) => {
-  const [address, setAddress] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [selectedGender, setSelectedGender] = useState('');
-  const [signature, setSignature] = useState(null);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [dob, setDob] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPass, setConfirmPass] = useState('');
-  const [registrationNo, setRegistrationNo] = useState('');
-  const [session, setSession] = useState('');
+import React, { useState, useEffect } from "react";
+import AddressAutocomplete from "./AddressAutocomplete";
+import axios from "axios";
+import CustomModal from "../../models/CustomModal";
 
+const Signup = ({ userType, handleUserTypeChange, setIsLoading }) => {
+  const [address, setAddress] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedGender, setSelectedGender] = useState("");
+  const [signature, setSignature] = useState(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dob, setDob] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+  const [registrationNo, setRegistrationNo] = useState("");
+  const [session, setSession] = useState("");
+  const [otp, setOtp] = useState(""); // State to hold the OTP
+  const [verifyotp, setVerifyOtp] = useState(null); // State to hold the OTP
+  const [isOtpModalOpen, setIsOtpModalOpen] = useState(false); // State to manage OTP modal visibility
+  const [timer, setTimer] = useState(30);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  //const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    } else {
+      setIsButtonDisabled(true);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
+  useEffect(() => {
+    if (isOtpVerified) {
+      const timeout = setTimeout(() => {
+        setIsOtpModalOpen(false);
+        setIsOtpVerified(false); // Reset the OTP verification state
+        setOtp(""); // Clear the OTP input field
+      }, 2000); // Close the modal after 2 seconds
+
+      return () => clearTimeout(timeout);
+    }
+  }, [isOtpVerified]);
+  // Function to send OTP to user's email
+  const sendOtp = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/auth/send-otp",
+        {
+          email,
+          debug: false,
+        }
+      );
+
+      if (response.data.success) {
+        setTimer(30); // Reset the timer
+        alert("OTP sent successfully");
+        setVerifyOtp(response.data.otp); // Save the expected OTP in state
+        setIsOtpModalOpen(true); // Open OTP modal
+      }
+    } catch (error) {
+      console.error(
+        "Error sending OTP:",
+        error.response?.data || error.message
+      );
+      alert("Error sending OTP");
+    } finally {
+      setIsLoading(false); // Hide loading animation
+    }
+  };
+  // Function to handle OTP submission and verification
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Verifying OTP:", otp);
+    console.log("Expected OTP:", verifyotp);
+    //convert verifyotp to string
+    console.log("Expected OTP:", verifyotp.toString());
+    // Here you would verify the OTP with the backend, then proceed with the signup if OTP is valid
+    if (otp === verifyotp.toString()) {
+      // Replace this with actual OTP verification logic
+      setIsOtpVerified(true);
+      handleSubmit(); // Proceed with the actual user creation
+    } else {
+      alert("Invalid OTP");
+    }
+  };
   const handleAddressSelect = (selectedAddress) => {
     setAddress(selectedAddress);
   };
@@ -23,9 +97,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
     setSignature(event.target.files[0]);
   };
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Create a JSON object to send as the POST request body
+    // Create a JSON object to send as the POST request body to the backend
     const data = {
       name,
       email,
@@ -36,51 +108,58 @@ const Signup = ({ userType, handleUserTypeChange }) => {
       password,
       confirmPass,
       address,
-      registeredFrom: 'web',
+      registeredFrom: "web",
     };
 
-    if (userType === 'student') {
-      data.departmentId = 1;///
+    if (userType === "student") {
+      data.departmentId = 1; ///
       data.session = session;
       data.registrationNo = registrationNo;
     }
 
-    if (userType === 'doctor') {
-      data.departmentId = selectedDepartment;
+    if (userType === "doctor") {
+      data.departmentId = 3;
       // Assuming the signature is required to be converted to base64 string
       // You can use libraries like FileReader to convert it before sending
     }
 
     try {
-      console.log('Sending data:', data);
-      const response = await axios.post('http://localhost:8000/api/auth/create-user', data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      alert('User created successfully:');
-      setAddress('');
-      setSelectedDepartment('');
-      setSelectedGender('');
+      console.log("Sending data:", data);
+      const response = await axios.post(
+        "http://localhost:8000/api/auth/create-user",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      alert(response.data.message);
+      setAddress("");
+      setSelectedDepartment("");
+      setSelectedGender("");
       setSignature(null);
-      setName('');
-      setEmail('');
-      setPhone('');
-      setDob('');
-      setPassword('');
-      setConfirmPass('');
-      setRegistrationNo('');
-      setSession('');
+      setName("");
+      setEmail("");
+      setPhone("");
+      setDob("");
+      setPassword("");
+      setConfirmPass("");
+      setRegistrationNo("");
+      setSession("");
       // Handle response
-      console.log('User created successfully:', response.data);
+      console.log("User created successfully:", response.data);
     } catch (error) {
-      alert('Error creating user:');
+      alert("Error creating user:");
       // Handle error
-      console.error('Error creating user:', error.response?.data || error.message);
+      console.error(
+        "Error creating user:",
+        error.response?.data || error.message
+      );
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => e.preventDefault()}>
       <div className="flex flex-col items-center">
         <div className="text-center">
           <h1 className="text-2xl xl:text-4xl font-extrabold text-textColor">
@@ -117,6 +196,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                 placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
               />
             )}
             {userType === "student" && (
@@ -127,6 +207,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   placeholder="Your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
                 />
                 <input
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
@@ -134,6 +215,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   placeholder="Dept name"
                   value={selectedDepartment}
                   onChange={(e) => setSelectedDepartment(e.target.value)}
+                  required
                 />
               </div>
             )}
@@ -146,6 +228,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
                 <input
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
@@ -153,6 +236,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   placeholder="Enter your phone"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  required
                 />
               </div>
             )}
@@ -165,6 +249,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
                 <input
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg"
@@ -172,6 +257,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   placeholder="Enter your phone"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  required
                 />
               </>
             )}
@@ -200,6 +286,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   placeholder="Reg. Number"
                   value={registrationNo}
                   onChange={(e) => setRegistrationNo(e.target.value)}
+                  required
                 />
                 <input
                   className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
@@ -207,6 +294,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                   placeholder="Session"
                   value={session}
                   onChange={(e) => setSession(e.target.value)}
+                  required
                 />
               </div>
             )}
@@ -220,6 +308,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                 placeholder="DOB"
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
+                required
               />
               <select
                 id="gender"
@@ -241,6 +330,7 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <input
                 className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-1/2"
@@ -248,22 +338,29 @@ const Signup = ({ userType, handleUserTypeChange }) => {
                 placeholder="Confirm Pass..."
                 value={confirmPass}
                 onChange={(e) => setConfirmPass(e.target.value)}
+                required
               />
             </div>
 
-
-            {userType !== "student" && userType !== "teacher" && userType !== "staff" && userType !== "at" && (
-              <div>
-                <label className="text-gray-500 text-sm">Upload Signature:</label>
-                <input
-                  className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-full"
-                  type="file"
-                  onChange={handleSignatureChange}
-                />
-              </div>
-            )}
+            {userType !== "student" &&
+              userType !== "teacher" &&
+              userType !== "staff" &&
+              userType !== "at" && (
+                <div>
+                  <label className="text-gray-500 text-sm">
+                    Upload Signature:
+                  </label>
+                  <input
+                    className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-full"
+                    type="file"
+                    onChange={handleSignatureChange}
+                    required
+                  />
+                </div>
+              )}
 
             <button
+              onClick={sendOtp}
               className="mt-4 tracking-wide font-semibold bg-brightColor text-gray-100 w-full py-4 rounded-lg hover:bg-hoverColor transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
             >
               <svg
@@ -283,6 +380,36 @@ const Signup = ({ userType, handleUserTypeChange }) => {
           </div>
         </div>
       </div>
+      <CustomModal
+        isOpen={isOtpModalOpen}
+        onRequestClose={() => setIsOtpModalOpen(false)}
+      >
+        <div className="p-4">
+          <h2 className="text-xl font-semibold mb-4">OTP Verification</h2>
+          <form onSubmit={handleOtpSubmit}>
+            <input
+              type="text"
+              className="border p-2 rounded mb-4 w-full"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded"
+            >
+              Verify OTP
+            </button>
+          </form>
+          {timer > 0 ? (
+            <p className="text-gray-600 mt-4">
+              OTP will expire in {timer} seconds
+            </p>
+          ) : (
+            <p className="text-red-500 mt-4">OTP expired. Please try again.</p>
+          )}
+        </div>
+      </CustomModal>
     </form>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef,useEffect,useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,6 +8,30 @@ import AdminQuote from "../../layouts/homepage/AdminQuote";
 import { DoctorsData } from "../../assets/dashboard";
 
 const Doctors = () => {
+  const [doctors, setDoctors] = useState([]);
+  //useffect to fetch doctors data from http://localhost:8000/api/auth/get-doctors with token
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/auth/get-doctors', {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if (data.success) {
+          setDoctors(data.data);
+        } else {
+          console.error("Failed to fetch doctors data.");
+        }
+      } catch (error) {
+        console.error('An error occurred while fetching doctors data:', error);
+      }
+    };
+    fetchData();
+  }, []);
   const slider = useRef(null);
 
   const settings = {
@@ -76,7 +100,7 @@ const Doctors = () => {
         </div>
         <div className=" mt-5">
           <Slider ref={slider} {...settings}>
-            {DoctorsData.map((e, index) => (
+            {doctors.map((e, index) => (
               <div
                 className="h-[350px] text-black rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-2 cursor-pointer"
                 key={index}
@@ -90,8 +114,8 @@ const Doctors = () => {
                 </div>
 
                 <div className=" flex flex-col justify-center items-center">
-                  <h1 className=" font-semibold text-xl pt-4">{e.name}</h1>
-                  <h3 className=" pt-2">{e.specialties}</h3>
+                  <h1 className=" font-semibold text-xl pt-4">{e.user.name}</h1>
+                  <h3 className=" pt-2">{e.department.name}</h3>
                 </div>
               </div>
             ))}

@@ -58,15 +58,20 @@ const Blog = () => {
     const token = localStorage.getItem('token');
   
     // Validation: Check if any field is empty
-    if (!title || !description || !img) {
+    if (isAdding && (!title || !description || !img)) {
       alert('All fields (Title, Description, Image) must be filled out.');
+      return;
+    }
+  
+    if (!isAdding && (!title || !description)) {
+      alert('All fields (Title, Description) must be filled out.');
       return;
     }
   
     try {
       let imageUrl = img;
   
-      // If the image is a base64 string, upload it to the server
+      // Check if a new image is selected (base64 string starts with "data:image")
       if (img.startsWith('data:image')) {
         const formData = new FormData();
         const blob = await fetch(img).then(res => res.blob());
@@ -80,17 +85,18 @@ const Blog = () => {
           body: formData,
         });
   
-       // const uploadData = await uploadResponse.json();
-        //imageUrl = uploadData; // Assuming the response contains a `url` field with the image URL
-         imageUrl = await uploadResponse.text();
+        // Handle the upload response
+        if (uploadResponse.ok) {
+          imageUrl = await uploadResponse.text(); // Assuming the server returns the image URL as plain text
+        } else {
+          throw new Error('Failed to upload the image.');
+        }
       }
   
       const blogData = { title, description, image: imageUrl };
   
       let response;
       if (isAdding) {
-        console.log('hello',blogData);
-       
         // Creating a new blog
         response = await fetch('http://localhost:8000/api/blogs', {
           method: "POST",
@@ -124,6 +130,8 @@ const Blog = () => {
       console.error('An error occurred while saving the blog:', error);
     }
   };
+  
+  
   
 
 

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../services/auth/UserProvider';
+import { LuEye, LuEyeOff } from "react-icons/lu";
 
 const Signin = ({ isSignUpMode, openForm }) => {
   const [email, setEmail] = useState('');
@@ -9,6 +10,8 @@ const Signin = ({ isSignUpMode, openForm }) => {
   const navigate = useNavigate();
   const [userType, setUserType] = useState('');
   const { login } = useContext(UserContext);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,10 +28,17 @@ const Signin = ({ isSignUpMode, openForm }) => {
 
       if (data.success) {
         setUserType(data.data.role.roleName);
-       // alert('Login successful');
 
         login(data.data); 
         localStorage.setItem('token', data.data.token);
+
+        if (rememberMe) {
+          localStorage.setItem('email', email);
+          localStorage.setItem('password', password);
+        } else {
+          localStorage.removeItem('email');
+          localStorage.removeItem('password');
+        }
       } else {
         setError('Login failed. Please check your credentials.');
       }
@@ -37,7 +47,15 @@ const Signin = ({ isSignUpMode, openForm }) => {
     }
   };
 
- 
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('email');
+    const savedPassword = localStorage.getItem('password');
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+      setRememberMe(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (userType==='admin') {
@@ -92,7 +110,7 @@ const Signin = ({ isSignUpMode, openForm }) => {
           <div className="relative">
             <i className="fa fa-lock absolute inset-y-0 left-0 pl-3 py-3 text-gray-500"></i>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"} // Toggle input type
               name="password"
               id="password"
               className="bg-[#d5f2ec] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5"
@@ -101,12 +119,24 @@ const Signin = ({ isSignUpMode, openForm }) => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? (
+                <LuEyeOff className="text-gray-500" />
+              ) : (
+                <LuEye className="text-gray-500" />
+              )}
+            </div>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-start">
               <input
                 id="remember"
                 type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
                 className="w-4 h-4 border border-gray-300 rounded bg-gray-50 accent-brightColor"
               />
               <label htmlFor="remember" className="ml-3 text-sm text-gray-500">

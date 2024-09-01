@@ -1,0 +1,384 @@
+{
+    "intents": [
+      {
+        "tag": "greeting",
+        "patterns": [
+          "Hii",
+          "Hi",
+          "Hello",
+          "Helloo",
+          "Hey",
+          "Good morning",
+          "Good afternoon",
+          "Is anyone there?",
+          "Hi there",
+          "Whats up",
+          "Howdy",
+          "Hola"
+        ],
+        "responses": [
+          "Hello! How can I assist you today?",
+          "Hi! What can I help you with?",
+          "Hey! How can I assist you?",
+          "Hi there! How may I help you today?"
+        ]
+      },
+      {
+        "tag": "goodbye",
+        "patterns": [
+          "Goodbye",
+          "Bye",
+          "See you later",
+          "I have to go",
+          "I'm leaving",
+          "Take care",
+          "Bye bye",
+          "See you soon"
+        ],
+        "responses": [
+          "Goodbye! Take care.",
+          "See you later!",
+          "Bye! Feel free to come back anytime.",
+          "Take care! See you soon."
+        ]
+      },
+      {
+        "tag": "thanks",
+        "patterns": [
+          "Thank you",
+          "Thanks",
+          "I appreciate it",
+          "Thanks a lot",
+          "Thank you so much",
+          "Thank you very much",
+          "Thanks for your help"
+        ],
+        "responses": [
+          "You're welcome!",
+          "Happy to help!",
+          "Anytime!",
+          "Glad I could assist you."
+        ]
+      },
+      {
+        "tag": "contact_info",
+        "patterns": [
+          "How can I contact the Dhaka University Medical Center?",
+          "What is the contact information for the medical center?",
+          "Give me the contact details for the medical center.",
+          "Where is the Dhaka University Medical Center located?"
+        ],
+        "responses": [
+          "You can contact the Dhaka University Medical Center at:\n\nAddress: Dhaka 1000, Bangladesh, Near the Science Annex Building\nEmail: cmo.dumc@gmail.com\nPhone: +88 09666 911 463 (Ext.)"
+        ]
+      },
+      {
+        "tag": "general_info",
+        "patterns": [
+          "What services are offered at the medical center?",
+          "Tell me about the medical center",
+          "What does the medical center do?",
+          "What can I do here?",
+          "What services are available?",
+          "What are the services provided?",
+          "What can I find here?",
+          "What is the role of the medical center ?"
+
+
+        ],
+        "responses": [
+          "The Shahid Buddhijibi Dr. Muhammad Murtaza Medical Centre offers comprehensive healthcare services including consultations, prescriptions, medical records access, and more."
+        ]
+      },
+      {
+        "tag": "appointment",
+        "patterns": [
+          "How do I book an appointment?",
+          "Can I schedule a consultation?",
+          "How to book a doctor?",
+          "I want to see a doctor",
+          "How to make an appointment?",
+          "How to schedule a consultation?",
+          "How to consult a doctor?",
+          "Appointment?"
+          
+        ],
+        "responses": [
+          "You can schedule an appointment with a healthcare provider by logging into your account and selecting 'Book Appointment'."
+        ]
+      },
+      {
+        "tag": "prescription",
+        "patterns": [
+          "Where can I find my prescriptions?",
+          "Can I view my prescription?",
+          "How to see my medicine?",
+          "Show me my prescriptions",
+          "How can I access my medical records?",
+          "Show me my health history",
+          "Where are my medical records?",
+          "Can I see my past treatments?"
+        ],
+        "responses": [
+          "You can view your prescriptions by logging into your account and navigating to the 'Book Appointment->Past Records' section."
+        ]
+      },
+    
+      {
+        "tag": "feedback",
+        "patterns": [
+          "How can I provide feedback?",
+          "I want to give feedback",
+          "Can I rate the service?",
+          "Where to submit feedback?"
+        ],
+        "responses": [
+          "You can provide feedback to a doctor that you've consulted with by rating them after your appointment."
+        ]
+      },
+      {
+        "tag": "staff_tasks",
+        "patterns": [
+          "What tasks can I do as a staff member?",
+          "What can staff members do?",
+          "Staff permissions",
+          "what can a staff do?"
+        ],
+        "responses": [
+          "As a staff member, you can do appointments, assist in daily tasks, and perform duties assigned by the admin."
+        ]
+      },
+      {
+        "tag": "admin_tasks",
+        "patterns": [
+          "How do I manage user accounts?",
+          "What can admins do?",
+          "How to update homepage info?",
+          "Admin responsibilities"
+        ],
+        "responses": [
+          "Admins can manage user accounts, update public information, generate reports, and oversee platform maintenance."
+        ]
+      },
+      {
+        "tag": "dispensary_officer_tasks",
+        "patterns": [
+          "How do I provide medicines?",
+          "What are my duties as a dispensary officer?",
+          "How to request more medicine?",
+          "Dispensary officer tasks"
+        ],
+        "responses": [
+          "As a dispensary officer, you can provide prescribed medicines to patients and request more medicines if stock is low."
+        ]
+      },
+      {
+        "tag": "senior_officer_tasks",
+        "patterns": [
+          "What can I do as a senior officer?",
+          "Senior officer responsibilities",
+          "Senior officer tasks"
+        ],
+        "responses": [
+          "Senior officers can accept medicines requested by dispensary officers and obviously book appointments."
+        ]
+
+      },
+      {
+        "tag": "doctor_tasks",
+        "patterns": [
+          "How do I prescribe medicine?",
+          "What can I do as a doctor?",
+          "How to view patient history?",
+          "Doctor tasks"
+        ],
+        "responses": [
+          "Doctors can prescribe medicines, view patient history, and consult with patients via the platform."
+        ]
+      },
+      {
+        "tag": "student_benefits",
+        "patterns": [
+          "Is treatment free for students?",
+          "Do students get free medicine?",
+          "What benefits do students get?",
+          "Student healthcare benefits"
+        ],
+        "responses": [
+          "As a student, your treatment and medicines are provided free of charge at the medical center."
+        ]
+      },
+      {
+        "tag": "teacher_benefits",
+        "patterns": [
+          "Is treatment free for teachers?",
+          "Do teachers get free medicines?",
+          "What benefits do teachers get?",
+          "Teacher healthcare benefits"
+        ],
+        "responses": [
+          "Teachers receive free treatment, but medicines are paid for at the medical center."
+        ]
+      },
+      {
+        "tag": "nurse_tasks",
+        "patterns": [
+          "What can a nurse do on the platform?",
+          "Nurse responsibilities",
+          "How do I assist patients?",
+          "Nurse tasks"
+        ],
+        "responses": [
+          "Nurses assist in patient care, support doctors, and help manage treatment plans on the platform."
+        ]
+      },
+      {
+        "tag": "medical_center_history",
+        "patterns": [
+          "What is the history of the  Medical Center?",
+          "Tell me about the history of the medical center.",
+          "When was the medical center established?",
+          "Why is the medical center named after Dr. Muhammad Murtaza?"
+        ],
+        "responses": [
+          "The Shaheed Dr. Muhammad Murtaza Medical Center, located in Dhaka University, was established in 1922. It is named after Dr. Muhammad Murtaza, who was killed by the Pakistani army in 1971 while serving as the Chief Medical Officer of the Dhaka University Medical Centre."
+        ]
+      },
+      {
+        "tag": "medical_center_quality",
+        "patterns": [
+          "How is the quality of healthcare services at the medical center?",
+          "What is the standard of care at the medical center?",
+          "Is the medical center's environment up to standard?",
+          "How does the medical center ensure quality services?"
+        ],
+        "responses": [
+          "The medical center is not a full-fledged hospital but a primary healthcare center. The quality of care and the environment are satisfactory, and plans to enhance them with modern equipment and infrastructure are underway."
+        ]
+      },
+      {
+        "tag": "future_plans",
+        "patterns": [
+          "What are the future plans for the medical center?",
+          "Are there any upcoming developments at the medical center?",
+          "What improvements are planned for the medical center?",
+          "Tell me about future plans for the medical center."
+        ],
+        "responses": [
+          "Future plans include acquiring necessary personnel, modern equipment, and improving infrastructure as proposed to the administration."
+        ]
+      },
+      {
+        "tag": "medical_center_naming",
+        "patterns": [
+          "Why was the medical center named after Dr. Muhammad Murtaza?",
+          "What is the significance of naming the medical center after Dr. Muhammad Murtaza?",
+          "Why did DU decide to name the medical center after Dr. Murtaza?",
+          "Tell me about the decision to name the medical center after Dr. Murtaza."
+        ],
+        "responses": [
+          "The medical center was named after Dr. Muhammad Murtaza following demands from Dhaka University teachers and family members of the martyred doctor. Dr. Murtaza was killed by the Pakistani army in 1971 while serving as the Chief Medical Officer of the Dhaka University Medical Centre."
+        ]
+      },
+      {
+        "tag": "medical_center_controversy",
+        "patterns": [
+          "Why was there controversy over the medical center's name?",
+          "What was the issue with naming the medical center after an industrialist?",
+          "Can you explain the conflict regarding the medical center's name?",
+          "What happened with the naming decision of the medical center?"
+        ],
+        "responses": [
+          "There was controversy when the university initially planned to name the medical center after businessman AK Azad, who was funding the construction. After opposition from DU teachers and family members of Dr. Murtaza, the decision was reversed, and the center was named after Dr. Murtaza."
+        ]
+      },
+      {
+        "tag": "medical_center_purpose",
+        "patterns": [
+          "What is the purpose of the Dhaka University Medical Center?",
+          "What services does the medical center provide?",
+          "How does the medical center benefit students and staff?",
+          "Why does Dhaka University have a medical center?"
+          
+        ],
+        "responses": [
+          "The Dhaka University Medical Center provides primary health care services to students, teachers, and staff. It addresses basic health needs and supports the well-being of the university community."
+        ]
+      },
+      {
+        "tag": "about_us",
+        "patterns": [
+          "Tell me about the Dhaka University Medical Center.",
+          "What services are provided by the medical center?",
+          "What is the purpose of the medical center?",
+          "Give me information about the Dhaka University Medical Center.",
+          "Dhaka University Medical Center"
+        ],
+        "responses": [
+          "The Dhaka University Medical Center provides free medical services and free pathological tests to students, teachers, employees, and their family members. The center, now named the Shaheed Buddhijibi Dr. Muhammad Murtaza Medical Center, offers immediate primary health care through doctors and nurses on a 24-hour rotation basis. It has a total of eleven departments."
+        ]
+      },
+      {
+        "tag": "departments",
+        "patterns": [
+          "What departments are available at the medical center?",
+          "List the departments in the medical center.",
+          "What are the different departments in the medical center?",
+          "Tell me about the medical center's departments."
+        ],
+        "responses": [
+          "The medical center has the following departments: Outpatient Department, Pathology Department, Cardiology Department, Radiology Department, Dental Department, Ophthalmology Department, ENT (Ear, Nose, Throat) Department, Nursing Department, Dispensary Department, Physiotherapy Department, and Homeopathy Department."
+        ]
+      },
+      {
+        "tag": "doctors_treatment",
+        "patterns": [
+          "How many doctors are there at the medical center?",
+          "What kind of doctors work at the medical center?",
+          "Tell me about the medical center's doctors and their services.",
+          "How is treatment provided by doctors at the medical center?"
+        ],
+        "responses": [
+          "The medical center has 19 allopathic doctors and 6 homeopathic doctors. There are 24 beds available in the ward for infectious disease patients."
+        ]
+      },
+      {
+        "tag": "medical_tests",
+        "patterns": [
+          "What types of medical tests are done at the center?",
+          "Tell me about the medical tests available.",
+          "What tests are performed in the pathology department?",
+          "What kinds of tests can I get at the medical center?"
+        ],
+        "responses": [
+          "Three types of tests are conducted: Urine Test, Hematological Test, and Stool Test. These tests are performed in the Pathology Department."
+        ]
+      },
+      {
+        "tag": "medicine",
+        "patterns": [
+          "What about the medicine services at the center?",
+          "Are there high-quality medicines available?",
+          "Tell me about the pharmaceutical services at the medical center.",
+          "How is medicine handled at the medical center?"
+        ],
+        "responses": [
+          "The medical center provides high-quality essential medicines and ensures prompt pharmaceutical services."
+        ]
+      },
+      {
+        "tag": "free_services",
+        "patterns": [
+          "Are there any free services available at the medical center?",
+          "What services are provided free of charge?",
+          "Tell me about the free services at the medical center.",
+          "Are there any services that don't require payment?"
+        ],
+        "responses": [
+          "The medical center provides free medical services and free pathological tests to students, teachers, employees, and their family members.Medicines are also free for students."
+        ]
+
+      }
+    ]
+  }
+  

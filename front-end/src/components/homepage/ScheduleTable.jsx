@@ -16,7 +16,7 @@ import PharmacySchedule from "../../layouts/homepage/PharmacySchedule";
 import HomeoPathySchedule from "../../layouts/homepage/HomeoPathySchedule";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
-export function TabsWithIcon() {
+export function ScheduleTable() {
   const data = [
     {
       label: "Allopathy Doctor",
