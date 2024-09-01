@@ -22,7 +22,7 @@ import ChatBot from "../models/dashboard/ChatBot";
 import SpecificRouteProtection from "../services/auth/SpecificRouteProtection";
 //import { UserContext } from "../services/auth/UserProvider";
 import Report from "../components/dashboard/Admin/Report";
-
+import AdditionalInfo from "../components/dashboard/Admin/AdditionalInfo";
 import {
   AboutSection,
   AllUsers,
@@ -113,6 +113,7 @@ const Dashboard = () => {
             <Route path="/About-Section" element={<SpecificRouteProtection role='admin'><AboutSection /></SpecificRouteProtection>} />
             <Route path="/Blog" element={<SpecificRouteProtection role='admin'><Blog /></SpecificRouteProtection>} />
             <Route path="/Quote-Section" element={<SpecificRouteProtection role='admin'><QuoteSection /></SpecificRouteProtection>} />
+            <Route path="/Update" element={<SpecificRouteProtection role='admin'><AdditionalInfo /></SpecificRouteProtection>} />
             <Route path="/Doctor-Home" element={<SpecificRouteProtection role='doctor'><Home /></SpecificRouteProtection>} />
             <Route path="/New-Requests" element={<SpecificRouteProtection role='doctor'><NewRequests /></SpecificRouteProtection>} />
             <Route path="/Already-Prescribed" element={<SpecificRouteProtection role='doctor'><ALreadyPrescribed /></SpecificRouteProtection>} />

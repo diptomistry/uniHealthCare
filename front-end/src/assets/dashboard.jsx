@@ -29,7 +29,7 @@ import { GrLocation, GrBlog } from "react-icons/gr";
 import { LuMessageSquarePlus } from "react-icons/lu";
 import { GiMedicines } from "react-icons/gi";
 import { TbBrandBooking } from "react-icons/tb";
-
+import { RxUpdate } from "react-icons/rx";
 import avatar from "./img/doc1.jpg";
 import avatar2 from "./img/doc2.jpg";
 import avatar3 from "./img/doc3.jpg";
@@ -3013,6 +3013,15 @@ export const links = [
       },
     ],
   },
+  {
+    title: "Additional Info",
+    links: [
+      {
+        name: "Update",
+        icon: <RxUpdate />,
+      }
+    ]
+  }
 ];
 export const doctorLinks = [
   {
