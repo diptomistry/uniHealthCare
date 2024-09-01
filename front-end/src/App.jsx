@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import { registerLicense } from '@syncfusion/ej2-base';
 import ProtectedRoute from "./services/auth/ProtectedRoute";
 
+
 let key = "Ngo9BigBOggjHTQxAR8/V1NCaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXhfcnRQRWBYUkRyXUY=";
 registerLicense(key);
 

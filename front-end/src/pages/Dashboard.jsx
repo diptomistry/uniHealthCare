@@ -21,6 +21,7 @@ import TeacherHome from "../components/dashboard/teacher/TeacherHome";
 import ChatBot from "../models/dashboard/ChatBot";
 import SpecificRouteProtection from "../services/auth/SpecificRouteProtection";
 //import { UserContext } from "../services/auth/UserProvider";
+import Report from "../components/dashboard/Admin/Report";
 
 import {
   AboutSection,
@@ -101,6 +102,7 @@ const Dashboard = () => {
           <Routes>
             <Route path="/" element={<SpecificRouteProtection role='admin'><MedicalCenter darkMode={darkMode} /></SpecificRouteProtection>} />
             <Route path="/Medical-Center" element={<SpecificRouteProtection role='admin'><MedicalCenter darkMode={darkMode}/></SpecificRouteProtection>} />
+            <Route path="/Medical-Center/Report" element={<SpecificRouteProtection role='admin'><Report /></SpecificRouteProtection>} />
             <Route path="/All-Users" element={<SpecificRouteProtection role='admin'><AllUsers /></SpecificRouteProtection>} />
             <Route path="/User-Approval" element={<SpecificRouteProtection role='admin'><UserApproval /></SpecificRouteProtection>} />
             <Route path="/Doctor" element={<SpecificRouteProtection role='admin'><DutyRosterDoctor /></SpecificRouteProtection>} />

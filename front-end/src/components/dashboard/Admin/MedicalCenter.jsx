@@ -17,14 +17,16 @@ import TopRatedDoctors from "./TopRatedDoctors";
 import { MdOutlineSimCardDownload } from "react-icons/md";
 import ReportDateRange from "../../../layouts/dashboard/mainContent/ReportDateRange";
 import { FaCircleDot, FaBangladeshiTakaSign } from "react-icons/fa6";
-
+import { useNavigate } from "react-router-dom"; 
 const MedicalCenter = ({ darkMode }) => {
   const [patientStatType, setPatientStatType] = useState("monthly");
-
+  const navigate = useNavigate();
   const handleStatTypeChange = (event) => {
     setPatientStatType(event.target.value);
   };
-  
+  const handleDownloadReport = () => {
+    navigate('/dashboard/Medical-Center/Report'); // Replace with your desired route
+  };
 
   return (
     <div className="mt-24 ">
@@ -39,6 +41,7 @@ const MedicalCenter = ({ darkMode }) => {
                 <button
                   title="Save"
                   class="cursor-pointer flex items-center fill-sky-400 bg-sky-950 hover:bg-sky-900 active:border active:border-sky-400 rounded-md duration-100 p-2 py-3"
+                  onClick={handleDownloadReport}
                 >
                   <MdOutlineSimCardDownload
                     size={20}

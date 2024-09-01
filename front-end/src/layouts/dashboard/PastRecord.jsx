@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import "slick-carousel/slick/slick-theme.css";
 import PrescriptionTemplate from '../../components/dashboard/doctor/prescription/PrescriptionTemplate';
-
+import SetRating from '../../models/dashboard/SetRating';
 const PastRecord = ({ appointments }) => {
     const exampleData1 = {
         AppointmentDate: "2024-08-31",
@@ -80,6 +80,7 @@ const PastRecord = ({ appointments }) => {
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doctor</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -95,6 +96,11 @@ const PastRecord = ({ appointments }) => {
                                         }`}>
                                             {appointment.status}
                                         </span>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        {appointment.status === 'completed' && (
+                                           <SetRating rating={0} />
+                                        )}
                                     </td>
                                 </tr>
                             ))}
