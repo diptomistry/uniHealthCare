@@ -1,12 +1,12 @@
 import React from 'react'
 import { PDFViewer } from "@react-pdf/renderer";
-import Invoice from '../../../layouts/dashboard/Invoice';
+import ReportLayout from '../../../layouts/dashboard/ReportLayout';
 
 const Report = () => {
   return (
     <div className="w-full h-screen">
       <PDFViewer className="w-full h-full">
-        <Invoice />
+        <ReportLayout />
       </PDFViewer>
     </div>
   )
