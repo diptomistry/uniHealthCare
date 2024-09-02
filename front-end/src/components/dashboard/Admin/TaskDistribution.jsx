@@ -2,16 +2,28 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from '../../../layouts/dashboard/DutyRoster/Button';
 import PrimaryButton from '../../../layouts/dashboard/PrimaryButton';
+import CustomModal from '../../../models/CustomModal';
+import ChangePasskey from '../../../layouts/dashboard/ChangePasskey';
 const TaskDistribution = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState('');
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   // Predefined passkeys
   const passkeys = {
     userManagement: '12345',
     dutyRosterDoctor: '123456',
     publicInfoUpdateBlog: '1234567'
+  };
+  const handleButtonClick = () => {
+    
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalContent("");
   };
 
   useEffect(() => {
@@ -104,7 +116,7 @@ const TaskDistribution = () => {
       <div className="space-y-2 mt-5">
         <div className='flex flex-col md:flex-row md:justify-between'>
         <label className="block font-medium">User Management Task</label>
-        <button>
+        <button    onClick={handleButtonClick}>
           <PrimaryButton title="Change Passkey" bgColor="bg-primaryColor hover:bg-hoverColor" />
         </button>
         </div>
@@ -125,7 +137,9 @@ const TaskDistribution = () => {
       <div className="space-y-2 mt-5">
       <div className='flex flex-col md:flex-row md:justify-between'>
         <label className="block font-medium">Doctor Duty Roster Task</label>
-        <button>
+        <button
+        onClick={handleButtonClick}
+        >
           <PrimaryButton title="Change Passkey" bgColor="bg-primaryColor hover:bg-hoverColor" />
         </button>
         </div>
@@ -147,7 +161,7 @@ const TaskDistribution = () => {
       <div className="space-y-2 mt-5">
       <div className='flex flex-col md:flex-row md:justify-between'>
         <label className="block font-medium">Public Info Blog Update Task</label>
-        <button>
+        <button    onClick={handleButtonClick}>
           <PrimaryButton title="Change Passkey" bgColor="bg-primaryColor hover:bg-hoverColor" />
         </button>
         </div>
@@ -165,6 +179,11 @@ const TaskDistribution = () => {
           <Button title="Assign" />
         </button>
       </div>
+      {isModalOpen && (
+        <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
+          <ChangePasskey />
+        </CustomModal>
+      )}
     </div>
   );
 };
