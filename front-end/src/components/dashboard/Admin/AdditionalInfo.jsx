@@ -64,7 +64,7 @@ const AdditionalInfo = () => {
             />
             <button
               onClick={handleBudgetSave}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-4 py-2 bg-primaryColor text-white rounded hover:bg-hoverColor"
             >
               Save
             </button>

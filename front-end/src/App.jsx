@@ -3,11 +3,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import SlidingLoginSignup from "./pages/SigninSignup";
 import Dashboard from "./pages/Dashboard";
-import { registerLicense } from '@syncfusion/ej2-base';
+import { registerLicense } from "@syncfusion/ej2-base";
 import ProtectedRoute from "./services/auth/ProtectedRoute";
-
-
-let key = "Ngo9BigBOggjHTQxAR8/V1NCaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXhfcnRQRWBYUkRyXUY=";
+import AdditionalInfo from "./components/dashboard/Admin/AdditionalInfo";
+import PasskeyProtectedRoute from "./services/auth/PasskeyProtectedRoute";
+let key =
+  "Ngo9BigBOggjHTQxAR8/V1NCaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXhfcnRQRWBYUkRyXUY=";
 registerLicense(key);
 
 const App = () => {
@@ -16,10 +17,25 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/get-started" element={<SlidingLoginSignup />} />
-        <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
+        <Route
+          path="/dashboard/*"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/additional-info"
+          element={
+            <PasskeyProtectedRoute passkey="12345">
+              <AdditionalInfo />
+            </PasskeyProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

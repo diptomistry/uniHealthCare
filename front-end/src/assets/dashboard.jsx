@@ -23,7 +23,8 @@ import {
   FaPills,
   FaMoneyBillWave,
   FaPrescription,
-  FaExclamationTriangle 
+  FaExclamationTriangle ,
+  FaTasks
 } from "react-icons/fa";
 import { GrLocation, GrBlog } from "react-icons/gr";
 import { LuMessageSquarePlus } from "react-icons/lu";
@@ -3014,11 +3015,15 @@ export const links = [
     ],
   },
   {
-    title: "Additional Info",
+    title: "Personal Panel",
     links: [
       {
-        name: "Update",
+        name: "Update-Info",
         icon: <RxUpdate />,
+      },
+      {
+        name: "Distribute-Tasks",
+        icon: <FaTasks />,
       }
     ]
   }
