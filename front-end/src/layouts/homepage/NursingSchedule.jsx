@@ -7,7 +7,7 @@ const NursingSchedule = () => {
 
   return (
     <div className='flex flex-col gap-5'>
-      <div className='flex flex-row justify-between'>
+      <div className='flex flex-col md:flex-row justify-between'>
         <div>
           <h2 className="text-sm md:text-2xl font-hindSiliguri text-textColor">নার্সিং শাখার ডিউটি রোস্টার</h2>
         </div>
@@ -22,7 +22,7 @@ const NursingSchedule = () => {
           </div>
         </div>
       </div>
-      <div className="grid border border-gray-300" style={{ gridTemplateColumns: getGridTemplateColumns(NursingSectionSchedule) }}>
+      <div className="grid " style={{ gridTemplateColumns: getGridTemplateColumns(NursingSectionSchedule) }}>
         {NursingSectionSchedule.map((row, rowIndex) => (
           row.map((cell, cellIndex) => (
             <div 

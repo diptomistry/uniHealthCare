@@ -45,7 +45,7 @@ export function ScheduleTable() {
   ];
 
   return (
-    <div className="min-h-screen lg:px-32 px-5 pt-28 bg-slate-200 p-6 rounded-lg shadow-md">
+    <div className="min-h-screen lg:px-32 px-5 pt-28 bg-slate-200 p-6 rounded-lg shadow-md ">
       <h1 className="flex place-content-center mb-2 text-2xl font-poppins font-semibold text-textColor">Duty Roster</h1>
       <Tabs value="doctor">
         <TabsHeader>
@@ -68,7 +68,7 @@ export function ScheduleTable() {
         <TabsBody>
           {data.map(({ value, component }) => (
             <TabPanel key={value} value={value}>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto bg-white dark:bg-secondary-dark-bg mt-3 mb-3 rounded-2xl shadow-md md:p-24 p-4">
                 {component}
               </div>
             </TabPanel>
