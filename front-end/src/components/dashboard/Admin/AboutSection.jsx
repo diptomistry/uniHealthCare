@@ -5,8 +5,7 @@ import { MdOutlineCloudUpload } from "react-icons/md";
 import DeleteConfirmationModal from "../../../models/DeleteConfirmationModal";
 import ServicesCard from "../../../layouts/dashboard/ServiceCard";
 import CustomModal from "../../../models/CustomModal";
-import { FaRegEdit } from "react-icons/fa";
-import { MdOutlineDeleteOutline } from "react-icons/md";
+
 
 const AboutSection = () => {
   const [aboutUs, setAboutUs] = useState("");
@@ -20,7 +19,39 @@ const AboutSection = () => {
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editServiceIndex, setEditServiceIndex] = useState(null);
-  const [editServiceData, setEditServiceData] = useState({ title: '', bodyText: '', image: '' });
+  const [editServiceData, setEditServiceData] = useState({
+    title: "",
+    bodyText: "",
+    image: "",
+  });
+  const [isAddServiceModalOpen, setIsAddServiceModalOpen] = useState(false);
+  const [newServiceData, setNewServiceData] = useState({
+    title: "",
+    bodyText: "",
+    image: "",
+  });
+  const handleAddService = () => {
+    setNewServiceData({
+      title: "",
+      bodyText: "",
+      image: null,
+    });
+    setIsAddServiceModalOpen(true);
+  };
+
+  const handleSaveNewService = () => {
+    aboutUsData.services.push(newServiceData);
+    setIsAddServiceModalOpen(false);
+  };
+  const handleImageChange = (e, isEdit = false) => {
+    const file = e.target.files[0];
+    if (isEdit) {
+      setEditServiceData({ ...editServiceData, image: file });
+    } else {
+      setNewServiceData({ ...newServiceData, image: file });
+    }
+  };
+
 
   const handleEditService = (index) => {
     const service = aboutUsData.services[index];
@@ -404,26 +435,32 @@ const AboutSection = () => {
             Add
           </button>
         </div>
-        <div className="">
-          <h1 className=" text-2xl font-hindSiliguri font-semibold text-textColor flex justify-center ">Services:</h1>
-        <div className="w-full h-[768px] overflow-x-auto flex flex-row gap-5">
-
-  {aboutUsData.services.map((service, index) => (
-    <div key={index} className="flex-shrink-0 w-full flex items-center justify-center">
-
-      <ServicesCard
-        image={service.image}
-        title={service.title}
-        bodyText={service.bodyText}
-        onEdit={() => handleEditService(index)}
-        onDelete={() => handleDeleteService(index)}
-      />
-    </div>
-  ))}
-</div>
-
+        <div className="mt-10">
+          <div className="flex flex-col md:flex-row md:justify-between mb-4">
+            <h1 className="mt-4 text-2xl font-hindSiliguri font-semibold text-textColor flex justify-center ">
+              Services:
+            </h1>
+            <button onClick={handleAddService}>
+            <Button title="Add New Service" />
+          </button>
+          </div>
+          <div className="w-full overflow-x-auto flex flex-row gap-5">
+            {aboutUsData.services.map((service, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-full flex items-center justify-center"
+              >
+                <ServicesCard
+                  image={service.image}
+                  title={service.title}
+                  bodyText={service.bodyText}
+                  onEdit={() => handleEditService(index)}
+                  onDelete={() => handleDeleteService(index)}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-        
       </div>
       <CustomModal
         isOpen={isEditModalOpen}
@@ -433,25 +470,67 @@ const AboutSection = () => {
           <input
             type="text"
             value={editServiceData.title}
-            onChange={(e) => setEditServiceData({ ...editServiceData, title: e.target.value })}
+            onChange={(e) =>
+              setEditServiceData({ ...editServiceData, title: e.target.value })
+            }
             placeholder="Title"
             className="p-2 border border-gray-300 rounded"
           />
           <textarea
             value={editServiceData.bodyText}
-            onChange={(e) => setEditServiceData({ ...editServiceData, bodyText: e.target.value })}
+            onChange={(e) =>
+              setEditServiceData({
+                ...editServiceData,
+                bodyText: e.target.value,
+              })
+            }
             placeholder="Body Text"
             rows="4"
             className="p-2 border border-gray-300 rounded"
           />
           <input
-            type="text"
-            value={editServiceData.image}
-            onChange={(e) => setEditServiceData({ ...editServiceData, image: e.target.value })}
-            placeholder="Image URL"
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImageChange(e, true)}
             className="p-2 border border-gray-300 rounded"
           />
           <Button title="Save" onClick={handleSaveEditService} />
+        </div>
+      </CustomModal>
+
+      <CustomModal
+        isOpen={isAddServiceModalOpen}
+        onRequestClose={() => setIsAddServiceModalOpen(false)}
+      >
+        <div className="flex flex-col gap-4">
+          <input
+            type="text"
+            value={newServiceData.title}
+            onChange={(e) =>
+              setNewServiceData({ ...newServiceData, title: e.target.value })
+            }
+            placeholder="Title"
+            className="p-2 border border-gray-300 rounded"
+          />
+          <textarea
+            value={newServiceData.bodyText}
+            onChange={(e) =>
+              setNewServiceData({
+                ...newServiceData,
+                bodyText: e.target.value,
+              })
+            }
+            placeholder="Body Text"
+            rows="4"
+            className="p-2 border border-gray-300 rounded"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="p-2 border border-gray-300 rounded"
+          />
+          <Button title="Save" onClick={handleSaveNewService} />
         </div>
       </CustomModal>
       <DeleteConfirmationModal

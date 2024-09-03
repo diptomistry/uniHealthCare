@@ -4,7 +4,7 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 
 const ServicesCard = ({ image, title, bodyText, onEdit, onDelete }) => {
   return (
-    <div class="max-w-sm hover:scale-105 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div class="max-w-sm  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     
     <img class="rounded-t-lg" src={image} alt={title} />
 
