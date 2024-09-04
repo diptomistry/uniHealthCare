@@ -2,57 +2,61 @@ package com.example.uniMed.models;
 
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.s;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 
 @Entity
-public class Doctors {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "user"})
+@Table(name = "doctors")
+public class Doctors  extends User{
    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer doctorID;
 
-    @ManyToOne
-    @JoinColumn(name = "userID")
-    private User user;
 
     @ManyToOne
     @JoinColumn(name = "departmentID")
     private Department department;
+
+    public void setUser(User user) {
+        super.setEmail(user.getEmail());
+        super.setDob(user.getDob());
+        super.setName(user.getName());
+        super.setSex(user.getSex());
+        super.setRole(user.getRole());
+        super.setImage(user.getImage());
+        super.setPhone(user.getPhone());
+        super.setUserID(user.getUserID());
+        super.setPassword(user.getPassword());
+        super.setToken(user.getToken());
+        super.setOtp(user.getOtp());
+        super.setRegisteredFrom(user.getRegisteredFrom());
+        super.setRole(user.getRole());
+        super.setStatus(user.getStatus());
+      
+    }
 
  
 
     // Constructors
    
     public Doctors(Integer doctorID, User user, Department department) {
-        this.doctorID = doctorID;
-        this.user = user;
+        
         this.department = department;
     }
     public Doctors() {
-        //TODO Auto-generated constructor stub
+      
     }
     public Doctors(Integer doctorID, User user) {
-        this.doctorID = doctorID;
-        this.user = user;
+   
     }
     public Doctors(User newUser, Long departmentId) {
-        this.user = newUser;
+     
         this.department = new Department(departmentId);
     }
-    public Integer getDoctorID() {
-        return doctorID;
-    }
-    public void setDoctorID(Integer doctorID) {
-        this.doctorID = doctorID;
-    }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
+ 
+   
     public Department getDepartment() {
         return department;
     }

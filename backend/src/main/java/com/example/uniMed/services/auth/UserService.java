@@ -1,10 +1,12 @@
 package com.example.uniMed.services.auth;
+import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.uniMed.models.Department;
 import com.example.uniMed.models.Doctors;
 import com.example.uniMed.models.Role;
 import com.example.uniMed.models.Student;
@@ -16,11 +18,16 @@ import com.example.uniMed.repositories.EmailSender;
 import com.example.uniMed.repositories.auth.StudentRepository;
 import com.example.uniMed.repositories.auth.UserRepo;
 import com.example.uniMed.repositories.auth.role.RoleRepository;
+import com.example.uniMed.repositories.publics.about_us.DepartmentRepository;
 import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
 import com.example.uniMed.services.FileService;
 
+import jakarta.persistence.criteria.CriteriaBuilder.In;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -31,6 +38,10 @@ public class UserService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     @Autowired
     private DoctorRepository doctorRepository;
@@ -114,7 +125,7 @@ public class UserService {
            
             
             User newUser = new User(hashedPassword, email, dob, name, gender, role.get(), filePath, token, status, registeredFrom, phone);
-            userRepository.save(newUser);
+            System.out.println("------->Here");
 
             if ("student".equals(userType)) {
                 if (departmentId == null || session == null || registrationNo == null) {
@@ -124,9 +135,14 @@ public class UserService {
                     return response;
                 }
                 System.out.println("------->Creating student");
-                System.out.println("---->id: "+newUser.getId());
-                Student student = new Student(newUser, departmentId, session, registrationNo);
+            
+                Student student = new Student();
+                student.setDepartment(departmentId);
+                student.setSession(session);
+                student.setRegistrationNo(registrationNo);
+                student.setUser(newUser);
                 studentRepository.save(student);
+
             } else if ("doctor".equals(userType)) {
 
                 if (departmentId == null) {
@@ -137,16 +153,29 @@ public class UserService {
                 }
                 System.out.println("------->Creating doctor");try{
 
-                Doctors doctor = new Doctors(newUser, Long.parseLong(departmentId));
+                Doctors doctor = new Doctors();
+                Optional<Department> department = departmentRepository.findById(Integer.parseInt(departmentId));
+                    if (!department.isPresent()) {
+                        userRepository.delete(newUser);
+                        response.put("success", false);
+                        response.put("message", "Department does not exist");
+                        return response;
+                    }
+                    doctor.setDepartment(department.get());
+                    doctor.setUser(newUser);
+               
                 doctorRepository.save(doctor);
                 }catch(Exception e){
                     userRepository.delete(newUser);
+                    
                     System.out.println("Error: "+e.getMessage());
                     response.put("success", false);
                     response.put("message", "An error occurred while creating the doctor: " + e.getMessage());
                     return response;
                 }
             }
+            else{
+            userRepository.save(newUser);}
 
             response.put("success", true);
             response.put("message", "User created successfully");
@@ -172,13 +201,15 @@ public class UserService {
         User user = userOpt.get();
 
         if (userId != null) {
-            user.setUserID(userId);
+            user.setUserID(Integer.parseInt(String.valueOf(userId)));
         }
         if (email != null) {
             user.setEmail(email);
         }
         if (email2 != null) {
-            user.setDob(email2);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date dob = formatter.parse(email2);
+            user.setDob(dob);
         }
         if (name != null) {
             user.setName(name);
@@ -193,15 +224,14 @@ public class UserService {
 
         userRepository.save(user);
 
-        if (department != null) {
-            studentRepository.updateDepartment(userId, department);
+        Optional<Student> student = studentRepository.findById(userId);
+        if (student != null) {
+           student.get().setDepartment(department);
+              student.get().setSession(session);
+                student.get().setRegistrationNo(registrationNo);
+            studentRepository.save(student.get());
         }
-        if (session != null) {
-            studentRepository.updateSession(userId, session);
-        }
-        if (registrationNo != null) {
-            studentRepository.updateRegistrationNo(userId, registrationNo);
-        }
+
 
         response.put("success", true);
         response.put("message", "User updated successfully");
@@ -230,7 +260,7 @@ public class UserService {
                 studentRepository.delete(student);
             }
             else if(user.getRole().getRoleName().equals("doctor")){
-                Doctors doctor = doctorRepository.findByUserId(userId);
+                Doctors doctor = doctorRepository.findByUserID(userId);
                 doctorRepository.delete(doctor);
             }
 

@@ -29,7 +29,7 @@ public class DutyRosterServices {
         DutyRoster dutyRoster = dutyRosterRepository.findById(dutyRosterId)
             .orElseThrow(() -> new EntityNotFoundException("Duty Roster not found"));
             
-        Doctors doctor = doctorsRepository.findByDoctorID(Long.parseLong(doctorId.toString()));
+        Doctors doctor = doctorsRepository.findByUserID(Long.parseLong(doctorId.toString()));
         if (doctor == null) {
             throw new EntityNotFoundException("Doctor not found");
         }
@@ -46,7 +46,7 @@ public class DutyRosterServices {
         DutyRoster dutyRoster = dutyRosterRepository.findById(dutyRosterId)
             .orElseThrow(() -> new EntityNotFoundException("Duty Roster not found"));
         
-        Doctors doctor = doctorsRepository.findByDoctorID(Long.parseLong(doctorId.toString()));
+        Doctors doctor = doctorsRepository.findByUserID(Long.parseLong(doctorId.toString()));
         if (doctor == null) {
             throw new EntityNotFoundException("Doctor not found");
         }
@@ -80,8 +80,8 @@ public class DutyRosterServices {
                 List<DutyRosterTableDTO.SlotDTO.DoctorDTO> doctors = roster.getAssignedDoctors().stream()
                     .map(doctor -> {
                         DutyRosterTableDTO.SlotDTO.DoctorDTO doctorDTO = new DutyRosterTableDTO.SlotDTO.DoctorDTO();
-                        doctorDTO.setId(doctor.getDoctorID().intValue());
-                        doctorDTO.setName(doctor.getUser().getName());
+                        doctorDTO.setId(doctor.getUserID().intValue());
+                        doctorDTO.setName(doctor.getName());
                         return doctorDTO;
                     })
                     .collect(Collectors.toList());

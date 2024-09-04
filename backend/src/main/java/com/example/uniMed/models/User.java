@@ -2,9 +2,17 @@ package com.example.uniMed.models;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+
+import com.example.uniMed.models.chat.ChatRoom;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +39,35 @@ public class User {
     @JoinColumn(name = "roleid")
     private Role role;
 
+
+    @ManyToMany(mappedBy = "users")
+    @JsonIgnore
+    private List<ChatRoom> chatRooms;
+
     public User() {
     }
+    public User  getUser(){
+        return this;
+    }
+    
+  
 
+    public User(Integer userID, String password, String email, Date dob, String name, String sex, String phone,
+            String image, String status, String token, String otp, String registeredFrom, Role role) {
+        this.userID = userID;
+        this.password = password;
+        this.email = email;
+        this.dob = dob;
+        this.name = name;
+        this.sex = sex;
+        this.phone = phone;
+        this.image = image;
+        this.status = status;
+        this.token = token;
+        this.otp = otp;
+        this.registeredFrom = registeredFrom;
+        this.role = role;
+    }
     public User(String hashedPassword, String email, Date dob, String name, String sex, Role role,
             String filePath, String token, String status, String registeredFrom, String phone) {
         this.password = hashedPassword;
@@ -153,21 +187,12 @@ public class User {
         this.role = role;
     }
 
-    public Object getId() {
-        return userID;
-    }
+    
 
     public void setRoleId(Integer roleId) {
         this.role = new Role(roleId);
     }
 
-    public void setDob(String email2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDob'");
-    }
-
-    public void setUserID(Long user_id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setUserID'");
-    }
+  
+  
 }
