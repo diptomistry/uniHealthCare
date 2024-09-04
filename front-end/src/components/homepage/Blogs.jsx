@@ -17,6 +17,7 @@ const Blogs = () => {
         });
         const data = await response.json();
         setBlogData(data);
+        console.log('blog',data);
       } catch (error) {
         console.error('An error occurred while fetching blog data:', error);
       }

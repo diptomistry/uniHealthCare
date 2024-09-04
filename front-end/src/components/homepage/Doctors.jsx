@@ -23,6 +23,7 @@ const Doctors = () => {
         const data = await response.json();
         if (data.success) {
           setDoctors(data.data);
+          console.log(data.data);
         } else {
           console.error("Failed to fetch doctors data.");
         }
@@ -106,16 +107,24 @@ const Doctors = () => {
                 key={index}
               >
                 <div>
-                  <img
-                    src={e.img}
-                    alt="img"
-                    className=" h-56 rounded-t-xl w-full"
-                  />
+                {e.img ? (
+            <img
+              src={e.img}
+              alt="Doctor"
+              className="h-56 rounded-t-xl w-full"
+            />
+          ) : (
+            <div className="h-56 rounded-t-xl w-full bg-gray-200 flex justify-center items-center">
+              <span className="text-4xl font-semibold text-backgroundColor">
+                {e?.name ? e.name.charAt(0) : "?"}
+              </span>
+            </div>
+          )}
                 </div>
 
                 <div className=" flex flex-col justify-center items-center">
-                  <h1 className=" font-semibold text-xl pt-4">{e.user.name}</h1>
-                  <h3 className=" pt-2">{e.department.name}</h3>
+                  <h1 className=" font-semibold text-xl pt-4">{e?.name || "No name available"}</h1>
+                  <h3 className=" pt-2">{e.department?.name || "No department available"}</h3>
                 </div>
               </div>
             ))}
