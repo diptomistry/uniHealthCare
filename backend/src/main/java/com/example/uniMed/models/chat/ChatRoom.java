@@ -1,7 +1,5 @@
 package com.example.uniMed.models.chat;
 
-
-
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -10,18 +8,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@Table(name = "chat_rooms")
+
 public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany
-    @JoinTable(
-        name = "chat_room_users",
-        joinColumns = @JoinColumn(name = "chat_room_id"),
-        inverseJoinColumns = @JoinColumn(name = "userID")
-    )
-      @JsonIgnoreProperties("chatRooms")
+    @JoinTable(name = "chat_room_users", joinColumns = @JoinColumn(name = "chat_room_id"), inverseJoinColumns = @JoinColumn(name = "userID"))
+    @JsonManagedReference
     private List<User> users;
 
     public Long getId() {

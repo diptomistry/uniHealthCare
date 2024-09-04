@@ -6,13 +6,17 @@ import java.util.List;
 
 import com.example.uniMed.models.chat.ChatRoom;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userID")
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,18 +43,24 @@ public class User {
     @JoinColumn(name = "roleid")
     private Role role;
 
-
     @ManyToMany(mappedBy = "users")
-    @JsonIgnore
+    @JsonBackReference
     private List<ChatRoom> chatRooms;
+
+    public List<ChatRoom> getChatRooms() {
+        return chatRooms;
+    }
+
+    public void setChatRooms(List<ChatRoom> chatRooms) {
+        this.chatRooms = chatRooms;
+    }
 
     public User() {
     }
-    public User  getUser(){
+
+    public User getUser() {
         return this;
     }
-    
-  
 
     public User(Integer userID, String password, String email, Date dob, String name, String sex, String phone,
             String image, String status, String token, String otp, String registeredFrom, Role role) {
@@ -68,6 +78,7 @@ public class User {
         this.registeredFrom = registeredFrom;
         this.role = role;
     }
+
     public User(String hashedPassword, String email, Date dob, String name, String sex, Role role,
             String filePath, String token, String status, String registeredFrom, String phone) {
         this.password = hashedPassword;
@@ -187,12 +198,8 @@ public class User {
         this.role = role;
     }
 
-    
-
     public void setRoleId(Integer roleId) {
         this.role = new Role(roleId);
     }
 
-  
-  
 }
