@@ -82,7 +82,7 @@ public Map<String, Object> createUser
 
     System.out.println("Creating user");
 
-    return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, departmentId, session, registrationNo, registeredFrom, phone);
+    return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, departmentId, session, registrationNo, registeredFrom, phone,departmentName);
 }
 
     @PostMapping("/update-user")
