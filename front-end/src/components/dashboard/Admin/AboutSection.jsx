@@ -3,6 +3,9 @@ import { aboutUsData } from "../../../assets/dashboard";
 import Button from "../../../layouts/dashboard/DutyRoster/Button";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import DeleteConfirmationModal from "../../../models/DeleteConfirmationModal";
+import ServicesCard from "../../../layouts/dashboard/ServiceCard";
+import CustomModal from "../../../models/CustomModal";
+
 
 const AboutSection = () => {
   const [aboutUs, setAboutUs] = useState("");
@@ -13,6 +16,57 @@ const AboutSection = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteItemType, setDeleteItemType] = useState(null);
   const [deleteItemIndex, setDeleteItemIndex] = useState(null);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editServiceIndex, setEditServiceIndex] = useState(null);
+  const [editServiceData, setEditServiceData] = useState({
+    title: "",
+    bodyText: "",
+    image: "",
+  });
+  const [isAddServiceModalOpen, setIsAddServiceModalOpen] = useState(false);
+  const [newServiceData, setNewServiceData] = useState({
+    title: "",
+    bodyText: "",
+    image: "",
+  });
+  const handleAddService = () => {
+    setNewServiceData({
+      title: "",
+      bodyText: "",
+      image: null,
+    });
+    setIsAddServiceModalOpen(true);
+  };
+
+  const handleSaveNewService = () => {
+    aboutUsData.services.push(newServiceData);
+    setIsAddServiceModalOpen(false);
+  };
+  const handleImageChange = (e, isEdit = false) => {
+    const file = e.target.files[0];
+    if (isEdit) {
+      setEditServiceData({ ...editServiceData, image: file });
+    } else {
+      setNewServiceData({ ...newServiceData, image: file });
+    }
+  };
+
+
+  const handleEditService = (index) => {
+    const service = aboutUsData.services[index];
+    setEditServiceData(service);
+    setEditServiceIndex(index);
+    setIsEditModalOpen(true);
+  };
+  const handleDeleteService = (index) => {
+    // Handle service deletion logic here
+  };
+  const handleSaveEditService = () => {
+    // Save the edited service data
+    aboutUsData.services[editServiceIndex] = editServiceData;
+    setIsEditModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -291,7 +345,7 @@ const AboutSection = () => {
 
   return (
     <div className="flex flex-col md:flex-row gap-10">
-      <div className="w-full md:w-1/2">
+      <div className="w-full md:w-1/2 bg-white dark:bg-secondary-dark-bg mt-3 mb-3 rounded-2xl shadow-md p-2">
         <h2 className="text-2xl font-poppins font-semibold text-textColor flex justify-center mb-4">
           About Us
         </h2>
@@ -345,7 +399,7 @@ const AboutSection = () => {
           </div>
         </div>
       </div>
-      <div className="w-full md:w-1/2">
+      <div className="w-full md:w-1/2 bg-white dark:bg-secondary-dark-bg mt-3 mb-3 rounded-2xl shadow-md p-2">
         <h2 className="text-2xl font-hindSiliguri font-semibold text-textColor flex justify-center mb-4">
           বিভাগসমূহ
         </h2>
@@ -381,28 +435,104 @@ const AboutSection = () => {
             Add
           </button>
         </div>
-        <div className="mb-2">
-          <h1 className="flex justify-center font-poppins font-semibold text-2xl mb-4 text-textColor">
-            Services
-          </h1>
-          <textarea
-            value={aboutUsData.doctorsTreatment}
-            rows="2"
-            className="w-full p-2 border border-gray-300 rounded mb-2"
-          />
-          <textarea
-            value={aboutUsData.MedicalTest}
-            rows="2"
-            className="w-full p-2 border border-gray-300 rounded mb-2"
-          />
-          <textarea
-            value={aboutUsData.Medicine}
-            rows="2"
-            className="w-full p-2 border border-gray-300 rounded mb-2"
-          />
-          <Button title={"Submit"} />
+        <div className="mt-10">
+          <div className="flex flex-col md:flex-row md:justify-between mb-4">
+            <h1 className="mt-4 text-2xl font-hindSiliguri font-semibold text-textColor flex justify-center ">
+              Services:
+            </h1>
+            <button onClick={handleAddService}>
+            <Button title="Add New Service" />
+          </button>
+          </div>
+          <div className="w-full overflow-x-auto flex flex-row gap-5">
+            {aboutUsData.services.map((service, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-full flex items-center justify-center"
+              >
+                <ServicesCard
+                  image={service.image}
+                  title={service.title}
+                  bodyText={service.bodyText}
+                  onEdit={() => handleEditService(index)}
+                  onDelete={() => handleDeleteService(index)}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+      <CustomModal
+        isOpen={isEditModalOpen}
+        onRequestClose={() => setIsEditModalOpen(false)}
+      >
+        <div className="flex flex-col gap-4">
+          <input
+            type="text"
+            value={editServiceData.title}
+            onChange={(e) =>
+              setEditServiceData({ ...editServiceData, title: e.target.value })
+            }
+            placeholder="Title"
+            className="p-2 border border-gray-300 rounded"
+          />
+          <textarea
+            value={editServiceData.bodyText}
+            onChange={(e) =>
+              setEditServiceData({
+                ...editServiceData,
+                bodyText: e.target.value,
+              })
+            }
+            placeholder="Body Text"
+            rows="4"
+            className="p-2 border border-gray-300 rounded"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImageChange(e, true)}
+            className="p-2 border border-gray-300 rounded"
+          />
+          <Button title="Save" onClick={handleSaveEditService} />
+        </div>
+      </CustomModal>
+
+      <CustomModal
+        isOpen={isAddServiceModalOpen}
+        onRequestClose={() => setIsAddServiceModalOpen(false)}
+      >
+        <div className="flex flex-col gap-4">
+          <input
+            type="text"
+            value={newServiceData.title}
+            onChange={(e) =>
+              setNewServiceData({ ...newServiceData, title: e.target.value })
+            }
+            placeholder="Title"
+            className="p-2 border border-gray-300 rounded"
+          />
+          <textarea
+            value={newServiceData.bodyText}
+            onChange={(e) =>
+              setNewServiceData({
+                ...newServiceData,
+                bodyText: e.target.value,
+              })
+            }
+            placeholder="Body Text"
+            rows="4"
+            className="p-2 border border-gray-300 rounded"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="p-2 border border-gray-300 rounded"
+          />
+          <Button title="Save" onClick={handleSaveNewService} />
+        </div>
+      </CustomModal>
       <DeleteConfirmationModal
         isOpen={isDeleteModalOpen}
         onRequestClose={closeDeleteModal}

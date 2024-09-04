@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const UserFilter = () => {
+const UserFilter = ({ selectedCategories, setSelectedCategories, categoryCounts }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -23,14 +23,23 @@ const UserFilter = () => {
   }, [dropdownRef]);
 
   const categories = [
-    { id: 'student', label: 'Student', count: 56 },
-    { id: 'doctor', label: 'Doctor', count: 56 },
-    { id: 'sectionOfficer', label: 'Section Officer', count: 56 },
-    { id: 'dispensaryOfficer', label: 'Dispensary Officer', count: 97 },
-    { id: 'nurse', label: 'Nurse', count: 97 },
-    { id: 'teacher', label: 'Teacher', count: 97 },
-    { id: 'staff', label: 'Staff', count: 176 },
+    { id: 'admin', label: 'Admin' },
+    { id: 'student', label: 'Student' },
+    { id: 'doctor', label: 'Doctor' },
+    { id: 'sectionOfficer', label: 'Section Officer' },
+    { id: 'dispensaryOfficer', label: 'Dispensary Officer' },
+    { id: 'nurse', label: 'Nurse' },
+    { id: 'teacher', label: 'Teacher' },
+    { id: 'staff', label: 'Staff' },
   ];
+
+  const handleCategoryChange = (category) => {
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories(selectedCategories.filter(c => c !== category));
+    } else {
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center ml-2 mb-1">
@@ -75,13 +84,15 @@ const UserFilter = () => {
                   <input
                     id={category.id}
                     type="checkbox"
-                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded  dark:bg-gray-600 dark:border-gray-500"
+                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded dark:bg-gray-600 dark:border-gray-500"
+                    checked={selectedCategories.includes(category.id)}
+                    onChange={() => handleCategoryChange(category.id)}
                   />
                   <label
                     htmlFor={category.id}
                     className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                   >
-                    {category.label} ({category.count})
+                    {category.label} ({categoryCounts[category.id] || 0})
                   </label>
                 </li>
               ))}

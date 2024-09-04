@@ -8,7 +8,7 @@ const HomeoPathySchedule = () => {
 
   return (
     <div className='flex flex-col gap-5'>
-      <div className='flex flex-row justify-between'>
+      <div className='flex flex-col md:flex-row justify-between'>
         <div>
           <h2 className="text-sm md:text-2xl font-hindSiliguri text-textColor">হোমিও ডাক্তারদের ডিউটি রোস্টার</h2>
         </div>

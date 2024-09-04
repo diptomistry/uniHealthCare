@@ -23,13 +23,14 @@ import {
   FaPills,
   FaMoneyBillWave,
   FaPrescription,
-  FaExclamationTriangle 
+  FaExclamationTriangle ,
+  FaTasks
 } from "react-icons/fa";
 import { GrLocation, GrBlog } from "react-icons/gr";
 import { LuMessageSquarePlus } from "react-icons/lu";
 import { GiMedicines } from "react-icons/gi";
 import { TbBrandBooking } from "react-icons/tb";
-
+import { RxUpdate } from "react-icons/rx";
 import avatar from "./img/doc1.jpg";
 import avatar2 from "./img/doc2.jpg";
 import avatar3 from "./img/doc3.jpg";
@@ -295,13 +296,31 @@ export const aboutUsData = {
     "ফিজিওথেরাপি বিভাগ",
     "হোমিও বিভাগ",
   ],
-  doctorsTreatment:
-    "এ্যালোপ্যাথিক ১৯ জন ডাক্তার এবং হোমিও ইউনিটে ০৬ জন ডাক্তার সার্ভিস দিয়ে থাকেন , সংক্রামক রোগীদের জন্য ওয়ার্ডে ২৪ টি বেড রয়েছে",
-  MedicalTest:
-    "তিন ধরনের পরীক্ষা করা হয়- Urine Test, Hematological Test and Stool Test. প্যাথলজি বিভাগে পরীক্ষা করা হয়।",
-  Medicine:
-    "উচ্চ মানের সকল প্রয়োজনীয় ঔষধ এবং দ্রুত ফার্মাসিউটিক্যাল পরিষেবার ব্যবস্থা আছে।",
+  services: [
+    {
+      image: mortaza1, // Replace with the actual path to the image
+      title: "Doctors Treatment",
+      bodyText: "এ্যালোপ্যাথিক ১৯ জন ডাক্তার এবং হোমিও ইউনিটে ০৬ জন ডাক্তার সার্ভিস দিয়ে থাকেন , সংক্রামক রোগীদের জন্য ওয়ার্ডে ২৪ টি বেড রয়েছে",
+    },
+    {
+      image: mortaza2, // Replace with the actual path to the image
+      title: "Medical Test",
+      bodyText: "তিন ধরনের পরীক্ষা করা হয়- Urine Test, Hematological Test and Stool Test. প্যাথলজি বিভাগে পরীক্ষা করা হয়।",
+    },
+    {
+      image: mortaza3, // Replace with the actual path to the image
+      title: "Medicine",
+      bodyText: "উচ্চ মানের সকল প্রয়োজনীয় ঔষধ এবং দ্রুত ফার্মাসিউটিক্যাল পরিষেবার ব্যবস্থা আছে।",
+    },
+    {
+      image: mortaza4, // Replace with the actual path to the image
+      title: "Emergency",
+      bodyText: "আপনি যদি জরুরী চিকিৎসা প্রয়োজন হয় তাহলে আমাদের হাসপাতালে যোগাযোগ করুন।",
+    },
+    // Add more services as needed
+  ],
 };
+
 
 export const noticeInfo = [
   {
@@ -3013,6 +3032,19 @@ export const links = [
       },
     ],
   },
+  {
+    title: "Personal Panel",
+    links: [
+      {
+        name: "Update-Info",
+        icon: <RxUpdate />,
+      },
+      {
+        name: "Distribute-Tasks",
+        icon: <FaTasks />,
+      }
+    ]
+  }
 ];
 export const doctorLinks = [
   {
