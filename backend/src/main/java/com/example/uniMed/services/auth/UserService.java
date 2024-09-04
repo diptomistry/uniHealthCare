@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.uniMed.models.Admin;
 import com.example.uniMed.models.Department;
 import com.example.uniMed.models.Doctors;
 import com.example.uniMed.models.Role;
@@ -13,8 +14,7 @@ import com.example.uniMed.models.Student;
 import com.example.uniMed.security.JwtHelper;
 import com.example.uniMed.models.User;
 import com.example.uniMed.repositories.EmailSender;
-
-
+import com.example.uniMed.repositories.auth.AdminRepository;
 import com.example.uniMed.repositories.auth.StudentRepository;
 import com.example.uniMed.repositories.auth.UserRepo;
 import com.example.uniMed.repositories.auth.role.RoleRepository;
@@ -55,6 +55,9 @@ public class UserService {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private AdminRepository adminRepository;
+
     public Map<String,Object> getUser (Long userId){
         Map<String, Object> response = new HashMap<>();
         Optional<User> user = userRepository.findById(userId);
@@ -82,6 +85,7 @@ public class UserService {
                                           String departmentId,
                                           String session,
                                           String registrationNo,
+                                          String departmentName,
                                           String registeredFrom,
                                           String phone) {
         Map<String, Object> response = new HashMap<>();
@@ -128,7 +132,7 @@ public class UserService {
             System.out.println("------->Here");
 
             if ("student".equals(userType)) {
-                if (departmentId == null || session == null || registrationNo == null) {
+                if (departmentName == null || session == null || registrationNo == null) {
                     userRepository.delete(newUser);
                     response.put("success", false);
                     response.put("message", "Department, session, and registration number must be provided for students");
@@ -142,6 +146,7 @@ public class UserService {
                 student.setRegistrationNo(registrationNo);
                 student.setUser(newUser);
                 studentRepository.save(student);
+                response.put("user", student);
 
             } else if ("doctor".equals(userType)) {
 
@@ -163,8 +168,10 @@ public class UserService {
                     }
                     doctor.setDepartment(department.get());
                     doctor.setUser(newUser);
+
                
                 doctorRepository.save(doctor);
+                response.put("user", doctor);
                 }catch(Exception e){
                     userRepository.delete(newUser);
                     
@@ -174,8 +181,16 @@ public class UserService {
                     return response;
                 }
             }
+            else if("admin".equals(userType)){
+                Admin admin = new Admin(newUser,Date.from(Instant.now()),null);
+                adminRepository.save(admin);
+                response.put("user", admin);
+              
+            }
             else{
-            userRepository.save(newUser);}
+            userRepository.save(newUser);
+            response.put("user", newUser);
+        }
 
             response.put("success", true);
             response.put("message", "User created successfully");
