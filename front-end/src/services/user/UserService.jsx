@@ -9,7 +9,7 @@ class UserService {
         return ApiService.put('user/profile', data);
     }
 
-    // Add other user-related methods if needed
+    // Add other user-related methods if needed....
 }
 
 const userService = new UserService();
