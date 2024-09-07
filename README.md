@@ -72,6 +72,9 @@ The AI chatbot, known as zBOT, is a Python-based component integrated into the m
 2. Install dependencies:
    ```bash
    pip install Flask torch torchvision nltk
+   pip install flask-cors
+   pip install pyspellchecker
+
    ```
 
 3. Install NLTK package:
