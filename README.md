@@ -66,7 +66,7 @@ The AI chatbot, known as zBOT, is a Python-based component integrated into the m
    ```bash
    cd zBOT
    python3 -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   . venv/bin/activate  # On Windows, use `venv\Scripts\activate`
    ```
 
 2. Install dependencies:
@@ -105,12 +105,14 @@ We have integrated the Gemini AI API into our application to provide disease dia
    ```bash
    cd GeminiAiApi
    python3 -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   . venv/bin/activate  # On Windows, use `venv\Scripts\activate`
    ```
 
 2. Install dependencies:
    ```bash
    pip install Flask google-generativeai
+   pip install flask-cors
+
    ```
 3. Set up the Flask API to interact with Gemini AI:
    ```bash
