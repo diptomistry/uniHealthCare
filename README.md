@@ -82,7 +82,7 @@ The AI chatbot, known as zBOT, is a Python-based component integrated into the m
    python
    >>> import nltk
    >>> nltk.download('punkt')
-   >>> exit()
+   >>> quit()
    ```
 
 4. Customize the `intents.json` file to define chatbot intents and responses.

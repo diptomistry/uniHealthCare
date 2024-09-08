@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "../components/dashboard/Sidebar";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -35,10 +35,8 @@ import {
   Notice,
   UserApproval,
   Blog,
-  QuoteSection
+  QuoteSection,
 } from "../components/dashboard/Admin";
-
-
 
 const Dashboard = () => {
   const { activeMenu } = useStateContext();
@@ -46,8 +44,8 @@ const Dashboard = () => {
   //const { user } = useContext(UserContext);
   const toggleMode = () => {
     setDarkMode(!darkMode);
-  localStorage.setItem("darkMode", JSON.stringify(!darkMode));
-  
+    localStorage.setItem("darkMode", JSON.stringify(!darkMode));
+
     if (!darkMode) {
       document.documentElement.classList.add("dark");
     } else {
@@ -56,33 +54,38 @@ const Dashboard = () => {
   };
   return (
     <div className="flex relative dark:bg-main-dark-bg">
-       
-      <div className="fixed right-4 bottom-4" style={{ zIndex: "10000" }}>
-      
-    
+      <div className="fixed right-4 bottom-36" style={{ zIndex: "10000" }}>
         <TooltipComponent content="Change Mode" position="Top">
           <button
             type="button"
             onClick={toggleMode}
-           
             className="text-xl p-3 bg-gray-200 dark:bg-gray-700   hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full"
           >
             {darkMode ? (
-              <MdOutlineLightMode size={34} className="bg-[#03C9D7] text-gray-200 rounded-full p-1"/>
+              <MdOutlineLightMode
+                size={34}
+                className="bg-[#03C9D7] text-gray-200 rounded-full p-1"
+              />
             ) : (
-              <MdOutlineDarkMode size={34} className="bg-[#03C9D7] text-gray-600  rounded-full p-1"/>
+              <MdOutlineDarkMode
+                size={34}
+                className="bg-[#03C9D7] text-gray-600  rounded-full p-1"
+              />
             )}
           </button>
         </TooltipComponent>
       </div>
-      <div className="fixed right-20 bottom-36 z-[10000]">
+      <div className="fixed right-20 bottom-32 z-[10000]">
         <TooltipComponent content="ChatBot" position="Top">
           <ChatBot />
         </TooltipComponent>
       </div>
-     
+
       {activeMenu ? (
-        <div className="w-64 fixed  max-md:z-[10000000] dark:bg-secondary-dark-bg bg-white duration-300 z-[1000] " style={{ boxShadow: '0px 7px 30px 0px rgba(113, 122, 131, 0.11)' }}>
+        <div
+          className="w-64 fixed  max-md:z-[10000000] dark:bg-secondary-dark-bg bg-white duration-300 z-[1000] "
+          style={{ boxShadow: "0px 7px 30px 0px rgba(113, 122, 131, 0.11)" }}
+        >
           {" "}
           <Sidebar />
         </div>
@@ -96,39 +99,239 @@ const Dashboard = () => {
           activeMenu ? "md:ml-64 duration-300" : "flex-1 md:ml-20 "
         }`}
       >
-        <div className={`fixed  border-b-2 bg-white dark:bg-main-dark-bg z-[1000] w-full  ${activeMenu ?"md:pr-64":"md:pr-20 "}`}>
+        <div
+          className={`fixed  border-b-2 bg-white dark:bg-main-dark-bg z-[1000] w-full  ${
+            activeMenu ? "md:pr-64" : "md:pr-20 "
+          }`}
+        >
           <Navbar />
         </div>
         <div className="mt-20 md:ml-6 md:mr-6 ml-2 mr-1  ">
           <Routes>
-            <Route path="/" element={<SpecificRouteProtection role='admin'><MedicalCenter darkMode={darkMode} /></SpecificRouteProtection>} />
-            <Route path="/Medical-Center" element={<SpecificRouteProtection role='admin'><MedicalCenter darkMode={darkMode}/></SpecificRouteProtection>} />
-            <Route path="/Medical-Center/Report" element={<SpecificRouteProtection role='admin'><Report /></SpecificRouteProtection>} />
-            <Route path="/All-Users" element={<SpecificRouteProtection role='admin'><AllUsers /></SpecificRouteProtection>} />
-            <Route path="/User-Approval" element={<SpecificRouteProtection role='admin'><UserApproval /></SpecificRouteProtection>} />
-            <Route path="/Doctor" element={<SpecificRouteProtection role='admin'><DutyRosterDoctor /></SpecificRouteProtection>} />
-            <Route path="/Homeopathy-Section" element={<SpecificRouteProtection role='admin'><DutyRosterHomeo /></SpecificRouteProtection>} />
-            <Route path="/Nursing-section" element={<SpecificRouteProtection role='admin'><DutyRosterNurse /></SpecificRouteProtection>} />
-            <Route path="/Pharmacy-Section" element={<SpecificRouteProtection role='admin'><DutyRosterPharmacy /></SpecificRouteProtection>} />
-            <Route path="/Notice" element={<SpecificRouteProtection role='admin'><Notice /></SpecificRouteProtection>} />
-            <Route path="/About-Section" element={<SpecificRouteProtection role='admin'><AboutSection /></SpecificRouteProtection>} />
-            <Route path="/Blog" element={<SpecificRouteProtection role='admin'><Blog /></SpecificRouteProtection>} />
-            <Route path="/Quote-Section" element={<SpecificRouteProtection role='admin'><QuoteSection /></SpecificRouteProtection>} />
-            <Route path="/Update-Info" element={<SpecificRouteProtection role='admin'><AdditionalInfo /></SpecificRouteProtection>} />
-            <Route path="/Distribute-Tasks" element={<SpecificRouteProtection role='admin'><TaskDistribution /></SpecificRouteProtection>} />
-            <Route path="/Doctor-Home" element={<SpecificRouteProtection role='doctor'><Home /></SpecificRouteProtection>} />
-            <Route path="/New-Requests" element={<SpecificRouteProtection role='doctor'><NewRequests /></SpecificRouteProtection>} />
-            <Route path="/Already-Prescribed" element={<SpecificRouteProtection role='doctor'><ALreadyPrescribed /></SpecificRouteProtection>} />
-            <Route path="/Student-Home" element={<SpecificRouteProtection role='student'><StudentHome /></SpecificRouteProtection>} />
-            <Route path="/Book" element={<SpecificRouteProtection role='admin'><BookA /></SpecificRouteProtection>} />
-            <Route path="/BookD" element={<SpecificRouteProtection role='doctor'><BookD /></SpecificRouteProtection>}/>
-            <Route path="/BookDO" element={<SpecificRouteProtection role='dispensary-officer'><BookDO /></SpecificRouteProtection>}/>
-            <Route path="/Prescription" element={<SpecificRouteProtection role='dispensary-officer'><Prescriptions /></SpecificRouteProtection>} />
-            <Route path="/Request-Medicine" element={<SpecificRouteProtection role='dispensary-officer'><ListofMedicine /></SpecificRouteProtection>} />
-            <Route path="/Dispensary-Home" element={<SpecificRouteProtection role='dispensary-officer'><Dispensary_Home /></SpecificRouteProtection>} />
-            <Route path="/Accept-Request" element={<SpecificRouteProtection role='senior-officer'><AcceptMedicine/></SpecificRouteProtection>}/>
-            <Route path="/SeniorOfficer-Home" element={<SpecificRouteProtection role='senior-officer'><BookSO/></SpecificRouteProtection>}/> 
-           <Route path="/Teacher-Home" element={<SpecificRouteProtection role="teacher"><TeacherHome /></SpecificRouteProtection>} />
+            <Route
+              path="/"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <MedicalCenter darkMode={darkMode} />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Medical-Center"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <MedicalCenter darkMode={darkMode} />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Medical-Center/Report"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <Report />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/All-Users"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <AllUsers />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/User-Approval"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <UserApproval />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Doctor"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <DutyRosterDoctor />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Homeopathy-Section"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <DutyRosterHomeo />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Nursing-section"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <DutyRosterNurse />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Pharmacy-Section"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <DutyRosterPharmacy />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Notice"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <Notice />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/About-Section"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <AboutSection />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Blog"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <Blog />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Quote-Section"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <QuoteSection />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Update-Info"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <AdditionalInfo />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Distribute-Tasks"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <TaskDistribution />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Doctor-Home"
+              element={
+                <SpecificRouteProtection role="doctor">
+                  <Home />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/New-Requests"
+              element={
+                <SpecificRouteProtection role="doctor">
+                  <NewRequests />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Already-Prescribed"
+              element={
+                <SpecificRouteProtection role="doctor">
+                  <ALreadyPrescribed />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Student-Home"
+              element={
+                <SpecificRouteProtection role="student">
+                  <StudentHome />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Book"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <BookA />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/BookD"
+              element={
+                <SpecificRouteProtection role="doctor">
+                  <BookD />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/BookDO"
+              element={
+                <SpecificRouteProtection role="dispensary-officer">
+                  <BookDO />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Prescription"
+              element={
+                <SpecificRouteProtection role="dispensary-officer">
+                  <Prescriptions />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Request-Medicine"
+              element={
+                <SpecificRouteProtection role="dispensary-officer">
+                  <ListofMedicine />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Dispensary-Home"
+              element={
+                <SpecificRouteProtection role="dispensary-officer">
+                  <Dispensary_Home />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Accept-Request"
+              element={
+                <SpecificRouteProtection role="senior-officer">
+                  <AcceptMedicine />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/SeniorOfficer-Home"
+              element={
+                <SpecificRouteProtection role="senior-officer">
+                  <BookSO />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Teacher-Home"
+              element={
+                <SpecificRouteProtection role="teacher">
+                  <TeacherHome />
+                </SpecificRouteProtection>
+              }
+            />
           </Routes>
         </div>
       </div>
