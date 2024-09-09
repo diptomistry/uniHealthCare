@@ -134,7 +134,8 @@ We have integrated the Gemini AI API into our application to provide disease dia
 - Backend: Update `application.properties` or `application.yml` in the Spring Boot project to configure database connections and other settings.
 - Chatbot: Adjust the `intents.json` file to customize the chatbot's responses and capabilities.
 
-
+## Presentation Template
+- `https://www.canva.com/design/DAGQPK8oTVg/9PYLV119QwKTeY_iyQSLwg/edit?utm_content=DAGQPK8oTVg&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton`
 
 ## 🤝 Contributors
 1. Diptajoy Mistry
