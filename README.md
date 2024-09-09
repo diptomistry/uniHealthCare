@@ -97,7 +97,7 @@ The AI chatbot, known as zBOT, is a Python-based component integrated into the m
    python chat.py
    ```
 
-## 🩺 Disease Diagnosis with Gemini AI
+## 🩺 Disease Diagnosis & Health Advisor Bot with Gemini AI
 
 We have integrated the Gemini AI API into our application to provide disease diagnosis capabilities. The AI can suggest the appropriate department for a patient based on their symptoms.
 
@@ -117,8 +117,8 @@ We have integrated the Gemini AI API into our application to provide disease dia
 3. Set up the Flask API to interact with Gemini AI:
    ```bash
    python DiagnoseDisease.py
+   python MeduAdvisor.py
    ```
-
 
 
 ## 📚 Usage
