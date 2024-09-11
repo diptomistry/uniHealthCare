@@ -5,7 +5,7 @@ import { MdOutlineCloudUpload } from "react-icons/md";
 import DeleteConfirmationModal from "../../../models/DeleteConfirmationModal";
 import ServicesCard from "../../../layouts/dashboard/ServiceCard";
 import CustomModal from "../../../models/CustomModal";
-
+import ImageGenerator from "../../../models/dashboard/ImageGenerator";
 
 const AboutSection = () => {
   const [aboutUs, setAboutUs] = useState("");

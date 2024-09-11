@@ -5,6 +5,8 @@ import PrimaryButton from '../../../layouts/dashboard/PrimaryButton';
 import CustomModal from '../../../models/CustomModal';
 import DeleteConfirmationModal from '../../../models/DeleteConfirmationModal';
 import ImageGenerator from '../../../models/dashboard/ImageGenerator';
+import { FaWandMagicSparkles } from 'react-icons/fa6';
+import axios from 'axios';
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -13,6 +15,24 @@ const Blog = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [imageSrc, setImageSrc] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const handleButtonClick = async () => {
+    setIsLoading(true);
+    try {
+      // Make the API request directly in the parent component
+      const response = await axios.post('http://127.0.0.1:5000/improve-text', {
+        text: editForm.description,
+      });
+      //setImprovedText(response.data.corrected_text); // Set the improved text
+      setEditForm({ ...editForm, description: response.data.corrected_text }); // Update the description field
+    } catch (error) {
+      console.error('Error improving text:', error);
+     // setImprovedText('Error processing text');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const fetchData = async () => {
@@ -227,14 +247,32 @@ const Blog = () => {
           onChange={handleChange}
           placeholder="Title"
         />
+       <div className='relative'>
         <textarea
-          className="border p-2 w-full mb-4"
+          className="border p-2 w-full mb-4 pr-12"
           name="description"
           value={editForm.description}
           onChange={handleChange}
           placeholder="Description"
           rows={5}
         />
+      <div className="absolute right-2 top-0 p-2">
+      <button 
+        onClick={handleButtonClick}
+        disabled={isLoading}
+       class="group flex justify-center p-2 rounded-md hover:text-black drop-shadow-xl from-gray-800 bg-[#a6a7ab] text-white font-semibold hover:translate-y-2 transition-all duration-250 hover:from-[#331029] hover:to-[#310413]"
+       variant="ghost"
+       size="icon"
+     >
+       {isLoading ? ( <FaWandMagicSparkles className="animate-spin" />) : (   <FaWandMagicSparkles />)}
+       <span
+      class="absolute opacity-0 group-hover:opacity-100 group-hover:text-gray-700 group-hover:text-md group-hover:-translate-y-12 duration-500"
+    >
+     Improve
+    </span>
+     </button>
+      </div>
+        </div>
          <label className="block mb-2 text-gray-400">{isAdding ? 'Choose image from Device ' : 'Change image from Device'}</label>
         <input
           className="border p-2 w-full mb-4"
