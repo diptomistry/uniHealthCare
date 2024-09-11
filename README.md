@@ -66,12 +66,15 @@ The AI chatbot, known as zBOT, is a Python-based component integrated into the m
    ```bash
    cd zBOT
    python3 -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   . venv/bin/activate  # On Windows, use `venv\Scripts\activate`
    ```
 
 2. Install dependencies:
    ```bash
    pip install Flask torch torchvision nltk
+   pip install flask-cors
+   pip install pyspellchecker
+
    ```
 
 3. Install NLTK package:
@@ -79,7 +82,7 @@ The AI chatbot, known as zBOT, is a Python-based component integrated into the m
    python
    >>> import nltk
    >>> nltk.download('punkt')
-   >>> exit()
+   >>> quit()
    ```
 
 4. Customize the `intents.json` file to define chatbot intents and responses.
@@ -94,7 +97,7 @@ The AI chatbot, known as zBOT, is a Python-based component integrated into the m
    python chat.py
    ```
 
-## 🩺 Disease Diagnosis with Gemini AI
+## 🩺 Disease Diagnosis & Health Advisor Bot with Gemini AI
 
 We have integrated the Gemini AI API into our application to provide disease diagnosis capabilities. The AI can suggest the appropriate department for a patient based on their symptoms.
 
@@ -102,18 +105,20 @@ We have integrated the Gemini AI API into our application to provide disease dia
    ```bash
    cd GeminiAiApi
    python3 -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   . venv/bin/activate  # On Windows, use `venv\Scripts\activate`
    ```
 
 2. Install dependencies:
    ```bash
    pip install Flask google-generativeai
+   pip install flask-cors
+
    ```
 3. Set up the Flask API to interact with Gemini AI:
    ```bash
    python DiagnoseDisease.py
+   python MeduAdvisor.py
    ```
-
 
 
 ## 📚 Usage
@@ -129,7 +134,11 @@ We have integrated the Gemini AI API into our application to provide disease dia
 - Backend: Update `application.properties` or `application.yml` in the Spring Boot project to configure database connections and other settings.
 - Chatbot: Adjust the `intents.json` file to customize the chatbot's responses and capabilities.
 
+## Report
+- `https://www.overleaf.com/read/snyjdvhtnrhp#d876c7`
 
+## Presentation Template
+- `https://www.canva.com/design/DAGQPK8oTVg/9PYLV119QwKTeY_iyQSLwg/edit?utm_content=DAGQPK8oTVg&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton`
 
 ## 🤝 Contributors
 1. Diptajoy Mistry

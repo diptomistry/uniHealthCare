@@ -5,7 +5,7 @@ import { MdOutlineCloudUpload } from "react-icons/md";
 import DeleteConfirmationModal from "../../../models/DeleteConfirmationModal";
 import ServicesCard from "../../../layouts/dashboard/ServiceCard";
 import CustomModal from "../../../models/CustomModal";
-
+import ImageGenerator from "../../../models/dashboard/ImageGenerator";
 
 const AboutSection = () => {
   const [aboutUs, setAboutUs] = useState("");
@@ -344,7 +344,7 @@ const AboutSection = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-10">
+    <div className="flex flex-col md:flex-row gap-10 mb-20">
       <div className="w-full md:w-1/2 bg-white dark:bg-secondary-dark-bg mt-3 mb-3 rounded-2xl shadow-md p-2">
         <h2 className="text-2xl font-poppins font-semibold text-textColor flex justify-center mb-4">
           About Us

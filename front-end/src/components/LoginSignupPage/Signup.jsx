@@ -394,20 +394,26 @@ const Signup = ({ userType, handleUserTypeChange, setIsLoading }) => {
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
             />
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded"
-            >
-              Verify OTP
-            </button>
-          </form>
-          {timer > 0 ? (
-            <p className="text-gray-600 mt-4">
-              OTP will expire in {timer} seconds
-            </p>
-          ) : (
+            
+            {timer>0 ? (
+            <div className="flex flex-col">
+                 <p className="text-gray-600 mt-4 mb-2">
+               OTP will expire in {timer} seconds
+             </p>
+                 <button
+                 type="submit"
+                 className="bg-primaryColor hover:bg-hoverColor text-white py-2 px-4 rounded w-fit"
+               >
+                 Verify OTP
+               </button>
+            </div>
+            ):
             <p className="text-red-500 mt-4">OTP expired. Please try again.</p>
-          )}
+          }
+          </form>
+           
+          
+        
         </div>
       </CustomModal>
     </form>
