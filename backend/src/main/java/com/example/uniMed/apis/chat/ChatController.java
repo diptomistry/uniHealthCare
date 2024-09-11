@@ -4,6 +4,8 @@ import com.example.uniMed.models.User;
 import com.example.uniMed.models.chat.ChatRoom;
 import com.example.uniMed.models.chat.Message;
 import com.example.uniMed.services.chat.ChatService;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,9 @@ public class ChatController {
     }
 
     @GetMapping("/rooms/{chatRoomId}/messages")
-    public List<Message> getMessages(@PathVariable Long chatRoomId) {
-        return chatService.getMessages(chatRoomId);
+    public Page<Message> getMessages(@PathVariable Long chatRoomId, 
+                                     @RequestParam(defaultValue = "0") int page, 
+                                     @RequestParam(defaultValue = "10") int size) {
+        return chatService.getMessages(chatRoomId, page, size);
     }
 }
