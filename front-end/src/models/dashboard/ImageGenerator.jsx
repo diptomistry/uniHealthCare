@@ -49,7 +49,8 @@ const ImageGenerator = ({ setImageSrc }) => {
             className="border rounded py-2 px-3"
             rows={2} 
           />
-          <button type="submit">
+          <button type="submit" className="flex justify-end">
+            
             <Button title="Generate" />
           </button>
         </form>

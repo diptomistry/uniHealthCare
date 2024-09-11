@@ -103,7 +103,7 @@ const MediBotButton = () => {
     e.preventDefault(); // Prevent form from refreshing
 
     try {
-      const aiResponse = await fetch("http://127.0.0.1:5002/api/ask", {
+      const aiResponse = await fetch("http://127.0.0.1:5000/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: question }), // Send the question with the correct key "message"
