@@ -9,9 +9,13 @@ import com.example.uniMed.repositories.chat.ChatRoomRepository;
 import com.example.uniMed.repositories.chat.MessageRepository;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.transaction.Transactional;
 
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder.Op;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,19 +33,27 @@ public class ChatService {
     private UserRepo userRepo;
     @Autowired
     private MessageRepository messageRepository;
-   public ChatRoom createChatRoom(List<String> userIds) {
+
+    @Transactional
+    public ChatRoom createChatRoom(List<String> userIds) {
+        try{
         System.out.println("users: " + userIds);
         List<User> users = new ArrayList<>();
         for (String userId : userIds) {
             Optional<User> opUser = userRepo.findById(Long.parseLong(userId));
             if (!opUser.isPresent()) {
-                return null; // or handle the case where the user is not found
+                throw new RuntimeException("User not found: " + userId); // Handle the case where the user is not found
             }
             users.add(opUser.get());
         }
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setUsers(users);
-        return chatRoomRepository.save(chatRoom);
+        ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
+        return savedChatRoom;
+        }catch(Exception e){
+            System.out.println(e);
+            throw new RuntimeException("Error creating chat room");
+        }
     }
     public Message sendMessage(Long senderId, Long chatRoomId, String content) {
         System.out.println("senderId: " + senderId);
@@ -60,7 +72,8 @@ public class ChatService {
         }
     }
 
-    public List<Message> getMessages(Long chatRoomId) {
-        return messageRepository.findByChatRoomId(chatRoomId);
+     public Page<Message> getMessages(Long chatRoomId, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        return messageRepository.findByChatRoomId(chatRoomId, pageable);
     }
 }
