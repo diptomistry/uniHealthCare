@@ -4,6 +4,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import PrimaryButton from '../../../layouts/dashboard/PrimaryButton';
 import CustomModal from '../../../models/CustomModal';
 import DeleteConfirmationModal from '../../../models/DeleteConfirmationModal';
+import ImageGenerator from '../../../models/dashboard/ImageGenerator';
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -11,7 +12,7 @@ const Blog = () => {
   const [editForm, setEditForm] = useState({ title: '', description: '', img: '' });
   const [isAdding, setIsAdding] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
-  //useeffect to fetch blogdata from http://localhost:8000/api/blogs with token
+  const [imageSrc, setImageSrc] = useState('');
   useEffect(() => {
     const token = localStorage.getItem('token');
     const fetchData = async () => {
@@ -51,6 +52,7 @@ const Blog = () => {
   const handleEdit = (index) => {
     setEditingIndex(index);
     setEditForm(blogs[index]);
+    setImageSrc('');  // Reset AI image when editing an existing blog
   };
 
   const handleSave = async () => {
@@ -140,11 +142,14 @@ const Blog = () => {
     setEditForm({ ...editForm, [name]: value });
   };
 
+
+  // Handle image change from device and reset AI-generated image
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
       setEditForm({ ...editForm, img: reader.result });
+      setImageSrc(''); // Clear AI-generated image when a file is uploaded
     };
     reader.readAsDataURL(file);
   };
@@ -152,13 +157,18 @@ const Blog = () => {
   const handleAdd = () => {
     setIsAdding(true);
     setEditForm({ title: '', description: '', img: '' });
+    setImageSrc(''); 
   };
 
   const handleDelete = (index) => {
     const updatedBlogs = blogs.filter((_, i) => i !== index);
     setBlogs(updatedBlogs);
   };
-
+ // Handle AI-generated image and reset the image from the device
+ const handleAIImageSet = (generatedImage) => {
+  setImageSrc(generatedImage);
+  setEditForm({ ...editForm, img: '' }); // Clear the image from the device when AI image is set
+};
   return (
     <div>
       <div className='flex justify-between'>
@@ -225,19 +235,28 @@ const Blog = () => {
           placeholder="Description"
           rows={5}
         />
-        <label className="block mb-2 text-gray-400">{isAdding ? 'Choose image' : 'Change image'}</label>
+         <label className="block mb-2 text-gray-400">{isAdding ? 'Choose image from Device ' : 'Change image from Device'}</label>
         <input
           className="border p-2 w-full mb-4"
           type="file"
           accept="image/*"
           onChange={handleImageChange}
         />
+         <div className="mb-5">
+         <ImageGenerator setImageSrc={handleAIImageSet} />
+         {imageSrc && (
+  <div className="md:ml-24 md:mr-24  ml-10 mr-10  scale-90  border border-gray-300 rounded-xl overflow-hidden flex justify-center items-center">
+    <img src={imageSrc} alt="Generated" className="object-cover w-full h-full" />
+  </div>
+)}
+
+    </div>
         {editForm.img && <img className="w-[400px] h-60 rounded-xl mb-4" src={editForm.img} alt="Preview" />}
-        <div className="flex justify-end">
-          <button onClick={handleSave}>
-            <PrimaryButton title="Save" bgColor="bg-primaryColor hover:bg-hoverColor" />
+    
+          <button onClick={handleSave} className='bg-primaryColor hover:bg-hoverColor text-white px-4 py-2 rounded-md transition duration-300 w-full mb-4'>
+          Save
           </button>
-        </div>
+       
       </CustomModal>
       <DeleteConfirmationModal
         isOpen={deleteIndex !== null}
