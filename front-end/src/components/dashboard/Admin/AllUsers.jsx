@@ -8,7 +8,7 @@ import { UserContext } from '../../../services/auth/UserProvider';
 
 const AllUsers = () => {
   const { user } = useContext(UserContext);
-  console.log(user);
+  //console.log(user);
   const toolbarOptions = ['Search', 'Edit', 'Delete'];
   const editing = { allowDeleting: true, allowEditing: true, mode: 'Normal' };
   const gridEmployeeProfile = (props) => (
@@ -57,6 +57,7 @@ const AllUsers = () => {
     );
   };
   const gridEmployeeMessage = (props) => (
+    //console.log('id',props.userID),
     <MessageIconTemplate receiverID={props.userID} />
   );
  const employeesGrid = [
@@ -127,8 +128,9 @@ const AllUsers = () => {
         }
 
         const result = await response.json();
-
+        
         const mappedData = result.data.map(user => ({
+          userID: user.userID,
           email: user.email,
           name: user.name,
           designation: user.role ? user.role.roleName : 'N/A',
