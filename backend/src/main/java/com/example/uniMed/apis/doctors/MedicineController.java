@@ -97,4 +97,11 @@ public class MedicineController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // Get all medicines
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<Medicines>> getAllMedicines() {
+        Iterable<Medicines> medicines = medicineService.getAllMedicines();
+        return ResponseEntity.ok(medicines);
+    }
 }

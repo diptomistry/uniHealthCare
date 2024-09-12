@@ -18,78 +18,94 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.websocket.Session;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class ChatService {
 
+    private static final Logger logger = Logger.getLogger(ChatService.class.getName());
+
+    @Autowired
+    private UserRepo userRepo;
+
     @Autowired
     private ChatRoomRepository chatRoomRepository;
 
-    @Autowired 
-    private UserRepo userRepo;
     @Autowired
     private MessageRepository messageRepository;
 
-  
-    @Transactional
+    private List<Session> sessions;
+
     public ChatRoom createChatRoom(List<String> userIds) {
-        try {
-            if (userIds.size() != 2) {
-                throw new IllegalArgumentException("There must be exactly two users in a chat room.");
+        List<User> users = new ArrayList<>();
+        for (String userId : userIds) {
+            Optional<User> opUser = userRepo.findById(Long.parseLong(userId));
+            if (!opUser.isPresent()) {
+                throw new RuntimeException("User not found: " + userId);
             }
-
-            System.out.println("users: " + userIds);
-            List<User> users = new ArrayList<>();
-            for (String userId : userIds) {
-                Optional<User> opUser = userRepo.findById(Long.parseLong(userId));
-                if (!opUser.isPresent()) {
-                    throw new RuntimeException("User not found: " + userId); // Handle the case where the user is not found
-                }
-                users.add(opUser.get());
-
-            }
-            Long userId1 = Long.parseLong(userIds.get(0));
-            Long userId2 = Long.parseLong(userIds.get(1));
-            // Check if a chat room with the same two users already exists
-            List<ChatRoom> existingChatRooms = chatRoomRepository.findByUserIds(userId1, userId2);
-            if (existingChatRooms != null) {
-                ChatRoom existingChatRoom = existingChatRooms.get(0);
-                return existingChatRoom; // Return the existing chat room
-            }
-
-            // Create a new chat room
-            ChatRoom chatRoom = new ChatRoom();
-            chatRoom.setUsers(users);
-            ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
-            return savedChatRoom;
-        } catch (Exception e) {
-            System.out.println(e);
-            throw new RuntimeException("Error creating chat room");
+            users.add(opUser.get());
         }
+        Long userId1 = Long.parseLong(userIds.get(0));
+        Long userId2 = Long.parseLong(userIds.get(1));
+        List<ChatRoom> existingChatRooms = chatRoomRepository.findByUserIds(userId1, userId2);
+        if (existingChatRooms != null && !existingChatRooms.isEmpty()) {
+            return existingChatRooms.get(0);
+        }
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom.setUsers(users);
+        return chatRoomRepository.save(chatRoom);
     }
+
     public Message sendMessage(Long senderId, Long chatRoomId, String content) {
-        System.out.println("senderId: " + senderId);
-        try{
-        User sender = userRepo.findById((senderId)).orElseThrow(() -> new RuntimeException("Sender not found"));
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(() -> new RuntimeException("Chat room not found"));
         Message message = new Message();
-        message.setSender(sender);
-        message.setChatRoom(chatRoom);
+        try {
+            Optional<User> opUser = userRepo.findById(senderId);
+            if (!opUser.isPresent()) {
+                throw new RuntimeException("User not found: " + senderId);
+            }
+            message.setSender(opUser.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         message.setContent(content);
-        message.setTimestamp(LocalDateTime.now());
-        return messageRepository.save(message);
-        }catch(Exception e){
-            System.out.println(e);
-            return null;
+        messageRepository.save(message);
+
+        // Broadcast the message to all connected WebSocket sessions
+        broadcastMessage(message);
+
+        return message;
+    }
+
+    private void broadcastMessage(Message message) {
+        for (Session session : sessions) {
+            try {
+                session.getBasicRemote().sendText("New message: " + message.getContent());
+            } catch (IOException e) {
+                logger.severe("Error sending message: " + e.getMessage());
+            }
         }
     }
 
-     public Page<Message> getMessages(Long chatRoomId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return messageRepository.findByChatRoomId(chatRoomId, pageable);
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+
+    public void removeSession(Session session) {
+        sessions.remove(session);
+    }
+
+    public Page<Message> getMessages(Long chatRoomId, int page, int size) {
+        return messageRepository.findByChatRoomId(chatRoomId, PageRequest.of(page, size));
     }
 }

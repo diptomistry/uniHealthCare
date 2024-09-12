@@ -53,4 +53,8 @@ public class AppointmentsController {
     public List<Appointments> getAppointmentsByUserID(@PathVariable Integer UserID) {
         return appointmentsService.getAppointmentsByUser(UserID);
     }
+    @GetMapping("/all")
+    public List<Appointments> getAllAppointments() {
+        return appointmentsService.getAllAppointments();
+    }
 }
