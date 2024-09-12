@@ -3084,7 +3084,7 @@ export const seniorOfficerLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "SeniorOfficer-Home",
+        name: "senior-officer-Home",
         icon: <FiHome />,
       },
     ],
@@ -3096,8 +3096,10 @@ export const seniorOfficerLinks = [
         name: "Accept-Request",
         icon: <FaPills />,
       },
+      
     ],
   },
+  
 
 ];
 export const dispensaryLinks = [

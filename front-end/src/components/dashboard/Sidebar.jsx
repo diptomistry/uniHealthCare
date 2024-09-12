@@ -32,9 +32,9 @@ const Sidebar = () => {
         return staffLinks;
       case "student":
         return studentLinks;
-      case "dispensary-officer":
+      case "dispensary_officer":
         return dispensaryLinks;
-      case "senior-officer":
+      case "senior_officer":
         return seniorOfficerLinks;
       case "teacher":
         return teacherLinks;

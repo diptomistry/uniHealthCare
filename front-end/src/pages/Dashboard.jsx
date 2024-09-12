@@ -279,7 +279,7 @@ const Dashboard = () => {
             <Route
               path="/BookDO"
               element={
-                <SpecificRouteProtection role="dispensary-officer">
+                <SpecificRouteProtection role="dispensary_officer">
                   <BookDO />
                 </SpecificRouteProtection>
               }
@@ -287,7 +287,7 @@ const Dashboard = () => {
             <Route
               path="/Prescription"
               element={
-                <SpecificRouteProtection role="dispensary-officer">
+                <SpecificRouteProtection role="dispensary_officer">
                   <Prescriptions />
                 </SpecificRouteProtection>
               }
@@ -295,7 +295,7 @@ const Dashboard = () => {
             <Route
               path="/Request-Medicine"
               element={
-                <SpecificRouteProtection role="dispensary-officer">
+                <SpecificRouteProtection role="dispensary_officer">
                   <ListofMedicine />
                 </SpecificRouteProtection>
               }
@@ -303,7 +303,7 @@ const Dashboard = () => {
             <Route
               path="/Dispensary-Home"
               element={
-                <SpecificRouteProtection role="dispensary-officer">
+                <SpecificRouteProtection role="dispensary_officer">
                   <Dispensary_Home />
                 </SpecificRouteProtection>
               }
@@ -311,15 +311,15 @@ const Dashboard = () => {
             <Route
               path="/Accept-Request"
               element={
-                <SpecificRouteProtection role="senior-officer">
+                <SpecificRouteProtection role="senior_officer">
                   <AcceptMedicine />
                 </SpecificRouteProtection>
               }
             />
             <Route
-              path="/SeniorOfficer-Home"
+              path="/senior-officer-Home"
               element={
-                <SpecificRouteProtection role="senior-officer">
+                <SpecificRouteProtection role="senior_officer">
                   <BookSO />
                 </SpecificRouteProtection>
               }
