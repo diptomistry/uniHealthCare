@@ -36,7 +36,6 @@ const BookAppointment = () => {
       </div>
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
         <AppointmentModalData modalContent={modalContent} />
-     
       </CustomModal>
     </div>
   );

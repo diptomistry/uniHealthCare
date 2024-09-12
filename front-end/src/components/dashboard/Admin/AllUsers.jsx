@@ -20,7 +20,7 @@ const AllUsers = () => {
       alt={props.name}
     />
   ) : (
-    <div className="flex items-center justify-center bg-gray-300 rounded-full w-10 h-10">
+    <div className="flex items-center justify-center bg-gray-300 rounded-full w-6 h-6">
       <span className="text-white text-lg font-bold">
         {props.name.charAt(0).toUpperCase()}
       </span>
@@ -58,7 +58,7 @@ const AllUsers = () => {
   };
   const gridEmployeeMessage = (props) => (
     //console.log('id',props.userID),
-    <MessageIconTemplate receiverID={props.userID} />
+    <MessageIconTemplate receiverID={props.userID} receiverName={props.name} receiverImage={props.EmployeeImage} />
   );
  const employeesGrid = [
     {
