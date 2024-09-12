@@ -14,4 +14,15 @@ public class WebSocketConfig implements WebSocketConfigurer {
         registry.addHandler(new ChatWebSocketHandler(), "/ws/chat")
                 .setAllowedOrigins("*"); // Allow all origins
     }
+<<<<<<< HEAD
 }
+=======
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws")
+        .setAllowedOrigins("*")
+        .withSockJS();
+        }
+}
+>>>>>>> origin/HEAD

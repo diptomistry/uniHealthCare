@@ -70,10 +70,10 @@ const Signin = ({ isSignUpMode, openForm }) => {
     else if (userType==='student') {
       navigate('/dashboard/Student-Home');
     }
-    else if (userType==='dispensary officer') {
+    else if (userType==='dispensary_officer') {
       navigate('/dashboard/dispensary-home');
     }
-    else if (userType==='senior officer') {
+    else if (userType==='senior_officer') {
       navigate('/dashboard/senior-officer-home');
     }
     else if (userType==='teacher') {
