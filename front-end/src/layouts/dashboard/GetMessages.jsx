@@ -93,35 +93,3 @@ const GetMessages = ({ roomID, receiverName, receiverImage }) => {
 };
 
 export default GetMessages;
-
-/*
-import React from 'react';
-
-const GetMessages = ({ messages }) => {
-  if (!messages || messages.length === 0) {
-    return <p>No messages yet.</p>;
-  }
-
-  return (
-    <div className="container mx-auto p-4 mt-4">
-      <div className="bg-white shadow-md rounded-lg p-4 max-h-[70vh] overflow-y-auto"> 
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`mb-4 p-2 max-w-[40%] ${
-              message.sender === 1 ? 'bg-secondaryColor text-white self-end ml-auto mr-4 rounded-l-xl rounded-tr-xl' : 'bg-gray-200 text-black self-start rounded-r-md rounded-tl-md'
-            }`}
-          >
-            <p>{message.content}</p>
-            <small className="block text-xs mt-2 text-gray-400">
-              {new Date(message.timestamp).toLocaleTimeString()}
-            </small>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default GetMessages;
-*/
