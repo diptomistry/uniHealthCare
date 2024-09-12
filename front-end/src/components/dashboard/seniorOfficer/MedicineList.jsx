@@ -58,7 +58,7 @@ const MedicineCard = ({ medicine, onQuantityChange }) => {
   };
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-md flex items-center justify-between">
+    <div className="p-4 pl-12 pr-12 md:pl=24 md:pr-24 bg-white shadow-md rounded-md flex items-center justify-between">
       <div className="flex-1">
         <h3 className="text-lg font-bold text-gray-800">{medicine.name}</h3>
         <div className="mt-2 text-gray-600">

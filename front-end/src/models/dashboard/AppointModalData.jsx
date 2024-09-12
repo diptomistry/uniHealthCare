@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   CardioLogyDoctorDutyRoster,
   EyeDoctorDutyRoster,
@@ -10,14 +10,43 @@ const AppointmentModalData = ({ modalContent }) => {
   const [departmentResponse, setDepartmentResponse] = useState("");
   const [isResponseReceived, setIsResponseReceived] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [departmentList, setDepartmentList] = useState([]);
 
-  const departmentList = ["Cardiology", "Dentistry", "Eye Care"];
+  //const departmentList = ["Cardiology", "Dentistry", "Eye Care"];
+  useEffect(() => {
+    // Fetch the department list from the API
+    const fetchDepartments = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Retrieve bearer token from local storage
+        const response = await fetch("http://localhost:8000/api/departments", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const departments = data.map((dept) => dept.name);
+          
+          setDepartmentList(departments); // Assuming 'departments' is the key in the response
+       
+        } else {
+          console.error("Failed to fetch department list");
+        }
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+      }
+    };
+
+    fetchDepartments();
+  }, []);
 
   const handleDescriptionSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
+      console.log("Department List: ", departmentList);
       const response = await fetch("http://127.0.0.1:5000/diagnose", {
         method: "POST",
         headers: {
@@ -52,7 +81,7 @@ const AppointmentModalData = ({ modalContent }) => {
       ? CardioLogyDoctorDutyRoster
       : departmentResponse === "Dentistry \n"
       ? DentalDoctorDutyRoster
-      : departmentResponse === "Eye Care \n"
+      : departmentResponse === "Eye care \n"
       ? EyeDoctorDutyRoster
       : [];
       const appointments = [
