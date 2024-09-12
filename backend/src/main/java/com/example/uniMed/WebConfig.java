@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(tokenVerifierInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/auth/**", "/api/departments/**", "/api/roles/**"); // Exclude /auth/** paths
+                .excludePathPatterns("/api/auth/**", "/api/departments/**", "/api/roles/**","/ws/chat/**"); // Exclude /auth/** paths
     }
 
     @Override
@@ -33,7 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
             .exposedHeaders("Authorization")
-            .allowCredentials(false)  // Changed this to false
+            .allowCredentials(false)
             .maxAge(3600);
     }
 }

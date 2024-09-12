@@ -1,6 +1,6 @@
 package com.example.uniMed.apis.chat;
 
-import com.example.uniMed.models.User;
+
 import com.example.uniMed.models.chat.ChatRoom;
 import com.example.uniMed.models.chat.Message;
 import com.example.uniMed.services.chat.ChatService;
@@ -9,7 +9,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -20,8 +19,7 @@ public class ChatController {
 
     @Autowired
     private ChatService chatService;
- @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+ 
     @PostMapping("/rooms")
     public ChatRoom createChatRoom(@RequestBody List<String> users) {
         return chatService.createChatRoom(users);
@@ -33,7 +31,7 @@ public class ChatController {
         Long senderId =Long.parseLong( payload.get("senderId").toString());
         String content =  payload.get("content").toString();
         Message message = chatService.sendMessage(senderId, chatRoomId, content);
-        messagingTemplate.convertAndSend("/topic/rooms/" + chatRoomId, message);
+        
         return message;
     }
 

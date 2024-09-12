@@ -157,5 +157,8 @@ public class AppointmentsService {
         }
         return null;
     }
+    public List<Appointments> getAllAppointments() {
+        return appointmentsRepository.findAll();
+    }
 
 }

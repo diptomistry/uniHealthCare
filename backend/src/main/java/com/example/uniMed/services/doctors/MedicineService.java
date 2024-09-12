@@ -22,8 +22,9 @@ public class MedicineService {
     // Add a new medicine
     public Medicines addMedicine(String name, Date entryDate, Date expiryDate, String description, BigDecimal price, Boolean isOutside, Integer stockQuantity, User addedBy) {
         Medicines medicine = new Medicines();
+        Date date = new Date();
         medicine.setName(name);
-        medicine.setEntryDate(entryDate);
+        medicine.setEntryDate(entryDate!=null? entryDate : date);
         medicine.setExpiryDate(expiryDate);
         medicine.setDescription(description);
         medicine.setPrice(price);
@@ -81,5 +82,9 @@ public class MedicineService {
             return medicineRepository.save(medicine);
         }
         return null;
+    }
+    //get all medicines
+    public Iterable<Medicines> getAllMedicines() {
+        return medicineRepository.findAll();
     }
 }
