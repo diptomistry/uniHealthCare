@@ -1,6 +1,5 @@
 package com.example.uniMed.services.chat;
 
-
 import com.example.uniMed.models.User;
 import com.example.uniMed.models.chat.ChatRoom;
 import com.example.uniMed.models.chat.Message;
@@ -8,12 +7,7 @@ import com.example.uniMed.repositories.auth.UserRepo;
 import com.example.uniMed.repositories.chat.ChatRoomRepository;
 import com.example.uniMed.repositories.chat.MessageRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import jakarta.transaction.Transactional;
-
-import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder.Op;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -44,8 +38,6 @@ public class ChatService {
 
     @Autowired
     private MessageRepository messageRepository;
-
-    private List<Session> sessions;
 
     public ChatRoom createChatRoom(List<String> userIds) {
         List<User> users = new ArrayList<>();
@@ -82,27 +74,8 @@ public class ChatService {
         messageRepository.save(message);
 
         // Broadcast the message to all connected WebSocket sessions
-        broadcastMessage(message);
 
         return message;
-    }
-
-    private void broadcastMessage(Message message) {
-        for (Session session : sessions) {
-            try {
-                session.getBasicRemote().sendText("New message: " + message.getContent());
-            } catch (IOException e) {
-                logger.severe("Error sending message: " + e.getMessage());
-            }
-        }
-    }
-
-    public void addSession(Session session) {
-        sessions.add(session);
-    }
-
-    public void removeSession(Session session) {
-        sessions.remove(session);
     }
 
     public Page<Message> getMessages(Long chatRoomId, int page, int size) {

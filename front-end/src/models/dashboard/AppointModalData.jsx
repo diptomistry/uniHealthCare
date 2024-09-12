@@ -1,9 +1,10 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import {
   CardioLogyDoctorDutyRoster,
   EyeDoctorDutyRoster,
   DentalDoctorDutyRoster,
 } from "../../assets/dashboard";
+import { UserContext } from "../../services/auth/UserProvider";
 import PastRecord from "../../layouts/dashboard/PastRecord";
 const AppointmentModalData = ({ modalContent }) => {
   const [description, setDescription] = useState("");
@@ -11,8 +12,12 @@ const AppointmentModalData = ({ modalContent }) => {
   const [isResponseReceived, setIsResponseReceived] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [departmentList, setDepartmentList] = useState([]);
+  const { user } = useContext(UserContext);
+  const [appointmentDate, setAppointmentDate] = useState("");
+  const [appointmentTime, setAppointmentTime] = useState("");
+  console.log(user.userID);
 
-  //const departmentList = ["Cardiology", "Dentistry", "Eye Care"];
+  
   useEffect(() => {
     // Fetch the department list from the API
     const fetchDepartments = async () => {
@@ -46,7 +51,8 @@ const AppointmentModalData = ({ modalContent }) => {
     setIsLoading(true);
 
     try {
-      console.log("Department List: ", departmentList);
+      const departmentListString = departmentList.join(", ");
+      console.log("Department List: ", departmentListString);
       const response = await fetch("http://127.0.0.1:5000/diagnose", {
         method: "POST",
         headers: {
@@ -57,7 +63,7 @@ const AppointmentModalData = ({ modalContent }) => {
             "Patient symptoms: " +
             description +
             " Department List: " +
-            departmentList,
+            departmentListString,
         }),
       });
 
@@ -68,6 +74,40 @@ const AppointmentModalData = ({ modalContent }) => {
         setIsResponseReceived(true);
       } else {
         console.error("Error submitting description");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleAppointmentConfirm = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const appointmentDateTime = `${appointmentDate}T${appointmentTime}`;
+
+    try {
+      const token = localStorage.getItem("token"); // Retrieve bearer token from local storage
+      const response = await fetch("http://localhost:8000/api/appointments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          userId: user.userID,
+          appointmentDateTime,
+          concern: description,
+          status: "Scheduled",
+        }),
+      });
+
+      if (response.ok) {
+        // Handle success, e.g., show a success message or redirect
+        alert("Appointment confirmed!");
+      } else {
+        console.error("Error confirming appointment");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -144,12 +184,15 @@ const AppointmentModalData = ({ modalContent }) => {
                 Please select a convenient date and time to confirm your
                 appointment with the DU Medical Centre.
               </p>
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleAppointmentConfirm}>
                 <div>
                   <label className="block text-gray-700">Select Date</label>
                   <input
                     type="date"
                     className="w-full p-2 border border-gray-300 rounded"
+                    value={appointmentDate}
+                    onChange={(e) => setAppointmentDate(e.target.value)}
+                    required
                   />
                 </div>
                 <div>
@@ -157,13 +200,17 @@ const AppointmentModalData = ({ modalContent }) => {
                   <input
                     type="time"
                     className="w-full p-2 border border-gray-300 rounded"
+                    value={appointmentTime}
+                    onChange={(e) => setAppointmentTime(e.target.value)}
+                    required
                   />
                 </div>
                 <button
                   type="submit"
                   className="bg-primaryColor hover:bg-hoverColor text-white font-bold py-2 px-4 rounded mt-4"
+                  disabled={isLoading || !appointmentDate || !appointmentTime}
                 >
-                  Confirm Appointment
+                  {isLoading ? "Confirming..." : "Confirm Appointment"}
                 </button>
               </form>
               <div className="mt-6 mx-auto p-4 ">
