@@ -13,7 +13,7 @@ import {
   AiOutlineFileAdd,
 } from "react-icons/ai";
 import { BsChatQuote } from "react-icons/bs";
-import { MdOutlineMedicalServices,MdOutlineSick } from "react-icons/md";
+import { MdOutlineMedicalServices,MdOutlineSick,MdAddCircle } from "react-icons/md";
 import { RiStethoscopeLine, RiNurseLine, RiTaskLine } from "react-icons/ri";
 import { CgDanger,CgProfile } from "react-icons/cg";
 import {
@@ -2880,6 +2880,45 @@ export const pharmacyData = [
     pcColor: "red-700",
   },
 ];
+export const medicineSummery = [
+  {
+    icon: <FaPills />,
+    amount: "4,396",
+    percentage: "+23%",
+    title: "Available Medicine",
+    iconColor: "rgb(229, 255, 244)",  // Light green
+    iconBg: "rgb(0, 123, 255)",       // Blue background
+    pcColor: "red-600",               // Red percentage color
+  },
+ 
+  {
+    icon: <FaPills />,
+    amount: "4,396",
+    percentage: "+23%",
+    title: "Low Stock Medicine",
+    iconColor: "rgb(255, 244, 229)",
+    iconBg: "rgb(254, 201, 15)",
+    pcColor: "green-600",
+  },
+  {
+    icon: <FaExclamationTriangle />,
+    amount: "423,39",
+    percentage: "+38%",
+    title: "Out of Stock Medicine",
+    iconColor: "rgb(228, 106, 118)",
+    iconBg: "rgb(255, 244, 229)",
+    pcColor: "green-600",
+  },
+  {
+    icon: <CgDanger />,
+    amount: "39,354",
+    percentage: "-12%",
+    title: "Expired Medicine",
+    iconColor: "rgb(255, 99, 132)",
+    iconBg: "rgb(255, 235, 238)",
+    pcColor: "red-700",
+  },
+];
 
 export const dashData = [
   {
@@ -3084,7 +3123,7 @@ export const seniorOfficerLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "senior-officer-Home",
+        name: "Senior-Officer-Home",
         icon: <FiHome />,
       },
     ],
@@ -3092,11 +3131,25 @@ export const seniorOfficerLinks = [
   {
     title: "Medicine",
     links: [
+     
+      {
+        name: "Add-Medicine",
+        icon: <MdAddCircle />,
+      },
       {
         name: "Accept-Request",
         icon: <FaPills />,
       },
       
+    ],
+  },
+  {
+    title: "Appointment",
+    links: [
+      {
+        name: "BookSO",
+        icon: <TbBrandBooking />,
+      },
     ],
   },
   

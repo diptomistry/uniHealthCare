@@ -24,6 +24,8 @@ import SpecificRouteProtection from "../services/auth/SpecificRouteProtection";
 import Report from "../components/dashboard/Admin/Report";
 import AdditionalInfo from "../components/dashboard/Admin/AdditionalInfo";
 import TaskDistribution from "../components/dashboard/Admin/TaskDistribution";
+import AddMedicine from "../components/dashboard/seniorOfficer/AddMedicine";
+import SeniorHome from "../components/dashboard/seniorOfficer/SeniorHome";
 import {
   AboutSection,
   AllUsers,
@@ -317,7 +319,23 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/senior-officer-Home"
+              path="/Add-Medicine"
+              element={
+                <SpecificRouteProtection role="senior_officer">
+                  <AddMedicine />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Senior-Officer-Home"
+              element={
+                <SpecificRouteProtection role="senior_officer">
+                  <SeniorHome />
+                </SpecificRouteProtection>
+              }
+            />
+             <Route
+              path="/BookSO"
               element={
                 <SpecificRouteProtection role="senior_officer">
                   <BookSO />
