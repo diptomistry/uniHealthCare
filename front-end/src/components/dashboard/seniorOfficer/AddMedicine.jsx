@@ -24,6 +24,8 @@ const AddMedicine = () => {
   const [isAddingNewMedicine, setIsAddingNewMedicine] = useState(false);
   const [newMedicineName, setNewMedicineName] = useState("");
   const [medicineData, setMedicineData] = useState([]);
+  const [expiryDate, setExpiryDate] = useState(""); // Add expiryDate state
+
    // Fetch medicines from API
    useEffect(() => {
     const fetchMedicines = async () => {
@@ -83,6 +85,7 @@ const AddMedicine = () => {
 
   const handleButtonClick = (medicine) => {
     setSelectedMedicine(medicine);
+    setNewMedicineName(medicine.medicineName);
     setIsModalOpen(true);
     setIsAddingNewMedicine(false);
   };
@@ -99,16 +102,42 @@ const AddMedicine = () => {
     setNewMedicineName(""); // Reset the new medicine name field
   };
 
-  const handleRequestSubmit = () => {
-    if (isAddingNewMedicine) {
-      console.log(`Adding new medicine: ${newMedicineName} with quantity: ${requestedQuantity}`);
-      // Logic to handle adding a new medicine
-    } else {
-      console.log(`Requested ${requestedQuantity} of ${selectedMedicine?.medicineName}`);
-      // Logic to handle requesting an existing medicine
+  const handleRequestSubmit = async () => {
+    const expiryDateTimestamp = new Date(expiryDate).getTime(); // Convert expiry date to timestamp
+  
+    const newMedicine = {
+      name: newMedicineName,
+      entryDate: Date.now(), // Current timestamp for entry date
+      expiryDate: expiryDateTimestamp,
+      description: "Pain reliever", // You can change or pass this as a prop
+      price: "10.50", // Set price here
+      isOutside: false, // Adjust based on your data
+      stockQuantity: parseInt(requestedQuantity, 10),
+      addedBy: 21, // Replace with actual user ID or variable
+    };
+  
+    try {
+      const response = await fetch("http://localhost:8000/api/medicines/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(newMedicine),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("New medicine added:", data);
+        closeModal(); // Close modal after successful submission
+      } else {
+        console.error("Failed to add medicine");
+      }
+    } catch (error) {
+      console.error("Error adding medicine:", error);
     }
-    closeModal();
   };
+  
 
   return (
     <div className="bg-white dark:bg-secondary-dark-bg rounded-2xl shadow-md p-10 mb-10">
@@ -256,7 +285,9 @@ const AddMedicine = () => {
     </label>
     <input
       type="date"
+      value={expiryDate}
       className="shadow-sm p-4 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md"
+      onChange={(e) => setExpiryDate(e.target.value)} 
       placeholder="Enter expiry date"
     />
   </div>
