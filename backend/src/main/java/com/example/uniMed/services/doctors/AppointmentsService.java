@@ -1,5 +1,8 @@
 package com.example.uniMed.services.doctors;
 
+
+import com.example.uniMed.models.DTOs.AppointmentsDTO1;
+import com.example.uniMed.apis.doctors.AppointmentsDTO;
 import com.example.uniMed.models.Appointments;
 import com.example.uniMed.models.Doctors;
 import com.example.uniMed.models.Medicines;
@@ -16,9 +19,11 @@ import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.criteria.CriteriaBuilder.In;
 
+import org.checkerframework.checker.units.qual.t;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder.Op;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,19 +48,33 @@ public class AppointmentsService {
     private UserRepo userRepo;
 
     @Autowired
+    private PrescribedMedicineRepository prescribedMedicineRepo;
+
+    @Autowired
     private PrescriptionRepository prescriptionRepository;
 
     @Autowired
     private MedicineRepository medicineRepository;
 
-    public Appointments createAppointment(Appointments appointment, Integer userId) {
+    public Appointments createAppointment(AppointmentsDTO appointment, Integer userId) {
+        System.out.println("User ID: " + userId);
+        Appointments appointment1 = new Appointments();
+        appointment1.setAppointmentDateTime(appointment.getAppointmentDateTime());
+        appointment1.setConcern(appointment.getConcern());
+        appointment1.setStatus(appointment.getStatus());
+        
 
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userId.toString()));
 
         if (optionalUser.isPresent()) {
-            appointment.setUser(optionalUser.get());
+            appointment1.setUser(optionalUser.get());
+
         }
-        return appointmentsRepository.save(appointment);
+        if (!optionalUser.isPresent()){
+            System.out.println("User not found");
+            throw new RuntimeException("User not found");
+        }
+        return appointmentsRepository.save(appointment1);
     }
 
     public Appointments prescribeMedicine(Integer appointmentId, List<PrescribedMedicineDTO> prescribedMedicinesDTO,
@@ -72,6 +91,10 @@ public class AppointmentsService {
         }
         if (optionalDoctor.isPresent()) {
             prescription.setDoctor(optionalDoctor.get());
+        }
+        if (!optionalUser.isPresent() || !optionalDoctor.isPresent()) {
+            System.out.println("User or Doctor not found");
+            throw new RuntimeException("User or Doctor not found");
         }
 
         // Save the prescription first to ensure it is managed by the persistence
@@ -150,6 +173,7 @@ public class AppointmentsService {
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
         if (optionalUser.isPresent()) {
             Optional<List<Appointments>> optionalAppointments = appointmentsRepository.findByUserUserID(userID);
+            
             if (optionalAppointments.isPresent()) {
                 return optionalAppointments.get();
             }
@@ -157,8 +181,44 @@ public class AppointmentsService {
         }
         return null;
     }
-    public List<Appointments> getAllAppointments() {
-        return appointmentsRepository.findAll();
+    public List<AppointmentsDTO1> getAllAppointments() {
+        List<Appointments> appointments = appointmentsRepository.findAll();
+        List<AppointmentsDTO1> appointmentsDTO = new ArrayList<>();
+        for (Appointments appointment : appointments) {
+            
+
+            // Optional<Prescription> optionalPrescription = prescriptionRepository.findById(appointment
+            //         .getPrescription()
+            //         .getPrescriptionID());
+            // if (optionalPrescription.isPresent()) {
+            //     appointment.setPrescription(optionalPrescription.get());
+            // }
+            Integer appoinmentId=appointment.getAppointmentID();
+            System.out.println("-----................................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            System.out.println(appoinmentId);
+            Optional<User> optionalUsers = appointmentsRepository.findUserByAppointmentID(appoinmentId);
+
+
+          
+            if (optionalUsers.isPresent()) {
+                AppointmentsDTO1 appointmentsDTO1 = new AppointmentsDTO1();
+                appointmentsDTO1.setAppointmentDateTime(appointment.getAppointmentDateTime());
+                appointmentsDTO1.setAppointmentID(appointment.getAppointmentID());
+                appointmentsDTO1.setConcern(appointment.getConcern());  
+                appointmentsDTO1.setStatus(appointment.getStatus());
+                appointmentsDTO1.setUser(optionalUsers.get());
+                appointmentsDTO.add(appointmentsDTO1);
+
+                
+                System.out.println("-----................................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                System.out.println(optionalUsers.get());
+                appointment.setUser(optionalUsers.get());
+            }
+           
+         
+
+        }
+        return appointmentsDTO;
     }
 
 }

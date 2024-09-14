@@ -35,9 +35,12 @@ public class ChatService {
 
     @Autowired
     private ChatRoomRepository chatRoomRepository;
+    private List<Session> sessions = new ArrayList<>();
 
     @Autowired
     private MessageRepository messageRepository;
+
+    
 
     public ChatRoom createChatRoom(List<String> userIds) {
         List<User> users = new ArrayList<>();
@@ -80,5 +83,11 @@ public class ChatService {
 
     public Page<Message> getMessages(Long chatRoomId, int page, int size) {
         return messageRepository.findByChatRoomId(chatRoomId, PageRequest.of(page, size));
+    }
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+    public void removeSession(Session session) {
+        sessions.remove(session);
     }
 }

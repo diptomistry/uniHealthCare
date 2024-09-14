@@ -72,6 +72,14 @@ public class DutyRosterTableDTO {
         public static class DoctorDTO {
             private Integer id;
             private String name;
+            private String specialization;
+
+            public String getSpecialization() {
+                return specialization;
+            }
+            public void setSpecialization(String specialization) {
+                this.specialization = specialization;
+            }
 
             public Integer getId() {
                 return id;

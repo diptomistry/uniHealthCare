@@ -6,6 +6,11 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.uniMed.services.chat.ChatService;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -13,10 +18,13 @@ import java.util.logging.Logger;
 public class ChatEndpoint {
 
     private static final Logger logger = Logger.getLogger(ChatEndpoint.class.getName());
+     @Autowired
+    private ChatService chatService;
 
     @OnOpen
     public void onOpen(Session session) {
         logger.info("Connected: " + session.getId());
+        chatService.addSession(session);
     }
 
     @OnMessage
@@ -31,6 +39,7 @@ public class ChatEndpoint {
 
     @OnClose
     public void onClose(Session session) {
+        chatService.removeSession(session);
         logger.info("Disconnected: " + session.getId());
     }
 
