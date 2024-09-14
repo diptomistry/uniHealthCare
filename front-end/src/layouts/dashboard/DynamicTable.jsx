@@ -7,6 +7,7 @@ const DynamicTable = ({ AloSchedule, Title }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [doctors, setDoctors] = useState([]);
   const textareaRefs = useRef([]);
+  
 
   useEffect(() => {
     setTableData(AloSchedule);
