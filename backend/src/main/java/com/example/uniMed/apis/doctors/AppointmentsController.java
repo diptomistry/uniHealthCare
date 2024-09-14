@@ -3,9 +3,10 @@ package com.example.uniMed.apis.doctors;
 
 
 import com.example.uniMed.models.Appointments;
+import com.example.uniMed.models.DTOs.AppointmentsDTO1;
 import com.example.uniMed.models.medicine.PrescribedMedicine;
 import com.example.uniMed.services.doctors.AppointmentsService;
-import com.example.uniMed.services.doctors.PrescribedMedicineDTO;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +22,12 @@ public class AppointmentsController {
 
     @PostMapping
     public Appointments createAppointment(@RequestBody AppointmentsDTO appointmentDTO) {
-        Appointments appointment = new Appointments();
-        appointment.setAppointmentDateTime(appointmentDTO.getAppointmentDateTime());
-        appointment.setConcern(appointmentDTO.getConcern());
-        appointment.setStatus(appointmentDTO.getStatus());
+       
       
       
 
 
-        return appointmentsService.createAppointment(appointment, appointmentDTO.getUserId());
+        return appointmentsService.createAppointment(appointmentDTO, appointmentDTO.getUserId());
     }
 
     @PostMapping("/{appointmentId}/prescribe")
@@ -54,7 +52,7 @@ public class AppointmentsController {
         return appointmentsService.getAppointmentsByUser(UserID);
     }
     @GetMapping("/all")
-    public List<Appointments> getAllAppointments() {
+    public List<AppointmentsDTO1> getAllAppointments() {
         return appointmentsService.getAllAppointments();
     }
 }

@@ -1,44 +1,38 @@
-package com.example.uniMed.models;
+package com.example.uniMed.models.DTOs;
+
+
 import java.util.Date;
 import java.util.List;
 
+import com.example.uniMed.models.Doctors;
+import com.example.uniMed.models.User;
 import com.example.uniMed.models.medicine.Prescription;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.api.client.util.NullValue;
-
-import jakarta.persistence.*;
 
 
 
-@Entity
-@Table(name = "appointments")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "user"})
 
-public class Appointments {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class AppointmentsDTO1 {
+  
     private Integer appointmentID;
 
-    @ManyToOne
-    @JoinColumn(name = "userID")
-   @JsonBackReference
+   private Integer userID;
     private User user;
 
     private Date appointmentDateTime;
     private String concern;
-    private String status;
+    private String status;    
+    private Prescription prescription;
+ 
+    
+     
+    private Doctors doctor;
+ 
 
-    public Appointments() {
+    public AppointmentsDTO1() {
     }
 
    
-    @ManyToOne
-    @JoinColumn(name = "prescriptionID", nullable = true)
-   private Prescription prescription;
-
-   
-    
 
 
     public Integer getAppointmentID() {
@@ -77,6 +71,25 @@ public class Appointments {
     public void setPrescription(Prescription prescription) {
         this.prescription = prescription;
     }
-   
+    public Doctors getDoctor() {
+        return doctor;
+    }
+    public void setDoctor(Doctors doctor) {
+        this.doctor = doctor;
+    }
+
+
+
+
+    public Integer getUserID() {
+        return userID;
+    }
+
+
+
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
+    }
     
 }

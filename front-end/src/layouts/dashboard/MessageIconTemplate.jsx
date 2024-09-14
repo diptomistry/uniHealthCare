@@ -1,102 +1,112 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-
-import { UserContext } from "../../services/auth/UserProvider";
-const MessageIconTemplate = ({ receiverID, receiverName, receiverImage }) => {
-  const { user } = useContext(UserContext);
- 
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const [roomID, setRoomID] = useState(null);
-  const [webSocket, setWebSocket] = useState(null);
+const MessageIconTemplate = () => {
+  const [socket, setSocket] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [chatRoomId, setChatRoomId] = useState(1); // Example chat room ID
 
   useEffect(() => {
-    if (roomID===null) {
-      return;
+    if (modalOpen) {
+      fetchPreviousMessages();
+      connectWebSocket();
     }
-    const endpoint = 'ws://localhost:8000/ws/chat';
-    console.log('Connecting to WebSocket at:', endpoint);
-    const socket = new WebSocket(endpoint);
-
-    socket.onopen = () => {
-      console.log('Connected to WebSocket');
-    };
-
-    socket.onmessage = (event) => {
-      console.log('Received message: ', event.data);
-      showMessage(event.data);
-    };
-
-    socket.onerror = (error) => {
-      console.error('WebSocket error: ', error);
-    };
-
-    socket.onclose = () => {
-      console.log('WebSocket connection closed');
-    };
-
-    setWebSocket(socket);
 
     return () => {
       if (socket) {
         socket.close();
       }
     };
-  }, []);
+  }, [modalOpen]);
 
-  const showMessage = (message) => {
-    console.log('Received message: ', message);
-    // Handle the incoming message
-  };
-
-  const getInitial = (name) => {
-    return name ? name.charAt(0).toUpperCase() : "";
-  };
-
-  const openModal = async () => {
-    setModalOpen(true);
-
+  const fetchPreviousMessages = async () => {
     try {
-      console.log("Creating chat room...", user.userID, receiverID);
-      const response = await fetch("http://localhost:8000/api/chat/rooms", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([user.userID, receiverID]),
-      });
-      const data = await response.json();
-      setRoomID(data.id);
-      console.log("Chat room created with ID:", data.id);
+      const response = await axios.get(`/api/chat/rooms/${chatRoomId}/messages`);
+      setMessages(response.data);
     } catch (error) {
-      console.error("Error creating chat room:", error);
+      console.error('Error fetching previous messages:', error);
     }
   };
 
-  const sendMessage = () => {
-    if (webSocket && webSocket.readyState === WebSocket.OPEN) {
-      const messagePayload = {
-        senderId: user.userID,
-        chatRoomId: roomID,
-        content: message,
-      };
-      webSocket.send(JSON.stringify(messagePayload));
-      setMessage("");
-    } else {
-      console.error("WebSocket is not open. Unable to send message.");
+  const showMessage = (message) => {
+    console.log('Received message: ', message);
+    setMessages((prevMessages) => [...prevMessages, message]);
+  };
+
+  const connectWebSocket = () => {
+    const newSocket = new WebSocket('ws://localhost:8000/ws/chat');
+    newSocket.onopen = () => {
+      console.log('WebSocket connection established');
+    };
+    newSocket.onmessage = (event) => {
+      showMessage(event.data);
+    };
+    newSocket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+    newSocket.onerror = (error) => {
+      console.error('WebSocket error: ', error);
+    };
+    setSocket(newSocket);
+  };
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    if (socket) {
+      socket.close();
+    }
+  };
+
+  const handleSendMessage = () => {
+    if (socket && newMessage.trim() !== '') {
+      socket.send(newMessage);
+      setNewMessage('');
     }
   };
 
   return (
     <div>
-      {/* Your component JSX */}
-      <button onClick={openModal}>Open Chat</button>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button onClick={sendMessage}>Send Message</button>
+      <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={openModal}>Open Chat</button>
+{modalOpen && (
+  <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+    <div className="bg-white rounded-lg shadow-lg w-3/4 md:w-1/2 lg:w-1/3">
+      <div className="flex justify-between items-center p-4 border-b">
+        <h2 className="text-xl font-semibold">Chat</h2>
+        <button className="text-gray-500 hover:text-gray-700" onClick={closeModal}>&times;</button>
+      </div>
+      <div className="p-4 flex flex-col h-96">
+        {Array.isArray(messages) && messages.length > 0 && (
+          <div className="flex-1 overflow-y-auto mb-4">
+            {messages.map((msg, index) => (
+              <div key={index} className="p-2 bg-gray-100 rounded mb-2">{msg}</div>
+            ))}
+          </div>
+        )}
+        <div className="flex">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type your message..."
+            className="flex-1 p-2 border rounded-l"
+          />
+          <button
+            onClick={handleSendMessage}
+            className="bg-blue-500 text-white px-4 py-2 rounded-r"
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };

@@ -41,11 +41,12 @@ public class ChatService {
 
     @Autowired
     private ChatRoomRepository chatRoomRepository;
+    private List<Session> sessions = new ArrayList<>();
 
     @Autowired
     private MessageRepository messageRepository;
 
-    private List<Session> sessions;
+    
 
     public ChatRoom createChatRoom(List<String> userIds) {
         List<User> users = new ArrayList<>();
