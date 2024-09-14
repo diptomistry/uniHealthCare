@@ -6,7 +6,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import DosageTimes from "./DosageTimes";
 import DrugDetailsSection from "./DrugDetailsSection";
 import Diagnosis from "./Diagnosis";
-import { UserContext } from "../../../../services/auth/UserProvider";
+
 
 const DrugPrescription = ({ getMedicines,setDescription }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,10 +15,8 @@ const DrugPrescription = ({ getMedicines,setDescription }) => {
   const [afterFood, setAfterFood] = useState(false);
   const [manualEntry, setManualEntry] = useState(false);
   const [manualMedicineName, setManualMedicineName] = useState("");
-  const { user } = useContext(UserContext);
   const [description, setDescriptionState] = useState(""); 
-  const doctorID = user.userID;
-  const userID=1;
+
 
   const options = ["Days", "Weeks", "Months", "Years"];
 
