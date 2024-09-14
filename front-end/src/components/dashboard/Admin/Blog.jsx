@@ -283,7 +283,7 @@ const Blog = () => {
          <div className="mb-5">
          <ImageGenerator setImageSrc={handleAIImageSet} />
          {imageSrc && (
-  <div className="md:ml-24 md:mr-24  ml-10 mr-10  scale-90  border border-gray-300 rounded-xl overflow-hidden flex justify-center items-center">
+  <div className="md:ml-24 md:mr-24  ml-10 mr-10  scale-90  border border-gray-300 rounded-xl overflow-hidden flex justify-center items-center ">
     <img src={imageSrc} alt="Generated" className="object-cover w-full h-full" />
   </div>
 )}

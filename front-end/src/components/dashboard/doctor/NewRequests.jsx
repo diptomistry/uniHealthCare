@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import List from "./List";
 import {
   NewPatientsDataDoctor,
@@ -10,13 +10,16 @@ import PrimaryButton from "../../../layouts/dashboard/PrimaryButton";
 import PastHistory from "./prescription/PastHistory";
 import { CSSTransition } from "react-transition-group"; // For animation
 import GeneralButton from "../../../layouts/doctor/GeneralButton";
+import { UserContext } from "../../../services/auth/UserProvider";
 
 const NewRequests = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showHistory, setShowHistory] = useState(false); // Track whether to show history or prescription
   const [medicines, setMedicines] = useState([]);
-
+  const [description, setDescription] = useState(""); 
+  const todayDate = new Date().toLocaleDateString();
+  const { user } = useContext(UserContext);
   const toolbarOptions = ["Search", "PdfExport", "ExcelExport", "CsvExport"];
 
   const handlePrescribeClick = (patient) => {
@@ -34,8 +37,35 @@ const NewRequests = () => {
     setSelectedPatient(null);
   };
 
-  const getMedicines = (medicinesData) => {
-    setMedicines(medicinesData);
+  const handleSubmitPrescription = () => {
+    const prescriptionData = {
+      description: description,
+      date: todayDate,
+      status: "Prescribed",
+      doctorID: user.userID, // Update this dynamically if needed
+      userID:  17, // Dynamically set userID
+      prescribedMedicines: medicines,
+    };
+
+    const token = localStorage.getItem("token");
+
+    fetch("http://localhost:8000/api/appointments/2/prescribe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(prescriptionData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log('Finaldata:',prescriptionData);
+          console.log("Prescription submitted successfully");
+        } else {
+          console.error("Failed to submit prescription");
+        }
+      })
+      .catch((error) => console.error("Error submitting prescription:", error));
   };
 
   return (
@@ -111,7 +141,7 @@ const NewRequests = () => {
               classNames="slide"
               unmountOnExit
             >
-              <DrugPrescription getMedicines={getMedicines} />
+               <DrugPrescription getMedicines={setMedicines} setDescription={setDescription} />
             </CSSTransition>
             <CSSTransition
               in={showHistory}
@@ -125,14 +155,7 @@ const NewRequests = () => {
             {!showHistory && (
               <button
                 className="w-full mt-5"
-                onClick={() => {
-                  console.log(
-                    "Submitting prescription for",
-                    selectedPatient.PatientName,
-                    medicines
-                  );
-                  closeModal();
-                }}
+                onClick={handleSubmitPrescription}
               >
                 <PrimaryButton
                   title="Submit Prescription"

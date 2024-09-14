@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 import DUMCimg from "../../assets/img/StudentDUMC.svg";
-import MediBotButton from "../../models/MedibotButton";
+import MediBotButton from '../../models/MedibotButton';
 const BookingInfo = ({ handleButtonClick }) => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center pb-28">
@@ -26,11 +26,11 @@ const BookingInfo = ({ handleButtonClick }) => {
           Past Record
         </button>
       </div>
-      <div className="mt-10">
-        <MediBotButton />
+      <div className='mt-10'>
+      <MediBotButton />
       </div>
     </div>
   );
 };
 
-export default BookingInfo
+export default BookingInfo;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import List from "../doctor/List";
 import CustomModal from "../../../models/CustomModal";
 import { medicineData, medicineGrid } from "../../../assets/dashboard";
@@ -22,6 +22,63 @@ const ListofMedicine = () => {
   const [requestedQuantity, setRequestedQuantity] = useState("");
   const [isAddingNewMedicine, setIsAddingNewMedicine] = useState(false);
   const [newMedicineName, setNewMedicineName] = useState("");
+  const [medicineData, setMedicineData] = useState([]);
+   // Fetch medicines from API
+   useEffect(() => {
+    const fetchMedicines = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/medicines/all", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        const data = await response.json();
+  
+        // Process data to add status and batchNo
+        const processedData = data.map((medicine) => {
+          const stockQuantity = medicine.stockQuantity || 0;
+          const expiryDate = new Date(medicine.expiryDate);
+          const today = new Date();
+  
+          // Format expiry date to 'YYYY-MM-DD'
+          const formattedExpiryDate = expiryDate.toISOString().split('T')[0];
+  
+          let status = "";
+          let statusBg = "";
+  
+          if (expiryDate < today) {
+            status = "Expired";
+            statusBg = "red";
+          } else if (stockQuantity === 0) {
+            status = "Out of Stock";
+            statusBg = "#E35335";
+          } else if (stockQuantity <= 10) {
+            status = "Low Stock";
+            statusBg = "#FB9678";
+          } else {
+            status = "Available";
+            statusBg = "#8BE78B";
+          }
+  
+          return {
+            medicineName: medicine.name,
+            batchNo: "B12345", // Set a constant for batchNo for now
+            expiryDate: formattedExpiryDate, // Show formatted date
+            quantity: stockQuantity,
+            Status: status,
+            StatusBg: statusBg,
+          };
+        });
+  
+        setMedicineData(processedData);
+      } catch (error) {
+        console.error("Error fetching medicines:", error);
+      }
+    };
+  
+    fetchMedicines();
+  }, []);
+  
 
   const handleButtonClick = (medicine) => {
     setSelectedMedicine(medicine);
@@ -87,7 +144,7 @@ const ListofMedicine = () => {
             </li>
           ))}
         </ul>
-        <div className="flex justify-end">
+        <div className="flex justify-end mr-10 md:mr-14">
         <button onClick={handleAddMoreMedicineClick} className="mb-4 ">
             <Button title={"Request New Medicine"} />
           </button>
@@ -99,7 +156,7 @@ const ListofMedicine = () => {
         onRequestClose={closeModal}
         ChildrenStyle="overflow-y-auto"
       >
-        <div className="p-4">
+        <div className="p-4 ">
           <h2 className="text-xl font-bold mb-4">
             {isAddingNewMedicine ? "Request New Medicine" : "Request Medicine"}
           </h2>

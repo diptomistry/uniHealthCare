@@ -24,6 +24,7 @@ const AboutSection = () => {
     bodyText: "",
     image: "",
   });
+  const [imageSrc, setImageSrc] = useState('');
   const [isAddServiceModalOpen, setIsAddServiceModalOpen] = useState(false);
   const [newServiceData, setNewServiceData] = useState({
     title: "",
@@ -31,6 +32,7 @@ const AboutSection = () => {
     image: "",
   });
   const handleAddService = () => {
+    setImageSrc(''); 
     setNewServiceData({
       title: "",
       bodyText: "",
@@ -44,6 +46,7 @@ const AboutSection = () => {
     setIsAddServiceModalOpen(false);
   };
   const handleImageChange = (e, isEdit = false) => {
+    setImageSrc(''); 
     const file = e.target.files[0];
     if (isEdit) {
       setEditServiceData({ ...editServiceData, image: file });
@@ -58,6 +61,7 @@ const AboutSection = () => {
     setEditServiceData(service);
     setEditServiceIndex(index);
     setIsEditModalOpen(true);
+    setImageSrc(''); // Clear the AI-generated image when editing a service
   };
   const handleDeleteService = (index) => {
     // Handle service deletion logic here
@@ -342,6 +346,10 @@ const AboutSection = () => {
       console.error("Error updating About Us:", error.message);
     }
   };
+  const handleAIImageSet = (generatedImage) => {
+    setImageSrc(generatedImage);
+    setEditServiceData({ ...editForm, image: '' }); // Clear the image from the device when AI image is set
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-10 mb-20">
@@ -466,7 +474,7 @@ const AboutSection = () => {
         isOpen={isEditModalOpen}
         onRequestClose={() => setIsEditModalOpen(false)}
       >
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 ">
           <input
             type="text"
             value={editServiceData.title}
@@ -494,7 +502,15 @@ const AboutSection = () => {
             onChange={(e) => handleImageChange(e, true)}
             className="p-2 border border-gray-300 rounded"
           />
-          <Button title="Save" onClick={handleSaveEditService} />
+             <ImageGenerator setImageSrc={handleAIImageSet} />
+             {imageSrc && (
+  <div className="md:ml-24 md:mr-24  ml-10 mr-10  scale-90  border border-gray-300 rounded-xl overflow-hidden flex justify-center items-center">
+    <img src={imageSrc} alt="Generated" className="object-cover w-full h-full " />
+  </div>
+)}
+          <button  onClick={handleSaveEditService} className="pb-4" >
+          <Button title="Save" />
+          </button>
         </div>
       </CustomModal>
 
@@ -502,7 +518,7 @@ const AboutSection = () => {
         isOpen={isAddServiceModalOpen}
         onRequestClose={() => setIsAddServiceModalOpen(false)}
       >
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 ">
           <input
             type="text"
             value={newServiceData.title}

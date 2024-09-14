@@ -1,18 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SearchHeader from "./SearchHeader";
 import { SearchResultsList } from "./SearchResultsList";
 import AddItemButton from "../../../../layouts/doctor/AddItemButton";
-import { IoMdCloseCircle } from "react-icons/io"; 
+import { IoMdCloseCircle } from "react-icons/io";
 import DosageTimes from "./DosageTimes";
 import DrugDetailsSection from "./DrugDetailsSection";
 import Diagnosis from "./Diagnosis";
-const DrugPrescription = ({ getMedicines }) => {
+import { UserContext } from "../../../../services/auth/UserProvider";
+
+const DrugPrescription = ({ getMedicines,setDescription }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Days");
   const [beforeFood, setBeforeFood] = useState(false);
   const [afterFood, setAfterFood] = useState(false);
   const [manualEntry, setManualEntry] = useState(false);
   const [manualMedicineName, setManualMedicineName] = useState("");
+  const { user } = useContext(UserContext);
+  const [description, setDescriptionState] = useState(""); 
+  const doctorID = user.userID;
+  const userID=1;
 
   const options = ["Days", "Weeks", "Months", "Years"];
 
@@ -29,23 +35,35 @@ const DrugPrescription = ({ getMedicines }) => {
   //const [medicineId, setMedicineId] = useState(1);
 
   const fetchData = (value) => {
-    fetch("http://localhost:8000/api/get-medicines")
+    const token = localStorage.getItem("token"); // Assuming your token is stored under 'token'
+
+    fetch("http://localhost:8000/api/medicines/all", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => response.json())
       .then((json) => {
-        const results = json.data.filter((medicine) => {
-          return (
-            value &&
-            medicine &&
-            medicine.Name &&
-            medicine.Name.toLowerCase().includes(value.toLowerCase())
-          );
-        });
-        const Data = json.data;
-        //const medicineId = json.data.length > 0 ? json.data[0].MedicineID : 2;
-      //  const medicineId = 1;
+        const results = json
+          .filter((medicine) => {
+            return (
+              value &&
+              medicine &&
+              medicine.name &&
+              medicine.name.toLowerCase().includes(value.toLowerCase())
+            );
+          })
+          .map((medicine) => ({
+            name: medicine.name,
+            medicineID: medicine.medicineID, 
+          }));
+
         setResults(results);
-       // console.log("medic:", medicineId);
-      });
+        console.log("medicines:", results);
+      })
+      .catch((error) => console.error("Error fetching medicines:", error));
   };
 
   const handleChange = (value) => {
@@ -56,9 +74,13 @@ const DrugPrescription = ({ getMedicines }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
   const [showSelectedItems, setShowSelectedItems] = useState(true);
-
-  const handleItemSelect = (item) => {
+  const [medicineID, setMedicineID] = useState(null);
+  const [datatoSend, setDatatoSend] = useState([]);
+  const [showData, setShowData] = useState([]);
+  const handleItemSelect = (item, id) => {
+    // console.log('id',id);
     setSelectedItems((prevSelectedItems) => [...prevSelectedItems, item]);
+    setMedicineID(id);
     setShowMenu(false);
     setInput("");
     setShowSelectedItems(true);
@@ -103,22 +125,22 @@ const DrugPrescription = ({ getMedicines }) => {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    console.log(data);
+    //console.log("data to send", datatoSend);
+    getMedicines(datatoSend);
   }, [data]);
 
   const handleAddToMedicine = () => {
-    // Calculate the correct frequency before setting it in state
-    const finalFrequency = frequency === "custom" ? `Every ${inputValue} Days` : frequency;
+    const finalFrequency =
+      frequency === "custom" ? `Every ${inputValue} Days` : frequency;
     if (frequency === "custom" && !inputValue) {
       alert("Please enter the custom frequency.");
       return;
     }
-    // Ensure other states are set correctly before adding the medicine
+  
     handleQuantity();
     handleafterBefore();
     handleFinalDuration();
   
-    // Perform any necessary validation
     if (selectedItems.length === 0 && !manualEntry) {
       alert("Please select a medicine or enter it manually.");
       return;
@@ -129,68 +151,82 @@ const DrugPrescription = ({ getMedicines }) => {
       return;
     }
   
-    if (duration==0 || !selectedOption) {
+    if (duration === 0 || !selectedOption) {
       alert("Please enter the duration.");
       return;
     }
   
-    // Create a copy of the existing data
     const newData = [...data];
   
-    // Determine the last selected item (either from manual entry or selection)
     const lastSelectedItem = manualEntry
       ? manualMedicineName
       : selectedItems[selectedItems.length - 1];
   
-    // Check if the medicine already exists in the data array
-    const existingItem = newData.find(
-      (item) => item.selectedItems === lastSelectedItem
+    // Check if the name or medicineID already exists
+    const existingItemIndex = newData.findIndex((item) =>
+      manualEntry
+        ? item.name === manualMedicineName // Check by name for manual entry
+        : item.medicineID === medicineID // Check by medicineID for non-manual entry
     );
   
-    if (existingItem) {
-      // Update the existing item if it already exists
-      existingItem.quantity = countValues.join("-");
-      existingItem.duration = duration + " " + selectedOption;
-      existingItem.afterBefore = beforeFood
+    // If found, remove the existing entry before adding the new one
+    if (existingItemIndex !== -1) {
+      newData.splice(existingItemIndex, 1);
+    }
+  
+    const itemToAdd = {
+      quantity: countValues.join("-"),
+      duration: duration + " " + selectedOption,
+      afterBefore: beforeFood
         ? "Before Food"
         : afterFood
         ? "After Food"
-        : "Not Specified";
-      existingItem.frequency = finalFrequency; // Set the calculated frequency
+        : "Not Specified",
+      frequency: finalFrequency,
+    };
+  
+    if (manualEntry) {
+      // If it's a manual entry, include the name
+      itemToAdd.name = manualMedicineName;
     } else {
-      // If it doesn't exist, push a new item to the data array
-      newData.push({
-        selectedItems: lastSelectedItem,
-        quantity: countValues.join("-"),
-        duration: duration + " " + selectedOption,
-        afterBefore: beforeFood
-          ? "Before Food"
-          : afterFood
-          ? "After Food"
-          : "Not Specified",
-        frequency: finalFrequency, // Set the calculated frequency
-      });
+      // If it's from search, include the medicineID
+      itemToAdd.medicineID = medicineID;
     }
   
-    // Update the state with the new data
+    // Add the new item
+    newData.push(itemToAdd);
+  
     setData(newData);
   
-    // Prepare the data to send back (without selectedItems)
-    const dataToSend = newData.map(({ selectedItems, ...rest }) => rest);
-    getMedicines(dataToSend);
+    // Prepare the data to send (retain original manual/non-manual entries)
+    const dataToSend = newData.map((item) => {
+      if (item.name) {
+        return {
+          name: item.name, // Use name for manual entry
+          quantity: item.quantity,
+          duration: item.duration,
+          afterBefore: item.afterBefore,
+        };
+      } else {
+        return {
+          medicineID: item.medicineID, // Use medicineID for non-manual entry
+          quantity: item.quantity,
+          duration: item.duration,
+          afterBefore: item.afterBefore,
+        };
+      }
+    });
   
-    // Clear relevant states after adding the medicine
+    setDatatoSend(dataToSend);
+  
+    // Clear states after adding the medicine
     setManualEntry(false);
     setManualMedicineName("");
-    setCustomFrequency(""); // Clear custom frequency after adding
-    //setInputValue(""); // Clear input value for custom frequency
-  
-    // Optionally clear other form fields as needed
     setSelectedItems([]);
-  
+    setCustomFrequency("");
   };
   
-  
+
   const handleDelete = (index) => {
     const newData = [...data];
     newData.splice(index, 1);
@@ -210,6 +246,10 @@ const DrugPrescription = ({ getMedicines }) => {
     setSelectedItems(updatedItems);
     setShowSelectedItems(updatedItems.length > 0);
   };
+  const handleDescriptionChange = (e) => {
+    setDescriptionState(e.target.value);
+    setDescription(e.target.value); // Pass description upwards
+  };
   return (
     <div className="bg-blue-200 rounded-lg p-5 mt-5">
       <Diagnosis />
@@ -228,10 +268,7 @@ const DrugPrescription = ({ getMedicines }) => {
         <div className="flex bg-[#e8e2dc] gap-2 place-content-center items-center mt-2 mb-2">
           <div className="relative flex items-center">
             <span>{selectedItems[selectedItems.length - 1]}</span>
-            <button
-              className="ml-2"
-              onClick={handleRemoveLastSelectedMedicine}
-            >
+            <button className="ml-2" onClick={handleRemoveLastSelectedMedicine}>
               <IoMdCloseCircle className="text-red-500 text-xl" />
             </button>
           </div>
@@ -239,17 +276,14 @@ const DrugPrescription = ({ getMedicines }) => {
       )}
       {!manualEntry && (
         /* From Uiverse.io by EmaCoto */
-       <div className="flex justify-end mb-2 ">
-        <button
-         onClick={() => setManualEntry(true)}
-        >
-  <AddItemButton title="Add Medicine Manually" />
-        </button>
-      
-       </div>
+        <div className="flex justify-end mb-2 ">
+          <button onClick={() => setManualEntry(true)}>
+            <AddItemButton title="Add Medicine Manually" />
+          </button>
+        </div>
       )}
 
-{manualEntry && (
+      {manualEntry && (
         <div className="mt-4 mb-2 relative">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Medicine Name:
@@ -268,7 +302,7 @@ const DrugPrescription = ({ getMedicines }) => {
           </button>
         </div>
       )}
-        <DosageTimes handleCountValues={handleCountValues} />
+      <DosageTimes handleCountValues={handleCountValues} />
       <DrugDetailsSection
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
@@ -292,40 +326,49 @@ const DrugPrescription = ({ getMedicines }) => {
       />
 
       <div className="grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-2">
-        {data.map((item, index) => (
-          <div
-            key={index}
-            className="border border-backgroundColor mt-3  p-3 bg-[#e8e2dc]"
-          >
-            <h4 className="font-semibold">
-              Medicine {index + 1} : {item.selectedItems}
-            </h4>
+      {data.map((item, index) => {
+  // Find the medicine name from the results using medicineID
+  const foundMedicine = results.find((medicine) => medicine.medicineID === item.medicineID);
+  const medicineName = item.name || (foundMedicine ? foundMedicine.name : "Medicine");
 
-            <p>
-              <strong>Quantity:</strong> {item.quantity}
-            </p>
-            <p>
-              <strong>Duration:</strong> {item.duration}
-            </p>
-            <p>
-              <strong>Frequency:</strong> {item.frequency}
-            </p>
-            <p>
-              <strong>Time:</strong> {item.afterBefore}
-            </p>
-            <button
-              className="text-red-600 hover:text-red-700 mt-2"
-              onClick={() => handleDelete(index)}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+  return (
+    <div
+      key={index}
+      className="border border-backgroundColor mt-3 p-3 bg-[#e8e2dc]"
+    >
+      <h4 className="font-semibold">
+        Medicine {index + 1} : {medicineName}
+      </h4>
+
+      <p>
+        <strong>Quantity:</strong> {item.quantity}
+      </p>
+      <p>
+        <strong>Duration:</strong> {item.duration}
+      </p>
+      <p>
+        <strong>Frequency:</strong> {item.frequency}
+      </p>
+      <p>
+        <strong>Time:</strong> {item.afterBefore}
+      </p>
+      <button
+        className="text-red-600 hover:text-red-700 mt-2"
+        onClick={() => handleDelete(index)}
+      >
+        Delete
+      </button>
+    </div>
+  );
+})}
+
       </div>
       <div className="bg-blue-200 rounded-lg mt-5 ">
         <h3 className="text-lg font-semibold mb-2">Add Instructions</h3>
         <textarea
           rows="4"
+          value={description}
+          onChange={handleDescriptionChange}
           className="border border-backgroundColor focus:outline-blue-300 hover:shadow-lg hover:border-blue-300  rounded-md px-3 py-2 w-full"
           placeholder="Enter instructions or notes..."
         />

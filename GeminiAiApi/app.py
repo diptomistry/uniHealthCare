@@ -125,31 +125,62 @@ def ask_medical_advice():
 def diagnose():
     data = request.json
     user_input = data.get('user_input')
-
+    print(user_input)
     if not user_input:
         return jsonify({"error": "Input message is required."}), 400
 
     # Start a chat session for diagnosing
     chat_session = model.start_chat(
-        history=[
-            {
-                "role": "user",
-                "parts": [
-                    "You will receive symptoms and a list of available departments. "
-                    "Your job is to suggest the appropriate department based on the symptoms. "
-                    "If the input is irrelevant to health issues, ask the user to provide health-related symptoms."
-                    "Your responses should be limited to one of two things: "
-                    "1. Suggest the corresponding department based on the health issue provided. "
-                    "2. If irrelevant data is provided, ask the user to submit health-related symptoms."
-                ],
-            },
-            {
-                "role": "model",
-                "parts": [
-                    "Understood, I'm ready. Please provide the symptoms and available departments.\n",
-                ],
-            },
-        ]
+    history=[
+        {
+        "role": "user",
+        "parts": [
+            " You will receive patient symptoms and a list of available departments.  Your job is to suggest the appropriate department based on the symptoms. You will just say the department name, nothing redundant. If the input is irrelevant to health issues, request the user to provide health-related symptoms.\n Your responses should be limited to one of two things: \n 1. Suggest the corresponding department from the list of available departments based on the health issue provided. \n 2. If irrelevant data is provided, ask the user to submit health-related symptoms.\n\n",
+        ],
+        },
+        {
+        "role": "model",
+        "parts": [
+            "Okay, I'm ready. Please provide the patient symptoms and the list of available departments. \n",
+        ],
+        },
+        {
+        "role": "user",
+        "parts": [
+            "Patient symptoms: leg broken Department List: Cardiology, Medicine, Eye care, ENT, Dentistry",
+        ],
+        },
+        {
+        "role": "model",
+        "parts": [
+            "Orthopedics \n",
+        ],
+        },
+        {
+        "role": "user",
+        "parts": [
+            "i said to suggest department from the provided list, never ever suggest department that is not available",
+        ],
+        },
+        {
+        "role": "model",
+        "parts": [
+            "You are absolutely right! I apologize for that mistake. I am still under development and learning.  \n\nSince \"Orthopedics\" is not on the provided list, I cannot suggest a department. \n\nPlease provide the patient's symptoms and the list of available departments again. I will do my best to suggest the correct department from the list. \n",
+        ],
+        },
+        {
+        "role": "user",
+        "parts": [
+            "Patient symptoms: leg broken Department List: Cardiology, Medicine, Eye care, ENT, Dentistry",
+        ],
+        },
+        {
+        "role": "model",
+        "parts": [
+            "Medicine \n",
+        ],
+        },
+    ]
     )
 
     response = chat_session.send_message(user_input)
