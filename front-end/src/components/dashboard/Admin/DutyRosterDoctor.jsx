@@ -30,6 +30,7 @@ const DutyRosterDoctor = () => {
     const fetchDutyRoster = async () => {
       try {
         const token = localStorage.getItem('token');
+        console.log('token', token);
         const response = await fetch('http://localhost:8000/api/duty-roster/table', {
           method: 'GET',
           headers: {
@@ -39,7 +40,9 @@ const DutyRosterDoctor = () => {
         const data = await response.json();
         setDutyRoster(data);
       } catch (error) {
-        console.error('Error fetching duty roster:', error);
+       
+        console.error('Error fetching duty roster..:', error);
+        console.error('Details:', error.message);
       }
     };
 
@@ -65,8 +68,8 @@ const DutyRosterDoctor = () => {
         const doctors = slot.doctors.length > 0 
           ? slot.doctors.map(doctor => {
               // Safely access department and department.name
-              const departmentName = doctor.department && doctor.department.name ? doctor.department.name : 'Cardiology';
-              return `${doctor.name} (${departmentName})`;
+              //const departmentName = doctor.department && doctor.department.name ? doctor.department.name : 'Cardiology';
+              return `${doctor.name} (${doctor.specialization})`;
             }).join(', ') 
           : 'No doctors';
   
