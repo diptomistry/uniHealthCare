@@ -13,7 +13,11 @@ public class TokenVerifierInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("TokenVerifierInterceptor: preHandle");
+        
+      
         String authorizationHeader = request.getHeader("Authorization");
+        System.out.println("TokenVerifierInterceptor: " + authorizationHeader);
 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

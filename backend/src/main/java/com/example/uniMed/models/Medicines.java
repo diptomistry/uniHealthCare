@@ -19,9 +19,17 @@ public class Medicines {
     private BigDecimal price;
     private Boolean is_Outside;
     private Integer stockQuantity;
+    private Boolean isDeleted = false;
+    
     @ManyToOne
     @JoinColumn(name = "addedBy")
     private User addedBy;
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
     public Medicines() {
     }
     public Integer getMedicineID() {

@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,11 +38,13 @@ public class MedicineService {
 
     // Delete a medicine by ID
     public boolean deleteMedicine(Integer medicineID) {
-        Optional<Medicines> medicine = medicineRepository.findById(medicineID);
-        if (medicine.isPresent()) {
-            medicineRepository.delete(medicine.get());
+        Medicines medicine = medicineRepository.findById(medicineID).get();
+        if (medicine != null) {
+            medicine.setIsDeleted(true);
+            medicineRepository.save(medicine);
             return true;
         }
+        
         return false;
     }
 
@@ -49,14 +53,24 @@ public class MedicineService {
         Optional<Medicines> medicineOptional = medicineRepository.findById(medicineID);
         if (medicineOptional.isPresent()) {
             Medicines medicine = medicineOptional.get();
-            medicine.setName(name);
-            medicine.setEntryDate(entryDate);
-            medicine.setExpiryDate(expiryDate);
-            medicine.setDescription(description);
-            medicine.setPrice(price);
-            medicine.setIs_Outside(isOutside);
-            medicine.setStockQuantity(stockQuantity);
-            medicine.setAddedBy(addedBy);
+            if (name != null){
+            medicine.setName(name);}
+            if (entryDate != null) {
+                medicine.setEntryDate(entryDate);
+            }
+            if (expiryDate != null){
+            medicine.setExpiryDate(expiryDate);}
+            if (description != null){
+            medicine.setDescription(description);}
+            if (price != null)
+
+          {  medicine.setPrice(price);}
+            if (isOutside != null)
+          {  medicine.setIs_Outside(isOutside);}
+            if (stockQuantity != null)
+           { medicine.setStockQuantity(stockQuantity);}
+            if (addedBy != null)
+          {  medicine.setAddedBy(addedBy);}
             return medicineRepository.save(medicine);
         }
         return null;
@@ -85,6 +99,15 @@ public class MedicineService {
     }
     //get all medicines
     public Iterable<Medicines> getAllMedicines() {
-        return medicineRepository.findAll();
+        List <Medicines> medicines = medicineRepository.findAll();
+        List <Medicines> activeMedicines = new ArrayList<>();
+        for (Medicines medicine : medicines) {
+            boolean isDeleted = medicine.getIsDeleted() != null ? medicine.getIsDeleted() : false;
+            if (!isDeleted)
+
+             {   activeMedicines.add(medicine);}
+           
+        }
+        return activeMedicines;
     }
 }

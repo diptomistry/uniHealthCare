@@ -986,8 +986,10 @@ export const medicineData = [
   },
   // Add more medicine data as needed
 ];
+console.log(medicineData);
 export const gridImage = (props) => {
-  const firstLetter = props.medicineName.charAt(0).toUpperCase();
+  console.log(props.medicineName);
+  const firstLetter = props.medicineName ? props.medicineName.charAt(0).toUpperCase() : '';
 
   return (
     <div
