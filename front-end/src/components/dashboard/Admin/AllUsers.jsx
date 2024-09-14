@@ -2,7 +2,6 @@ import React,{useState,useEffect,useContext} from 'react';
 import { GridComponent, Inject, ColumnsDirective, ColumnDirective, Search, Page, Edit, Toolbar } from '@syncfusion/ej2-react-grids';
 import { employeesData,employeesGrid } from '../../../assets/dashboard';
 import { GrLocation } from 'react-icons/gr';
-import { LuMessageSquarePlus } from 'react-icons/lu';
 import MessageIconTemplate from '../../../layouts/dashboard/MessageIconTemplate';
 import { UserContext } from '../../../services/auth/UserProvider';
 
@@ -49,14 +48,9 @@ const AllUsers = () => {
       </a>
     </div>
   );
-  const messageIconTemplate = () => {
-    return (
-      <button className="text-backgroundColor hover:text-hoverColor transition-colors duration-300">
-        <LuMessageSquarePlus className="w-5 h-5" />
-      </button>
-    );
-  };
+
   const gridEmployeeMessage = (props) => (
+    
     //console.log('id',props.userID),
     <MessageIconTemplate receiverID={props.userID} receiverName={props.name} receiverImage={props.EmployeeImage} />
   );
