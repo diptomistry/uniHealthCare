@@ -23,6 +23,7 @@ const AddMedicine = () => {
   const [requestedQuantity, setRequestedQuantity] = useState("");
   const [isAddingNewMedicine, setIsAddingNewMedicine] = useState(false);
   const [newMedicineName, setNewMedicineName] = useState("");
+  const [price, setPrice] = useState("");
   const [medicineData, setMedicineData] = useState([]);
   const [expiryDate, setExpiryDate] = useState(""); // Add expiryDate state
 
@@ -110,7 +111,7 @@ const AddMedicine = () => {
       entryDate: Date.now(), // Current timestamp for entry date
       expiryDate: expiryDateTimestamp,
       description: "Pain reliever", // You can change or pass this as a prop
-      price: "10.50", // Set price here
+      price: price, // Set price here
       isOutside: false, // Adjust based on your data
       stockQuantity: parseInt(requestedQuantity, 10),
       addedBy: 21, // Replace with actual user ID or variable
@@ -296,7 +297,9 @@ const AddMedicine = () => {
       Price
     </label>
     <input
-      type="number"
+      type="text"
+      value={price}
+      onChange={(e) => setPrice(e.target.value)}
       className="shadow-sm p-4 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md"
       placeholder="Enter price"
     />
