@@ -84,4 +84,10 @@ public class ChatService {
     public Page<Message> getMessages(Long chatRoomId, int page, int size) {
         return messageRepository.findByChatRoomId(chatRoomId, PageRequest.of(page, size));
     }
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+    public void removeSession(Session session) {
+        sessions.remove(session);
+    }
 }
