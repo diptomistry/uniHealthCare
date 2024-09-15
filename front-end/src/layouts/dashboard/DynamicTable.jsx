@@ -58,7 +58,7 @@ const DynamicTable = ({ AloSchedule, Title }) => {
     }
   };
 
-  const handleCellChange = (rowIndex, colIndex, value,cellId) => {
+  const handleCellChange = (rowIndex, colIndex, value) => {
     const newData = tableData.map((row, rIdx) =>
       row.map((cell, cIdx) =>
         rIdx === rowIndex && cIdx === colIndex ? value : cell

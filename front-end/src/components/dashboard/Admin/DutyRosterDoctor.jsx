@@ -67,7 +67,7 @@ const DutyRosterDoctor = () => {
         // Add doctors' names and slot id, or 'No doctors' if none exist
         const doctors = slot.doctors.length > 0 
           ? slot.doctors.map(doctor => {
-              return `${doctor.name} (${doctor.specialization}) - Slot ID: ${slot.id}`;
+            return `${doctor.name} (${doctor.specialization}) - Slot ID: ${slot.id} - Doctor ID: ${doctor.id}`;
             }).join(', ')
           : '';
         
