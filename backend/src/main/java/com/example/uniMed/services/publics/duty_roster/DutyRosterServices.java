@@ -82,7 +82,8 @@ public class DutyRosterServices {
                         DutyRosterTableDTO.SlotDTO.DoctorDTO doctorDTO = new DutyRosterTableDTO.SlotDTO.DoctorDTO();
                         doctorDTO.setId(doctor.getUserID().intValue());
                         doctorDTO.setName(doctor.getName());
-                        doctorDTO.setSpecialization(doctor.getDepartment().getImage());
+
+                        doctorDTO.setSpecialization(doctor.getDepartment().getName());
                         return doctorDTO;
                     })
                     .collect(Collectors.toList());
