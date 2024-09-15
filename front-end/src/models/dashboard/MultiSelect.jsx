@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { X } from "lucide-react";
 import axios from "axios";
@@ -8,17 +7,49 @@ const MultiSelect = ({ value, onChange, options }) => {
   const selectedDoctors = Array.isArray(value) ? value : [];
 
   const deleteDoctor = async (slotId, doctorId) => {
-    console.log("Deleting doctor:", slotId, doctorId);
     try {
+      // Send request to the API to delete the specific doctor
       await axios.post(
         `http://localhost:8000/api/duty-roster/delete-doctor/${slotId}`,
         { doctorId: [doctorId] },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-      onChange(selectedDoctors.filter((doc) => doc.doctorId !== doctorId));
+
+      // Update the frontend state to remove only the doctor being clicked
+      const updatedDoctors = selectedDoctors.map((item) => {
+        // Use regex to find all doctors in the cell
+        const doctorMatches = item.value.matchAll(/(.+?)\s+-\s+Doctor ID:\s+(\d+)/g);
+        const doctors = Array.from(doctorMatches);
+
+        // Filter out the doctor with the matching doctorId
+        const filteredDoctors = doctors.filter(
+          (doctor) => parseInt(doctor[2], 10) !== doctorId
+        );
+
+        // Reconstruct the value without the deleted doctor
+        const newValue = filteredDoctors
+          .map((doctor) => `${doctor[1].trim()} - Doctor ID: ${doctor[2]}`)
+          .join(", ");
+
+        return { ...item, value: newValue };
+      });
+
+      // Filter out empty entries (cells that have no doctors left)
+      onChange(updatedDoctors.filter((item) => item.value.trim() !== ""));
+
     } catch (error) {
       console.error("Error deleting doctor:", error);
     }
+  };
+
+  const handleSelectDoctor = (option) => {
+    const newValue = selectedDoctors.some(
+      (doc) => doc.doctorId === option.doctorId
+    )
+      ? selectedDoctors.filter((doc) => doc.doctorId !== option.doctorId) // Unselect if already selected
+      : [...selectedDoctors, { doctorId: option.doctorId, value: `${option.name} - Doctor ID: ${option.doctorId}` }]; // Add new doctor with proper format
+
+    onChange(newValue);
   };
 
   return (
@@ -31,12 +62,10 @@ const MultiSelect = ({ value, onChange, options }) => {
           <span className="text-gray-400">Select doctors</span>
         ) : (
           selectedDoctors.map((item, index) => {
-            // Split each doctor using regex for both name and doctorId
             const doctorMatches = item.value.matchAll(
               /(.+?)\s+-\s+Doctor ID:\s+(\d+)/g
             );
-            
-            const doctors = Array.from(doctorMatches); // Convert iterator to array
+            const doctors = Array.from(doctorMatches);
 
             return (
               <React.Fragment key={index}>
@@ -78,19 +107,7 @@ const MultiSelect = ({ value, onChange, options }) => {
                   ? "bg-blue-100"
                   : ""
               }`}
-              onClick={() => {
-                const newValue = selectedDoctors.some(
-                  (doc) => doc.doctorId === option.doctorId
-                )
-                  ? selectedDoctors.filter(
-                      (doc) => doc.doctorId !== option.doctorId
-                    )
-                  : [
-                      ...selectedDoctors,
-                      { doctorId: option.doctorId, value: option.name },
-                    ];
-                onChange(newValue);
-              }}
+              onClick={() => handleSelectDoctor(option)} // Add the doctor to the selection
             >
               {option.name}
             </div>
