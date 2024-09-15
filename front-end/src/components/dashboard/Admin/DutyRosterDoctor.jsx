@@ -64,15 +64,13 @@ const DutyRosterDoctor = () => {
           headerRow.push(slot.slotTime);
         }
   
-        // Add doctor names to the day row, or 'No doctors' if none exist
+        // Add doctors' names and slot id, or 'No doctors' if none exist
         const doctors = slot.doctors.length > 0 
           ? slot.doctors.map(doctor => {
-              // Safely access department and department.name
-              //const departmentName = doctor.department && doctor.department.name ? doctor.department.name : 'Cardiology';
-              return `${doctor.name} (${doctor.specialization})`;
-            }).join(', ') 
-          : 'No doctors';
-  
+              return `${doctor.name} (${doctor.specialization}) - Slot ID: ${slot.id}`;
+            }).join(', ')
+          : '';
+        
         dayRow.push(doctors);
       });
   
@@ -101,6 +99,7 @@ const DutyRosterDoctor = () => {
   
     return [finalHeaderRow, ...alignedRows];
   };
+  
   
 
   const formattedRoster = formatRosterForTable(dutyRoster);
