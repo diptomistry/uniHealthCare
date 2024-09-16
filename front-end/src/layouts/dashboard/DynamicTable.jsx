@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { Edit, Save } from "lucide-react";
 import axios from "axios";
 import { renderCell } from "../../models/dashboard/RenderCell";
-
+import CustomModal from "../../models/CustomModal";
 const DynamicTable = ({ AloSchedule, Title }) => {
   const [tableData, setTableData] = useState(AloSchedule);
   const [isEditing, setIsEditing] = useState(false);
   const [doctors, setDoctors] = useState([]);
   const textareaRefs = useRef([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newSlotTime, setNewSlotTime] = useState(""); // New slot time input
 
 
   useEffect(() => {
@@ -88,19 +90,13 @@ const DynamicTable = ({ AloSchedule, Title }) => {
     });
   }, [tableData]);
 
-  const addRow = () => {
-    setTableData([...tableData, Array(tableData[0].length).fill([])]);
-  };
 
   const addColumn = () => {
-    setTableData(tableData.map((row) => [...row, []]));
+    //setTableData(tableData.map((row) => [...row, []]));
+    setIsModalOpen(true); // Open the modal when adding a slot
   };
 
-  const deleteRow = () => {
-    if (tableData.length > 2) {
-      setTableData(tableData.slice(0, -1));
-    }
-  };
+ 
 
   const deleteColumn = () => {
     if (tableData[0].length > 2) {
@@ -133,7 +129,44 @@ const DynamicTable = ({ AloSchedule, Title }) => {
     } 
     setIsEditing(!isEditing);
   };
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleAddSlot = () => {
+    const token = localStorage.getItem("token"); // Retrieve token from local storage
   
+    if (!newSlotTime) {
+      alert("Please enter a valid slot time.");
+      return;
+    }
+  
+    axios
+      .post(
+        "http://localhost:8000/api/duty-roster/create",
+        { slotTime: newSlotTime.toUpperCase() },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include bearer token
+          },
+        }
+      )
+      .then((response) => {
+        const newSlot = response.data;
+        console.log("Slot added:", newSlot);
+  
+       
+        window.location.reload();
+  
+        setNewSlotTime(""); // Reset the input
+        setIsModalOpen(false); // Close the modal
+      })
+      .catch((error) => {
+        console.error("Error adding slot:", error);
+      });
+  };
+  
+
 
   return (
     <div className="flex flex-col gap-5">
@@ -141,34 +174,21 @@ const DynamicTable = ({ AloSchedule, Title }) => {
         <h1 className="font-hindSiliguri text-textColor text-xl">{Title}</h1>
       </div>
       <div className="flex flex-col md:flex-row gap-5 md:gap-0 mb-4 justify-between">
-        <div className="flex gap-2">
-          <button
-            className="bg-primaryColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out"
-            onClick={addRow}
-          >
-            Add a Row
-          </button>
-          <button
-            onClick={deleteRow}
-            className="px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded"
-          >
-            Delete a Row
-          </button>
-        </div>
-        <div className="flex gap-2">
+        
+        
           <button
             className="bg-primaryColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out"
             onClick={addColumn}
           >
-            Add a Column
+            Create a Slot
           </button>
           <button
             onClick={deleteColumn}
             className="px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded"
           >
-            Delete a Column
+            Delete a Slot
           </button>
-        </div>
+        
       </div>
       <div
         className="grid border border-gray-300"
@@ -203,6 +223,31 @@ const DynamicTable = ({ AloSchedule, Title }) => {
           </>
         )}
       </button>
+      <CustomModal isOpen={isModalOpen} onRequestClose={handleModalClose}>
+        <h2 className="text-lg font-bold mb-4">Create a New Slot</h2>
+        <input
+          type="text"
+         
+          value={newSlotTime}
+          onChange={(e) => setNewSlotTime(e.target.value)}
+          placeholder="Enter slot time (e.g., 4PM-5PM)"
+          className="w-full p-2 border border-gray-300 rounded"
+        />
+        <div className="flex justify-end gap-2 mt-4">
+          <button
+            onClick={handleModalClose}
+            className="px-4 py-2 bg-gray-400 text-white rounded-md"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleAddSlot}
+            className="px-4 py-2 bg-primaryColor text-white rounded-md"
+          >
+            Add Slot
+          </button>
+        </div>
+      </CustomModal>
     </div>
   );
 };
