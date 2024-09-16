@@ -32,6 +32,7 @@ export const renderCell = (
 
     // Remove duplicate doctors (if applicable)
     const uniqueCellValue = [...new Set(cellValue)];
+    
 
     // Prepare the value as an array of objects like { id: 13, value: "Dr. John Doe (Cardiology)", doctorId: 3 }
     const formattedCellValue = uniqueCellValue.map(item => {
@@ -53,9 +54,11 @@ export const renderCell = (
       }
     });
 
+
     return isEditing ? (
       <MultiSelect
         value={formattedCellValue} // Pass the array of objects to MultiSelect
+        uniqueCellValue={cell}
         onChange={(newValue) => handleCellChange(rowIndex, colIndex, newValue)}
         options={doctors}
       />

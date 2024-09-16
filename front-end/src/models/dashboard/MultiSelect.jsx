@@ -1,12 +1,31 @@
 import React, { useState } from "react";
-import { X } from "lucide-react";
+import { Contact, X } from "lucide-react";
 import axios from "axios";
 
-const MultiSelect = ({ value, onChange, options }) => {
+const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
   const [isOpen, setIsOpen] = useState(false);
+  console.log('uniqueCellValue',uniqueCellValue);
+  console.log('value',value);
   const selectedDoctors = Array.isArray(value) ? value : [];
-
+  
+  const assignDoctor = async (slotId, doctorId) => {
+    console.log('slotId',slotId);
+    console.log('doctorId',doctorId);
+    try {
+      await axios.post(
+        `http://localhost:8000/api/duty-roster/${slotId}/assign-doctor`,
+        { doctorId: [doctorId] },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+    } catch (error) {
+      console.error("Error assigning doctor:", error);
+    }
+  };
   const deleteDoctor = async (slotId, doctorId) => {
+    console.log('slotId',slotId);
+    console.log('doctorId',doctorId);
     try {
       // Send request to the API to delete the specific doctor
       await axios.post(
@@ -43,6 +62,9 @@ const MultiSelect = ({ value, onChange, options }) => {
   };
 
   const handleSelectDoctor = (option) => {
+    const doctorId = option.doctorId;
+    assignDoctor(selectedDoctors[0].id, doctorId); 
+  
     const newValue = selectedDoctors.some(
       (doc) => doc.doctorId === option.doctorId
     )
