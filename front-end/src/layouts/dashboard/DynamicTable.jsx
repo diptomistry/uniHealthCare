@@ -10,6 +10,7 @@ const DynamicTable = ({ AloSchedule, Title }) => {
   const textareaRefs = useRef([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newSlotTime, setNewSlotTime] = useState(""); // New slot time input
+  const [assignedDoctors, setAssignedDoctors] = useState({}); 
 
 
   useEffect(() => {
@@ -104,16 +105,47 @@ const DynamicTable = ({ AloSchedule, Title }) => {
     }
   };
 
-  const handleCellChange = (rowIndex, colIndex, value) => {
+  // const handleCellChange = (rowIndex, colIndex, value) => {
     
+  //   const newData = tableData.map((row, rIdx) =>
+  //     row.map((cell, cIdx) =>
+  //       rIdx === rowIndex && cIdx === colIndex ? value : cell
+  //     )
+  //   );
+  //   setTableData(newData);
+   
+  // };
+
+  const handleCellChange = (rowIndex, colIndex, newValue) => {
+    console.log("New value:", newValue);
+    
+    // Update table data with selected doctors locally
     const newData = tableData.map((row, rIdx) =>
       row.map((cell, cIdx) =>
-        rIdx === rowIndex && cIdx === colIndex ? value : cell
+        rIdx === rowIndex && cIdx === colIndex ? newValue : cell
       )
     );
     setTableData(newData);
-   
+
+    // Extract slot ID from newValue
+    // Assume newValue is an array of doctor objects
+    const slotId = newValue.length > 0 
+      ? newValue[0].value.match(/Slot ID:\s(\d+)/)?.[1] 
+      : null;
+
+    if (slotId) {
+      // Extract doctor IDs from newValue
+      const doctorIds = newValue.map((doctor) => doctor.doctorId);
+
+      // Update assigned doctors state
+      setAssignedDoctors((prevState) => ({
+        ...prevState,
+        [slotId]: doctorIds,
+      }));
+      //console.log("Assigned doctors:", assignedDoctors);
+    }
   };
+
 
   const autoResize = (textarea) => {
     if (textarea) {
@@ -122,13 +154,48 @@ const DynamicTable = ({ AloSchedule, Title }) => {
     }
   };
 
-  const toggleEditMode = () => {
+  // const toggleEditMode = () => {
+  //   if (isEditing) {
+  //     // If currently in edit mode and switching to save, reload the page
+  //     window.location.reload();
+  //   } 
+  //   setIsEditing(!isEditing);
+  // };
+  const toggleEditMode = async () => {
     if (isEditing) {
-      // If currently in edit mode and switching to save, reload the page
-      window.location.reload();
-    } 
-    setIsEditing(!isEditing);
+     
+      console.log("Assigned doctors:", assignedDoctors);
+  
+      const token = localStorage.getItem("token");
+      for (const [slotId, doctorIds] of Object.entries(assignedDoctors)) {
+        // Filter out null or invalid doctor IDs
+        const filteredDoctorIds = doctorIds.filter(id => id !== null);
+  
+        if (filteredDoctorIds.length > 0) {
+          try {
+            console.log(`Assigning doctors to slot ${slotId}:`, filteredDoctorIds);
+            await axios.post(
+              `http://localhost:8000/api/duty-roster/${slotId}/assign-doctor`,
+              { doctorId: filteredDoctorIds },
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+            console.log(`Assigned doctors to slot ${slotId}:`, filteredDoctorIds);
+          } catch (error) {
+            console.error(`Error assigning doctors to slot ${slotId}:`, error);
+          }
+        } else {
+          console.log(`No valid doctors to assign for slot ${slotId}`);
+        }
+      }
+      // Optionally reload the page after saving
+       window.location.reload();
+    }
+    setIsEditing(!isEditing); // Toggle between edit and view mode
   };
+  
+  
   const handleModalClose = () => {
     setIsModalOpen(false);
   };

@@ -7,6 +7,7 @@ const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
   
   const selectedDoctors = Array.isArray(value) ? value : [];
   
+  
   const assignDoctor = async (slotId, doctorId) => {
     console.log('slotId',slotId);
     console.log('doctorId',doctorId);
@@ -67,18 +68,38 @@ const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
   };
   
 
-  const handleSelectDoctor = (option) => {
-    const doctorId = option.doctorId;
-    assignDoctor(selectedDoctors[0].id, doctorId); 
+//   const handleSelectDoctor = (option) => {
+//     const doctorId = option.doctorId;
+//     assignDoctor(selectedDoctors[0].id, doctorId); 
   
+//     const newValue = selectedDoctors.some(
+//       (doc) => doc.doctorId === option.doctorId
+//     )
+//       ? selectedDoctors.filter((doc) => doc.doctorId !== option.doctorId) // Unselect if already selected
+//       : [...selectedDoctors, { doctorId: option.doctorId, value: `${option.name} - Doctor ID: ${option.doctorId}` }]; // Add new doctor with proper format
+
+//     onChange(newValue);
+//   };
+const handleSelectDoctor = (option) => {
     const newValue = selectedDoctors.some(
       (doc) => doc.doctorId === option.doctorId
     )
       ? selectedDoctors.filter((doc) => doc.doctorId !== option.doctorId) // Unselect if already selected
-      : [...selectedDoctors, { doctorId: option.doctorId, value: `${option.name} - Doctor ID: ${option.doctorId}` }]; // Add new doctor with proper format
-
-    onChange(newValue);
+      : [
+          ...selectedDoctors, 
+          { 
+            doctorId: option.doctorId, 
+            value: `${option.name} - Doctor ID: ${option.doctorId} - Slot ID: ${selectedDoctors[0].id}` 
+          }
+        ]; // Add new doctor with proper format
+  
+    // Filter out invalid entries (those with doctorId: null)
+    const validNewValue = newValue.filter((doc) => doc.doctorId !== null);
+  
+    //console.log('validNewValue', validNewValue);
+    onChange(validNewValue); // Pass only the valid doctors
   };
+  
 
   return (
     <div className="relative">
