@@ -11,6 +11,7 @@ const DynamicTable = ({ AloSchedule, Title }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newSlotTime, setNewSlotTime] = useState(""); // New slot time input
   const [assignedDoctors, setAssignedDoctors] = useState({}); 
+  
 
 
   useEffect(() => {
@@ -105,19 +106,9 @@ const DynamicTable = ({ AloSchedule, Title }) => {
     }
   };
 
-  // const handleCellChange = (rowIndex, colIndex, value) => {
-    
-  //   const newData = tableData.map((row, rIdx) =>
-  //     row.map((cell, cIdx) =>
-  //       rIdx === rowIndex && cIdx === colIndex ? value : cell
-  //     )
-  //   );
-  //   setTableData(newData);
-   
-  // };
 
-  const handleCellChange = (rowIndex, colIndex, newValue) => {
-    console.log("New value:", newValue);
+  const handleCellChange = (rowIndex, colIndex, newValue,deleteValue) => {
+   console.log(' newValue',  newValue);
     
     // Update table data with selected doctors locally
     const newData = tableData.map((row, rIdx) =>
@@ -190,7 +181,7 @@ const DynamicTable = ({ AloSchedule, Title }) => {
         }
       }
       // Optionally reload the page after saving
-       window.location.reload();
+      // window.location.reload();
     }
     setIsEditing(!isEditing); // Toggle between edit and view mode
   };

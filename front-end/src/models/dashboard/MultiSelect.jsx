@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Contact, X } from "lucide-react";
+import {  X } from "lucide-react";
 import axios from "axios";
 
 const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
@@ -8,24 +8,9 @@ const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
   const selectedDoctors = Array.isArray(value) ? value : [];
   
   
-  const assignDoctor = async (slotId, doctorId) => {
-    console.log('slotId',slotId);
-    console.log('doctorId',doctorId);
-    try {
-      await axios.post(
-        `http://localhost:8000/api/duty-roster/${slotId}/assign-doctor`,
-        { doctorId: [doctorId] },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
-    } catch (error) {
-      console.error("Error assigning doctor:", error);
-    }
-  };
+  /*
   const deleteDoctor = async (slotId, doctorId) => {
-    console.log('slotId', slotId);
-    console.log('doctorId', doctorId);
+    
     
     try {
       // Send request to the API to delete the specific doctor
@@ -66,20 +51,39 @@ const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
       console.error("Error deleting doctor:", error);
     }
   };
-  
+  */
 
-//   const handleSelectDoctor = (option) => {
-//     const doctorId = option.doctorId;
-//     assignDoctor(selectedDoctors[0].id, doctorId); 
-  
-//     const newValue = selectedDoctors.some(
-//       (doc) => doc.doctorId === option.doctorId
-//     )
-//       ? selectedDoctors.filter((doc) => doc.doctorId !== option.doctorId) // Unselect if already selected
-//       : [...selectedDoctors, { doctorId: option.doctorId, value: `${option.name} - Doctor ID: ${option.doctorId}` }]; // Add new doctor with proper format
 
-//     onChange(newValue);
-//   };
+const deleteDoctor = (slotId, doctorId) => {
+    console.log("slotId", slotId);
+    console.log("doctorId", doctorId);
+
+    // Remove the doctor locally without API call
+    const updatedDoctors = selectedDoctors.map((item) => {
+      const doctorMatches = item.value.matchAll(/(.+?)\s+-\s+Doctor ID:\s+(\d+)/g);
+      const doctors = Array.from(doctorMatches);
+
+      // Filter out the doctor with the matching doctorId
+      const filteredDoctors = doctors.filter(
+        (doctor) => parseInt(doctor[2], 10) !== doctorId
+      );
+
+      // Reconstruct the value without the deleted doctor
+      const newValue = filteredDoctors
+        .map((doctor) => `${doctor[1].trim()} - Doctor ID: ${doctor[2]}`)
+        .join(", ")
+        .replace(/\s*,\s*,/g, ","); // Remove any double commas
+
+      return { ...item, value: newValue, slotId }; // Include slotId for later deletion
+    });
+
+    console.log("updatedDoctors", updatedDoctors);
+
+    // Filter out empty entries (cells that have no doctors left)
+    onChange(updatedDoctors.filter((item) => item.value.trim() !== ""),`doctorid:${doctorId},slotid:${slotId}`);
+  };
+
+
 const handleSelectDoctor = (option) => {
     const newValue = selectedDoctors.some(
       (doc) => doc.doctorId === option.doctorId
@@ -97,7 +101,7 @@ const handleSelectDoctor = (option) => {
     const validNewValue = newValue.filter((doc) => doc.doctorId !== null);
   
     //console.log('validNewValue', validNewValue);
-    onChange(validNewValue); // Pass only the valid doctors
+    onChange(validNewValue,null); // Pass only the valid doctors
   };
   
 

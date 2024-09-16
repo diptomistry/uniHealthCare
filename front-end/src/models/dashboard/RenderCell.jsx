@@ -7,7 +7,8 @@ export const renderCell = (
   colIndex,
   isEditing,
   handleCellChange,
-  doctors
+  doctors,
+  
 ) => {
  
   
@@ -42,9 +43,9 @@ export const renderCell = (
         const slotId = slotIdMatch ? parseInt(slotIdMatch[1], 10) : null;
         const doctorId = doctorIdMatch ? parseInt(doctorIdMatch[1], 10) : null;
         //const doctorName = item.replace(/\s-\sSlot ID:\s\d+/g, "").replace(/\s-\sDoctor ID:\s\d+/g, ""); // Remove "Slot ID: X" and "ID: X"
-        const doctorName = item.replace(/\s-\sSlot ID:\s\d+/g, ""); // Remove "Slot ID: X" and "ID: X"
+        const doctorName = item.replace(/\s-\sSlot ID:\s\d+/g, ""); // Remove "Slot ID: X" 
 
-        return { id: slotId, value: doctorName, doctorId }; // Include doctorId in the object
+        return { id: slotId, value: item, doctorId }; // Include doctorId in the object
       } else if (typeof item === 'object' && item !== null) {
         // If item is already an object, return it as is
         return item;
@@ -59,13 +60,13 @@ export const renderCell = (
       <MultiSelect
         value={formattedCellValue} // Pass the array of objects to MultiSelect
         uniqueCellValue={cell}
-        onChange={(newValue) => handleCellChange(rowIndex, colIndex, newValue)}
+        onChange={(newValue,deleteValue) => handleCellChange(rowIndex, colIndex, newValue,deleteValue)}
         options={doctors}
       />
     ) : (
       <div className="w-full bg-transparent p-2">
         {/* Display only the doctor names, not the slot IDs or doctor IDs */}
-        {formattedCellValue.map((doctor) => doctor.value.replace(/\s-\sDoctor ID:\s\d+/g, "")).join(", ")}
+        {formattedCellValue.map((doctor) => doctor.value.replace(/\s-\sDoctor ID:\s\d+/g, "").replace(/\s-\sSlot ID:\s\d+/g, "")).join(", ")}
       </div>
     );
   }
