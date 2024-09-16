@@ -8,7 +8,7 @@ const DynamicTable = ({ AloSchedule, Title }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [doctors, setDoctors] = useState([]);
   const textareaRefs = useRef([]);
-  console.log('alo',AloSchedule);
+
 
   useEffect(() => {
     setTableData(AloSchedule);const formatRosterForTable = (rosterData) => {

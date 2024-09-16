@@ -30,7 +30,7 @@ const DutyRosterDoctor = () => {
     const fetchDutyRoster = async () => {
       try {
         const token = localStorage.getItem('token');
-        console.log('token', token);
+       
         const response = await fetch('http://localhost:8000/api/duty-roster/table', {
           method: 'GET',
           headers: {

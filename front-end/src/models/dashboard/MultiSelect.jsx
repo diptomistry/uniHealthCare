@@ -23,8 +23,9 @@ const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
     }
   };
   const deleteDoctor = async (slotId, doctorId) => {
-    console.log('slotId',slotId);
-    console.log('doctorId',doctorId);
+    console.log('slotId', slotId);
+    console.log('doctorId', doctorId);
+    
     try {
       // Send request to the API to delete the specific doctor
       await axios.post(
@@ -32,33 +33,39 @@ const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
         { doctorId: [doctorId] },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-
+  
       // Update the frontend state to remove only the doctor being clicked
+      console.log('selectedDoctors', selectedDoctors);
+      
       const updatedDoctors = selectedDoctors.map((item) => {
         // Use regex to find all doctors in the cell
         const doctorMatches = item.value.matchAll(/(.+?)\s+-\s+Doctor ID:\s+(\d+)/g);
         const doctors = Array.from(doctorMatches);
-
+  
         // Filter out the doctor with the matching doctorId
         const filteredDoctors = doctors.filter(
           (doctor) => parseInt(doctor[2], 10) !== doctorId
         );
-
+  
         // Reconstruct the value without the deleted doctor
         const newValue = filteredDoctors
           .map((doctor) => `${doctor[1].trim()} - Doctor ID: ${doctor[2]}`)
-          .join(", ");
-
+          .join(", ")
+          .replace(/\s*,\s*,/g, ","); // Remove any double commas
+  
         return { ...item, value: newValue };
       });
-
+      
+      console.log('updatedDoctors', updatedDoctors);
+  
       // Filter out empty entries (cells that have no doctors left)
       onChange(updatedDoctors.filter((item) => item.value.trim() !== ""));
-
+      
     } catch (error) {
       console.error("Error deleting doctor:", error);
     }
   };
+  
 
   const handleSelectDoctor = (option) => {
     const doctorId = option.doctorId;
@@ -118,20 +125,26 @@ const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
           })
         )}
       </div>
-
-      {isOpen && (
-        <div className="absolute z-10 w-full bg-white border border-gray-300 mt-1 rounded max-h-60 overflow-auto">
+{isOpen && (
+        <div className="absolute z-10 w-full bg-white border border-gray-200 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
           {options.map((option) => (
             <div
               key={option.doctorId}
-              className={`p-2 hover:bg-gray-100 cursor-pointer ${
+              className={`px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 cursor-pointer transition-colors duration-150 ease-in-out ${
                 selectedDoctors.some((doc) => doc.doctorId === option.doctorId)
-                  ? "bg-blue-100"
+                  ? "bg-indigo-100"
                   : ""
               }`}
               onClick={() => handleSelectDoctor(option)}
             >
-              {option.name}
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-indigo-200 rounded-full flex items-center justify-center">
+                  <span className="text-indigo-600 font-semibold">
+                    {option.name.charAt(0)}
+                  </span>
+                </div>
+                <span className="font-medium">{option.name}</span>
+              </div>
             </div>
           ))}
         </div>
