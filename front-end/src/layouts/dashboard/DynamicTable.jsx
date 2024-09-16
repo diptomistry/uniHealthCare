@@ -11,7 +11,8 @@ const DynamicTable = ({ AloSchedule, Title }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newSlotTime, setNewSlotTime] = useState(""); // New slot time input
   const [assignedDoctors, setAssignedDoctors] = useState({}); 
-  
+  const [deletedDoctors, setDeletedDoctors] = useState({});
+
 
 
   useEffect(() => {
@@ -108,8 +109,23 @@ const DynamicTable = ({ AloSchedule, Title }) => {
 
 
   const handleCellChange = (rowIndex, colIndex, newValue,deleteValue) => {
-   console.log(' newValue',  newValue);
+   console.log("deleteValue",deleteValue);
+   if (deleteValue) {
+    //deletetValue doctorid:3,slotid:5 .it is a string. now we need to extract doctorid and slotid
+    const deleteSlotId = parseInt(deleteValue.match(/slotid:(\d+)/)?.[1], 10);
     
+    
+   
+    const deleteDoctorId = parseInt(deleteValue.match(/doctorid:(\d+)/)?.[1], 10);
+    
+    
+    if (deleteSlotId && deleteDoctorId) {
+      setDeletedDoctors((prevState) => ({
+        ...prevState,
+        [deleteSlotId]: [...(prevState[deleteSlotId] || []), deleteDoctorId],
+      }));
+    }
+  }
     // Update table data with selected doctors locally
     const newData = tableData.map((row, rIdx) =>
       row.map((cell, cIdx) =>
@@ -154,12 +170,12 @@ const DynamicTable = ({ AloSchedule, Title }) => {
   // };
   const toggleEditMode = async () => {
     if (isEditing) {
-     
       console.log("Assigned doctors:", assignedDoctors);
-  
+    
       const token = localStorage.getItem("token");
+      
+      // Handle doctor assignment
       for (const [slotId, doctorIds] of Object.entries(assignedDoctors)) {
-        // Filter out null or invalid doctor IDs
         const filteredDoctorIds = doctorIds.filter(id => id !== null);
   
         if (filteredDoctorIds.length > 0) {
@@ -176,15 +192,36 @@ const DynamicTable = ({ AloSchedule, Title }) => {
           } catch (error) {
             console.error(`Error assigning doctors to slot ${slotId}:`, error);
           }
-        } else {
-          console.log(`No valid doctors to assign for slot ${slotId}`);
         }
       }
+  
+      // Handle doctor deletion
+      for (const [slotId, doctorIds] of Object.entries(deletedDoctors)) {
+        const filteredDoctorIds = doctorIds.filter(id => id !== null);
+  
+        if (filteredDoctorIds.length > 0) {
+          try {
+            console.log(`Deleting doctors from slot ${slotId}:`, filteredDoctorIds);
+            await axios.post(
+              `http://localhost:8000/api/duty-roster/delete-doctor/${slotId}`,
+              { doctorId: filteredDoctorIds },
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+            console.log(`Deleted doctors from slot ${slotId}:`, filteredDoctorIds);
+          } catch (error) {
+            console.error(`Error deleting doctors from slot ${slotId}:`, error);
+          }
+        }
+      }
+  
       // Optionally reload the page after saving
-      // window.location.reload();
+       window.location.reload();
     }
     setIsEditing(!isEditing); // Toggle between edit and view mode
   };
+  
   
   
   const handleModalClose = () => {
