@@ -4,8 +4,7 @@ import axios from "axios";
 
 const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
   const [isOpen, setIsOpen] = useState(false);
-  console.log('uniqueCellValue',uniqueCellValue);
-  console.log('value',value);
+  
   const selectedDoctors = Array.isArray(value) ? value : [];
   
   const assignDoctor = async (slotId, doctorId) => {
@@ -92,15 +91,16 @@ const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
             return (
               <React.Fragment key={index}>
                 {doctors.map((doctor, partIndex) => {
-                  const doctorName = doctor[1].trim(); // Doctor name
+                  const doctorName = doctor[1].trim(); // Doctor name//if any comma in the beginning of the doctor name then remove it
+                 
                   const doctorId = parseInt(doctor[2], 10); // Extracted doctorId
 
                   return (
                     <span
                       key={`${index}-${partIndex}`}
-                      className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded flex items-center"
+                      className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded flex items-center mb-1"
                     >
-                      {doctorName}
+                      {doctorName.charAt(0)===","?doctorName.substring(1):doctorName}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -129,7 +129,7 @@ const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
                   ? "bg-blue-100"
                   : ""
               }`}
-              onClick={() => handleSelectDoctor(option)} // Add the doctor to the selection
+              onClick={() => handleSelectDoctor(option)}
             >
               {option.name}
             </div>

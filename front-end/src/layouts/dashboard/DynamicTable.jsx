@@ -11,7 +11,57 @@ const DynamicTable = ({ AloSchedule, Title }) => {
   console.log('alo',AloSchedule);
 
   useEffect(() => {
-    setTableData(AloSchedule);
+    setTableData(AloSchedule);const formatRosterForTable = (rosterData) => {
+      const headerRow = ["Day"]; // Start with the 'Day' column
+      const rows = [];
+    
+      // Loop through each day of the week
+      rosterData.forEach(day => {
+        const dayRow = [day.dayOfWeek]; // First column is the day
+    
+        // Loop through the slots of the current day
+        day.slots.forEach(slot => {
+          // Add slot times as headers if they are not already in the headerRow
+          if (!headerRow.includes(slot.slotTime)) {
+            headerRow.push(slot.slotTime);
+          }
+    
+          // If no doctors are present, include slot time and id
+          const doctors = slot.doctors.length > 0 
+            ? slot.doctors.map(doctor => {
+                return `${doctor.name} (${doctor.specialization}) - Slot ID: ${slot.id} - Doctor ID: ${doctor.id}`;
+              }).join(', ')
+            : `Slot ID: ${slot.id}, Time: ${slot.slotTime}`;
+    
+          dayRow.push(doctors); // Push the doctors or slot info if no doctors
+        });
+    
+        rows.push(dayRow);
+      });
+    
+      // Sort headerRow by time, assuming it's in the format '2PM-3PM', '3PM-4PM', etc.
+      const sortedHeaderRow = headerRow.slice(1).sort((a, b) => {
+        const timeA = parseInt(a.split('PM')[0], 10);
+        const timeB = parseInt(b.split('PM')[0], 10);
+        return timeA - timeB;
+      });
+    
+      // Combine 'Day' with sorted time slots to form the final header row
+      const finalHeaderRow = ['Day', ...sortedHeaderRow];
+    
+      // Ensure each day's row aligns with the correct time slots
+      const alignedRows = rows.map(row => {
+        const alignedRow = [row[0]]; // Start with the day of the week
+        sortedHeaderRow.forEach(slotTime => {
+          const index = headerRow.indexOf(slotTime);
+          alignedRow.push(row[index] || `Slot ID: -, Time: ${slotTime}`); // Push empty slot ID and time if no data
+        });
+        return alignedRow;
+      });
+    
+      return [finalHeaderRow, ...alignedRows];
+    };
+    
   }, [AloSchedule]);
 
   useEffect(() => {
@@ -59,6 +109,7 @@ const DynamicTable = ({ AloSchedule, Title }) => {
   };
 
   const handleCellChange = (rowIndex, colIndex, value) => {
+    
     const newData = tableData.map((row, rIdx) =>
       row.map((cell, cIdx) =>
         rIdx === rowIndex && cIdx === colIndex ? value : cell
@@ -76,6 +127,10 @@ const DynamicTable = ({ AloSchedule, Title }) => {
   };
 
   const toggleEditMode = () => {
+    if (isEditing) {
+      // If currently in edit mode and switching to save, reload the page
+      window.location.reload();
+    } 
     setIsEditing(!isEditing);
   };
   

@@ -69,7 +69,7 @@ const DutyRosterDoctor = () => {
           ? slot.doctors.map(doctor => {
               return `${doctor.name} (${doctor.specialization}) - Slot ID: ${slot.id} - Doctor ID: ${doctor.id}`;
             }).join(', ')
-          : `No Doctors - Slot ID: ${slot.id} `;
+          : ` - Slot ID: ${slot.id} `;
   
         dayRow.push(doctors); // Push the doctors or slot info if no doctors
       });
