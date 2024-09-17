@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface DutyRosterRepository extends JpaRepository<DutyRoster, Long> {
     List<DutyRoster> findByDayOfWeek(DayOfWeek dayOfWeek);
+    void deleteBySlotTime(String slotTime);
     
 }
