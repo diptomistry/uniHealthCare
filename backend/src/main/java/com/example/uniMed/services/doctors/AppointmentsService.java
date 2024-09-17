@@ -18,6 +18,7 @@ import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.criteria.CriteriaBuilder.In;
+import jakarta.transaction.Transactional;
 
 import org.checkerframework.checker.units.qual.t;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder.Op;
@@ -77,6 +78,7 @@ public class AppointmentsService {
         return appointmentsRepository.save(appointment1);
     }
 
+    @Transactional
     public Appointments prescribeMedicine(Integer appointmentId, List<PrescribedMedicineDTO> prescribedMedicinesDTO,
             @Nullable String description, @Nullable String date, @Nullable String status, @Nullable Integer doctorID,
             @Nullable Integer userID) {
@@ -128,6 +130,7 @@ public class AppointmentsService {
                 }
 
             }
+            prescribedMedicine.setPrescription(prescription);
             prescribedMedicine.setQuantity(prescribedMedicineDTO.getQuantity());
             prescribedMedicine.setDuration(prescribedMedicineDTO.getDuration());
             prescribedMedicine.setAfterBefore(prescribedMedicineDTO.getAfterBefore());
@@ -175,6 +178,30 @@ public class AppointmentsService {
             Optional<List<Appointments>> optionalAppointments = appointmentsRepository.findByUserUserID(userID);
             
             if (optionalAppointments.isPresent()) {
+                for (Appointments appointment : optionalAppointments.get()) {
+                    Optional<Prescription> optionalPrescription = prescriptionRepository.findById(appointment
+
+                            .getPrescription()
+                            .getPrescriptionID());
+                    if (optionalPrescription.isPresent()) {
+                        appointment.setPrescription(optionalPrescription.get());
+                        if (optionalPrescription.get().getPrescribedMedicines() != null) {
+                            for (PrescribedMedicine prescribedMedicine : optionalPrescription.get().getPrescribedMedicines()) {
+                                Optional<Medicines> optionalMedicine = medicineRepository.findById(prescribedMedicine
+                                        .getMedicine()
+                                        .getMedicineID());
+                                if (optionalMedicine.isPresent()) {
+                                    prescribedMedicine.setMedicine(optionalMedicine.get());
+                                }
+                            }
+                            
+                        }
+                        else  if (optionalPrescription.get().getPrescribedMedicines() == null) {
+                            System.out.println("No medicines found");
+                        }
+                    }
+                }
+
                 return optionalAppointments.get();
             }
 

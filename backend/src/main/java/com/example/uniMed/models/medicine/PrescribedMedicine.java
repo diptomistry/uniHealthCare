@@ -1,6 +1,7 @@
 package com.example.uniMed.models.medicine;
 
 import com.example.uniMed.models.Medicines;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
@@ -34,6 +35,8 @@ public class PrescribedMedicine  {
 
     @ManyToOne
     @JoinColumn(name = "prescriptionID")
+    @JsonIgnoreProperties("prescribedMedicines")
+    @JsonIgnore
     private Prescription prescription;
 
 
