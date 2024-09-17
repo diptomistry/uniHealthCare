@@ -21,10 +21,9 @@ const DynamicTable = ({ AloSchedule, Title }) => {
   
 const handleUpdateSlot = () => {
   const token = localStorage.getItem("token");
-  console.log("currentSlot", currentSlot);
-  console.log("updateSlot", updateSlot);
+  const updateSlotFinal = updateSlot.toUpperCase();
   axios.put(`http://localhost:8000/api/duty-roster/update/${currentSlot}`, {
-    newSlotTime: updateSlot,
+    newSlotTime: updateSlotFinal,
   }, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -34,8 +33,8 @@ const handleUpdateSlot = () => {
     setUpdateSlot("");
     setCurrentSlot("");
     setIEditModalOpen(false);
-    alert("Slot updated successfully");
-    //window.location.reload();
+   
+    window.location.reload();
   })
   .catch((error) => {
     console.error("Error updating slot:", error.response ? error.response.data : error);
@@ -116,11 +115,7 @@ const handleCloseDeleteModal = () => {
 
  
 
-  const deleteColumn = () => {
-    if (tableData[0].length > 2) {
-      setTableData(tableData.map((row) => row.slice(0, -1)));
-    }
-  };
+ 
   
   
 
@@ -280,11 +275,9 @@ const handleCloseDeleteModal = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex justify-between items-center">
-        <h1 className="font-hindSiliguri text-textColor text-xl">{Title}</h1>
-      </div>
+    
       <div className="flex flex-col md:flex-row gap-5 md:gap-0 mb-4 justify-between">
-        
+      <h1 className="font-hindSiliguri text-textColor text-xl">{Title}</h1>
         
           <button
             className="bg-primaryColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out"
@@ -292,12 +285,7 @@ const handleCloseDeleteModal = () => {
           >
             Create a Slot
           </button>
-          <button
-            onClick={deleteColumn}
-            className="px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded"
-          >
-            Delete a Slot
-          </button>
+        
         
       </div>
       <div
