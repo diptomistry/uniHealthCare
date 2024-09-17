@@ -30,7 +30,7 @@ const DutyRosterDoctor = () => {
     const fetchDutyRoster = async () => {
       try {
         const token = localStorage.getItem('token');
-        console.log('token', token);
+       
         const response = await fetch('http://localhost:8000/api/duty-roster/table', {
           method: 'GET',
           headers: {
@@ -64,16 +64,14 @@ const DutyRosterDoctor = () => {
           headerRow.push(slot.slotTime);
         }
   
-        // Add doctor names to the day row, or 'No doctors' if none exist
+        // If no doctors are present, include slot time and id
         const doctors = slot.doctors.length > 0 
           ? slot.doctors.map(doctor => {
-              // Safely access department and department.name
-              //const departmentName = doctor.department && doctor.department.name ? doctor.department.name : 'Cardiology';
-              return `${doctor.name} (${doctor.specialization})`;
-            }).join(', ') 
-          : 'No doctors';
+              return `${doctor.name} (${doctor.specialization}) - Slot ID: ${slot.id} - Doctor ID: ${doctor.id}`;
+            }).join(', ')
+          : ` - Slot ID: ${slot.id} `;
   
-        dayRow.push(doctors);
+        dayRow.push(doctors); // Push the doctors or slot info if no doctors
       });
   
       rows.push(dayRow);
@@ -94,13 +92,15 @@ const DutyRosterDoctor = () => {
       const alignedRow = [row[0]]; // Start with the day of the week
       sortedHeaderRow.forEach(slotTime => {
         const index = headerRow.indexOf(slotTime);
-        alignedRow.push(row[index] || 'No doctors'); // Ensure all time slots have a value
+        alignedRow.push(row[index] || `Slot ID: -, Time: ${slotTime}`); // Push empty slot ID and time if no data
       });
       return alignedRow;
     });
   
     return [finalHeaderRow, ...alignedRows];
   };
+  
+  
   
 
   const formattedRoster = formatRosterForTable(dutyRoster);
