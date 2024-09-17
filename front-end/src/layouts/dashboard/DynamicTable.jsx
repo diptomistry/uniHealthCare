@@ -227,7 +227,7 @@ const handleCloseDeleteModal = () => {
       }
   
       // Optionally reload the page after saving
-       //window.location.reload();
+       window.location.reload();
     }
     setIsEditing(!isEditing); // Toggle between edit and view mode
   };
