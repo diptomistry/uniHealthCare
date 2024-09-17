@@ -274,7 +274,7 @@ const handleCloseDeleteModal = () => {
 
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 ">
     
       <div className="flex flex-col md:flex-row gap-5 md:gap-0 mb-4 justify-between">
       <h1 className="font-hindSiliguri text-textColor text-xl">{Title}</h1>
