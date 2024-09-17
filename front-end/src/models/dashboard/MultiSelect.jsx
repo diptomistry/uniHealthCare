@@ -8,50 +8,6 @@ const MultiSelect = ({ value, onChange, options,uniqueCellValue }) => {
   const selectedDoctors = Array.isArray(value) ? value : [];
   
   
-  /*
-  const deleteDoctor = async (slotId, doctorId) => {
-    
-    
-    try {
-      // Send request to the API to delete the specific doctor
-      await axios.post(
-        `http://localhost:8000/api/duty-roster/delete-doctor/${slotId}`,
-        { doctorId: [doctorId] },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-      );
-  
-      // Update the frontend state to remove only the doctor being clicked
-      console.log('selectedDoctors', selectedDoctors);
-      
-      const updatedDoctors = selectedDoctors.map((item) => {
-        // Use regex to find all doctors in the cell
-        const doctorMatches = item.value.matchAll(/(.+?)\s+-\s+Doctor ID:\s+(\d+)/g);
-        const doctors = Array.from(doctorMatches);
-  
-        // Filter out the doctor with the matching doctorId
-        const filteredDoctors = doctors.filter(
-          (doctor) => parseInt(doctor[2], 10) !== doctorId
-        );
-  
-        // Reconstruct the value without the deleted doctor
-        const newValue = filteredDoctors
-          .map((doctor) => `${doctor[1].trim()} - Doctor ID: ${doctor[2]}`)
-          .join(", ")
-          .replace(/\s*,\s*,/g, ","); // Remove any double commas
-  
-        return { ...item, value: newValue };
-      });
-      
-      console.log('updatedDoctors', updatedDoctors);
-  
-      // Filter out empty entries (cells that have no doctors left)
-      onChange(updatedDoctors.filter((item) => item.value.trim() !== ""));
-      
-    } catch (error) {
-      console.error("Error deleting doctor:", error);
-    }
-  };
-  */
 
 
 const deleteDoctor = (slotId, doctorId) => {
@@ -123,7 +79,8 @@ const handleSelectDoctor = (option) => {
             return (
               <React.Fragment key={index}>
                 {doctors.map((doctor, partIndex) => {
-                  const doctorName = doctor[1].trim(); // Doctor name//if any comma in the beginning of the doctor name then remove it
+                 const tempDoctor=doctor[1].replace(/\s-\sSlot ID:\s\d+/g, "");
+                  const doctorName = tempDoctor.trim(); // Doctor name//if any comma in the beginning of the doctor name then remove it
                  
                   const doctorId = parseInt(doctor[2], 10); // Extracted doctorId
 

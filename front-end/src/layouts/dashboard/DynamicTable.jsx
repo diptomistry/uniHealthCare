@@ -161,13 +161,7 @@ const DynamicTable = ({ AloSchedule, Title }) => {
     }
   };
 
-  // const toggleEditMode = () => {
-  //   if (isEditing) {
-  //     // If currently in edit mode and switching to save, reload the page
-  //     window.location.reload();
-  //   } 
-  //   setIsEditing(!isEditing);
-  // };
+ 
   const toggleEditMode = async () => {
     if (isEditing) {
       console.log("Assigned doctors:", assignedDoctors);
