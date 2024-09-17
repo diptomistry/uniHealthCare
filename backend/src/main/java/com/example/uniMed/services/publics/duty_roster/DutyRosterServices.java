@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.uniMed.apis.publics.duty_roster.DutyRosterTableDTO;
@@ -110,6 +111,16 @@ public class DutyRosterServices {
         }
 
         return table;
+    }
+    @Transactional
+    public ResponseEntity<?> updateSlotTime(String oldSlotTime, String newSlotTime) {
+        try {
+            dutyRosterRepository.updateSlotTime(oldSlotTime, newSlotTime);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
   
     // Add more methods as needed

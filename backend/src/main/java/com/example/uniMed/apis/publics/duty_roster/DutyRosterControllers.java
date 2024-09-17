@@ -88,6 +88,12 @@ public class DutyRosterControllers {
         dutyRosterService.deleteBySlotTime(slotTime);
         return ResponseEntity.ok("Deleted");
     }
+    @PutMapping("/update/{slotTime}")
+    public ResponseEntity<?> updateSlotTime (@PathVariable String slotTime, @RequestBody Map<String, Object> payload) {
+        String newSlotTime = (String) payload.get("newSlotTime");
+       return dutyRosterService.updateSlotTime(slotTime, newSlotTime);
+        
+    }
     @GetMapping("/table")
     public ResponseEntity<List<DutyRosterTableDTO>> getDutyRosterTable() {
         List<DutyRosterTableDTO> table = dutyRosterService.getDutyRosterTable();
