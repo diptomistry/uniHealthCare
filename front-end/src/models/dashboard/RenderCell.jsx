@@ -11,7 +11,7 @@ export const renderCell = (
   
 ) => {
  
-  
+  //console.log('cell',cell);
   if (rowIndex === 0 && colIndex === 0) {
     return <div className="w-full bg-gray-100 p-2">{cell}</div>;
   } else if (rowIndex === 0) {
@@ -19,7 +19,7 @@ export const renderCell = (
       <input
         type="text"
         value={cell}
-        onChange={(e) => handleCellChange(rowIndex, colIndex, e.target.value)}
+        onChange={(e) => handleCellChange(rowIndex, colIndex, e.target.value,null)}
         className="w-full bg-transparent p-2 border border-blue-300 rounded"
       />
     ) : (

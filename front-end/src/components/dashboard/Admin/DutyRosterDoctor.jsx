@@ -48,7 +48,27 @@ const DutyRosterDoctor = () => {
 
     fetchDutyRoster();
   }, []);
-
+  const parseTimeRange = (timeRange) => {
+    const convertTo24Hour = (time) => {
+      const [hour, period] = time.match(/\d+|AM|PM/g);
+      let hourIn24 = parseInt(hour, 10);
+      
+      if (period === 'PM' && hourIn24 !== 12) {
+        hourIn24 += 12;
+      } else if (period === 'AM' && hourIn24 === 12) {
+        hourIn24 = 0;
+      }
+      
+      return hourIn24;
+    };
+  
+    const [start, end] = timeRange.split('-').map(time => time.trim());
+    const startHour = convertTo24Hour(start);
+    const endHour = convertTo24Hour(end);
+    return { startHour, endHour };
+  };
+  
+  
   const formatRosterForTable = (rosterData) => {
     const headerRow = ["Day"]; // Start with the 'Day' column
     const rows = [];
@@ -76,13 +96,22 @@ const DutyRosterDoctor = () => {
   
       rows.push(dayRow);
     });
-  
+  /*
     // Sort headerRow by time, assuming it's in the format '2PM-3PM', '3PM-4PM', etc.
     const sortedHeaderRow = headerRow.slice(1).sort((a, b) => {
       const timeA = parseInt(a.split('PM')[0], 10);
       const timeB = parseInt(b.split('PM')[0], 10);
       return timeA - timeB;
     });
+    */
+  // Sort headerRow by time range in 24-hour format
+  const sortedHeaderRow = headerRow.slice(1).sort((a, b) => {
+    const { startHour: startHourA, endHour: endHourA } = parseTimeRange(a);
+    const { startHour: startHourB, endHour: endHourB } = parseTimeRange(b);
+
+    if (startHourA !== startHourB) return startHourA - startHourB;
+    return endHourA - endHourB;
+  });
   
     // Combine 'Day' with sorted time slots to form the final header row
     const finalHeaderRow = ['Day', ...sortedHeaderRow];
