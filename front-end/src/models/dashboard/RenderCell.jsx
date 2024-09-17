@@ -1,5 +1,7 @@
 import React from "react";
 import MultiSelect from "./MultiSelect";
+import { MdDeleteOutline } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
 
 export const renderCell = (
   cell,
@@ -8,20 +10,33 @@ export const renderCell = (
   isEditing,
   handleCellChange,
   doctors,
+  handleDeleteSlot,
+  handleEditSlot
+
   
 ) => {
+  
+
  
+
   //console.log('cell',cell);
   if (rowIndex === 0 && colIndex === 0) {
     return <div className="w-full bg-gray-100 p-2">{cell}</div>;
   } else if (rowIndex === 0) {
     return isEditing ? (
-      <input
-        type="text"
-        value={cell}
-        onChange={(e) => handleCellChange(rowIndex, colIndex, e.target.value,null)}
-        className="w-full bg-transparent p-2 border border-blue-300 rounded"
-      />
+   
+    <div className="flex bg-gray-100  ">
+      <div className="w-full p-2">{cell}</div>
+      <div className="flex justify-center gap-2 items-center  ">
+      <button onClick={() => handleEditSlot(cell)}>
+      <CiEdit size={20} className="hover:text-blue-700"/>
+      </button>
+      <button onClick={() => handleDeleteSlot(cell)}>
+      <MdDeleteOutline size={20} className="hover:text-red-700"/>
+      </button>
+      </div>
+    </div>
+     
     ) : (
       <div className="w-full bg-gray-100 p-2">{cell}</div>
     );

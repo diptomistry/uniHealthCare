@@ -53,7 +53,7 @@ const AllUsers = () => {
   const gridEmployeeMessage = (props) => (
     <ChatApp  username={props.name}/>
     //console.log('id',props.userID),
-    // <MessageIconTemplate receiverID={props.userID} receiverName={props.name} receiverImage={props.EmployeeImage} />
+     //<MessageIconTemplate receiverID={props.userID} receiverName={props.name} receiverImage={props.EmployeeImage} />
   );
  const employeesGrid = [
     {
