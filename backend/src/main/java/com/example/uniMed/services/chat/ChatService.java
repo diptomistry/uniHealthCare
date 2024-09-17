@@ -74,7 +74,9 @@ public class ChatService {
             e.printStackTrace();
         }
         message.setContent(content);
+        message.setTimestamp(LocalDateTime.now());
         messageRepository.save(message);
+
 
         // Broadcast the message to all connected WebSocket sessions
 

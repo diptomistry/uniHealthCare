@@ -4,6 +4,7 @@ import { employeesData,employeesGrid } from '../../../assets/dashboard';
 import { GrLocation } from 'react-icons/gr';
 import MessageIconTemplate from '../../../layouts/dashboard/MessageIconTemplate';
 import { UserContext } from '../../../services/auth/UserProvider';
+import ChatApp from './chat/ChatApp';
 
 const AllUsers = () => {
   const { user } = useContext(UserContext);
@@ -50,9 +51,9 @@ const AllUsers = () => {
   );
 
   const gridEmployeeMessage = (props) => (
-    
+    <ChatApp  username={props.name}/>
     //console.log('id',props.userID),
-    <MessageIconTemplate receiverID={props.userID} receiverName={props.name} receiverImage={props.EmployeeImage} />
+    // <MessageIconTemplate receiverID={props.userID} receiverName={props.name} receiverImage={props.EmployeeImage} />
   );
  const employeesGrid = [
     {

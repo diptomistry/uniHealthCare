@@ -15,6 +15,7 @@ import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
 import com.example.uniMed.repositories.publics.duty_roster.DutyRosterRepository;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 
 
 @Service
@@ -59,6 +60,18 @@ public class DutyRosterServices {
     //     return dutyRosterRepository.findByDayOfWeekAndSlotNumber(dayOfWeek, slotNumber)
     //         .orElseThrow(() -> new EntityNotFoundException("Duty Roster not found"));
     // }
+    @Transactional
+    public void deleteBySlotTime(String slotTime) {
+        try {
+            dutyRosterRepository.deleteBySlotTime(slotTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+        }
+      
+
+        
+    }
     public DutyRoster createDutyRoster(DutyRoster dutyRoster) {
         // You might want to add some validation here
         return dutyRosterRepository.save(dutyRoster);
@@ -98,5 +111,6 @@ public class DutyRosterServices {
 
         return table;
     }
+  
     // Add more methods as needed
 }

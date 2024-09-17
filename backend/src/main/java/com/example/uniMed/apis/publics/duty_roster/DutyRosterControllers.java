@@ -83,6 +83,11 @@ public class DutyRosterControllers {
        
         return ResponseEntity.ok(listODutyRosters);
     }
+    @DeleteMapping("/delete/{slotTime}")
+    public ResponseEntity<?> deleteBySlotTime (@PathVariable String slotTime) {
+        dutyRosterService.deleteBySlotTime(slotTime);
+        return ResponseEntity.ok("Deleted");
+    }
     @GetMapping("/table")
     public ResponseEntity<List<DutyRosterTableDTO>> getDutyRosterTable() {
         List<DutyRosterTableDTO> table = dutyRosterService.getDutyRosterTable();

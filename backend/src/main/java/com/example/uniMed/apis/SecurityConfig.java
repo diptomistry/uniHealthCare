@@ -17,14 +17,17 @@ import io.grpc.netty.shaded.io.netty.handler.codec.http.HttpMethod;
 public class SecurityConfig {
    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("SecurityConfig.securityFilterChain()");
+        System.out.println(http.toString());
         http
             .cors().and()
             .csrf(csrf -> csrf
                 .ignoringRequestMatchers("/api/**")
             )
             .authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers(HttpMethod.OPTIONS.name(), "/**").permitAll() // Allow preflight requests
-                .requestMatchers("/api/auth/**", "/api/departments/**", "/api/roles/**", "/ws/chat/**", "/api/blogs", "/api/duty-roster/table", "/api/medicines/all").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS.name(), "/**").permitAll() 
+                .requestMatchers("/websocket/**").permitAll()
+                .requestMatchers("/api/auth/**", "/api/departments/**", "/api/roles/**", "/ws/chat/**", "/api/blogs", "/api/duty-roster/table", "/api/medicines/all","/websocket").permitAll()
                 .anyRequest().authenticated()
             );
         return http.build();
@@ -32,7 +35,7 @@ public class SecurityConfig {
       @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
