@@ -22,6 +22,7 @@ import com.example.uniMed.repositories.publics.about_us.DepartmentRepository;
 import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
 import com.example.uniMed.services.FileService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaBuilder.In;
 
 import java.security.NoSuchAlgorithmException;
@@ -203,56 +204,60 @@ public class UserService {
             return response;
         }
     }
-    @Transactional
-    public Map<String, Object> updateUser(MultipartFile file, Long userId, String email, String email2, String name, String department, String session, String registrationNo, String phone, MultipartFile phone2) throws Exception {
+@Transactional
+    public Map<String, Object> updateUser(MultipartFile profileImage, Long userId, String email, String dobString, 
+                                          String name, String department, String session, String registrationNo, 
+                                          String phone,Long departmentId) throws Exception {
         Map<String, Object> response = new HashMap<>();
+
         Optional<User> userOpt = userRepository.findById(userId);
-        if (!userOpt.isPresent()) {
-            response.put("success", false);
-            response.put("message", "User does not exist");
-            return response;
+        if (userOpt.isEmpty()) {
+            throw new EntityNotFoundException("User not found with id: " + userId);
         }
 
         User user = userOpt.get();
 
-        if (userId != null) {
-            user.setUserID(Integer.parseInt(String.valueOf(userId)));
-        }
-        if (email != null) {
-            user.setEmail(email);
-        }
-        if (email2 != null) {
+        // Update user fields
+        if (email != null && !email.isEmpty())
+   { user.setEmail(email);}
+   if (name != null && !name.isEmpty())
+      {  user.setName(name);}
+      if (phone != null && !phone.isEmpty())
+      {  user.setPhone(phone);}
+
+        // Parse and set date of birth
+        if (dobString != null && !dobString.isEmpty()) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date dob = formatter.parse(email2);
+            Date dob = formatter.parse(dobString);
             user.setDob(dob);
         }
-        if (name != null) {
-            user.setName(name);
-        }
-        if (phone != null) {
-            user.setPhone(phone);
-        }
-        if (phone2 != null) {
-            String filePath = saveFile(phone2);
+
+        // Handle profile image upload
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String filePath = fileService.saveFile(profileImage);
             user.setImage(filePath);
         }
 
         userRepository.save(user);
 
-        Optional<Student> student = studentRepository.findById(userId);
-        if (student != null) {
-           student.get().setDepartment(department);
-              student.get().setSession(session);
-                student.get().setRegistrationNo(registrationNo);
-            studentRepository.save(student.get());
-        }
-
+        // Update student information if exists
+        Optional<Student> studentOpt = studentRepository.findById(userId);
+        studentOpt.ifPresent(student -> {
+            student.setDepartment(department);
+            student.setSession(session);
+            student.setRegistrationNo(registrationNo);
+            studentRepository.save(student);
+        });
+        Optional <Doctors> doctorOpt = doctorRepository.findById(userId);
+        doctorOpt.ifPresent(doctor -> {
+            doctor.setDepartment(departmentRepository.findById(Integer.parseInt(departmentId.toString(0))).get());
+            doctorRepository.save(doctor);
+        });
 
         response.put("success", true);
         response.put("message", "User updated successfully");
         return response;
     }
-
     @Transactional
     public Map<String, Object> deleteUser(Long userId) {
         System.out.println("Deleting user");

@@ -1,6 +1,8 @@
 package com.example.uniMed.apis.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.uniMed.services.auth.UserService;
@@ -8,10 +10,6 @@ import com.example.uniMed.services.auth.UserService;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -85,44 +83,46 @@ public Map<String, Object> createUser
     return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, departmentId, session, registrationNo, registeredFrom, phone,departmentName);
 }
 
-    @PostMapping("/update-user")
-    public Map<String, Object> updateUser(@RequestParam("file") MultipartFile file,
-                             @RequestBody Map<String, Object> body) {
-        Long user_id = Long.parseLong(body.get("user_id").toString());
-        String email = body.get("email").toString();
-        String dob = body.get("dob").toString();
-        String name = body.get("name").toString();
-        String department = body.get("department").toString();
-        String session = body.get("session").toString();
-        String registrationNo = body.get("registrationNo").toString();
-        String phone = body.get("phone").toString();
-        
-        try {   
-            
-
-            return userService.updateUser(file, user_id, email, dob, name, department, session, registrationNo, phone, file);
-        } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "Failed to send OTP: " + e.getMessage());
-            return response;
-        }
-    }
-
     @PostMapping("/delete-user")
     public Map<String, Object> deleteUser(@RequestBody Map<String, Long> body) {
         Long user_id = body.get("user_id");
         return userService.deleteUser(user_id);
     }
 
-    @PostMapping("/update-status")
-    public Map<String, Object> updateStatus(@RequestBody Map<String, Object> body) {
-        Long user_id = Long.parseLong(body.get("user_id").toString());
-        System.out.println("User id: " + user_id);
-        String status = (body.get("status").toString());
-        return userService.updateUserStatus(user_id, status);
+   @PostMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>> updateUser(
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            @RequestPart("user_id") String userIdString,
+            @RequestPart("email") String email,
+            @RequestPart("dob") String dob,
+            @RequestPart("name") String name,
+            @RequestPart("department") String department,
+            @RequestPart("departmentId") Long departmentId,
+            @RequestPart("session") String session,
+            @RequestPart("registrationNo") String registrationNo,
+            @RequestPart("phone") String phone
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            Long userId = Long.parseLong(userIdString);
+            Map<String, Object> result = userService.updateUser(file, userId, email, dob, name, department, session, registrationNo, phone,departmentId);
+            
+            response.put("success", true);
+            response.put("message", "User updated successfully");
+            response.put("data", result);
+            
+            return ResponseEntity.ok(response);
+        } catch (NumberFormatException e) {
+            response.put("success", false);
+            response.put("message", "Invalid user ID format");
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Failed to update user: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
     }
-
 
   
     
