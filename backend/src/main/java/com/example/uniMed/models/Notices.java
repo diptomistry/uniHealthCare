@@ -49,6 +49,9 @@ public class Notices {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+    public Notices(){
+        
+    }
 
    
    

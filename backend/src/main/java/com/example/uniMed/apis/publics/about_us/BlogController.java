@@ -8,7 +8,9 @@ import com.example.uniMed.services.publics.about_us.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,11 +37,13 @@ public class BlogController {
     }
 
     @PostMapping
-    public Blog createBlog(@RequestBody Blog blog) {
+    public Blog createBlog(@RequestBody Blog blog,@RequestPart("image") MultipartFile image) {
+    
         System.out.println(blog.isBlog());
         System.out.println("Blog object: " + blog);
         System.out.println("isBlog: " + blog.isBlog());
-        return blogService.createBlog(blog);
+
+        return blogService.createBlog(blog,image);
     }
 
     @PutMapping("/{id}")

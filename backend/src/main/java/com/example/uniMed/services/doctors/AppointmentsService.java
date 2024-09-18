@@ -85,6 +85,7 @@ public class AppointmentsService {
         Prescription prescription = new Prescription();
         prescription.setDescription(description);
         prescription.setDate(date);
+        System.out.println("Doctor ID: " + doctorID);
 
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
         Optional<Doctors> optionalDoctor = doctorRepository.findById(Long.parseLong(doctorID.toString()));
@@ -94,9 +95,13 @@ public class AppointmentsService {
         if (optionalDoctor.isPresent()) {
             prescription.setDoctor(optionalDoctor.get());
         }
-        if (!optionalUser.isPresent() || !optionalDoctor.isPresent()) {
+        if (!optionalUser.isPresent()  ) {
             System.out.println("User or Doctor not found");
-            throw new RuntimeException("User or Doctor not found");
+            throw new RuntimeException("User  not found");
+        }
+        if (!optionalDoctor.isPresent()){
+            System.out.println("Doctor not found");
+            throw new RuntimeException("Doctor not found");
         }
 
         // Save the prescription first to ensure it is managed by the persistence
@@ -146,6 +151,7 @@ public class AppointmentsService {
         }
 
         prescription.setPrescribedMedicines(prescribedMedicines);
+       
         prescriptionRepository.save(prescription);
 
         Optional<Appointments> optionalAppointment = appointmentsRepository.findById(appointmentId);
@@ -194,6 +200,19 @@ public class AppointmentsService {
                                     prescribedMedicine.setMedicine(optionalMedicine.get());
                                 }
                             }
+                            Long doctorID = Long.parseLong(optionalPrescription.get().getDoctor().toString());
+                            System.out.println("Doctor ID: " + doctorID);
+                            System.out.println("\n\n\n");
+                            Optional<Doctors> optionalDoctor = doctorRepository.findById(
+                                Long.parseLong(optionalPrescription.get()
+                                    .getDoctor()
+                                    .getUserID().toString(0)));
+                            if (optionalDoctor.isPresent()) {
+                                System.out.println("Doctor found----------------------");
+                                System.out.println("\n\n\n");
+                                optionalPrescription.get().setDoctor(optionalDoctor.get());
+                            }
+
                             
                         }
                         else  if (optionalPrescription.get().getPrescribedMedicines() == null) {

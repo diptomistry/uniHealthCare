@@ -6,8 +6,11 @@ import com.example.uniMed.models.Blog;
 import com.example.uniMed.repositories.publics.about_us.BlogRepository;
 import com.example.uniMed.services.FileService;
 
+import jakarta.mail.Multipart;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +30,13 @@ public class BlogService {
         return blogRepository.findById(id);
     }
 
-    public Blog createBlog(Blog blog) {
+    public Blog createBlog(Blog blog,MultipartFile image) {
+        try {
+            String fileName = fileService.saveFile(image);
+            blog.setImage(fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return blogRepository.save(blog);
     }
 

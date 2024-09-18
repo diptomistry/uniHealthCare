@@ -92,60 +92,79 @@ const Blog = () => {
   
     try {
       let imageUrl = img;
-  
+    
       // Check if a new image is selected (base64 string starts with "data:image")
       if (img.startsWith('data:image')) {
         const formData = new FormData();
         const blob = await fetch(img).then(res => res.blob());
-        formData.append('file', blob);
-  
-        const uploadResponse = await fetch('http://localhost:8000/api/files/upload', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
-  
-        // Handle the upload response
-        if (uploadResponse.ok) {
-          imageUrl = await uploadResponse.text(); // Assuming the server returns the image URL as plain text
+        formData.append('image', blob, 'image.png'); // Append the image file with a filename
+    
+        // Append the blog data to the formData
+        formData.append('title', title);
+        formData.append('description', description);
+    
+        let response;
+        if (isAdding) {
+          // Creating a new blog
+          response = await fetch('http://localhost:8000/api/blogs', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          });
+          const newBlog = await response.json();
+          setBlogs([...blogs, newBlog]);
+          setIsAdding(false);
         } else {
-          throw new Error('Failed to upload the image.');
+          // Updating an existing blog
+          response = await fetch(`http://localhost:8000/api/blogs/${blogs[editingIndex].id}`, {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          });
+          const updatedBlog = await response.json();
+          const updatedBlogs = [...blogs];
+          updatedBlogs[editingIndex] = updatedBlog;
+          setBlogs(updatedBlogs);
+          setEditingIndex(null);
         }
-      }
-  
-      const blogData = { title, description, image: imageUrl };
-  
-      let response;
-      if (isAdding) {
-        // Creating a new blog
-        response = await fetch('http://localhost:8000/api/blogs', {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(blogData),
-        });
-        const newBlog = await response.json();
-        setBlogs([...blogs, newBlog]);
-        setIsAdding(false);
       } else {
-        // Updating an existing blog
-        response = await fetch(`http://localhost:8000/api/blogs/${blogs[editingIndex].id}`, {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(blogData),
-        });
-        const updatedBlog = await response.json();
-        const updatedBlogs = [...blogs];
-        updatedBlogs[editingIndex] = updatedBlog;
-        setBlogs(updatedBlogs);
-        setEditingIndex(null);
+        // If no new image is selected, just send the blog data
+        const blogData = { title, description, image: imageUrl };
+    
+        let response;
+        if (isAdding) {
+          // Creating a new blog
+          response = await fetch('http://localhost:8000/api/blogs', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(blogData),
+          });
+          const newBlog = await response.json();
+          setBlogs([...blogs, newBlog]);
+          setIsAdding(false);
+        } else {
+          // Updating an existing blog
+          response = await fetch(`http://localhost:8000/api/blogs/${blogs[editingIndex].id}`, {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(blogData),
+          });
+          const updatedBlog = await response.json();
+          const updatedBlogs = [...blogs];
+          updatedBlogs[editingIndex] = updatedBlog;
+          setBlogs(updatedBlogs);
+          setEditingIndex(null);
+        }
       }
       setEditForm({ title: '', description: '', img: '' });
     } catch (error) {
