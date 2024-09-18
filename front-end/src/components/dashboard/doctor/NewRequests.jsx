@@ -1,4 +1,4 @@
-import React, { useState,useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import List from "./List";
 import {
   NewPatientsDataDoctor,
@@ -11,13 +11,20 @@ import PastHistory from "./prescription/PastHistory";
 import { CSSTransition } from "react-transition-group"; // For animation
 import GeneralButton from "../../../layouts/doctor/GeneralButton";
 import { UserContext } from "../../../services/auth/UserProvider";
-
+const getAppID = (name) => {
+  if (!name) return null; // If no name, return null
+  const appIdMatch = name.match(/AppID:(\d+)/); // Regex to match 'AppID:'
+  if (appIdMatch && appIdMatch[1]) {
+    return appIdMatch[1]; // Return the matched AppID number
+  }
+  return null; // Return null if no AppID is found
+};
 const NewRequests = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showHistory, setShowHistory] = useState(false); // Track whether to show history or prescription
   const [medicines, setMedicines] = useState([]);
-  const [description, setDescription] = useState(""); 
+  const [description, setDescription] = useState("");
   const todayDate = new Date().toLocaleDateString();
   const { user } = useContext(UserContext);
   const toolbarOptions = ["Search", "PdfExport", "ExcelExport", "CsvExport"];
@@ -33,9 +40,12 @@ const NewRequests = () => {
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDifference = today.getMonth() - birthDate.getMonth();
-  
+
     // Adjust the age if the birthday hasn't happened yet this year
-    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
     return age;
@@ -56,9 +66,13 @@ const NewRequests = () => {
           AppointmentDate: formatDate(appointment.appointmentDateTime),
           Email: appointment.user?.email || "N/A",
           PhoneNum: appointment.user?.phone || "N/A",
-          PatientName: appointment.user?.name || "Unknown",
+          PatientName:
+            `AppID:${appointment.appointmentID} ${appointment.user?.name} ` ||
+            "Unknown",
           Gender: appointment.user?.sex || "Unknown",
-          Age: appointment.user?.dob ? calculateAge(appointment.user.dob) : "Unknown", // Calculate age
+          Age: appointment.user?.dob
+            ? calculateAge(appointment.user.dob)
+            : "Unknown", // Calculate age
           StatusBg: "#03C9D7", // Default color
           PatientImage:
             appointment.user?.image && appointment.user?.image !== "null"
@@ -66,6 +80,7 @@ const NewRequests = () => {
               : null, // Use image or placeholder
         }));
         setNewPatientsDataDoctor(transformedData); // Store the transformed data in state
+        //console.log("Appointments data:", transformedData);
       })
       .catch((error) => console.error("Error fetching appointments:", error));
   }, []);
@@ -91,7 +106,7 @@ const NewRequests = () => {
       date: todayDate,
       status: "Prescribed",
       doctorID: user.userID, // Update this dynamically if needed
-      userID:  17, // Dynamically set userID
+      userID: 17, // Dynamically set userID
       prescribedMedicines: medicines,
     };
 
@@ -107,7 +122,7 @@ const NewRequests = () => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log('Finaldata:',prescriptionData);
+          console.log("Finaldata:", prescriptionData);
           console.log("Prescription submitted successfully");
         } else {
           console.error("Failed to submit prescription");
@@ -156,7 +171,9 @@ const NewRequests = () => {
                   </div>
                   <div className="space-y-0.5">
                     <p className="text-lg text-black font-semibold">Age</p>
-                    <p className="text-slate-500 font-medium">{selectedPatient.Age}</p>
+                    <p className="text-slate-500 font-medium">
+                      {selectedPatient.Age}
+                    </p>
                   </div>
                 </div>
                 <div className="flex justify-center mt-2 mb-2">
@@ -182,14 +199,16 @@ const NewRequests = () => {
               </div>
             </div>
 
-            {/* Transition between DrugPrescription and PastHistory */}
             <CSSTransition
               in={!showHistory}
               timeout={300}
               classNames="slide"
               unmountOnExit
             >
-               <DrugPrescription getMedicines={setMedicines} setDescription={setDescription} />
+              <DrugPrescription
+                getMedicines={setMedicines}
+                setDescription={setDescription}
+              />
             </CSSTransition>
             <CSSTransition
               in={showHistory}
@@ -197,7 +216,9 @@ const NewRequests = () => {
               classNames="slide"
               unmountOnExit
             >
-              <PastHistory />
+              <PastHistory
+                appointmentID={getAppID(selectedPatient.PatientName)}
+              />
             </CSSTransition>
 
             {!showHistory && (

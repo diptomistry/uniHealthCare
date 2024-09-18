@@ -916,6 +916,25 @@ export const contextMenuItems = [
   "LastPage",
   "NextPage",
 ];
+export const gridPatientName = (props) => {
+  // Function to remove AppID from the PatientName if it exists
+  const getFormattedName = (name) => {
+    if (!name) return "Unknown"; // Default name if unavailable
+    // Check if the name contains 'AppID:' and slice it
+    const appIdIndex = name.indexOf('AppID:');
+    if (appIdIndex !== -1) {
+      // Remove the 'AppID:3' part and return the rest of the name
+      return name.slice(appIdIndex + 7).trim(); // Slice from index after 'AppID:'
+    }
+    return name;
+  };
+
+  return (
+    <span>
+      {getFormattedName(props.PatientName)}
+    </span>
+  );
+};
 export const patientsDataDoctorGrid = [
   {
     headerText: " ",
@@ -928,7 +947,7 @@ export const patientsDataDoctorGrid = [
     headerText: "Patient ",
     width: "150",
     editType: "dropdownedit",
-    textAlign: "Center",
+    template: gridPatientName,
   },
   {
     field: "Gender",
