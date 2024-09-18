@@ -1,4 +1,4 @@
-package com.example.uniMed.services.doctors;
+package com.example.uniMed.services.role_based.doctors;
 
 
 import com.example.uniMed.models.DTOs.AppointmentsDTO1;

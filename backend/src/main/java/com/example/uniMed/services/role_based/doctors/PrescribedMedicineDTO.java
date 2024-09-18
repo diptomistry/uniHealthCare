@@ -1,4 +1,4 @@
-package com.example.uniMed.services.doctors;
+package com.example.uniMed.services.role_based.doctors;
 
 import jakarta.annotation.Nullable;
 

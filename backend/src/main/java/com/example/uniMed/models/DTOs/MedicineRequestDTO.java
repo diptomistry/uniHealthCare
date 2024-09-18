@@ -1,25 +1,44 @@
 package com.example.uniMed.models.DTOs;
 
-
+import java.util.Date;
 
 public class MedicineRequestDTO {
-    private Integer medicineId;
-    private Integer stock;
+
+    private String requestedBy;
+    private Date stockEndDate;
+    private Long medicineID;
+    private int quantity;
 
     // Getters and Setters
-    public Integer getMedicineId() {
-        return medicineId;
+    public String getRequestedBy() {
+        return requestedBy;
     }
 
-    public void setMedicineId(Integer medicineId) {
-        this.medicineId = medicineId;
+    public void setRequestedBy(String requestedBy) {
+        this.requestedBy = requestedBy;
     }
 
-    public Integer getStock() {
-        return stock;
+    public Date getStockEndDate() {
+        return stockEndDate;
     }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
+    public void setStockEndDate(Date stockEndDate) {
+        this.stockEndDate = stockEndDate;
+    }
+
+    public Long getMedicineID() {
+        return medicineID;
+    }
+
+    public void setMedicineID(Long medicineID) {
+        this.medicineID = medicineID;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
