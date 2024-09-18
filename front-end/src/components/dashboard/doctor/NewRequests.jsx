@@ -109,6 +109,7 @@ const NewRequests = () => {
       userID: 17, // Dynamically set userID
       prescribedMedicines: medicines,
     };
+    //console.log("Prescription Data:", prescriptionData);
 
     const token = localStorage.getItem("token");
 
