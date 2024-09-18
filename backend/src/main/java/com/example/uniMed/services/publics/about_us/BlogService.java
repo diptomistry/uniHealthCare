@@ -40,21 +40,24 @@ public class BlogService {
         return blogRepository.save(blog);
     }
 
-    public Optional<Blog> updateBlog(Long id, Blog blogDetails) {
+   
+    public Optional<Blog> updateBlog(Long id, String title, String description, MultipartFile image) {
         return blogRepository.findById(id).map(blog -> {
-            blog.setTitle(blogDetails.getTitle());
-            blog.setDescription(blogDetails.getDescription());
-            if(blogDetails.getImage().equals(blogDetails.getImage())==false){
+            blog.setTitle(title);
+            blog.setDescription(description);
 
-            blog.setImage(blogDetails.getImage());
-            try {
-                fileService.deleteFile(blog.getImage());
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (image != null && !image.isEmpty()) {
+                try {
+                    if (blog.getImage() != null) {
+                        fileService.deleteFile(blog.getImage());
+                    }
+                    String fileName = fileService.saveFile(image);
+                    blog.setImage(fileName);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-           
-        }
-            blog.setBlog(blogDetails.isBlog());
+
             return blogRepository.save(blog);
         });
     }
@@ -62,7 +65,9 @@ public class BlogService {
     public boolean deleteBlog(Long id) {
         return blogRepository.findById(id).map(blog -> {
             try {
-                fileService.deleteFile(blog.getImage());
+                if (blog.getImage() != null) {
+                    fileService.deleteFile(blog.getImage());
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

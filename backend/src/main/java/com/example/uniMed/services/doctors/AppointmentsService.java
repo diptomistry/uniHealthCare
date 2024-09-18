@@ -87,6 +87,8 @@ public class AppointmentsService {
         prescription.setDate(date);
         System.out.println("Doctor ID: " + doctorID);
 
+        System.out.println("User ID: " + userID);
+
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
         Optional<Doctors> optionalDoctor = doctorRepository.findById(Long.parseLong(doctorID.toString()));
         if (optionalUser.isPresent()) {
