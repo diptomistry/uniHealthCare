@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState,useContext,useEffect } from "react";
 import List from "./List";
 import {
   NewPatientsDataDoctor,
@@ -21,6 +21,54 @@ const NewRequests = () => {
   const todayDate = new Date().toLocaleDateString();
   const { user } = useContext(UserContext);
   const toolbarOptions = ["Search", "PdfExport", "ExcelExport", "CsvExport"];
+  const [NewPatientsDataDoctor, setNewPatientsDataDoctor] = useState([]);
+  // Helper function to format the date
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const calculateAge = (dob) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+  
+    // Adjust the age if the birthday hasn't happened yet this year
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    fetch("http://localhost:8000/api/appointments/all", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const transformedData = data.map((appointment) => ({
+          AppointmentDate: formatDate(appointment.appointmentDateTime),
+          Email: appointment.user?.email || "N/A",
+          PhoneNum: appointment.user?.phone || "N/A",
+          PatientName: appointment.user?.name || "Unknown",
+          Gender: appointment.user?.sex || "Unknown",
+          Age: appointment.user?.dob ? calculateAge(appointment.user.dob) : "Unknown", // Calculate age
+          StatusBg: "#03C9D7", // Default color
+          PatientImage:
+            appointment.user?.image && appointment.user?.image !== "null"
+              ? appointment.user.image
+              : null, // Use image or placeholder
+        }));
+        setNewPatientsDataDoctor(transformedData); // Store the transformed data in state
+      })
+      .catch((error) => console.error("Error fetching appointments:", error));
+  }, []);
 
   const handlePrescribeClick = (patient) => {
     setSelectedPatient(patient); // Set the selected patient
@@ -108,7 +156,7 @@ const NewRequests = () => {
                   </div>
                   <div className="space-y-0.5">
                     <p className="text-lg text-black font-semibold">Age</p>
-                    <p className="text-slate-500 font-medium">21</p>
+                    <p className="text-slate-500 font-medium">{selectedPatient.Age}</p>
                   </div>
                 </div>
                 <div className="flex justify-center mt-2 mb-2">
