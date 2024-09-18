@@ -135,8 +135,11 @@ const NewRequests = () => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log("Finaldata:", prescriptionData);
+          //console.log("Finaldata:", prescriptionData);
           console.log("Prescription submitted successfully");
+          setIsModalOpen(false);
+          setSelectedPatient(null);
+          window.location.reload();
         } else {
           console.error("Failed to submit prescription");
         }
