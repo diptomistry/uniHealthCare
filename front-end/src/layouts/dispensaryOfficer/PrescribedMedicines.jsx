@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-const PrescribedMedicines = () => {
+const PrescribedMedicines = ({appointmentID}) => {
+  console.log('d',appointmentID);
+
   const [medicines, setMedicines] = useState([
     { id: 1, name: 'Paracetamol', isChecked: true, quantity: 10, type: 'search' },
     { id: 2, name: 'Amoxicillin', isChecked: true, quantity: 10, type: 'search' },

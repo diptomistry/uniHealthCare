@@ -19,6 +19,15 @@ const getAppID = (name) => {
   }
   return null; // Return null if no AppID is found
 };
+const getUserID = (name) => {
+  if (!name) return null; // If no name, return null
+  const userIdMatch = name.match(/userID:(\d+)/); // Regex to match 'userID:'
+  if (userIdMatch && userIdMatch[1]) {
+    return userIdMatch[1]; // Return the matched userID number
+  }
+  return null; // Return null if no userID is found
+};
+
 const NewRequests = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,7 +76,7 @@ const NewRequests = () => {
           Email: appointment.user?.email || "N/A",
           PhoneNum: appointment.user?.phone || "N/A",
           PatientName:
-            `AppID:${appointment.appointmentID} ${appointment.user?.name} ` ||
+            `AppID:${appointment.appointmentID} userID:${appointment.user.userID} ${appointment.user?.name} ` ||
             "Unknown",
           Gender: appointment.user?.sex || "Unknown",
           Age: appointment.user?.dob
@@ -101,18 +110,22 @@ const NewRequests = () => {
   };
 
   const handleSubmitPrescription = () => {
+    const appID= getAppID(selectedPatient.PatientName);
+    const userID = getUserID(selectedPatient.PatientName);
+    console.log("Prescription submitted",appID,userID);
     const prescriptionData = {
       description: description,
       date: todayDate,
       status: "Prescribed",
       doctorID: user.userID, // Update this dynamically if needed
-      userID: 17, // Dynamically set userID
+      userID: userID, // Dynamically set userID
       prescribedMedicines: medicines,
     };
+    //console.log("Prescription Data:", prescriptionData);
 
     const token = localStorage.getItem("token");
 
-    fetch("http://localhost:8000/api/appointments/2/prescribe", {
+    fetch(`http://localhost:8000/api/appointments/${appID}/prescribe`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -122,8 +135,11 @@ const NewRequests = () => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log("Finaldata:", prescriptionData);
+          //console.log("Finaldata:", prescriptionData);
           console.log("Prescription submitted successfully");
+          setIsModalOpen(false);
+          setSelectedPatient(null);
+          window.location.reload();
         } else {
           console.error("Failed to submit prescription");
         }
