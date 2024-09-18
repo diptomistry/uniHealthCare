@@ -1,4 +1,4 @@
-package com.example.uniMed.services.doctors;
+package com.example.uniMed.services.role_based.doctors;
 
 
 import com.example.uniMed.models.DTOs.AppointmentsDTO1;
@@ -86,6 +86,8 @@ public class AppointmentsService {
         prescription.setDescription(description);
         prescription.setDate(date);
         System.out.println("Doctor ID: " + doctorID);
+
+        System.out.println("User ID: " + userID);
 
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
         Optional<Doctors> optionalDoctor = doctorRepository.findById(Long.parseLong(doctorID.toString()));

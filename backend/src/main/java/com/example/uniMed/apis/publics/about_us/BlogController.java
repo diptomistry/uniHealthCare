@@ -6,6 +6,7 @@ import com.example.uniMed.models.Blog;
 import com.example.uniMed.services.publics.about_us.BlogService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
+
+import javax.print.attribute.standard.Media;
 
 @RestController
 @RequestMapping("/api/blogs")
@@ -36,28 +39,34 @@ public class BlogController {
         }
     }
 
-    @PostMapping
-    public Blog createBlog(@RequestBody Blog blog,@RequestPart("image") MultipartFile image) {
-    
-        System.out.println(blog.isBlog());
-        System.out.println("Blog object: " + blog);
-        System.out.println("isBlog: " + blog.isBlog());
-
-        return blogService.createBlog(blog,image);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Blog> createBlog(
+            @RequestPart("title") String title,
+            @RequestPart("description") String description,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+                Blog aBlog = new Blog();
+                aBlog.setTitle(title);
+                aBlog.setDescription(description);
+        
+      
+        Blog newBlog = blogService.createBlog(aBlog, file);
+        
+        return ResponseEntity.ok(newBlog);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Blog> updateBlog(@PathVariable Long id, @RequestBody Blog blogDetails) {
-        Optional<Blog> updatedBlog = blogService.updateBlog(id, blogDetails);
-        if (updatedBlog.isPresent()) {
-            return ResponseEntity.ok(updatedBlog.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Blog> updateBlog(
+            @PathVariable Long id,
+            @RequestPart("title") String title,
+            @RequestPart("description") String description,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+        Optional<Blog> updatedBlog = blogService.updateBlog(id, title, description, file);
+        return updatedBlog.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBlog(@PathVariable Long id) {
+        System.out.println("Delete blog");
         if (blogService.deleteBlog(id)) {
             return ResponseEntity.ok("Blog deleted successfully");
         } else {

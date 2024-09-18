@@ -8,6 +8,7 @@ import ImageGenerator from '../../../models/dashboard/ImageGenerator';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import axios from 'axios';
 
+const API_BASE_URL = 'http://localhost:8000/api';
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -62,6 +63,7 @@ const Blog = () => {
 
   const handleConfirmDelete = () => {
     if (deleteIndex !== null) {
+      handleDelete(blogs[deleteIndex].id);
       const updatedBlogs = blogs.filter((_, i) => i !== deleteIndex);
       setBlogs(updatedBlogs);
       setDeleteIndex(null);
@@ -76,102 +78,53 @@ const Blog = () => {
   };
 
   const handleSave = async () => {
-    const { title, description, img } = editForm;
+    if (!editForm.title || !editForm.description) {
+      alert('Title and Description are required.');
+      return;
+    }
+
     const token = localStorage.getItem('token');
-  
-    // Validation: Check if any field is empty
-    if (isAdding && (!title || !description || !img)) {
-      alert('All fields (Title, Description, Image) must be filled out.');
-      return;
-    }
-  
-    if (!isAdding && (!title || !description)) {
-      alert('All fields (Title, Description) must be filled out.');
-      return;
-    }
-  
-    try {
-      let imageUrl = img;
-    
-      // Check if a new image is selected (base64 string starts with "data:image")
-      if (img.startsWith('data:image')) {
-        const formData = new FormData();
-        const blob = await fetch(img).then(res => res.blob());
-        formData.append('image', blob, 'image.png'); // Append the image file with a filename
-    
-        // Append the blog data to the formData
-        formData.append('title', title);
-        formData.append('description', description);
-    
-        let response;
-        if (isAdding) {
-          // Creating a new blog
-          response = await fetch('http://localhost:8000/api/blogs', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          });
-          const newBlog = await response.json();
-          setBlogs([...blogs, newBlog]);
-          setIsAdding(false);
-        } else {
-          // Updating an existing blog
-          response = await fetch(`http://localhost:8000/api/blogs/${blogs[editingIndex].id}`, {
-            method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          });
-          const updatedBlog = await response.json();
-          const updatedBlogs = [...blogs];
-          updatedBlogs[editingIndex] = updatedBlog;
-          setBlogs(updatedBlogs);
-          setEditingIndex(null);
-        }
-      } else {
-        // If no new image is selected, just send the blog data
-        const blogData = { title, description, image: imageUrl };
-    
-        let response;
-        if (isAdding) {
-          // Creating a new blog
-          response = await fetch('http://localhost:8000/api/blogs', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(blogData),
-          });
-          const newBlog = await response.json();
-          setBlogs([...blogs, newBlog]);
-          setIsAdding(false);
-        } else {
-          // Updating an existing blog
-          response = await fetch(`http://localhost:8000/api/blogs/${blogs[editingIndex].id}`, {
-            method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(blogData),
-          });
-          const updatedBlog = await response.json();
-          const updatedBlogs = [...blogs];
-          updatedBlogs[editingIndex] = updatedBlog;
-          setBlogs(updatedBlogs);
-          setEditingIndex(null);
-        }
+    const formData = new FormData();
+    formData.append('title', editForm.title);
+    formData.append('description', editForm.description);
+
+    if (editForm.img) {
+      if (editForm.img.startsWith('data:image')) {
+        // Convert base64 to blob
+        const response = await fetch(editForm.img);
+        const blob = await response.blob();
+        formData.append('file', blob, 'image.jpg');
+      } else if (editForm.img instanceof File) {
+        formData.append('file', editForm.img);
       }
-      setEditForm({ title: '', description: '', img: '' });
+    }
+
+    try {
+      let response;
+      if (isAdding) {
+        response = await axios.post(`${API_BASE_URL}/blogs`, formData, {
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          },
+        });
+        setBlogs([...blogs, response.data]);
+      } else {
+        response = await axios.put(`${API_BASE_URL}/blogs/${editForm.id}`, formData, {
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          },
+        });
+        setBlogs(blogs.map(blog => blog.id === editForm.id ? response.data : blog));
+      }
+      setEditingIndex(null);
+      setIsAdding(false);
     } catch (error) {
-      console.error('An error occurred while saving the blog:', error);
+      console.error('Error saving blog:', error);
+      alert('Failed to save blog. Please try again.');
     }
   };
-  
   
   
 
@@ -199,9 +152,24 @@ const Blog = () => {
     setImageSrc(''); 
   };
 
-  const handleDelete = (index) => {
-    const updatedBlogs = blogs.filter((_, i) => i !== index);
-    setBlogs(updatedBlogs);
+  const handleDelete = async (blogId) => {
+    try {
+      const token = localStorage.getItem('token');
+    const response=  await axios.delete(`${API_BASE_URL}/blogs/${blogId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      // Update the local state after successful deletion
+      console.log(blogId);
+      console.log(response);
+
+      
+      
+      
+    } catch (error) {
+      console.error('Error deleting blog:', error);
+      alert('Failed to delete the blog. Please try again.');
+    }
   };
  // Handle AI-generated image and reset the image from the device
  const handleAIImageSet = (generatedImage) => {
@@ -318,8 +286,8 @@ const Blog = () => {
       <DeleteConfirmationModal
         isOpen={deleteIndex !== null}
         onRequestClose={() => setDeleteIndex(null)}
-        title='the Blog'
-        itemName={deleteIndex !== null ? blogs[deleteIndex].title : ''}
+        title='Delete Blog'
+        itemName={blogs[deleteIndex]?.title || ''}
         onConfirmDelete={handleConfirmDelete}
       />
     </div>

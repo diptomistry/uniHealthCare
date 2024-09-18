@@ -4,7 +4,7 @@ package com.example.uniMed.apis.doctors;
 
 import java.util.List;
 
-import com.example.uniMed.services.doctors.PrescribedMedicineDTO;
+import com.example.uniMed.services.role_based.doctors.PrescribedMedicineDTO;
 
 public class PrescribeMedicineRequestDTO {
     private List<PrescribedMedicineDTO> prescribedMedicines;

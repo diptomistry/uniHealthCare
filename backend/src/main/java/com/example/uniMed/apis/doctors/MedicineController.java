@@ -4,7 +4,7 @@ package com.example.uniMed.apis.doctors;
 import com.example.uniMed.models.Medicines;
 import com.example.uniMed.models.User;
 import com.example.uniMed.repositories.auth.UserRepo;
-import com.example.uniMed.services.doctors.MedicineService;
+import com.example.uniMed.services.role_based.doctors.MedicineService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

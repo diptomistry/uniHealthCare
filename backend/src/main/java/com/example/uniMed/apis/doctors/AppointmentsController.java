@@ -5,8 +5,7 @@ package com.example.uniMed.apis.doctors;
 import com.example.uniMed.models.Appointments;
 import com.example.uniMed.models.DTOs.AppointmentsDTO1;
 import com.example.uniMed.models.medicine.PrescribedMedicine;
-import com.example.uniMed.services.doctors.AppointmentsService;
-
+import com.example.uniMed.services.role_based.doctors.AppointmentsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +31,7 @@ public class AppointmentsController {
 
     @PostMapping("/{appointmentId}/prescribe")
     public Appointments prescribeMedicine(@PathVariable Integer appointmentId, @RequestBody PrescribeMedicineRequestDTO request) {
+        System.out.println(request.getPrescribedMedicines());
         return appointmentsService.prescribeMedicine(
             appointmentId,
             request.getPrescribedMedicines(),
