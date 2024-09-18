@@ -797,15 +797,33 @@ export const profiles = [
     email: "bob@example.com",
   },
 ];
-export const gridPatientImage = (props) => (
-  <div>
-    <img
-      className="rounded-xl h-20 md:ml-3"
-      src={props.PatientImage}
-      alt="order-item"
-    />
-  </div>
-);
+export const gridPatientImage = (props) => {
+  // Helper function to get the first letter of the patient's name
+  const getPlaceholderImage = (name) => {
+    if (!name) return "N"; // Default letter if name is not available
+    return name.charAt(0).toUpperCase(); // Return the first letter
+  };
+
+  return (
+    <div className="md:ml-3">
+      {props.PatientImage ? (
+        <img
+          className="rounded-xl h-20"
+          src={props.PatientImage}
+          alt={props.PatientName}
+        />
+      ) : (
+        <div
+          className="rounded-xl h-20 w-20 bg-gray-300 flex items-center justify-center text-3xl font-bold"
+          style={{ color: "#fff" }}
+        >
+          {getPlaceholderImage(props.PatientName)}
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 export const gridPatientStatus = (props) => (
   <div
@@ -898,6 +916,25 @@ export const contextMenuItems = [
   "LastPage",
   "NextPage",
 ];
+export const gridPatientName = (props) => {
+  // Function to remove AppID from the PatientName if it exists
+  const getFormattedName = (name) => {
+    if (!name) return "Unknown"; // Default name if unavailable
+    // Check if the name contains 'AppID:' and slice it
+    const appIdIndex = name.indexOf('AppID:');
+    if (appIdIndex !== -1) {
+      // Remove the 'AppID:3' part and return the rest of the name
+      return name.slice(appIdIndex + 7).trim(); // Slice from index after 'AppID:'
+    }
+    return name;
+  };
+
+  return (
+    <span>
+      {getFormattedName(props.PatientName)}
+    </span>
+  );
+};
 export const patientsDataDoctorGrid = [
   {
     headerText: " ",
@@ -910,7 +947,7 @@ export const patientsDataDoctorGrid = [
     headerText: "Patient ",
     width: "150",
     editType: "dropdownedit",
-    textAlign: "Center",
+    template: gridPatientName,
   },
   {
     field: "Gender",

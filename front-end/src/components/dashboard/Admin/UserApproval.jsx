@@ -18,8 +18,12 @@ const UserApproval = () => {
         });
         const data = await response.json();
         if (data.success) {
-          // Set both profiles and filteredProfiles initially
-          const users = data.data;
+          
+          let users = data.data;
+          //filter out users with status not  'Approved'  or 'Pending'
+          users = users.filter(user => user.status !== "Approved" && user.status !== "Deleted");
+
+          
           setProfiles(users);
           setFilteredProfiles(users);
            // Calculate category counts

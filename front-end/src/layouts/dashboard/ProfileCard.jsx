@@ -1,10 +1,60 @@
 import React from 'react';
+import axios from 'axios';
 
 const ProfileCard = ({ profile }) => {
   const getInitials = (name) => {
     return name ? name.charAt(0).toUpperCase() : '';
   };
+  const handleAccept = async () => {
+    const token = localStorage.getItem('token'); // Get token from localStorage
 
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/auth/update-status", 
+        {
+          user_id: profile.userID, // Assuming profile.userID exists
+          status: "Approved"
+        }, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}` // Authorization header with the token
+          }
+        }
+      );
+      
+      alert("User status updated successfully");
+      window.location.reload(); // Reload the page to reflect the changes
+      console.log(response.data); // Log the response to check the result
+    } catch (error) {
+      console.error("Error updating user status:", error);
+    }
+  };
+
+  // Function to handle user rejection
+  const handleReject = async () => {
+    const token = localStorage.getItem('token'); // Get token from localStorage
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/auth/update-status", 
+        {
+          user_id: profile.userID, // Assuming profile.userID exists
+          status: "Deleted"
+        }, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}` // Authorization header with the token
+          }
+        }
+      );
+      
+      alert("User rejected successfully");
+      window.location.reload(); // Reload the page to reflect the changes
+      console.log(response.data); // Log the response to check the result
+    } catch (error) {
+      console.error("Error rejecting user:", error);
+    }
+  };
   return (
     <div className="max-w-xs">
       <div className="bg-white shadow-xl rounded-lg py-3">
@@ -35,10 +85,11 @@ const ProfileCard = ({ profile }) => {
             </tbody>
           </table>
           <div className="flex justify-between p-5">
-            <button className="bg-primaryColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out">
+            <button onClick={handleAccept} className="bg-primaryColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out">
               Accept
             </button>
             <button
+              onClick={handleReject} 
               type="button"
               className="bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-500"
             >

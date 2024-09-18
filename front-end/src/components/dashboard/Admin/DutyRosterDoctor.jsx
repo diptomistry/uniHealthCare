@@ -116,7 +116,7 @@ const DutyRosterDoctor = () => {
   const formattedRoster = formatRosterForTable(dutyRoster);
 
   return (
-    <div className='flex flex-col gap-5 mb-5 bg-white dark:bg-secondary-dark-bg mt-3 p-10 rounded-2xl shadow-md'>
+    <div className='flex flex-col gap-5 mb-5 bg-white dark:bg-secondary-dark-bg mt-3 p-8 rounded-2xl shadow-md'>
       <DynamicTable AloSchedule={formattedRoster} Title='ডাক্তারদের ডিউটি রোস্টার' />
 
          <DynamicTable AloSchedule={AloSchedule2} Title='' />
