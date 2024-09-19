@@ -12,6 +12,11 @@ public class AboutUs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    private String appName ;
+
+    private String logoUrl;
+
     @Lob
    
     @Column(columnDefinition = "TEXT")
@@ -30,6 +35,22 @@ public class AboutUs {
         this.description = description;
         this.imageUrls = imageUrls;
     }
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
+
     public AboutUs(String description, List<String> imageUrls) {
         this.description = description;
         this.imageUrls = imageUrls;
