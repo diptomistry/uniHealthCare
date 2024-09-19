@@ -182,11 +182,13 @@ public class AppointmentsService {
     // get all appointments of a user
     public List<Appointments> getAppointmentsByUser(Integer userID) {
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
+        System.out.println("User ID: " + userID);
         if (optionalUser.isPresent()) {
             Optional<List<Appointments>> optionalAppointments = appointmentsRepository.findByUserUserID(userID);
             
             if (optionalAppointments.isPresent()) {
                 for (Appointments appointment : optionalAppointments.get()) {
+                    System.out.println("Appointment ID: \n\n\n\n" + appointment.getAppointmentID());
                     Optional<Prescription> optionalPrescription = prescriptionRepository.findById(appointment
 
                             .getPrescription()
@@ -202,21 +204,25 @@ public class AppointmentsService {
                                     prescribedMedicine.setMedicine(optionalMedicine.get());
                                 }
                             }
-                            Long doctorID = Long.parseLong(optionalPrescription.get().getDoctor().toString());
-                            System.out.println("Doctor ID: " + doctorID);
-                            System.out.println("\n\n\n");
-                            Optional<Doctors> optionalDoctor = doctorRepository.findById(
-                                Long.parseLong(optionalPrescription.get()
-                                    .getDoctor()
-                                    .getUserID().toString(0)));
-                            if (optionalDoctor.isPresent()) {
-                                System.out.println("Doctor found----------------------");
-                                System.out.println("\n\n\n");
-                                optionalPrescription.get().setDoctor(optionalDoctor.get());
-                            }
+                            // Long doctorID = Long.parseLong(optionalPrescription.get().getDoctor().toString());
+                            // System.out.println("Doctor ID: " + doctorID);
+                            // System.out.println("\n\n\n");
+                        // try   { 
+                            // Optional<Doctors> optionalDoctor = doctorRepository.findById(
+                            //     Long.parseLong(optionalPrescription.get()
+                            //         .getDoctor()
+                            //         .getUserID().toString(0)));
+                            // if (optionalDoctor.isPresent()) {
+                            //     System.out.println("Doctor found----------------------");
+                            //     System.out.println("\n\n\n");
+                            //     optionalPrescription.get().setDoctor(optionalDoctor.get());
+                            // }}
+                            // catch (Exception e) {
+                            //     System.out.println("Doctor not found");
+                            // }
 
                             
-                        }
+                         }
                         else  if (optionalPrescription.get().getPrescribedMedicines() == null) {
                             System.out.println("No medicines found");
                         }
