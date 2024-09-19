@@ -188,12 +188,11 @@ public class AppointmentsService {
             
             if (optionalAppointments.isPresent()) {
                 for (Appointments appointment : optionalAppointments.get()) {
-                    System.out.println("Appointment ID: \n\n\n\n" + appointment.getAppointmentID());
-                    Optional<Prescription> optionalPrescription = prescriptionRepository.findById(appointment
-
-                            .getPrescription()
-                            .getPrescriptionID());
-                    if (optionalPrescription.isPresent()) {
+                    if (appointment.getPrescription() != null) {
+                    
+                System.out.println("Appointment ID: \n\n\n\n" + appointment.getAppointmentID());
+                Optional<Prescription> optionalPrescription = prescriptionRepository.findById(appointment.getPrescription().getPrescriptionID());
+                if (optionalPrescription.isPresent()) {
                         appointment.setPrescription(optionalPrescription.get());
                         if (optionalPrescription.get().getPrescribedMedicines() != null) {
                             for (PrescribedMedicine prescribedMedicine : optionalPrescription.get().getPrescribedMedicines()) {
@@ -232,6 +231,7 @@ public class AppointmentsService {
                 return optionalAppointments.get();
             }
 
+        }
         }
         return null;
     }
