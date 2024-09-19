@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import SearchHeader from '../../models/dashboard/SearchBar';
 import { SearchResultsList } from '../../components/dashboard/doctor/prescription/SearchResultsList';
+import axios from 'axios';
 
 const PrescribedMedicines = ({ appointmentID }) => {
   console.log('Appointment ID:', appointmentID);
@@ -15,6 +16,7 @@ const PrescribedMedicines = ({ appointmentID }) => {
   const [searchInput, setSearchInput] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMedicines, setSelectedMedicines] = useState({});
+  const [medicineOptions, setMedicineOptions] = useState([]);
 
   // Dummy medicine options for search results
   const dummyMedicineOptions = [
@@ -40,6 +42,37 @@ const PrescribedMedicines = ({ appointmentID }) => {
     { name: 'Metoprolol', medicineID: 20 },
    
   ];
+  useEffect(() => {
+    const fetchMedicines = async () => {
+      try {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+
+        // Make the API request with the bearer token
+        const response = await axios.get('http://localhost:8000/api/medicines/all', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Format the fetched medicines into the desired format
+        const formattedMedicines = response.data.map((medicine) => ({
+          name: medicine.name,
+          medicineID: medicine.medicineID,
+        }));
+
+        // Set the formatted medicines to state
+        setMedicineOptions(formattedMedicines);
+      } catch (err) {
+        // Handle any errors
+        console.error('Error fetching medicines:', err);
+      } 
+    };
+
+    fetchMedicines();
+  }, []);
+
+
 
   const handleTick = (id) => {
     setMedicines((prevMedicines) =>
@@ -68,7 +101,7 @@ const PrescribedMedicines = ({ appointmentID }) => {
   const handleSearchChange = (input) => {
     setSearchInput(input);
     if (input) {
-      const filteredResults = dummyMedicineOptions.filter((medicine) =>
+      const filteredResults = medicineOptions.filter((medicine) =>
         medicine.name.toLowerCase().includes(input.toLowerCase())
       );
       setSearchResults(filteredResults);
