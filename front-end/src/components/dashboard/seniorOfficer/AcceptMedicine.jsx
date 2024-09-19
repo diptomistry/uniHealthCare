@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MedicineList from './MedicineList'
 
+
 const AcceptMedicine = () => {
   const [medicineRequests, setMedicineRequests] = useState([]);
 
@@ -60,7 +61,7 @@ const AcceptMedicine = () => {
     }
   }
 
-  
+
 
   return (
     <div className="container mx-auto p-4">
