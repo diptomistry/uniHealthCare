@@ -1,27 +1,26 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import List from "../doctor/List";
 import CustomModal from "../../../models/CustomModal";
 import { medicineData, medicineGrid } from "../../../assets/dashboard";
-import Button from "../../../layouts/dashboard/DutyRoster/Button";
+import { UserContext } from "../../../services/auth/UserProvider";
+import axios from "axios";
 
-const unavailableMedicines = [
-  { id: 1, medicineName: "Medicine A" },
-  { id: 2, medicineName: "Medicine B" },
-];
 
 const ListofMedicine = () => {
+  const { user } = useContext(UserContext);
   const toolbarOptions = [
     "Search",
     "PdfExport",
     "ExcelExport",
     "CsvExport",
-    "Delete",
+    
   ];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMedicine, setSelectedMedicine] = useState(null);
   const [requestedQuantity, setRequestedQuantity] = useState("");
-  const [isAddingNewMedicine, setIsAddingNewMedicine] = useState(false);
-  const [newMedicineName, setNewMedicineName] = useState("");
+ 
+
+ 
   const [medicineData, setMedicineData] = useState([]);
    // Fetch medicines from API
    useEffect(() => {
@@ -61,7 +60,7 @@ const ListofMedicine = () => {
           }
   
           return {
-            medicineName: medicine.name,
+            medicineName: `id:${medicine.medicineID} ${medicine.name}`,
             batchNo: "B12345", // Set a constant for batchNo for now
             expiryDate: formattedExpiryDate, // Show formatted date
             quantity: stockQuantity,
@@ -83,29 +82,57 @@ const ListofMedicine = () => {
   const handleButtonClick = (medicine) => {
     setSelectedMedicine(medicine);
     setIsModalOpen(true);
-    setIsAddingNewMedicine(false);
+   
   };
 
-  const handleAddMoreMedicineClick = () => {
-    setSelectedMedicine(null); // Clear any selected medicine
-    setIsAddingNewMedicine(true);
-    setIsModalOpen(true);
-  };
+ 
 
   const closeModal = () => {
     setIsModalOpen(false);
     setRequestedQuantity(""); // Reset the quantity field when closing the modal
-    setNewMedicineName(""); // Reset the new medicine name field
+   // Reset the new medicine name field
+  };
+  const getMedicineId = (name) => {
+    if (!name) return null;
+    const idMatch = name.match(/id:(\d+)/);
+    return idMatch ? idMatch[1] : null;
+  };
+  
+  // Method to get the medicine name
+  const getName = (name) => {
+    if (!name) return null;
+    const Medname = name.replace(/id:\d+\s*/, '').trim();
+    return Medname;
   };
 
-  const handleRequestSubmit = () => {
-    if (isAddingNewMedicine) {
-      console.log(`Adding new medicine: ${newMedicineName} with quantity: ${requestedQuantity}`);
-      // Logic to handle adding a new medicine
-    } else {
-      console.log(`Requested ${requestedQuantity} of ${selectedMedicine?.medicineName}`);
-      // Logic to handle requesting an existing medicine
+  const handleRequestSubmit = async (name) => {
+    const medicineId = getMedicineId(name);
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/api/medicine-requests',
+        {
+          requestedBy: user.userID,
+          stockEndDate: "2024-10-15",
+          medicineID: medicineId,
+          quantity: requestedQuantity, 
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add Bearer token
+            'Content-Type': 'application/json', // Ensure the request is sent as JSON
+          },
+        }
+      );
+
+      console.log('Request Successful:', response.data);
+      alert('Medicine request submitted successfully!');
+      closeModal(); // Close the modal after successful submission
+    } catch (error) {
+      console.error('Error submitting request:', error.response?.data || error.message);
+      alert('There was an error submitting your request. Please try again.');
     }
+
     closeModal();
   };
 
@@ -120,36 +147,7 @@ const ListofMedicine = () => {
         status={"Request"}
       />
 
-      <div className="mt-8">
-      <h2 className="text-xl font-bold mb-4">Doctors Manual Entry Medicines</h2>
-        
-          
-          
-        
-        <ul>
-          {unavailableMedicines.map((medicine) => (
-            <li
-              key={medicine.id}
-              className="flex justify-between items-center mb-4 p-4 border-b border-gray-300"
-            >
-              <div>
-                <p className="font-semibold text-gray-700">{medicine.medicineName}</p>
-              </div>
-              <button
-                className="text-white py-1 px-4 md:mr-10 mr-0 rounded bg-primaryColor hover:bg-hoverColor transition duration-300"
-                onClick={() => handleButtonClick(medicine)}
-              >
-                Request
-              </button>
-            </li>
-          ))}
-        </ul>
-        <div className="flex justify-end mr-10 md:mr-14">
-        <button onClick={handleAddMoreMedicineClick} className="mb-4 ">
-            <Button title={"Request New Medicine"} />
-          </button>
-        </div>
-      </div>
+      
 
       <CustomModal
         isOpen={isModalOpen}
@@ -158,45 +156,33 @@ const ListofMedicine = () => {
       >
         <div className="p-4 ">
           <h2 className="text-xl font-bold mb-4">
-            {isAddingNewMedicine ? "Request New Medicine" : "Request Medicine"}
+          Request Medicine
           </h2>
 
-          {isAddingNewMedicine ? (
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-500 mb-2">
-                Medicine Name
-              </label>
-              <input
-                type="text"
-                className="shadow-sm p-4 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block md:w-1/2 w-full sm:text-sm rounded-md"
-                value={newMedicineName}
-                onChange={(e) => setNewMedicineName(e.target.value)}
-                placeholder="Enter medicine name"
-              />
-            </div>
-          ) : (
-            selectedMedicine && (
+          {selectedMedicine && (
+            <div>
               <p className="mb-4">
-                Medicine Name:{" "}
-                <span className="font-semibold text-brightColor">
-                  {selectedMedicine.medicineName}
-                </span>
-              </p>
-            )
+              Medicine Name:{" "}
+              <span className="font-semibold text-brightColor">
+                {getName(selectedMedicine.medicineName)}
+              </span>
+            </p>
+             <div className="mb-4">
+             <label className="block text-sm font-medium text-gray-500 mb-2">
+               Request Quantity
+             </label>
+             <input
+               type="number"
+               className="shadow-sm p-4 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block md:w-1/2 w-full sm:text-sm rounded-md"
+               value={requestedQuantity}
+               onChange={(e) => setRequestedQuantity(e.target.value)}
+               placeholder="Enter quantity"
+             />
+           </div>
+           </div>
           )}
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-500 mb-2">
-              Request Quantity
-            </label>
-            <input
-              type="number"
-              className="shadow-sm p-4 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block md:w-1/2 w-full sm:text-sm rounded-md"
-              value={requestedQuantity}
-              onChange={(e) => setRequestedQuantity(e.target.value)}
-              placeholder="Enter quantity"
-            />
-          </div>
+         
 
           <div className="flex justify-end">
             <button
@@ -206,7 +192,7 @@ const ListofMedicine = () => {
               Cancel
             </button>
             <button
-              onClick={handleRequestSubmit}
+              onClick={() => handleRequestSubmit(selectedMedicine.medicineName)}
               className="px-4 py-2 bg-primaryColor text-white rounded hover:bg-hoverColor transition duration-300"
             >
               Submit Request

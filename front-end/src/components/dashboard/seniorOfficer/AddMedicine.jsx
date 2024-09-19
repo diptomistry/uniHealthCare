@@ -22,12 +22,14 @@ const getId = (name) =>{
   }
   return null;
 }
+
 const getMedicineName = (name) => {
   if (!name) return null; // If no name, return null
   // Remove 'price:<number>' and 'id:<number>' from the string using regex
   const cleanedName = name.replace(/price:\d+(\.\d+)?\s*|id:\d+\s*/g, '').trim();
   return cleanedName;
 };
+
 
 const unavailableMedicines = [
   { id: 1, medicineName: "Medicine A" },
@@ -42,7 +44,7 @@ const AddMedicine = () => {
     "PdfExport",
     "ExcelExport",
     "CsvExport",
-    "Delete",
+    
   ];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMedicine, setSelectedMedicine] = useState(null);
@@ -208,6 +210,7 @@ const AddMedicine = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("New medicine added:", data);
+        window.location.reload();
         closeModal(); // Close modal after successful submission
       } else {
         console.error("Failed to add medicine");

@@ -1038,8 +1038,17 @@ export const medicineData = [
 ];
 console.log(medicineData);
 export const gridImage = (props) => {
-  console.log(props.medicineName);
-  const firstLetter = props.medicineName ? props.medicineName.charAt(0).toUpperCase() : '';
+  // Function to remove 'id:<number>' from the medicine name
+  const getCleanMedicineName = (name) => {
+    if (!name) return ''; // Return empty if no name
+    // Remove 'id:<number>' from the string
+    const cleanedName = name.replace(/id:\d+\s*/, '').trim();
+    return cleanedName;
+  };
+
+  // Clean the medicine name
+  const medicineName = getCleanMedicineName(props.medicineName);
+  const firstLetter = medicineName ? medicineName.charAt(0).toUpperCase() : '';
 
   return (
     <div
@@ -1050,6 +1059,7 @@ export const gridImage = (props) => {
     </div>
   );
 };
+
 
 export const gridMedicineName = (props) => {
   // Function to remove 'AppID' and 'userID' if they exist
