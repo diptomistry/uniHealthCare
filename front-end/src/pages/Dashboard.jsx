@@ -20,7 +20,7 @@ import BookSO from "../components/dashboard/seniorOfficer/BookSO";
 import TeacherHome from "../components/dashboard/teacher/TeacherHome";
 import ChatBot from "../models/dashboard/ChatBot";
 import SpecificRouteProtection from "../services/auth/SpecificRouteProtection";
-//import { UserContext } from "../services/auth/UserProvider";
+import StaffHome from "../components/dashboard/staff/StaffHome";
 import Report from "../components/dashboard/Admin/Report";
 import AdditionalInfo from "../components/dashboard/Admin/AdditionalInfo";
 import TaskDistribution from "../components/dashboard/Admin/TaskDistribution";
@@ -347,6 +347,14 @@ const Dashboard = () => {
               element={
                 <SpecificRouteProtection role="teacher">
                   <TeacherHome />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route
+              path="/Staff-Home"
+              element={
+                <SpecificRouteProtection role="staff">
+                  <StaffHome />
                 </SpecificRouteProtection>
               }
             />
