@@ -916,6 +916,7 @@ export const contextMenuItems = [
   "LastPage",
   "NextPage",
 ];
+
 export const gridPatientName = (props) => {
   // Function to remove 'AppID' and 'userID' if they exist
   const getFormattedName = (name) => {
@@ -1050,6 +1051,37 @@ export const gridImage = (props) => {
   );
 };
 
+export const gridMedicineName = (props) => {
+  // Function to remove 'AppID' and 'userID' if they exist
+  const getFormattedName = (name) => {
+    if (!name) return "Unknown"; // Default name if unavailable
+
+    // Remove 'AppID:' and the number following it, if present
+    const appIdIndex = name.indexOf('price:');
+    if (appIdIndex !== -1) {
+      // Remove 'AppID' and any following characters until a space
+      const endOfAppId = name.indexOf(' ', appIdIndex + 6); // +6 for 'AppID:'
+      name = endOfAppId !== -1 ? name.slice(endOfAppId).trim() : ''; // Slice after AppID part
+    }
+    //remove ID: and the number following it ,if present
+    const userId=name.indexOf('id:');
+    if(userId !== -1){
+      const endOfUserId=name.indexOf(' ',userId + 3);
+      name=endOfUserId !== -1 ? name.slice(endOfUserId).trim() : '';
+    }
+
+   
+
+    return name || 'Unknown'; // Return 'Unknown' if name ends up being empty
+  };
+
+  return (
+    <span>
+      {getFormattedName(props.medicineName)}
+    </span>
+  );
+};
+
 export const medicineGrid = [
   {
     headerText: " ",
@@ -1061,7 +1093,7 @@ export const medicineGrid = [
     field: "medicineName",
     headerText: "Medicine Name",
     width: "150",
-    textAlign: "Center",
+    template: gridMedicineName,
   },
   {
     field: "batchNo",
