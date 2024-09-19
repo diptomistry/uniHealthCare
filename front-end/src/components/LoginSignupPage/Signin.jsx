@@ -27,7 +27,13 @@ const Signin = ({ isSignUpMode, openForm }) => {
       const data = await response.json();
 
       if (data.success) {
+        if(data.data.status==='Approved'){
         setUserType(data.data.role.roleName);
+        }
+        else{
+          setUserType('not approved');
+          alert('Your account is not approved yet. Please contact the admin.');
+        }
 
         login(data.data); 
         localStorage.setItem('token', data.data.token);
@@ -65,7 +71,7 @@ const Signin = ({ isSignUpMode, openForm }) => {
       navigate('/dashboard/doctor-home');
     }
     else if (userType==='staff') {
-      navigate('/dashboard/staff-home');
+      navigate('/dashboard/Staff-Home');
     }
     else if (userType==='student') {
       navigate('/dashboard/Student-Home');
@@ -78,6 +84,9 @@ const Signin = ({ isSignUpMode, openForm }) => {
     }
     else if (userType==='teacher') {
       navigate('/dashboard/teacher-home');
+    }
+    else if (userType==='not approved') {
+      navigate('/get-started');
     }
 
   }, [userType, navigate]);

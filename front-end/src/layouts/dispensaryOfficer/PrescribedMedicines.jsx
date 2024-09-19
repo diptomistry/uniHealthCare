@@ -159,7 +159,7 @@ const PrescribedMedicines = ({ appointmentID }) => {
             </div>
             <div className="flex items-center gap-4">
             {med.type === 'manual' && med.isChecked && !med.isEditing && (
-              <button onClick={() => handleEditMedicine(med.id, med.name)} className="underline">Change Name</button>
+              <button onClick={() => handleEditMedicine(med.id, med.name)} className="underline">Search Name</button>
               )}
               <input
                 type="number"

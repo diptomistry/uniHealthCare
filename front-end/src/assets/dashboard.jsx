@@ -3297,6 +3297,17 @@ export const studentLinks = [
     ],
   },
 ];
+export const staffLinks = [
+  {
+    title: "Dashboard",
+    links: [
+      {
+        name: "Staff-Home",
+        icon: <FiHome />,
+      },
+    ],
+  },
+];
 export const teacherLinks=[
   {
     title: "Dashboard",
