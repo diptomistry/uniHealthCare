@@ -85,10 +85,12 @@ const PrescribedMedicines = ({ appointmentID }) => {
   const handleQuantityChange = (id, quantity) => {
     setMedicines((prevMedicines) =>
       prevMedicines.map((med) =>
-        med.id === id ? { ...med, quantity: parseInt(quantity) || 0 } : med
+        med.id === id ? { ...med, quantity: parseInt(quantity) || null } : med
       )
     );
   };
+ 
+  
 
   const handleMedicineChange = (id, name) => {
     setMedicines((prevMedicines) =>
@@ -125,12 +127,16 @@ const PrescribedMedicines = ({ appointmentID }) => {
     );
   };
   
-
   const handleSubmit = () => {
-    const selectedMedicines = medicines.filter((med) => med.isChecked && med.quantity > 0);
+    // Filter the medicines where isChecked is true and quantity is greater than 0
+    const selectedMedicines = medicines
+      .filter((med) => med.isChecked && med.quantity > 0)
+      .map((med) => ({ name: med.name, id: med.id, quantity: med.quantity }));
+  
+    // Log the selected medicines with their name, id, and quantity
     console.log('Selected Medicines:', selectedMedicines);
-    // Implement further submit logic here
   };
+  
 
   return (
     <div className="p-4 bg-white rounded shadow-md">
