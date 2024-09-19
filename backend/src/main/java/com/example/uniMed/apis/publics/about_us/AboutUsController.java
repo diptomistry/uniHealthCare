@@ -37,7 +37,7 @@ public class AboutUsController {
         return aboutUsService.getAllAboutUs();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/{id}")
     public ResponseEntity<AboutUs> getAboutUsById(@PathVariable Long id) {
         Optional<AboutUs> aboutUs = aboutUsService.getAboutUsById(id);
         if (aboutUs.isPresent()) {

@@ -198,6 +198,15 @@ const Dashboard = () => {
                 </SpecificRouteProtection>
               }
             />
+             <Route
+              path="/department"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <AboutSection />
+                </SpecificRouteProtection>
+              }
+            />
+
             <Route
               path="/Blog"
               element={
