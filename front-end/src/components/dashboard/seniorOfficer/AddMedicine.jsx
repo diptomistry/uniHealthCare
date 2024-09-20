@@ -54,61 +54,99 @@ const AddMedicine = () => {
   const [price, setPrice] = useState("");
   const [medicineData, setMedicineData] = useState([]);
   const [expiryDate, setExpiryDate] = useState(""); // Add expiryDate state
- 
+  const [unavailableMedicines, setUnavailableMedicines] = useState([]);
+  const fetchUnavailableMedicines = async () => {
+    const token = localStorage.getItem("token");
+  
+    try {
+      const response = await fetch("http://localhost:8000/api/medicines/all", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error text:", errorText);
+        throw new Error("Failed to fetch medicines");
+      }
+  
+      const data = await response.json();
+  
+      // Filter medicines where "is_Outside" is true and map to the desired format
+      const unavailableMedicines = data
+        .filter((medicine) => medicine.is_Outside === true)
+        .map((medicine) => ({
+          id: medicine.medicineID,
+          medicineName: medicine.name,
+        }));
+        setUnavailableMedicines(unavailableMedicines);
+  
+      console.log("Unavailable Medicines:", unavailableMedicines);
+      return unavailableMedicines;
+    } catch (error) {
+      console.error("Error fetching medicines:", error.message);
+    }
+  };
+  
 
+  
+ 
+  const fetchMedicines = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/medicines/all", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const data = await response.json();
+
+      // Process data to add status and batchNo
+      const processedData = data.map((medicine) => {
+        const stockQuantity = medicine.stockQuantity || 0;
+        const expiryDate = new Date(medicine.expiryDate);
+        const today = new Date();
+
+        // Format expiry date to 'YYYY-MM-DD'
+        const formattedExpiryDate = expiryDate.toISOString().split('T')[0];
+
+        let status = "";
+        let statusBg = "";
+
+        if (expiryDate < today) {
+          status = "Expired";
+          statusBg = "red";
+        } else if (stockQuantity === 0) {
+          status = "Out of Stock";
+          statusBg = "#E35335";
+        } else if (stockQuantity <= 10) {
+          status = "Low Stock";
+          statusBg = "#FB9678";
+        } else {
+          status = "Available";
+          statusBg = "#8BE78B";
+        }
+
+        return {
+          medicineName: `price:${medicine.price} id:${medicine.medicineID} ${medicine.name}`,
+          batchNo: "B12345", // Set a constant for batchNo for now
+          expiryDate: formattedExpiryDate, // Show formatted date
+          quantity: stockQuantity,
+          Status: status,
+          StatusBg: statusBg,
+        };
+      });
+
+      setMedicineData(processedData);
+    } catch (error) {
+      console.error("Error fetching medicines:", error);
+    }
+  };
    // Fetch medicines from API
    useEffect(() => {
-    const fetchMedicines = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/api/medicines/all", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        const data = await response.json();
-  
-        // Process data to add status and batchNo
-        const processedData = data.map((medicine) => {
-          const stockQuantity = medicine.stockQuantity || 0;
-          const expiryDate = new Date(medicine.expiryDate);
-          const today = new Date();
-  
-          // Format expiry date to 'YYYY-MM-DD'
-          const formattedExpiryDate = expiryDate.toISOString().split('T')[0];
-  
-          let status = "";
-          let statusBg = "";
-  
-          if (expiryDate < today) {
-            status = "Expired";
-            statusBg = "red";
-          } else if (stockQuantity === 0) {
-            status = "Out of Stock";
-            statusBg = "#E35335";
-          } else if (stockQuantity <= 10) {
-            status = "Low Stock";
-            statusBg = "#FB9678";
-          } else {
-            status = "Available";
-            statusBg = "#8BE78B";
-          }
-  
-          return {
-            medicineName: `price:${medicine.price} id:${medicine.medicineID} ${medicine.name}`,
-            batchNo: "B12345", // Set a constant for batchNo for now
-            expiryDate: formattedExpiryDate, // Show formatted date
-            quantity: stockQuantity,
-            Status: status,
-            StatusBg: statusBg,
-          };
-        });
-  
-        setMedicineData(processedData);
-      } catch (error) {
-        console.error("Error fetching medicines:", error);
-      }
-    };
-  
+   
+    fetchUnavailableMedicines();
     fetchMedicines();
   }, []);
   
@@ -174,7 +212,9 @@ const AddMedicine = () => {
       }
   
       setIsModalOpen(false);
-      window.location.reload();
+      //fetchMedicines(); // Fetch medicines again to update the list
+      await fetchMedicines(); // Fetch medicines again to update the list
+      
       
       // Handle success (e.g., show a success message or update the UI)
     } catch (error) {
@@ -210,7 +250,7 @@ const AddMedicine = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("New medicine added:", data);
-        window.location.reload();
+        await fetchMedicines(); // Fetch medicines again to update the list
         closeModal(); // Close modal after successful submission
       } else {
         console.error("Failed to add medicine");
