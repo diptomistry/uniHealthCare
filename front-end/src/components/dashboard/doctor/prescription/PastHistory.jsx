@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PatientPrescriptionForm from "./PatientPrescriptionFormPast";
 
 const PastHistory = ({ appointmentID }) => {
-  const appointmentID2 = 4; // Get the appointment ID from the parent component
+   // Get the appointment ID from the parent component
  /*
   // Array of prescription data
   const prescriptions = [
@@ -69,19 +69,25 @@ useEffect(() => {
         const formattedPrescriptions = data.map((appointment, index) => {
           const prescription = appointment.prescription;
 
-          return {
-            title: `Prescription-${index + 1}`, // Dynamically generate prescription titles
-            diagnosis: prescription.description,
-            medicines: prescription.prescribedMedicines.map((medicine) => ({
-              name: medicine.medicine.name,
-              quantity: medicine.quantity,
-              duration: medicine.duration.split(" ")[0], // Split to get the duration number
-              durationUnit: medicine.duration.split(" ")[1], // Split to get the unit (Days, Weeks, etc.)
-              time: medicine.afterBefore,
-            })),
-            additionalInstructions: "Follow doctor's advice.",
-          };
-        });
+          // Check if prescription exists before accessing properties
+          if (prescription && prescription.prescribedMedicines) {
+            return {
+              title: `Prescription-${index + 1}`, // Dynamically generate prescription titles
+              diagnosis: prescription.description || "No description available",
+              medicines: prescription.prescribedMedicines.map((medicine) => ({
+                name: medicine.medicine.name,
+                quantity: medicine.quantity,
+                duration: medicine.duration.split(" ")[0], // Split to get the duration number
+                durationUnit: medicine.duration.split(" ")[1], // Split to get the unit (Days, Weeks, etc.)
+                time: medicine.afterBefore,
+              })),
+              additionalInstructions: "Follow doctor's advice.",
+            };
+          } else {
+            console.warn("Prescription data is missing for appointment:", appointment);
+            return null; // Return null for missing prescriptions
+          }
+        }).filter(Boolean); // Filter out any null values
 
         console.log("formattedPrescriptions:", formattedPrescriptions);
         setPrescriptions(formattedPrescriptions);
@@ -97,6 +103,7 @@ useEffect(() => {
     fetchPrescriptions();
   }
 }, [appointmentID]);
+
 
 
   return (

@@ -12,9 +12,9 @@ const Prescriptions = () => {
   const toolbarOptions = ["Search",];
 
   const [appointments, setAppointments] = useState([]);
-  const getAppID = (name) => {
+  const getuserID = (name) => {
     if (!name) return null; // If no name, return null
-    const appIdMatch = name.match(/AppID:(\d+)/); // Regex to match 'AppID:'
+    const appIdMatch = name.match(/userID:(\d+)/); // Regex to match 'AppID:'
     if (appIdMatch && appIdMatch[1]) {
       return appIdMatch[1]; // Return the matched AppID number
     }
@@ -38,7 +38,7 @@ const Prescriptions = () => {
           AppointmentDate: new Date(appointment.appointmentDateTime).toLocaleDateString(),
           Email: appointment.user?.email || 'N/A',
           PhoneNum: appointment.user?.phone || 'N/A',
-          PatientName: `AppID:${appointment.appointmentID} ${appointment.user?.name}` || 'N/A',
+          PatientName: `userID:${appointment.user.userID} ${appointment.user?.name}` || 'N/A',
           Gender: appointment.user?.sex || 'N/A',
           StatusBg: '#03C9D7',
           PatientImage: appointment.user?.image || null,
@@ -80,7 +80,7 @@ const Prescriptions = () => {
         ChildrenStyle="overflow-y-auto"
       >
         {selectedPatient && (
-          <PrescribedMedicines  appointmentID={getAppID(selectedPatient.PatientName)}  />
+          <PrescribedMedicines  userID={getuserID(selectedPatient.PatientName)}  />
         )}
       
       </CustomModal>

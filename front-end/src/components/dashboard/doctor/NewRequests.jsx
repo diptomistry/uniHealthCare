@@ -19,6 +19,14 @@ const getAppID = (name) => {
   }
   return null; // Return null if no AppID is found
 };
+const getuserID = (name) => {
+  if (!name) return null; // If no name, return null
+  const appIdMatch = name.match(/userID:(\d+)/); // Regex to match 'AppID:'
+  if (appIdMatch && appIdMatch[1]) {
+    return appIdMatch[1]; // Return the matched AppID number
+  }
+  return null; // Return null if no AppID is found
+};
 const getUserID = (name) => {
   if (!name) return null; // If no name, return null
   const userIdMatch = name.match(/userID:(\d+)/); // Regex to match 'userID:'
@@ -111,6 +119,7 @@ const NewRequests = () => {
 
   const handleSubmitPrescription = () => {
     const appID= getAppID(selectedPatient.PatientName);
+    console.log("AppID:",appID);
     const userID = getUserID(selectedPatient.PatientName);
     console.log("Prescription submitted",appID,userID);
     const prescriptionData = {
@@ -118,10 +127,10 @@ const NewRequests = () => {
       date: todayDate,
       status: "Prescribed",
       doctorID: user.userID, // Update this dynamically if needed
-      userID: userID, // Dynamically set userID
+      userID: parseInt(userID), // Dynamically set userID
       prescribedMedicines: medicines,
     };
-    //console.log("Prescription Data:", prescriptionData);
+    console.log("Prescription Data:", prescriptionData);
 
     const token = localStorage.getItem("token");
 
@@ -233,7 +242,7 @@ const NewRequests = () => {
               unmountOnExit
             >
               <PastHistory
-                appointmentID={getAppID(selectedPatient.PatientName)}
+                appointmentID={getuserID(selectedPatient.PatientName)}
               />
             </CSSTransition>
 
