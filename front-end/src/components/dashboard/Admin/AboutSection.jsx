@@ -76,12 +76,13 @@ const AboutSection = () => {
     const fetchImages = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("http://localhost:8000/api/about-us/1", {
+        const response = await fetch("http://localhost:8000/api/about-us/public/1", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log("Response:", response);
 
         if (!response.ok) {
           const errorText = await response.text();
@@ -90,6 +91,7 @@ const AboutSection = () => {
         }
 
         const data = await response.json();
+        console.log("Data:", data);
         setAboutUs(data.description);
         const parsedImageUrls = data.imageUrls.map((img) => {
           const parsedUrlObj = JSON.parse(img);
