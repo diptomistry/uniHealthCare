@@ -14,7 +14,7 @@ const Prescriptions = () => {
   const [appointments, setAppointments] = useState([]);
   const getuserID = (name) => {
     if (!name) return null; // If no name, return null
-    const appIdMatch = name.match(/AppID:(\d+)/); // Regex to match 'AppID:'
+    const appIdMatch = name.match(/userID:(\d+)/); // Regex to match 'AppID:'
     if (appIdMatch && appIdMatch[1]) {
       return appIdMatch[1]; // Return the matched AppID number
     }
