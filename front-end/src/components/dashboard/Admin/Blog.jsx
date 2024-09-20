@@ -76,7 +76,7 @@ const Blog = () => {
     setEditForm(blogs[index]);
     setImageSrc('');  // Reset AI image when editing an existing blog
   };
-
+/*
   const handleSave = async () => {
     if (!editForm.title || !editForm.description) {
       alert('Title and Description are required.');
@@ -98,8 +98,9 @@ const Blog = () => {
         formData.append('file', editForm.img);
       }
     }
-
-    try {
+   
+    try { 
+       console.log('hello',editForm.img);
       let response;
       if (isAdding) {
         response = await axios.post(`${API_BASE_URL}/blogs`, formData, {
@@ -126,6 +127,59 @@ const Blog = () => {
     }
   };
   
+  */
+  const handleSave = async () => {
+    if (!editForm.title || !editForm.description) {
+      alert('Title and Description are required.');
+      return;
+    }
+  
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('title', editForm.title);
+    formData.append('description', editForm.description);
+  
+    if (editForm.img) {
+      // Check if img is a string (base64 URL)
+      if (typeof editForm.img === 'string' && editForm.img.startsWith('data:image')) {
+        // Convert base64 to blob
+        const response = await fetch(editForm.img);
+        const blob = await response.blob();
+        formData.append('file', blob, 'image.jpg');
+      }
+      // Check if img is a File or Blob
+      else if (editForm.img instanceof File || editForm.img instanceof Blob) {
+        formData.append('file', editForm.img);
+      }
+    }
+  
+    try {
+      console.log('hello', editForm.img);
+      let response;
+      if (isAdding) {
+        response = await axios.post(`${API_BASE_URL}/blogs`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        setBlogs([...blogs, response.data]);
+      } else {
+        response = await axios.put(`${API_BASE_URL}/blogs/${editForm.id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        setBlogs(blogs.map((blog) => (blog.id === editForm.id ? response.data : blog)));
+      }
+      setEditingIndex(null);
+      setIsAdding(false);
+    } catch (error) {
+      console.error('Error saving blog:', error);
+      alert('Failed to save blog. Please try again.');
+    }
+  };
   
 
 
@@ -140,7 +194,7 @@ const Blog = () => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setEditForm({ ...editForm, img: reader.result });
+      setEditForm({ ...editForm, img: reader.result });//
       setImageSrc(''); // Clear AI-generated image when a file is uploaded
     };
     reader.readAsDataURL(file);
@@ -171,11 +225,30 @@ const Blog = () => {
       alert('Failed to delete the blog. Please try again.');
     }
   };
- // Handle AI-generated image and reset the image from the device
- const handleAIImageSet = (generatedImage) => {
-  setImageSrc(generatedImage);
-  setEditForm({ ...editForm, img: '' }); // Clear the image from the device when AI image is set
+//  // Handle AI-generated image and reset the image from the device
+//  const handleAIImageSet = (generatedImage) => {
+//   setImageSrc(generatedImage);
+//   setEditForm({ ...editForm, img: '' }); // Clear the image from the device when AI image is set
+//   //set ai img to edit form after converting generatedImage to blob 
+
+
+  
+// };
+const handleAIImageSet = async (generatedImage) => {
+  setImageSrc(generatedImage); // Display the image in the UI
+
+  try {
+    // Fetch the image from the URL
+    const response = await fetch(generatedImage);
+    const blob = await response.blob();  // Convert to Blob
+
+    // Update the form with the Blob
+    setEditForm({ ...editForm, img: blob });  // Save Blob in editForm.img
+  } catch (error) {
+    console.error("Error converting image to blob:", error);
+  }
 };
+
   return (
     <div>
       <div className='flex justify-between'>
@@ -276,7 +349,7 @@ const Blog = () => {
 )}
 
     </div>
-        {editForm.img && <img className="w-[400px] h-60 rounded-xl mb-4" src={editForm.img} alt="Preview" />}
+        {editForm.img && !imageSrc && <img className="w-[400px] h-60 rounded-xl mb-4" src={editForm.img} alt="Preview" />}
     
           <button onClick={handleSave} className='bg-primaryColor hover:bg-hoverColor text-white px-4 py-2 rounded-md transition duration-300 w-full mb-4'>
           Save
