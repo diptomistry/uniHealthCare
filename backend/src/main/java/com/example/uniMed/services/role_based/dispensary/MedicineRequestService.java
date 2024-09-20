@@ -48,6 +48,11 @@ public class MedicineRequestService {
        
         medicineRequest.setStockEndDate(request.getStockEndDate());
         medicineRequest.setRequestDate(Date.from(new Date().toInstant()));
+        System.out.println("Request Date: "+medicineRequest.getRequestDate());
+        System.out.println("Stock End Date: "+medicineRequest.getStockEndDate());
+        System.out.println("Requested By: "+medicineRequest.getRequestedBy());
+        System.out.println("Medicine: "+medicineRequest.getMedicine());
+        System.out.println("Quantity: "+request.getQuantity());
         
         medicineRequest.setQuantity(request.getQuantity());
         medicineRequest.setStatus(status);

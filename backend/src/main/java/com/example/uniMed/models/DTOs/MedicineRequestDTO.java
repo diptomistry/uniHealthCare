@@ -7,7 +7,7 @@ public class MedicineRequestDTO {
     private String requestedBy;
     private Date stockEndDate;
     private Long medicineID;
-    private int quantity;
+    private Integer quantity;
 
     // Getters and Setters
     public String getRequestedBy() {
@@ -34,7 +34,7 @@ public class MedicineRequestDTO {
         this.medicineID = medicineID;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
