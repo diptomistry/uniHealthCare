@@ -80,7 +80,7 @@ const Prescriptions = () => {
         ChildrenStyle="overflow-y-auto"
       >
         {selectedPatient && (
-          <PrescribedMedicines  userID={getuserID(selectedPatient.PatientName)}  />
+          <PrescribedMedicines  userID={getuserID(selectedPatient.PatientName)} closeModal={closeModal}  />
         )}
       
       </CustomModal>
