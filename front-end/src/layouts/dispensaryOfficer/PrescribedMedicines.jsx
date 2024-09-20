@@ -3,8 +3,8 @@ import SearchHeader from '../../models/dashboard/SearchBar';
 import { SearchResultsList } from '../../components/dashboard/doctor/prescription/SearchResultsList';
 import axios from 'axios';
 
-const PrescribedMedicines = ({ appointmentID }) => {
-  console.log('Appointment ID:', appointmentID);
+const PrescribedMedicines = ({userID }) => {
+
 
   const [medicines, setMedicines] = useState([
     { id: 1, name: 'Paracetamol', isChecked: true, quantity: 10, type: 'search', isEditing: false },
@@ -100,17 +100,29 @@ const PrescribedMedicines = ({ appointmentID }) => {
     );
   };
 
+  // const handleSearchChange = (input) => {
+  //   setSearchInput(input);
+  //   if (input) {
+  //     const filteredResults = medicineOptions.filter((medicine) =>
+  //       medicine.name.toLowerCase().includes(input.toLowerCase())
+  //     );
+  //     setSearchResults(filteredResults);
+  //   } else {
+  //     setSearchResults([]);
+  //   }
+  // };
   const handleSearchChange = (input) => {
     setSearchInput(input);
     if (input) {
       const filteredResults = medicineOptions.filter((medicine) =>
-        medicine.name.toLowerCase().includes(input.toLowerCase())
+        medicine.name && medicine.name.toLowerCase().includes(input.toLowerCase()) // Check if medicine.name exists
       );
       setSearchResults(filteredResults);
     } else {
       setSearchResults([]);
     }
   };
+  
 
   const handleSelectMedicine = (name, medicineID) => {
     setSearchResults([]);
