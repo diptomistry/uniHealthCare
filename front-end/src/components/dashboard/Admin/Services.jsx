@@ -1,15 +1,14 @@
 import React, { useState,useEffect } from 'react';
-import { BlogData } from '../../../assets/dashboard';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import PrimaryButton from '../../../layouts/dashboard/PrimaryButton';
+
 import CustomModal from '../../../models/CustomModal';
 import DeleteConfirmationModal from '../../../models/DeleteConfirmationModal';
 import ImageGenerator from '../../../models/dashboard/ImageGenerator';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
+import BlogPostSlider from '../../../models/dashboard/BlogPostSlider';
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000/api';
-const Blog = () => {
+const Services = () => {
   const [blogs, setBlogs] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editForm, setEditForm] = useState({ title: '', description: '', img: '' });
@@ -45,7 +44,7 @@ const Blog = () => {
           },
         });
         const data = await response.json();
-        const filteredBlogs = data.filter(blog => blog.isBlog === true);
+        const filteredBlogs = data.filter(blog => blog.isBlog === false);
 
         setBlogs(filteredBlogs);
         //console.log(data.img);
@@ -106,7 +105,7 @@ const Blog = () => {
     }
   
     try {
-      formData.append('isBlog', 'true');
+      formData.append('isBlog', 'false');
       console.log('hello', editForm.img);
       let response;
       if (isAdding) {
@@ -196,46 +195,12 @@ const handleAIImageSet = async (generatedImage) => {
 
   return (
     <div>
-      <div className='flex justify-between'>
-        <h1 className="text-2xl font-semibold text-center text-textColor">BLOGS</h1>
-        <button onClick={handleAdd}>
-          <PrimaryButton title="Add a New Blog" bgColor="bg-primaryColor hover:bg-hoverColor" />
-        </button>
-      </div>
-      {blogs.map((blog, index) => {
-          const descriptionParagraphs = (blog.description || '').split('\n');
-
-        return (
-          <div key={index} className="flex flex-col mb-5">
-            <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-semibold mb-4 text-textColor dark:text-white">
-                {blog.title}
-              </h1>
-              <div className="flex space-x-2">
-              <div className="flex space-x-2">
-          <FaEdit className="text-textColor dark:text-white cursor-pointer" onClick={() => handleEdit(index)} />
-          <FaTrash className="text-red-500 cursor-pointer" onClick={() => handleDeleteClick(index)} />
-        </div>
-              </div>
-            </div>
-            <div className="flex flex-col md:flex-row">
-              <img
-                className="w-[400px] h-60 md:h-72 rounded-xl"
-                src={blog.image}
-                alt="Blog"
-              />
-              <div className="text-lg md:ml-5 text-textColor overflow-auto border-b-2 max-h-72 md:max-h-96 dark:text-gray-200">
-                {descriptionParagraphs.map((paragraph, index) => (
-                  <p key={index} className="mb-4">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-        );
-      })}
-
+      <BlogPostSlider 
+  blogs={blogs}
+  handleEdit={handleEdit}
+  handleDeleteClick={handleDeleteClick}
+  handleAdd={handleAdd}
+/>
       <CustomModal
         isOpen={editingIndex !== null || isAdding}
         onRequestClose={() => {
@@ -243,7 +208,7 @@ const handleAIImageSet = async (generatedImage) => {
           setIsAdding(false);
         }}
       >
-        <h2 className="text-xl font-bold mb-4">{isAdding ? 'Add New Blog' : 'Edit Blog'}</h2>
+        <h2 className="text-xl font-bold mb-4">{isAdding ? 'Add New Service' : 'Edit Service'}</h2>
         <input
           className="border p-2 w-full mb-4"
           type="text"
@@ -304,7 +269,7 @@ const handleAIImageSet = async (generatedImage) => {
       <DeleteConfirmationModal
         isOpen={deleteIndex !== null}
         onRequestClose={() => setDeleteIndex(null)}
-        title='Delete Blog'
+        title='Delete Service'
         itemName={blogs[deleteIndex]?.title || ''}
         onConfirmDelete={handleConfirmDelete}
       />
@@ -312,4 +277,4 @@ const handleAIImageSet = async (generatedImage) => {
   );
 };
 
-export default Blog;
+export default Services ;

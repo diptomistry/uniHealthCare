@@ -3,9 +3,10 @@ import { aboutUsData } from "../../../assets/dashboard";
 import Button from "../../../layouts/dashboard/DutyRoster/Button";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import DeleteConfirmationModal from "../../../models/DeleteConfirmationModal";
-import ServicesCard from "../../../layouts/dashboard/ServiceCard";
-import CustomModal from "../../../models/CustomModal";
-import ImageGenerator from "../../../models/dashboard/ImageGenerator";
+
+
+import Services from "./Services";
+
 
 const AboutSection = () => {
   const [aboutUs, setAboutUs] = useState("");
@@ -16,119 +17,65 @@ const AboutSection = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteItemType, setDeleteItemType] = useState(null);
   const [deleteItemIndex, setDeleteItemIndex] = useState(null);
+  const fetchImages = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch("http://localhost:8000/api/about-us/public/1", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Response:", response);
 
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editServiceIndex, setEditServiceIndex] = useState(null);
-  const [editServiceData, setEditServiceData] = useState({
-    title: "",
-    bodyText: "",
-    image: "",
-  });
-  const [imageSrc, setImageSrc] = useState('');
-  const [isAddServiceModalOpen, setIsAddServiceModalOpen] = useState(false);
-  const [newServiceData, setNewServiceData] = useState({
-    title: "",
-    bodyText: "",
-    image: "",
-  });
-  const handleAddService = () => {
-    setImageSrc(''); 
-    setNewServiceData({
-      title: "",
-      bodyText: "",
-      image: null,
-    });
-    setIsAddServiceModalOpen(true);
-  };
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error text:", errorText);
+        throw new Error("Failed to fetch image URLs");
+      }
 
-  const handleSaveNewService = () => {
-    aboutUsData.services.push(newServiceData);
-    setIsAddServiceModalOpen(false);
-  };
-  const handleImageChange = (e, isEdit = false) => {
-    setImageSrc(''); 
-    const file = e.target.files[0];
-    if (isEdit) {
-      setEditServiceData({ ...editServiceData, image: file });
-    } else {
-      setNewServiceData({ ...newServiceData, image: file });
+      const data = await response.json();
+      console.log("Data:", data);
+      setAboutUs(data.description);
+      const parsedImageUrls = data.imageUrls.map((img) => {
+        const parsedUrlObj = JSON.parse(img);
+        return parsedUrlObj.imageUrl;
+      });
+
+      setImages(parsedImageUrls);
+    } catch (error) {
+      console.error("Error fetching images:", error.message);
     }
   };
+  const fetchDepartments = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch("http://localhost:8000/api/departments", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error text:", errorText);
+        throw new Error("Failed to fetch department data");
+      }
+      const data = await response.json();
+      const departmentData = data.map((department) => ({
+        id: department.departmentID,
+        name: department.name,
+      }));
 
-
-  const handleEditService = (index) => {
-    const service = aboutUsData.services[index];
-    setEditServiceData(service);
-    setEditServiceIndex(index);
-    setIsEditModalOpen(true);
-    setImageSrc(''); // Clear the AI-generated image when editing a service
+      setDepartments(departmentData);
+    } catch (error) {
+      console.error("Error fetching departments:", error.message);
+    }
   };
-  const handleDeleteService = (index) => {
-    // Handle service deletion logic here
-  };
-  const handleSaveEditService = () => {
-    // Save the edited service data
-    aboutUsData.services[editServiceIndex] = editServiceData;
-    setIsEditModalOpen(false);
-  };
-
   useEffect(() => {
-    const fetchImages = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await fetch("http://localhost:8000/api/about-us/public/1", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log("Response:", response);
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error("Error text:", errorText);
-          throw new Error("Failed to fetch image URLs");
-        }
-
-        const data = await response.json();
-        console.log("Data:", data);
-        setAboutUs(data.description);
-        const parsedImageUrls = data.imageUrls.map((img) => {
-          const parsedUrlObj = JSON.parse(img);
-          return parsedUrlObj.imageUrl;
-        });
-
-        setImages(parsedImageUrls);
-      } catch (error) {
-        console.error("Error fetching images:", error.message);
-      }
-    };
+    
     //to fetch department data:post:localhost:8000/api/departments
-    const fetchDepartments = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await fetch("http://localhost:8000/api/departments", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error("Error text:", errorText);
-          throw new Error("Failed to fetch department data");
-        }
-        const data = await response.json();
-        const departmentData = data.map((department) => ({
-          id: department.departmentID,
-          name: department.name,
-        }));
-
-        setDepartments(departmentData);
-      } catch (error) {
-        console.error("Error fetching departments:", error.message);
-      }
-    };
+    
     fetchDepartments();
 
     fetchImages();
@@ -242,7 +189,10 @@ const AboutSection = () => {
         const addedDepartment = await response.json();
 
         // Update the state with the newly added department
-        setDepartments([...departments, addedDepartment.name]);
+        setDepartments([...departments, addedDepartment]);
+        //after adding dept reload fetchDepartments
+        
+        await fetchDepartments();
         setNewDepartment(""); // Clear the input field
       } catch (error) {
         console.error("Error adding department:", error.message);
@@ -348,10 +298,7 @@ const AboutSection = () => {
       console.error("Error updating About Us:", error.message);
     }
   };
-  const handleAIImageSet = (generatedImage) => {
-    setImageSrc(generatedImage);
-    setEditServiceData({ ...editForm, image: '' }); // Clear the image from the device when AI image is set
-  };
+ 
 
   return (
     <div className="flex flex-col md:flex-row gap-10 mb-20">
@@ -445,112 +392,14 @@ const AboutSection = () => {
             Add
           </button>
         </div>
-        <div className="mt-10">
-          <div className="flex flex-col md:flex-row md:justify-between mb-4">
-            <h1 className="mt-4 text-2xl font-hindSiliguri font-semibold text-textColor flex justify-center ">
-              Services:
-            </h1>
-            <button onClick={handleAddService}>
-            <Button title="Add New Service" />
-          </button>
-          </div>
-          <div className="w-full overflow-x-auto flex flex-row gap-5">
-            {aboutUsData.services.map((service, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 w-full flex items-center justify-center"
-              >
-                <ServicesCard
-                  image={service.image}
-                  title={service.title}
-                  bodyText={service.bodyText}
-                  onEdit={() => handleEditService(index)}
-                  onDelete={() => handleDeleteService(index)}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <CustomModal
-        isOpen={isEditModalOpen}
-        onRequestClose={() => setIsEditModalOpen(false)}
-      >
-        <div className="flex flex-col gap-4 ">
-          <input
-            type="text"
-            value={editServiceData.title}
-            onChange={(e) =>
-              setEditServiceData({ ...editServiceData, title: e.target.value })
-            }
-            placeholder="Title"
-            className="p-2 border border-gray-300 rounded"
-          />
-          <textarea
-            value={editServiceData.bodyText}
-            onChange={(e) =>
-              setEditServiceData({
-                ...editServiceData,
-                bodyText: e.target.value,
-              })
-            }
-            placeholder="Body Text"
-            rows="4"
-            className="p-2 border border-gray-300 rounded"
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleImageChange(e, true)}
-            className="p-2 border border-gray-300 rounded"
-          />
-             <ImageGenerator setImageSrc={handleAIImageSet} />
-             {imageSrc && (
-  <div className="md:ml-24 md:mr-24  ml-10 mr-10  scale-90  border border-gray-300 rounded-xl overflow-hidden flex justify-center items-center">
-    <img src={imageSrc} alt="Generated" className="object-cover w-full h-full " />
-  </div>
-)}
-          <button  onClick={handleSaveEditService} className="pb-4" >
-          <Button title="Save" />
-          </button>
-        </div>
-      </CustomModal>
+        <div className="m-10 ">
+        <Services/>
 
-      <CustomModal
-        isOpen={isAddServiceModalOpen}
-        onRequestClose={() => setIsAddServiceModalOpen(false)}
-      >
-        <div className="flex flex-col gap-4 ">
-          <input
-            type="text"
-            value={newServiceData.title}
-            onChange={(e) =>
-              setNewServiceData({ ...newServiceData, title: e.target.value })
-            }
-            placeholder="Title"
-            className="p-2 border border-gray-300 rounded"
-          />
-          <textarea
-            value={newServiceData.bodyText}
-            onChange={(e) =>
-              setNewServiceData({
-                ...newServiceData,
-                bodyText: e.target.value,
-              })
-            }
-            placeholder="Body Text"
-            rows="4"
-            className="p-2 border border-gray-300 rounded"
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="p-2 border border-gray-300 rounded"
-          />
-          <Button title="Save" onClick={handleSaveNewService} />
         </div>
-      </CustomModal>
+        
+      </div>
+     
+
       <DeleteConfirmationModal
         isOpen={isDeleteModalOpen}
         onRequestClose={closeDeleteModal}
