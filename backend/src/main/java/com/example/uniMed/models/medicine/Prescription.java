@@ -40,8 +40,6 @@ public class Prescription {
 
     @ManyToOne
     @JoinColumn(name = "userID")
-    @JsonBackReference
-
     private User patient;
 
 

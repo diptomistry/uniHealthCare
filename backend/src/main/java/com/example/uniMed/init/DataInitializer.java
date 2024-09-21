@@ -1,11 +1,13 @@
 package com.example.uniMed.init;
 
 
+import com.example.uniMed.models.AboutUs;
 import com.example.uniMed.models.Role;
 
 import com.example.uniMed.repositories.auth.role.RoleRepository;
+import com.example.uniMed.repositories.publics.about_us.AboutUsRepository;
 
-
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,10 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private RoleRepository roleRepository;
+
+
+    @Autowired
+    private AboutUsRepository aboutUsRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -40,5 +46,17 @@ public class DataInitializer implements CommandLineRunner {
                 roleRepository.save(role);
             }
         }
+
+        
+        List<AboutUs> aboutUsList = aboutUsRepository.findAll();
+        if (aboutUsList.size() == 0) {
+            AboutUs aboutUs = new AboutUs();
+            aboutUs = aboutUsList.get(0);
+            aboutUs.setDescription("This is a project for the course CSE327. The project is about a university medical center. The project is developed by a group of students. The project is developed using Spring Boot, React, and MySQL.");
+            aboutUs.setAppName("UniMed");
+            aboutUsRepository.save(aboutUs);
+        }
+       
+       
     }
 }
