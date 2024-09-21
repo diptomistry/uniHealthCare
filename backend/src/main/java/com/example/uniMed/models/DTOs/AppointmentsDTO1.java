@@ -16,7 +16,7 @@ public class AppointmentsDTO1 {
   
     private Integer appointmentID;
 
-   private Integer userID;
+    
     private User user;
 
     private Date appointmentDateTime;
@@ -81,15 +81,11 @@ public class AppointmentsDTO1 {
 
 
 
-    public Integer getUserID() {
-        return userID;
-    }
+    
 
 
 
 
-    public void setUserID(Integer userID) {
-        this.userID = userID;
-    }
+    
     
 }

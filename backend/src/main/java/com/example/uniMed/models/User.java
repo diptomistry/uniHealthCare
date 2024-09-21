@@ -15,7 +15,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userID")
+
 
 public class User {
     @Id
@@ -23,6 +23,7 @@ public class User {
     private Integer userID;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(unique = true, nullable = false)
@@ -35,6 +36,7 @@ public class User {
     private String phone;
     private String image;
     private String status = "Pending";
+
     private String token;
     private String otp;
     private String registeredFrom;
@@ -44,7 +46,7 @@ public class User {
     private Role role;
 
     @ManyToMany(mappedBy = "users")
-   
+    @JsonIgnore
     private List<ChatRoom> chatRooms;
 
     public List<ChatRoom> getChatRooms() {
