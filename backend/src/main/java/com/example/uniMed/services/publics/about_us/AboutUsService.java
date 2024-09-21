@@ -97,6 +97,7 @@ public class AboutUsService {
         return Optional.of(aboutUsList.get(0));
     }
     public Optional<AboutUs> deleteImageFromAboutUs(Long id, String imageUrl) {
+        try{
         return aboutUsRepository.findById(id).map(aboutUs -> {
             aboutUs.getImageUrls().remove(imageUrl);
             try {
@@ -107,6 +108,10 @@ public class AboutUsService {
            
             return aboutUsRepository.save(aboutUs);
         });
+    }
+    catch(Exception e){
+        throw new RuntimeException("error");
+    }
     }
     public AboutUs changeLogo(MultipartFile file) {
         try{
