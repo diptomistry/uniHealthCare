@@ -79,10 +79,12 @@ const NewRequests = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const pendingAppointments = data.filter(
+        console.log("Appointments data:", data);
+        const appointData = data.content;
+        const pendingAppointments = appointData.filter(
           (appointment) => appointment.status === "Scheduled"
         );
-  
+
         const transformedData = pendingAppointments.map((appointment) => ({
           AppointmentDate: formatDate(appointment.appointmentDateTime),
           Email: appointment.user?.email || "N/A",
@@ -122,10 +124,10 @@ const NewRequests = () => {
   };
 
   const handleSubmitPrescription = () => {
-    const appID= getAppID(selectedPatient.PatientName);
-    console.log("AppID:",appID);
+    const appID = getAppID(selectedPatient.PatientName);
+    console.log("AppID:", appID);
     const userID = getUserID(selectedPatient.PatientName);
-    console.log("Prescription submitted",appID,userID);
+    console.log("Prescription submitted", appID, userID);
     const prescriptionData = {
       description: description,
       date: todayDate,

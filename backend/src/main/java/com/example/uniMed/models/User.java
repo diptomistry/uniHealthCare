@@ -8,29 +8,39 @@ import com.example.uniMed.models.chat.ChatRoom;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({ "appointments" })
 @Inheritance(strategy = InheritanceType.JOINED)
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userID")
 
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userID;
 
+    // @OneToMany(mappedBy = "user")
+    // @JsonIgnore
+    // private List<Appointments> appointments;
+
     @Column(nullable = false)
     @JsonIgnore
     private String password;
 
     @Column(unique = true, nullable = false)
+    @JsonProperty("email")
     private String email;
 
     @Temporal(TemporalType.DATE)
     private Date dob;
+    @JsonProperty("name")
     private String name;
     private String sex;
     private String phone;
@@ -203,5 +213,13 @@ public class User {
     public void setRoleId(Integer roleId) {
         this.role = new Role(roleId);
     }
+
+    // public List<Appointments> getAppointments() {
+    // return appointments;
+    // }
+
+    // public void setAppointments(List<Appointments> appointments) {
+    // this.appointments = appointments;
+    // }
 
 }
