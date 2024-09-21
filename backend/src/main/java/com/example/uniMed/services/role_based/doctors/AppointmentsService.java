@@ -80,9 +80,12 @@ public class AppointmentsService {
 
     @Transactional
     public Appointments prescribeMedicine(Integer appointmentId, List<PrescribedMedicineDTO> prescribedMedicinesDTO,
-            @Nullable String description, @Nullable String date, @Nullable String status, @Nullable Integer doctorID,
-            @Nullable Integer userID) {
+            @Nullable String description, @Nullable String date, @Nullable String status,  Integer doctorID,
+             Integer userID) {
         Prescription prescription = new Prescription();
+        if (doctorID == null) {
+            throw new RuntimeException("Doctor ID is required");
+        }
         prescription.setDescription(description);
         prescription.setDate(date);
         System.out.println("Doctor ID: " + doctorID);
@@ -91,21 +94,22 @@ public class AppointmentsService {
 
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
         Optional<Doctors> optionalDoctor = doctorRepository.findById(Long.parseLong(doctorID.toString()));
-        if (optionalUser.isPresent()) {
-            prescription.setPatient(optionalUser.get());
+        Optional<Appointments> optionalAppointment = appointmentsRepository.findById(appointmentId);
+        if (!optionalAppointment.isPresent()) {
+            System.out.println("Appointment not found");
+            throw new RuntimeException("Appointment not found");
         }
-        if (optionalDoctor.isPresent()) {
-            prescription.setDoctor(optionalDoctor.get());
-        }
+       
         if (!optionalUser.isPresent()  ) {
-            System.out.println("User or Doctor not found");
+            System.out.println("User  not found");
             throw new RuntimeException("User  not found");
         }
         if (!optionalDoctor.isPresent()){
             System.out.println("Doctor not found");
             throw new RuntimeException("Doctor not found");
         }
-
+        prescription.setDoctor(optionalDoctor.get());
+        prescription.setPatient(optionalUser.get());
         // Save the prescription first to ensure it is managed by the persistence
         // context
         prescription = prescriptionRepository.save(prescription);
@@ -156,7 +160,7 @@ public class AppointmentsService {
        
         prescriptionRepository.save(prescription);
 
-        Optional<Appointments> optionalAppointment = appointmentsRepository.findById(appointmentId);
+        
         if (optionalAppointment.isPresent()) {
             Appointments appointment = optionalAppointment.get();
             appointment.setPrescription(prescription);
