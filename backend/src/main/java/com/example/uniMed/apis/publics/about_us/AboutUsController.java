@@ -16,8 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -109,14 +108,15 @@ public class AboutUsController {
       
         return aboutUsService.addImageToAboutUs(id, file);
     }
-    @PostMapping("/delete-image/{id}")
-   public ResponseEntity<AboutUs> deleteImage(@PathVariable Long id, @RequestBody String imageUrl) {
-       Optional<AboutUs> updatedAboutUs = aboutUsService.deleteImageFromAboutUs(id, imageUrl);
-       if (updatedAboutUs.isPresent()) {
-           return ResponseEntity.ok(updatedAboutUs.get());
-       } else {
-           return ResponseEntity.notFound().build();
-       }
-   }
+ @PostMapping("/delete-image/{id}")
+public ResponseEntity<AboutUs> deleteImage(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+    String imageUrl = requestBody.get("imageUrl");
+    Optional<AboutUs> updatedAboutUs = aboutUsService.deleteImageFromAboutUs(id, imageUrl);
+    if (updatedAboutUs.isPresent()) {
+        return ResponseEntity.ok(updatedAboutUs.get());
+    } else {
+        return ResponseEntity.notFound().build();
+    }
+}
     
 }
