@@ -75,15 +75,15 @@ const Sidebar = () => {
           <div className="relative">
             
             <img
-                src={avatar}
+                src={user.image}
                 alt="avatar"
                 className="w-24 h-24 flex items-center justify-center  border-zinc-500 border-4 rounded-full object-cover"
               />
           </div>
 
           <div className=" flex flex-col justify-center items-center">
-                  <h1 className=" font-semibold text-xl pt-4">Tanvir Hasan</h1>
-                  <h3 className=" pt-2">Cardiology</h3>
+                  <h1 className=" font-semibold text-xl pt-4">{user.name}</h1>
+                  <h3 className=" pt-2">{user.role.roleName}</h3>
 
                   <div class="flex items-center mt-2">
                     <svg

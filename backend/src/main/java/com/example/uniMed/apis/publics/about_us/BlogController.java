@@ -1,7 +1,5 @@
 package com.example.uniMed.apis.publics.about_us;
 
-
-
 import com.example.uniMed.models.Blog;
 import com.example.uniMed.services.publics.about_us.BlogService;
 
@@ -42,15 +40,22 @@ public class BlogController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Blog> createBlog(
             @RequestPart("title") String title,
+            @RequestPart("isBlog") String isBlog,
             @RequestPart("description") String description,
+
             @RequestPart(value = "file", required = false) MultipartFile file) {
-                Blog aBlog = new Blog();
-                aBlog.setTitle(title);
-                aBlog.setDescription(description);
-        
-      
+        Blog aBlog = new Blog();
+        aBlog.setTitle(title);
+        aBlog.setDescription(description);
+        if (isBlog.equals("true")) {
+            aBlog.setBlog(true);
+        } else {
+            aBlog.setBlog(false);
+        }
+        // aBlog.setBlog(isBlog);
+
         Blog newBlog = blogService.createBlog(aBlog, file);
-        
+
         return ResponseEntity.ok(newBlog);
     }
 

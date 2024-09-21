@@ -3,7 +3,11 @@ import SearchHeader from '../../models/dashboard/SearchBar';
 import { SearchResultsList } from '../../components/dashboard/doctor/prescription/SearchResultsList';
 import axios from 'axios';
 const calculateTotalQuantity = (quantity, duration) => {
-  const [morning, afternoon, evening] = quantity.split('-').map(Number);
+  // Standardize the quantity format to use '-' as the delimiter
+  const standardizedQuantity = quantity.replace(/\+/g, '-');
+  //const [morning, afternoon, evening] = quantity.split('-').map(Number);
+  // Split the quantity and convert to numbers
+  const [morning, afternoon, evening] = standardizedQuantity.split('-').map(Number);
   const totalDosesPerDay = morning + afternoon + evening;
 
   // Extract the number of days from the duration (assuming it's in format "X Days")
@@ -13,7 +17,7 @@ const calculateTotalQuantity = (quantity, duration) => {
   const totalQuantity = totalDosesPerDay * days;
   return totalQuantity;
 };
-const PrescribedMedicines = ({ userID }) => {
+const PrescribedMedicines = ({ userID,closeModal }) => {
   // Structure to store medicines per appointment
   const [appointmentsMedicines, setAppointmentsMedicines] = useState({});
 
@@ -29,7 +33,7 @@ const PrescribedMedicines = ({ userID }) => {
     const formattedData = data.reduce((acc, appointment) => {
       if (appointment.prescription) {
         const medicines = appointment.prescription.prescribedMedicines.map((medicine) => ({
-          id: medicine.prescribedMedicineID,
+          id: medicine.medicine.medicineID,
           name: medicine.medicine.name,
           isChecked: !medicine.medicine.is_Outside, // Default to true for prescribed medicines
           quantity: calculateTotalQuantity(medicine.quantity, medicine.duration),
@@ -118,9 +122,9 @@ const PrescribedMedicines = ({ userID }) => {
     }
   };
 
-  const handleSelectMedicine = (name, medicineID) => {
-    setSearchResults([]);
-  };
+  // const handleSelectMedicine = (name, medicineID) => {
+  //   setSearchResults([]);
+  // };
 
   const handleEditMedicine = (appointmentId, id, name) => {
     const selectedMedicine = appointmentsMedicines[appointmentId].find((med) => med.id === id);
@@ -134,12 +138,53 @@ const PrescribedMedicines = ({ userID }) => {
   };
 
   const handleSubmit = (appointmentId) => {
+    // Extract the selected medicines for the given appointment
     const selectedMedicines = appointmentsMedicines[appointmentId]
       .filter((med) => med.isChecked && med.quantity > 0)
-      .map((med) => ({ name: med.name, id: med.id, quantity: med.quantity }));
-
-    console.log(`Selected Medicines for Appointment ${appointmentId}:`, selectedMedicines);
+      .map((med) => ({
+        prescribedMedicineId: med.id, // Map medicine.id to prescribedMedicineId
+        dispensedQuantity: med.quantity // Map medicine quantity to dispensedQuantity
+      }));
+  
+    // Structure the request payload
+    const payload = {
+      appointmentId: parseInt(appointmentId), // Pass the appointmentId
+      dispensedMedicines: selectedMedicines // Pass the selected medicines
+    };
+    console.log('Payload:', payload);
+  
+    // Get the bearer token from local storage
+    const token = localStorage.getItem('token'); // Ensure this matches your stored token key
+  
+    // Make the POST request
+    fetch('http://localhost:8000/api/dispense-requests', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Use the bearer token for authentication
+      },
+      body: JSON.stringify(payload) // Send the payload as a JSON string
+    })
+      .then(async (response) => {
+        // Check if the response has a body before parsing it as JSON
+        if (!response.ok) {
+          return Promise.reject(`Error: ${response.status} ${response.statusText}`);
+        }
+        const text = await response.text();
+        return text ? JSON.parse(text) : null;
+      })
+      .then((data) => {
+        console.log('Response:', data);
+        closeModal();
+        // Handle the success response (data may be null if there's no response body)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // Handle the error, e.g., show an error message
+      });
   };
+  
+  
 
   return (
     <div className="p-4 bg-white rounded shadow-md">

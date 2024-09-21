@@ -12,6 +12,8 @@ const UserProfile = () => {
   const [clickProfile, setClickProfile] = useState(false);
   const [clickTask, setClickTask] = useState(false);
   const { logout } = useContext(UserContext);
+  const {user} = useContext(UserContext);
+  console.log(user)
 
   const handleSettingsClick = (item) => {
     if (item.title === "My Profile"||item.title === "My Tasks") {
@@ -46,13 +48,13 @@ const UserProfile = () => {
       <div className="flex gap-5 items-center mt-6 border-b-2 pb-6">
         <img
           className="rounded-full h-24 w-24"
-          src={avatar}
+          src={user.image}
           alt="user-profile"
         />
         <div>
-          <p className="font-semibold text-xl dark:text-gray-200"> Michael Roberts </p>
-          <p className="text-gray-500 text-sm dark:text-gray-400"> Administrator </p>
-          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> info@shop.com </p>
+          <p className="font-semibold text-xl dark:text-gray-200"> {user.name} </p>
+          <p className="text-gray-500 text-sm dark:text-gray-400">{user.role.roleName}</p>
+          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> {user.email}</p>
         </div>
       </div>
       <div>
