@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "appointments")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "user"})
+
 
 public class Appointments {
     @Id
@@ -22,7 +22,7 @@ public class Appointments {
 
     @ManyToOne
     @JoinColumn(name = "userID")
-   @JsonBackReference
+  
     private User user;
 
     private Date appointmentDateTime;

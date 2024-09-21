@@ -23,6 +23,9 @@ import jakarta.transaction.Transactional;
 import org.checkerframework.checker.units.qual.t;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder.Op;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -239,84 +242,29 @@ public class AppointmentsService {
         }
         return null;
     }
-    public List<AppointmentsDTO1> getAllAppointments() {
-        List<Appointments> appointments = appointmentsRepository.findAll();
+    public Page<Appointments> getAllAppointments(Pageable pageable) {
+        Page<Appointments> appointmentsPage = appointmentsRepository.findAll(pageable);
+        List<Appointments> appointments = appointmentsPage.getContent();
         List<AppointmentsDTO1> appointmentsDTO = new ArrayList<>();
+        
         for (Appointments appointment : appointments) {
-            
-
-            // Optional<Prescription> optionalPrescription = prescriptionRepository.findById(appointment
-            //         .getPrescription()
-            //         .getPrescriptionID());
-            // if (optionalPrescription.isPresent()) {
-            //     appointment.setPrescription(optionalPrescription.get());
-            // }
-            Integer appoinmentId=appointment.getAppointmentID();
+            Integer appointmentId = appointment.getAppointmentID();
             System.out.println("-----................................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println(appoinmentId);
-            Optional<User> optionalUsers = appointmentsRepository.findUserByAppointmentID(appoinmentId);
-
-            
-          
-            if (optionalUsers.isPresent()) {
-                AppointmentsDTO1 appointmentsDTO1 = new AppointmentsDTO1();
-                appointmentsDTO1.setAppointmentDateTime(appointment.getAppointmentDateTime());
-                appointmentsDTO1.setAppointmentID(appointment.getAppointmentID());
-                appointmentsDTO1.setConcern(appointment.getConcern());  
-                appointmentsDTO1.setStatus(appointment.getStatus());
-                appointmentsDTO1.setUser(optionalUsers.get());
-                appointmentsDTO.add(appointmentsDTO1);
-
-                
-                System.out.println("-----................................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                System.out.println(optionalUsers.get());
-                appointment.setUser(optionalUsers.get());
-                if (appointment.getPrescription() != null) {
-                    Optional<Prescription> optionalPrescription = prescriptionRepository.findById(appointment
-                            .getPrescription()
-                            .getPrescriptionID());
-                    if (optionalPrescription.isPresent()) {
-                        appointment.setPrescription(optionalPrescription.get());
-                        if (optionalPrescription.get().getPrescribedMedicines() != null) {
-                            for (PrescribedMedicine prescribedMedicine : optionalPrescription.get().getPrescribedMedicines()) {
-                                Optional<Medicines> optionalMedicine = medicineRepository.findById(prescribedMedicine
-                                        .getMedicine()
-                                        .getMedicineID());
-                                if (optionalMedicine.isPresent()) {
-                                    prescribedMedicine.setMedicine(optionalMedicine.get());
-                                }
-                            }
-                            // Long doctorID = Long.parseLong(optionalPrescription.get().getDoctor().toString());
-                            // System.out.println("Doctor ID: " + doctorID);
-                            // System.out.println("\n\n\n");
-                        // try   { 
-                            // Optional<Doctors> optionalDoctor = doctorRepository.findById(
-                            //     Long.parseLong(optionalPrescription.get()
-                            //         .getDoctor()
-                            //         .getUserID().toString(0)));
-                            // if (optionalDoctor.isPresent()) {
-                            //     System.out.println("Doctor found----------------------");
-                            //     System.out.println("\n\n\n");
-                            //     optionalPrescription.get().setDoctor(optionalDoctor.get());
-                            // }}
-                            // catch (Exception e) {
-                            //     System.out.println("Doctor not found");
-                            // }
-
-                            
-                         }
-                        else  if (optionalPrescription.get().getPrescribedMedicines() == null) {
-                            System.out.println("No medicines found");
-                        }
-                    }
-
+            System.out.println(appointmentId);
+            Prescription optionalPrescription = appointment.getPrescription();
+            if (optionalPrescription != null) {
+                System.out.println("Prescription ID: " + optionalPrescription.getPrescriptionID());
+                User user = optionalPrescription.getPatient();
+                Doctors doctor = optionalPrescription.getDoctor();
+                if (user != null) {
+                    System.out.println("User ID: " + user.getUserID());
+                } else {
+                    System.out.println("User not found");
+                }
             }
-           
-         
-
         }
-    }
-        return appointmentsDTO;
+        
+        return appointmentsPage;
     }
 
 }

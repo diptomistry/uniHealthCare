@@ -5,8 +5,10 @@ import java.util.List;
 import com.example.uniMed.models.Doctors;
 import com.example.uniMed.models.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,6 +30,17 @@ public class Prescription {
     private String description;
     private String date;
 
+     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userID")
+    @JsonManagedReference
+    private User patient;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "doctorID")
+    @JsonManagedReference
+    private Doctors doctor;
+
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, orphanRemoval = true)
 
     List<PrescribedMedicine> prescribedMedicines;
@@ -38,14 +51,6 @@ public class Prescription {
     public Prescription() {
     }
 
-    @ManyToOne
-    @JoinColumn(name = "userID")
-    private User patient;
-
-
-    @ManyToOne
-    @JoinColumn(name = "doctorID")
-    private Doctors doctor;
 
 
 

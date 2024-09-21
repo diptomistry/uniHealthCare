@@ -8,8 +8,11 @@ import com.example.uniMed.models.medicine.PrescribedMedicine;
 import com.example.uniMed.services.role_based.doctors.AppointmentsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
@@ -51,8 +54,11 @@ public class AppointmentsController {
     public List<Appointments> getAppointmentsByUserID(@PathVariable Integer UserID) {
         return appointmentsService.getAppointmentsByUser(UserID);
     }
-    @GetMapping("/all")
-    public List<AppointmentsDTO1> getAllAppointments() {
-        return appointmentsService.getAllAppointments();
+     @GetMapping("/all")
+    public Page<Appointments> getAllAppointments(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return appointmentsService.getAllAppointments(pageable);
     }
 }
