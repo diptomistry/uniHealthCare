@@ -1,4 +1,4 @@
-package com.example.uniMed.apis.doctors;
+package com.example.uniMed.apis.role_based.doctors;
 
 
 

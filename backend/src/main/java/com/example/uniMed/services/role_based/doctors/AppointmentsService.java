@@ -2,7 +2,7 @@ package com.example.uniMed.services.role_based.doctors;
 
 
 import com.example.uniMed.models.DTOs.AppointmentsDTO1;
-import com.example.uniMed.apis.doctors.AppointmentsDTO;
+import com.example.uniMed.apis.role_based.doctors.AppointmentsDTO;
 import com.example.uniMed.models.Appointments;
 import com.example.uniMed.models.Doctors;
 import com.example.uniMed.models.Medicines;

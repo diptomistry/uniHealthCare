@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 import com.example.uniMed.models.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -17,7 +18,7 @@ public class ChatRoom {
 
     @ManyToMany
     @JoinTable(name = "chat_room_users", joinColumns = @JoinColumn(name = "chat_room_id"), inverseJoinColumns = @JoinColumn(name = "userID"))
-    @JsonManagedReference
+    @JsonBackReference
     private List<User> users;
 
     public Long getId() {

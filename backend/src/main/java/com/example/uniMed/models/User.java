@@ -44,7 +44,7 @@ public class User {
     private Role role;
 
     @ManyToMany(mappedBy = "users")
-    @JsonBackReference
+   
     private List<ChatRoom> chatRooms;
 
     public List<ChatRoom> getChatRooms() {
