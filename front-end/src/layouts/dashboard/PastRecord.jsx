@@ -4,8 +4,28 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import "slick-carousel/slick/slick-theme.css";
 import PrescriptionTemplate from '../../components/dashboard/doctor/prescription/PrescriptionTemplate';
 import SetRating from '../../models/dashboard/SetRating';
+const getId = (name) =>{
+    if(!name) return null;
+    const idMatch = name.match(/id:(\d+)/);
+    if(idMatch && idMatch[1]){
+      return idMatch[1];
+  
+    }
+    return null;
+  }
+  const extractNameFromIdString = (name) => {
+    // Split the string on the first space after "id:4"
+    const nameParts = name.split(" ");
+    
+    // Remove the first part which contains "id:4"
+    // Then join the rest back into a string (the name part)
+    return nameParts.slice(1).join(" ");
+  };
+    
 
+  
 const PastRecord = ({ appointments }) => {
+
     const [exampleDataList, setExampleDataList] = useState([]);
 
     useEffect(() => {
@@ -105,7 +125,7 @@ const PastRecord = ({ appointments }) => {
                                 <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{appointment.date}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        {appointment.status === 'pending' ? '-' : appointment.doctorName}
+                                        {appointment.status === 'pending' ? '-' : extractNameFromIdString(appointment.doctorName)}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
@@ -116,7 +136,7 @@ const PastRecord = ({ appointments }) => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         {(appointment.status === 'Prescribed' || appointment.status === 'Dispensed') && (
-                                            <SetRating rating={0} />
+                                            <SetRating rating={0} doctorID={getId(appointment.doctorName)} />
                                         )}
                                     </td>
                                 </tr>

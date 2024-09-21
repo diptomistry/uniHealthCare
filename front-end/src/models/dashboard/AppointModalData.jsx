@@ -178,7 +178,7 @@ const AppointmentModalData = ({ modalContent }) => {
         // Process the API response
         const formattedAppointments = response.data.map((appointment) => ({
           date: new Date(appointment.appointmentDateTime).toISOString().split('T')[0], // Format date
-          doctorName: appointment.prescription?.doctor.name || null, // Include doctor's name if available
+          doctorName: `id:${appointment.prescription?.doctor.userID} ${appointment.prescription?.doctor.name}` || null, // Include doctor's name if available
           status: appointment.status,
         }));
 
