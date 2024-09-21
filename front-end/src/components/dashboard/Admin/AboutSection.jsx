@@ -26,27 +26,26 @@ const AboutSection = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Response:", response);
-
+  
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Error text:", errorText);
         throw new Error("Failed to fetch image URLs");
       }
-
+  
       const data = await response.json();
       console.log("Data:", data);
       setAboutUs(data.description);
-      const parsedImageUrls = data.imageUrls.map((img) => {
-        const parsedUrlObj = JSON.parse(img);
-        return parsedUrlObj.imageUrl;
-      });
-
+      
+      // No need to parse the URLs as JSON
+      const parsedImageUrls = data.imageUrls.map((img) => img);
+  
       setImages(parsedImageUrls);
     } catch (error) {
       console.error("Error fetching images:", error.message);
     }
   };
+  
   const fetchDepartments = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -130,6 +129,7 @@ const AboutSection = () => {
       const token = localStorage.getItem("token");
 
       try {
+        console.log("Image URL to delete:", imageUrlToDelete);
         const response = await fetch(
           "http://localhost:8000/api/about-us/delete-image/1",
           {
@@ -141,7 +141,8 @@ const AboutSection = () => {
             body: JSON.stringify({ imageUrl: imageUrlToDelete }),
           }
         );
-
+        console.log("Response:", response);
+        console.log("Image deleted successfully");
         if (!response.ok) {
           const errorText = await response.text();
           console.error("Error text:", errorText);
@@ -221,7 +222,7 @@ const AboutSection = () => {
       try {
         // Step 1: Upload the image to get its URL
         const uploadResponse = await fetch(
-          "http://localhost:8000/api/files/upload",
+          "http://localhost:8000/api/about-us/upload-image/1",
           {
             method: "POST",
             headers: {
@@ -241,8 +242,10 @@ const AboutSection = () => {
 
         // Parse the response as text, not JSON
         const url = await uploadResponse.text();
+        console.log("Image URL:", url);
 
         // Step 2: Post the image URL to the About Us API
+        /*
         const saveResponse = await fetch(
           "http://localhost:8000/api/about-us/upload-image/1",
           {
@@ -254,6 +257,7 @@ const AboutSection = () => {
             body: JSON.stringify({ imageUrl: url }),
           }
         );
+       
 
         if (!saveResponse.ok) {
           const errorText = await saveResponse.text();
@@ -262,7 +266,7 @@ const AboutSection = () => {
             `Failed to save image URL with status ${saveResponse.status}`
           );
         }
-
+ */
         setImages((prevImages) => [...prevImages, url]);
       } catch (error) {
         console.error("Error uploading image:", error.message);
