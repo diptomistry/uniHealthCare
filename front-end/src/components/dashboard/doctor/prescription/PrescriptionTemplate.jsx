@@ -1,33 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../../../../services/auth/UserProvider";
 
 const PrescriptionTemplate = ({ data }) => {
-  const medications = [
-    {
-      name: "Expectorant",
-      duration: "1 Week",
-      time: "Before Food",
-      frequency: "1-0-1",
-    },
-    {
-      name: "Paracetamol",
-      duration: "5 Days",
-      time: "After Food",
-      frequency: "0-1-1",
-    },
-    {
-      name: "Anti-biotic",
-      duration: "3 Weeks",
-      time: "After Food",
-      frequency: "1-1-0",
-    },
-    {
-      name: "Vitamin C",
-      duration: "6 Days",
-      time: "Before Food",
-      frequency: "0-0-1",
-    },
-  ];
-
+  const { user } = useContext(UserContext);
+  console.log(data);
+  
   return (
     <div className="max-w-3xl mx-auto p-4 bg-white shadow-lg rounded-lg overflow-hidden">
       <h1 className="text-2xl font-bold text-purple-800 mb-6 text-center sm:text-xl">
@@ -35,7 +12,7 @@ const PrescriptionTemplate = ({ data }) => {
       </h1>
       <div className="flex justify-between">
         <h2 className="text-xl font-semibold text-purple-800 mb-4 sm:text-lg">
-          Patient Information
+          Doctor Information
         </h2>
         <div>
           <p className="font-semibold text-textColor">Prescription Date</p>
@@ -44,37 +21,21 @@ const PrescriptionTemplate = ({ data }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div>
-          <p className="font-semibold text-purple-800">Name</p>
-          <p>{data.PatientName}</p>
+          <p className="font-semibold text-purple-800">Doctor Name</p>
+          <p>{data.DoctorName}</p>
         </div>
         <div>
-          <p className="font-semibold text-purple-800">Age</p>
-          <p>30</p>
+          <p className="font-semibold text-purple-800">Specialization</p>
+          <p>{data.Specialization}</p>
         </div>
         <div>
-          <p className="font-semibold text-purple-800">Phone Number</p>
-          <p>{data.PhoneNum}</p>
+          <p className="font-semibold text-brightColor">Patient Name</p>
+          <p>{user.name}</p>
         </div>
         <div>
-          <p className="font-semibold text-purple-800">Date of Birth</p>
-          <p>Wednesday, November 8, 1989</p>
-        </div>
-        <div>
-          <p className="font-semibold text-purple-800">Email</p>
-          <p className="break-words">{data.Email}</p>
-        </div>
-        <div>
-          <p className="font-semibold text-purple-800">Gender</p>
-          <p>{data.Gender}</p>
-        </div>
-        <div>
-          <p className="font-semibold text-purple-800">Address</p>
-          <p>1372 Payne Street Richlands, VA, 24641</p>
-        </div>
-        <div>
-          <p className="font-semibold text-purple-800">Diagnosis</p>
+          <p className="font-semibold text-brightColor">Diagnosis</p>
           <p className="text-white px-4 capitalize rounded-xl text-md bg-hoverColor w-fit">
-            Fever
+            {data.Diagnosis}
           </p>
         </div>
       </div>
@@ -93,14 +54,22 @@ const PrescriptionTemplate = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {medications.map((med, index) => (
-              <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
-                <td className="border p-2">{med.name}</td>
-                <td className="border p-2">{med.duration}</td>
-                <td className="border p-2">{med.time}</td>
-                <td className="border p-2">{med.frequency}</td>
+            {data.medications && data.medications.length > 0 ? (
+              data.medications.map((med, index) => (
+                <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
+                  <td className="border p-2">{med.name}</td>
+                  <td className="border p-2">{med.duration}</td>
+                  <td className="border p-2">{med.time}</td>
+                  <td className="border p-2">{med.frequency}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="border p-2 text-center">
+                  No medications prescribed.
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   CardioLogyDoctorDutyRoster,
   EyeDoctorDutyRoster,
@@ -7,6 +7,7 @@ import {
 import { AloSchedule } from "../../assets/dashboard";
 import { UserContext } from "../../services/auth/UserProvider";
 import PastRecord from "../../layouts/dashboard/PastRecord";
+
 import axios from "axios";
 const AppointmentModalData = ({ modalContent }) => {
   const [description, setDescription] = useState("");
@@ -17,7 +18,8 @@ const AppointmentModalData = ({ modalContent }) => {
   const { user } = useContext(UserContext);
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
-  console.log(user.userID);
+  
+ 
   const [dutyRoster, setDutyRoster] = useState([]);
   const fetchDepartments = async () => {
     try {
@@ -31,9 +33,8 @@ const AppointmentModalData = ({ modalContent }) => {
       if (response.ok) {
         const data = await response.json();
         const departments = data.map((dept) => dept.name);
-        
+
         setDepartmentList(departments); // Assuming 'departments' is the key in the response
-     
       } else {
         console.error("Failed to fetch department list");
       }
@@ -42,49 +43,51 @@ const AppointmentModalData = ({ modalContent }) => {
     }
   };
   //trim \n from department response. '\n' is a string
-const specialization = departmentResponse.slice(0, -1).trim(); 
-  
-useEffect(() => {
-  const fetchDutyRoster = async () => {
-    console.log("Specialization from departmentResponse:", specialization); // Debugging specialization value
-    
-    try {
-      const token = localStorage.getItem("token"); // Fetch bearer token from localStorage
-      const response = await axios.get("http://localhost:8000/api/duty-roster/table", {
-        headers: {
-          Authorization: `Bearer ${token}`, // Pass bearer token
-        },
-      });
+  const specialization = departmentResponse.slice(0, -1).trim();
 
-      // Log the entire response to check the structure and the data
-      console.log("Duty Roster API Response:", response.data);
+  useEffect(() => {
+    const fetchDutyRoster = async () => {
+      console.log("Specialization from departmentResponse:", specialization); // Debugging specialization value
 
-      // Filter the duty roster by specialization
-      const filteredRoster = response.data.map((day) => ({
-        ...day,
-        slots: day.slots.map((slot) => ({
-          ...slot,
-          doctors: slot.doctors.filter((doctor) => {
-           // console.log("Doctor Specialization:", doctor.specialization); // Debugging doctor specialization
-            return doctor.specialization === specialization;
-          }),
-        })),
-      }));
+      try {
+        const token = localStorage.getItem("token"); // Fetch bearer token from localStorage
+        const response = await axios.get(
+          "http://localhost:8000/api/duty-roster/table",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Pass bearer token
+            },
+          }
+        );
 
-      console.log("Filtered Roster:", filteredRoster); // Check filtered results
-      setDutyRoster(filteredRoster);
-    } catch (error) {
-      console.error("Error fetching duty roster:", error);
-    }
-  };
+        // Log the entire response to check the structure and the data
+        console.log("Duty Roster API Response:", response.data);
 
-  fetchDutyRoster();
-}, [specialization]);
+        // Filter the duty roster by specialization
+        const filteredRoster = response.data.map((day) => ({
+          ...day,
+          slots: day.slots.map((slot) => ({
+            ...slot,
+            doctors: slot.doctors.filter((doctor) => {
+              // console.log("Doctor Specialization:", doctor.specialization); // Debugging doctor specialization
+              return doctor.specialization === specialization;
+            }),
+          })),
+        }));
+
+        console.log("Filtered Roster:", filteredRoster); // Check filtered results
+        setDutyRoster(filteredRoster);
+      } catch (error) {
+        console.error("Error fetching duty roster:", error);
+      }
+    };
+
+    fetchDutyRoster();
+  }, [specialization]);
 
   useEffect(() => {
     // Fetch the department list from the API
-   
-   
+
     fetchDepartments();
   }, []);
 
@@ -112,7 +115,7 @@ useEffect(() => {
       if (response.ok) {
         const data = await response.json();
         setDepartmentResponse(data.response);
-    
+
         console.log(data);
         setIsResponseReceived(true);
       } else {
@@ -160,22 +163,33 @@ useEffect(() => {
   };
   const showAlert = departmentResponse.toLowerCase().includes("please");
 
-      const appointments = [
-        {
-          date: '2024-08-25',
-          doctorName: 'Dr. Smith',
-          status: 'completed',
-        },
-        {
-          date: '2024-08-20',
-          status: 'pending',
-        },
-        {
-          date: '2024-08-15',
-          doctorName: 'Dr. Williams',
-          status: 'completed',
-        },
-      ];
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Retrieve token from localStorage
+        const response = await axios.get(`http://localhost:8000/api/appointments/${user.userID}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Process the API response
+        const formattedAppointments = response.data.map((appointment) => ({
+          date: new Date(appointment.appointmentDateTime).toISOString().split('T')[0], // Format date
+          doctorName: appointment.prescription?.doctor.name || null, // Include doctor's name if available
+          status: appointment.status,
+        }));
+
+        setAppointments(formattedAppointments);
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold">{modalContent}</h2>
@@ -254,42 +268,52 @@ useEffect(() => {
                   Doctor Duty Roster for {departmentResponse} Department:
                 </h3>
                 {dutyRoster.length > 0 ? (
-        <table className="table-auto border-collapse border border-gray-300 w-full text-left">
-          <thead>
-            <tr>
-              <th className="border border-gray-300 px-4 py-2">Day</th>
-              <th className="border border-gray-300 px-4 py-2">Time Slot</th>
-              <th className="border border-gray-300 px-4 py-2">Doctors</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dutyRoster.map((day, dayIndex) =>
-              day.slots.map((slot, slotIndex) => (
-                <tr key={`${dayIndex}-${slotIndex}`}>
-                  {slotIndex === 0 && (
-                    <td
-                      className="border border-gray-300 px-4 py-2"
-                      rowSpan={day.slots.length}
-                    >
-                      {day.dayOfWeek}
-                    </td>
-                  )}
-                  <td className="border border-gray-300 px-4 py-2">
-                    {slot.slotTime}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2 text-brightColor">
-                    {slot.doctors.length > 0 ? (
-                      slot.doctors.map((doctor) => doctor.name).join(", ")
-                    ) : (
-                      <span className="text-gray-300">No doctors available</span>
-                    )}
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      ): (
+                  <table className="table-auto border-collapse border border-gray-300 w-full text-left">
+                    <thead>
+                      <tr>
+                        <th className="border border-gray-300 px-4 py-2">
+                          Day
+                        </th>
+                        <th className="border border-gray-300 px-4 py-2">
+                          Time Slot
+                        </th>
+                        <th className="border border-gray-300 px-4 py-2">
+                          Doctors
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dutyRoster.map((day, dayIndex) =>
+                        day.slots.map((slot, slotIndex) => (
+                          <tr key={`${dayIndex}-${slotIndex}`}>
+                            {slotIndex === 0 && (
+                              <td
+                                className="border border-gray-300 px-4 py-2"
+                                rowSpan={day.slots.length}
+                              >
+                                {day.dayOfWeek}
+                              </td>
+                            )}
+                            <td className="border border-gray-300 px-4 py-2">
+                              {slot.slotTime}
+                            </td>
+                            <td className="border border-gray-300 px-4 py-2 text-brightColor">
+                              {slot.doctors.length > 0 ? (
+                                slot.doctors
+                                  .map((doctor) => doctor.name)
+                                  .join(", ")
+                              ) : (
+                                <span className="text-gray-300">
+                                  No doctors available
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                ) : (
                   <p className="text-gray-600">
                     No duty roster available for this department.
                   </p>
@@ -299,7 +323,9 @@ useEffect(() => {
           )}
         </div>
       )}
-      {modalContent === "Past Record" && <PastRecord appointments={appointments}/>}
+      {modalContent === "Past Record" && (
+        <PastRecord appointments={appointments} />
+      )}
     </div>
   );
 };

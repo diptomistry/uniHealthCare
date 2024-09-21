@@ -1,40 +1,57 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import Slider from 'react-slick';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import "slick-carousel/slick/slick-theme.css";
 import PrescriptionTemplate from '../../components/dashboard/doctor/prescription/PrescriptionTemplate';
 import SetRating from '../../models/dashboard/SetRating';
+
 const PastRecord = ({ appointments }) => {
-    const exampleData1 = {
-        AppointmentDate: "2024-08-31",
-        PatientName: "John Doe",
-        PhoneNum: "+1 123 456 7890",
-        Email: "johndoe@example.com",
-        Gender: "Male",
-        Address: "1372 Payne Street Richlands, VA, 24641",
-        Diagnosis: "Headache",
-    };
-    const exampleData2 = {
-        AppointmentDate: "2024-08-31",
-        PatientName: "Dianna Smith",
-        PhoneNum: "+1 123 456 7890",
-        Email: "johndoe@example.com",
-        Gender: "Male",
-        Address: "1372 Payne Street Richlands, VA, 24641",
-        Diagnosis: "Fever",
-    };
-    const exampleData3 = {
-        AppointmentDate: "2024-08-31",
-        PatientName: "John Doe",
-        PhoneNum: "+1 123 456 7890",
-        Email: "johndoe@example.com",
-        Gender: "Male",
-        Address: "1372 Payne Street Richlands, VA, 24641",
-        Diagnosis: "Cold",
-    };
+    const [exampleDataList, setExampleDataList] = useState([]);
 
-    const prescriptions = [exampleData1, exampleData2, exampleData3];
-
+    useEffect(() => {
+      const fetchAppointments = async () => {
+        try {
+          const token = localStorage.getItem("token");
+  
+          const response = await fetch("http://localhost:8000/api/appointments/1", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          if (!response.ok) {
+            throw new Error("Failed to fetch");
+          }
+  
+          const data = await response.json();
+  
+          // Transform data to match the exampleDataList format
+          const transformedData = data.map((appointment) => ({
+            DoctorName: appointment.prescription?.doctor.name || "N/A",
+            Specialization: appointment.prescription?.doctor.department.name || "N/A",
+            PatientName: appointment.user.name,
+            Diagnosis: appointment.concern,
+            AppointmentDate: new Date(appointment.appointmentDateTime).toLocaleDateString(),
+            medications: appointment.prescription?.prescribedMedicines
+              ? appointment.prescription.prescribedMedicines.map((med) => ({
+                  name: med.medicine.name,
+                  duration: med.duration,
+                  time: med.afterBefore,
+                  frequency: med.quantity,
+                }))
+              : null,
+          }));
+  
+          setExampleDataList(transformedData);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+  
+      fetchAppointments();
+    }, []);
     const NextArrow = (props) => {
         const { onClick } = props;
         return (
@@ -92,14 +109,14 @@ const PastRecord = ({ appointments }) => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                            appointment.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
+                                            appointment.status === 'Scheduled' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
                                         }`}>
                                             {appointment.status}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        {appointment.status === 'completed' && (
-                                           <SetRating rating={0} />
+                                        {(appointment.status === 'Prescribed' || appointment.status === 'Dispensed') && (
+                                            <SetRating rating={0} />
                                         )}
                                     </td>
                                 </tr>
@@ -113,7 +130,7 @@ const PastRecord = ({ appointments }) => {
 
             <h2 className="text-2xl font-bold mt-8 mb-4">Prescriptions</h2>
             <Slider {...settings}>
-                {prescriptions.map((prescription, index) => (
+                {exampleDataList.map((prescription, index) => (
                     <div key={index}>
                         <PrescriptionTemplate data={prescription} />
                     </div>
