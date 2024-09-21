@@ -82,7 +82,7 @@ const NewRequests = () => {
         console.log("Appointments data:", data);
         const appointData = data.content;
         const pendingAppointments = appointData.filter(
-          (appointment) => appointment.status === "Scheduled"
+          (appointment) => appointment.status === "Scheduled" && appointment.user !== null
         );
 
         const transformedData = pendingAppointments.map((appointment) => ({
@@ -90,7 +90,7 @@ const NewRequests = () => {
           Email: appointment.user?.email || "N/A",
           PhoneNum: appointment.user?.phone || "N/A",
           PatientName:
-            `AppID:${appointment.appointmentID} userID:${appointment.user.userID} ${appointment.user?.name} ` ||
+            `AppID:${appointment.appointmentID} userID:${appointment.user?.userID} ${appointment.user?.name} ` ||
             "Unknown",
           Gender: appointment.user?.sex || "Unknown",
           Age: appointment.user?.dob

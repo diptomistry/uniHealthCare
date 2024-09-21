@@ -17,9 +17,10 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties({ "appointments" })
+
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userID")
+// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+// property = "userID")
 
 public class User {
     @Id

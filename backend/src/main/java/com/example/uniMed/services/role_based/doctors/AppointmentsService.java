@@ -1,6 +1,5 @@
 package com.example.uniMed.services.role_based.doctors;
 
-
 import com.example.uniMed.models.DTOs.AppointmentsDTO1;
 import com.example.uniMed.apis.role_based.doctors.AppointmentsDTO;
 import com.example.uniMed.models.Appointments;
@@ -27,7 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,7 +64,6 @@ public class AppointmentsService {
         appointment1.setAppointmentDateTime(appointment.getAppointmentDateTime());
         appointment1.setConcern(appointment.getConcern());
         appointment1.setStatus(appointment.getStatus());
-        
 
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userId.toString()));
 
@@ -74,7 +71,7 @@ public class AppointmentsService {
             appointment1.setUser(optionalUser.get());
 
         }
-        if (!optionalUser.isPresent()){
+        if (!optionalUser.isPresent()) {
             System.out.println("User not found");
             throw new RuntimeException("User not found");
         }
@@ -83,8 +80,8 @@ public class AppointmentsService {
 
     @Transactional
     public Appointments prescribeMedicine(Integer appointmentId, List<PrescribedMedicineDTO> prescribedMedicinesDTO,
-            @Nullable String description, @Nullable String date, @Nullable String status,  Integer doctorID,
-             Integer userID) {
+            @Nullable String description, @Nullable String date, @Nullable String status, Integer doctorID,
+            Integer userID) {
         Prescription prescription = new Prescription();
         if (doctorID == null) {
             throw new RuntimeException("Doctor ID is required");
@@ -102,12 +99,12 @@ public class AppointmentsService {
             System.out.println("Appointment not found");
             throw new RuntimeException("Appointment not found");
         }
-       
-        if (!optionalUser.isPresent()  ) {
+
+        if (!optionalUser.isPresent()) {
             System.out.println("User  not found");
             throw new RuntimeException("User  not found");
         }
-        if (!optionalDoctor.isPresent()){
+        if (!optionalDoctor.isPresent()) {
             System.out.println("Doctor not found");
             throw new RuntimeException("Doctor not found");
         }
@@ -160,10 +157,9 @@ public class AppointmentsService {
         }
 
         prescription.setPrescribedMedicines(prescribedMedicines);
-       
+
         prescriptionRepository.save(prescription);
 
-        
         if (optionalAppointment.isPresent()) {
             Appointments appointment = optionalAppointment.get();
             appointment.setPrescription(prescription);
@@ -192,65 +188,69 @@ public class AppointmentsService {
         System.out.println("User ID: " + userID);
         if (optionalUser.isPresent()) {
             Optional<List<Appointments>> optionalAppointments = appointmentsRepository.findByUserUserID(userID);
-            
+
             if (optionalAppointments.isPresent()) {
                 for (Appointments appointment : optionalAppointments.get()) {
                     if (appointment.getPrescription() != null) {
-                    
-                System.out.println("Appointment ID: \n\n\n\n" + appointment.getAppointmentID());
-                Optional<Prescription> optionalPrescription = prescriptionRepository.findById(appointment.getPrescription().getPrescriptionID());
-                if (optionalPrescription.isPresent()) {
-                        appointment.setPrescription(optionalPrescription.get());
-                        if (optionalPrescription.get().getPrescribedMedicines() != null) {
-                            for (PrescribedMedicine prescribedMedicine : optionalPrescription.get().getPrescribedMedicines()) {
-                                Optional<Medicines> optionalMedicine = medicineRepository.findById(prescribedMedicine
-                                        .getMedicine()
-                                        .getMedicineID());
-                                if (optionalMedicine.isPresent()) {
-                                    prescribedMedicine.setMedicine(optionalMedicine.get());
-                                }
-                            }
-                            // Long doctorID = Long.parseLong(optionalPrescription.get().getDoctor().toString());
-                            // System.out.println("Doctor ID: " + doctorID);
-                            // System.out.println("\n\n\n");
-                        // try   { 
-                            // Optional<Doctors> optionalDoctor = doctorRepository.findById(
-                            //     Long.parseLong(optionalPrescription.get()
-                            //         .getDoctor()
-                            //         .getUserID().toString(0)));
-                            // if (optionalDoctor.isPresent()) {
-                            //     System.out.println("Doctor found----------------------");
-                            //     System.out.println("\n\n\n");
-                            //     optionalPrescription.get().setDoctor(optionalDoctor.get());
-                            // }}
-                            // catch (Exception e) {
-                            //     System.out.println("Doctor not found");
-                            // }
 
-                            
-                         }
-                        else  if (optionalPrescription.get().getPrescribedMedicines() == null) {
-                            System.out.println("No medicines found");
+                        System.out.println("Appointment ID: \n\n\n\n" + appointment.getAppointmentID());
+                        Optional<Prescription> optionalPrescription = prescriptionRepository
+                                .findById(appointment.getPrescription().getPrescriptionID());
+                        if (optionalPrescription.isPresent()) {
+                            appointment.setPrescription(optionalPrescription.get());
+                            if (optionalPrescription.get().getPrescribedMedicines() != null) {
+                                for (PrescribedMedicine prescribedMedicine : optionalPrescription.get()
+                                        .getPrescribedMedicines()) {
+                                    Optional<Medicines> optionalMedicine = medicineRepository
+                                            .findById(prescribedMedicine
+                                                    .getMedicine()
+                                                    .getMedicineID());
+                                    if (optionalMedicine.isPresent()) {
+                                        prescribedMedicine.setMedicine(optionalMedicine.get());
+                                    }
+                                }
+                                // Long doctorID =
+                                // Long.parseLong(optionalPrescription.get().getDoctor().toString());
+                                // System.out.println("Doctor ID: " + doctorID);
+                                // System.out.println("\n\n\n");
+                                // try {
+                                // Optional<Doctors> optionalDoctor = doctorRepository.findById(
+                                // Long.parseLong(optionalPrescription.get()
+                                // .getDoctor()
+                                // .getUserID().toString(0)));
+                                // if (optionalDoctor.isPresent()) {
+                                // System.out.println("Doctor found----------------------");
+                                // System.out.println("\n\n\n");
+                                // optionalPrescription.get().setDoctor(optionalDoctor.get());
+                                // }}
+                                // catch (Exception e) {
+                                // System.out.println("Doctor not found");
+                                // }
+
+                            } else if (optionalPrescription.get().getPrescribedMedicines() == null) {
+                                System.out.println("No medicines found");
+                            }
                         }
                     }
+
+                    return optionalAppointments.get();
                 }
 
-                return optionalAppointments.get();
             }
-
-        }
         }
         return null;
     }
+
     public Page<Appointments> getAllAppointments(Pageable pageable) {
         Page<Appointments> appointmentsPage = appointmentsRepository.findAll(pageable);
         List<Appointments> appointments = appointmentsPage.getContent();
-        List<AppointmentsDTO1> appointmentsDTO = new ArrayList<>();
-        
+
         for (Appointments appointment : appointments) {
             Integer appointmentId = appointment.getAppointmentID();
             System.out.println("-----................................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println(appointmentId);
+            System.out.println(appointment.getUser().getUserID());
+
             Prescription optionalPrescription = appointment.getPrescription();
             if (optionalPrescription != null) {
                 System.out.println("Prescription ID: " + optionalPrescription.getPrescriptionID());
@@ -263,7 +263,7 @@ public class AppointmentsService {
                 }
             }
         }
-        
+
         return appointmentsPage;
     }
 

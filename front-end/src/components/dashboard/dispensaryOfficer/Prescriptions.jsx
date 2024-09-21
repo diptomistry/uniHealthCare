@@ -31,7 +31,7 @@ const Prescriptions = () => {
         });
 
         // Filter appointments where status is "Prescribed"
-        const prescribedAppointments = response.data.filter(appointment => appointment.status === 'Prescribed');
+        const prescribedAppointments = response.data.content.filter(appointment => appointment.status === 'Prescribed');
 
         // Formatting the data to match your required structure
         const formattedData = prescribedAppointments.map(appointment => ({

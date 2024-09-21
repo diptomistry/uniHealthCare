@@ -7,6 +7,7 @@ import com.example.uniMed.models.medicine.Prescription;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.api.client.util.NullValue;
 
 import jakarta.persistence.*;
@@ -21,6 +22,7 @@ public class Appointments {
 
     @ManyToOne
     @JoinColumn(name = "userID")
+    @JsonProperty("user")
     private User user;
     private Date appointmentDateTime;
     private String concern;
