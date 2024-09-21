@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useContext } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { BsChatLeft } from 'react-icons/bs';
 import { RiNotification3Line } from 'react-icons/ri';
@@ -9,6 +9,7 @@ import avatar from '../../assets/img/admin.jpeg';
 import Chat from '../../models/dashboard/Chat';
 import Notification from '../../models/dashboard/Notification';
 import UserProfile from '../../models/dashboard/UserProfile';
+import { UserContext } from '../../services/auth/UserProvider';
 
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
@@ -30,6 +31,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
  
 
 const Navbar = () => {
+  const {user} = useContext(UserContext);
    const {activeMenu, setActiveMenu,isClicked,handleClick,screenSize,setScreenSize} = useStateContext();
   //to track the widh of the browser screen
    useEffect(() => {
@@ -63,13 +65,13 @@ const Navbar = () => {
           >
             <img
               className="rounded-full w-8 h-8"
-              src={avatar}
+              src={user.image}
               alt="user-profile"
             />
             <p>
               <span className="text-gray-400 text-14">Hi,</span>{' '}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                Michael
+                {user.name}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
