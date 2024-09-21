@@ -256,7 +256,7 @@ public class AppointmentsService {
             System.out.println(appoinmentId);
             Optional<User> optionalUsers = appointmentsRepository.findUserByAppointmentID(appoinmentId);
 
-
+            
           
             if (optionalUsers.isPresent()) {
                 AppointmentsDTO1 appointmentsDTO1 = new AppointmentsDTO1();
@@ -271,11 +271,51 @@ public class AppointmentsService {
                 System.out.println("-----................................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 System.out.println(optionalUsers.get());
                 appointment.setUser(optionalUsers.get());
+                if (appointment.getPrescription() != null) {
+                    Optional<Prescription> optionalPrescription = prescriptionRepository.findById(appointment
+                            .getPrescription()
+                            .getPrescriptionID());
+                    if (optionalPrescription.isPresent()) {
+                        appointment.setPrescription(optionalPrescription.get());
+                        if (optionalPrescription.get().getPrescribedMedicines() != null) {
+                            for (PrescribedMedicine prescribedMedicine : optionalPrescription.get().getPrescribedMedicines()) {
+                                Optional<Medicines> optionalMedicine = medicineRepository.findById(prescribedMedicine
+                                        .getMedicine()
+                                        .getMedicineID());
+                                if (optionalMedicine.isPresent()) {
+                                    prescribedMedicine.setMedicine(optionalMedicine.get());
+                                }
+                            }
+                            // Long doctorID = Long.parseLong(optionalPrescription.get().getDoctor().toString());
+                            // System.out.println("Doctor ID: " + doctorID);
+                            // System.out.println("\n\n\n");
+                        // try   { 
+                            // Optional<Doctors> optionalDoctor = doctorRepository.findById(
+                            //     Long.parseLong(optionalPrescription.get()
+                            //         .getDoctor()
+                            //         .getUserID().toString(0)));
+                            // if (optionalDoctor.isPresent()) {
+                            //     System.out.println("Doctor found----------------------");
+                            //     System.out.println("\n\n\n");
+                            //     optionalPrescription.get().setDoctor(optionalDoctor.get());
+                            // }}
+                            // catch (Exception e) {
+                            //     System.out.println("Doctor not found");
+                            // }
+
+                            
+                         }
+                        else  if (optionalPrescription.get().getPrescribedMedicines() == null) {
+                            System.out.println("No medicines found");
+                        }
+                    }
+
             }
            
          
 
         }
+    }
         return appointmentsDTO;
     }
 
