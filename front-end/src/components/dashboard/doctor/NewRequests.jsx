@@ -79,7 +79,11 @@ const NewRequests = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const transformedData = data.map((appointment) => ({
+        const pendingAppointments = data.filter(
+          (appointment) => appointment.status === "Scheduled"
+        );
+  
+        const transformedData = pendingAppointments.map((appointment) => ({
           AppointmentDate: formatDate(appointment.appointmentDateTime),
           Email: appointment.user?.email || "N/A",
           PhoneNum: appointment.user?.phone || "N/A",
