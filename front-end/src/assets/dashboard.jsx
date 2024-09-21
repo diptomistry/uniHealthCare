@@ -6,7 +6,7 @@ import {
   FiCreditCard,
   FiCalendar,
 } from "react-icons/fi";
-
+import { TbDetails } from "react-icons/tb";
 import {
   AiOutlineCheckCircle,
   AiOutlineInfoCircle,
@@ -3153,6 +3153,11 @@ export const links = [
         name: "Quote-Section",
         icon: <BsChatQuote />,
       },
+      {
+        name: "App-Info",
+        icon: <TbDetails />,
+
+      }
     ],
   },
   {

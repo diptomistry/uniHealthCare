@@ -26,6 +26,7 @@ import AdditionalInfo from "../components/dashboard/Admin/AdditionalInfo";
 import TaskDistribution from "../components/dashboard/Admin/TaskDistribution";
 import AddMedicine from "../components/dashboard/seniorOfficer/AddMedicine";
 import SeniorHome from "../components/dashboard/seniorOfficer/SeniorHome";
+import AppInfo from "../components/dashboard/Admin/AppInfo";
 import {
   AboutSection,
   AllUsers,
@@ -220,6 +221,14 @@ const Dashboard = () => {
               element={
                 <SpecificRouteProtection role="admin">
                   <QuoteSection />
+                </SpecificRouteProtection>
+              }
+            />
+            <Route 
+              path="/App-Info"
+              element={
+                <SpecificRouteProtection role="admin">
+                  <AppInfo />
                 </SpecificRouteProtection>
               }
             />
