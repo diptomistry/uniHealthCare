@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.checkerframework.checker.units.qual.s;
 
+import com.example.uniMed.models.DTOs.DoctorsDTO;
 import com.example.uniMed.models.rating.Rating;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -47,7 +48,20 @@ public class Doctors extends User {
 
         this.department = department;
     }
-
+    public DoctorsDTO toDto(Doctors doctor) {
+        DoctorsDTO doctorDTO = new DoctorsDTO();
+        doctorDTO.setUserID(doctor.getUserID());
+        doctorDTO.setEmail(doctor.getEmail());
+        doctorDTO.setName(doctor.getName());
+        doctorDTO.setSex(doctor.getSex());
+        doctorDTO.setPhone(doctor.getPhone());
+        doctorDTO.setImage(doctor.getImage());
+        doctorDTO.setStatus(doctor.getStatus());
+        doctorDTO.setDob(doctor.getDob());
+        doctorDTO.setRole(doctor.getRole().getRoleName());
+        doctorDTO.setDepartment(doctor.getDepartment());
+        return doctorDTO;
+    }
     public Doctors() {
 
     }

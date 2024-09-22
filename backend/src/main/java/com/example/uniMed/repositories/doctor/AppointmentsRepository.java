@@ -20,5 +20,8 @@ public interface AppointmentsRepository extends JpaRepository<Appointments, Inte
    
     @Query("SELECT a.user FROM Appointments a WHERE a.appointmentID = :appointmentID")
     Optional<User> findUserByAppointmentID(@Param("appointmentID") Integer appointmentID);
+
+    long countByStatus(String status);
+    
     
 }
