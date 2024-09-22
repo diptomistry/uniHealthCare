@@ -108,7 +108,7 @@ public class User {
         dto.setImage(this.image);
         dto.setStatus(this.status);
         dto.setDob(this.dob);
-        dto.setRole(this.role != null ? this.role.getRoleName() : null);
+        dto.setRole(this.role != null ? this.role : null);
         return dto;
     }
 

@@ -2,6 +2,8 @@ package com.example.uniMed.models.DTOs;
 
 import java.util.Date;
 
+import com.example.uniMed.models.Role;
+
 public class UserDTO {
     private Integer userID;
     private String email;
@@ -11,7 +13,8 @@ public class UserDTO {
     private String image;
     private String status;
     private Date dob;
-    private String role;
+  private Role role;
+   
 
     // Getters and Setters
 
@@ -79,11 +82,10 @@ public class UserDTO {
         this.dob = dob;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
-
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }
