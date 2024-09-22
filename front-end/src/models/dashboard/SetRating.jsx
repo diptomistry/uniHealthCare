@@ -7,7 +7,7 @@ import { UserContext } from '../../services/auth/UserProvider';
 
 const SetRating = ({ doctorID }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentRating, setCurrentRating] = useState(5); // Use null instead of 0 initially
+  const [currentRating, setCurrentRating] = useState(null); // Use null instead of 0 initially
   const [comment, setComment] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { user } = useContext(UserContext);
@@ -41,7 +41,7 @@ const SetRating = ({ doctorID }) => {
     };
 
     fetchRating();
-  }, []);
+  }, [doctorID]);
 
   const handleRatingChange = (newRating) => {
     setCurrentRating(newRating);
