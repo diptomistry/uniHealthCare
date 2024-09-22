@@ -63,4 +63,8 @@ public class RatingController {
                   .map(RatingDTO::fromRating)
                   .collect(Collectors.toList());
   }
+  @DeleteMapping("/{id}")
+  public void deleteRating(@PathVariable Long id) {
+    ratingRepository.deleteById(id);
+  }
 }
