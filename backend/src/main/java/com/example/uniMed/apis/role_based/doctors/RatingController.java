@@ -56,4 +56,11 @@ public class RatingController {
     ratingDTO.setDoctor(rating.getDoctor().toDTO());
     return RatingDTO.fromRating(savedRating);
   }
+  @GetMapping("/doctor/{doctorId}/user/{userId}/reviews")
+  public List<RatingDTO> getReviewsByDoctorAndUser(@PathVariable Long doctorId, @PathVariable Long userId) {
+    List<Rating> ratings = ratingRepository.findByDoctorUserIDAndUserUserID(doctorId, userId);
+    return ratings.stream()
+                  .map(RatingDTO::fromRating)
+                  .collect(Collectors.toList());
+  }
 }

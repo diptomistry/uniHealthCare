@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, Long> {
     List<Rating> findByDoctor(Doctors doctor);
+    List<Rating> findByDoctorUserIDAndUserUserID(Long doctorId, Long userId);
 }
