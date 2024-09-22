@@ -47,7 +47,7 @@ const AppointmentModalData = ({ modalContent }) => {
 
   useEffect(() => {
     const fetchDutyRoster = async () => {
-      console.log("Specialization from departmentResponse:", specialization); // Debugging specialization value
+      // Debugging specialization value
 
       try {
         const token = localStorage.getItem("token"); // Fetch bearer token from localStorage
@@ -61,7 +61,7 @@ const AppointmentModalData = ({ modalContent }) => {
         );
 
         // Log the entire response to check the structure and the data
-        console.log("Duty Roster API Response:", response.data);
+        
 
         // Filter the duty roster by specialization
         const filteredRoster = response.data.map((day) => ({
@@ -75,7 +75,7 @@ const AppointmentModalData = ({ modalContent }) => {
           })),
         }));
 
-        console.log("Filtered Roster:", filteredRoster); // Check filtered results
+        
         setDutyRoster(filteredRoster);
       } catch (error) {
         console.error("Error fetching duty roster:", error);

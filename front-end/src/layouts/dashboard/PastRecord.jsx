@@ -28,6 +28,7 @@ const getId = (name) =>{
 const PastRecord = ({ appointments }) => {
     const { user } = useContext(UserContext);
     const [exampleDataList, setExampleDataList] = useState([]);
+    
 
     useEffect(() => {
       const fetchAppointments = async () => {
@@ -137,7 +138,7 @@ const PastRecord = ({ appointments }) => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         {(appointment.status === 'Prescribed' || appointment.status === 'Dispensed') && (
-                                            <SetRating rating={0} doctorID={getId(appointment.doctorName)} />
+                                            <SetRating  doctorID={getId(appointment.doctorName)} />
                                         )}
                                     </td>
                                 </tr>
