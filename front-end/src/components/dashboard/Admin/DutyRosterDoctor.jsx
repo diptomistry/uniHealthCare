@@ -119,9 +119,7 @@ const DutyRosterDoctor = () => {
     <div className='flex flex-col gap-5 mb-5 bg-white dark:bg-secondary-dark-bg mt-3 p-8 rounded-2xl shadow-md'>
       <DynamicTable AloSchedule={formattedRoster} Title='ডাক্তারদের ডিউটি রোস্টার' />
 
-         <DynamicTable AloSchedule={AloSchedule2} Title='' />
-   
-      <DynamicTable AloSchedule={AloSchedule3} Title='রাত্রিকালীন অতি জরুরি ডিউটি :' />
+     
    
     </div>
   );

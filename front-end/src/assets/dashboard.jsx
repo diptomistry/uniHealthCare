@@ -3119,18 +3119,7 @@ export const links = [
         name: "Doctor",
         icon: <RiStethoscopeLine />,
       },
-      {
-        name: "Homeopathy-Section",
-        icon: <GiMedicines />,
-      },
-      {
-        name: "Nursing-Section",
-        icon: <RiNurseLine />,
-      },
-      {
-        name: "Pharmacy-Section",
-        icon: <MdOutlineMedicalServices />,
-      },
+ 
     ],
   },
 
