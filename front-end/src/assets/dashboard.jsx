@@ -3153,11 +3153,7 @@ export const links = [
         name: "Quote-Section",
         icon: <BsChatQuote />,
       },
-      {
-        name: "App-Info",
-        icon: <TbDetails />,
-
-      }
+    
     ],
   },
   {

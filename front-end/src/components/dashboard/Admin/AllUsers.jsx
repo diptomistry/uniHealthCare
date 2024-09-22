@@ -1,41 +1,76 @@
-import React,{useState,useEffect,useContext} from 'react';
-import { GridComponent, Inject, ColumnsDirective, ColumnDirective, Search, Page, Edit, Toolbar } from '@syncfusion/ej2-react-grids';
-import { employeesData,employeesGrid } from '../../../assets/dashboard';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import {
+  GridComponent,
+  ColumnsDirective,
+  ColumnDirective,
+  Resize,
+  Sort,
+  ContextMenu,
+  Filter,
+  Page,
+  ExcelExport,
+  PdfExport,
+  Edit,
+  Toolbar,
+  Search,
+  Inject
+} from '@syncfusion/ej2-react-grids';
 import { GrLocation } from 'react-icons/gr';
-import MessageIconTemplate from '../../../layouts/dashboard/MessageIconTemplate';
+import EmailIconTemplate from '../../../layouts/dashboard/EmailIconTemplate';
 import { UserContext } from '../../../services/auth/UserProvider';
-import ChatApp from './chat/ChatApp';
+import { contextMenuItems } from '../../../assets/dashboard';
 
 const AllUsers = () => {
   const { user } = useContext(UserContext);
-  //console.log(user);
-  const toolbarOptions = ['Search', 'Edit', 'Delete'];
+  const [employeesData, setEmployeesData] = useState([]);
+  const gridRef = useRef(null);
+
+  const toolbarOptions = ['Search', 'PdfExport', 'ExcelExport', 'CsvExport'];
+  
+  const toolbarClick = (args) => {
+    if (gridRef.current) {
+      switch (args.item.id) {
+        case 'allusers_pdfexport':
+          gridRef.current.pdfExport();
+          break;
+        case 'allusers_excelexport':
+          gridRef.current.excelExport();
+          break;
+        case 'allusers_csvexport':
+          gridRef.current.csvExport();
+          break;
+      }
+    }
+  };
+  
   const editing = { allowDeleting: true, allowEditing: true, mode: 'Normal' };
+
   const gridEmployeeProfile = (props) => (
     <div className="flex items-center gap-2">
-  {props.EmployeeImage =='N/A' ? (
-    <img
-      className="rounded-full w-10 h-10"
-      src={props.EmployeeImage}
-      alt={props.name}
-    />
-  ) : (
-    <div className="flex items-center justify-center bg-gray-300 rounded-full w-6 h-6">
-      <span className="text-white text-lg font-bold">
-        {props.name.charAt(0).toUpperCase()}
-      </span>
+      {props.EmployeeImage !== 'N/A' ? (
+        <img
+          className="rounded-full w-10 h-10"
+          src={props.EmployeeImage}
+          alt={props.name}
+        />
+      ) : (
+        <div className="flex items-center justify-center bg-gray-300 rounded-full w-6 h-6">
+          <span className="text-white text-lg font-bold">
+            {props.name.charAt(0).toUpperCase()}
+          </span>
+        </div>
+      )}
+      <p>{props.name}</p>
     </div>
-  )}
-  <p>{props.name}</p>
-</div>
-
   );
+
   const gridEmployeeCountry = (props) => (
     <div className="flex items-center justify-center gap-2">
       <GrLocation />
       <span>{props.Country}</span>
     </div>
   );
+
   const gridEmployeeEmail = (props) => (
     <div className="flex items-center justify-center gap-2 w-full">
       <a
@@ -51,11 +86,10 @@ const AllUsers = () => {
   );
 
   const gridEmployeeMessage = (props) => (
-    <ChatApp  username={props.name}/>
-    //console.log('id',props.userID),
-     //<MessageIconTemplate receiverID={props.userID} receiverName={props.name} receiverImage={props.EmployeeImage} />
+    <EmailIconTemplate receiverEmail={props.email} />
   );
- const employeesGrid = [
+
+  const employeesGrid = [
     {
       headerText: "Users",
       width: "150",
@@ -75,7 +109,6 @@ const AllUsers = () => {
       textAlign: "Center",
       template: gridEmployeeCountry,
     },
-  
     {
       field: "dob",
       headerText: "Date of Birth",
@@ -83,7 +116,6 @@ const AllUsers = () => {
       format: "yMd",
       textAlign: "Center",
     },
-  
     {
       field: "phoneNo",
       headerText: "Phone No.",
@@ -105,7 +137,6 @@ const AllUsers = () => {
       textAlign: "Center",
     },
   ];
-  const [employeesData, setEmployeesData] = useState([]);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -130,11 +161,10 @@ const AllUsers = () => {
           name: user.name,
           designation: user.role ? user.role.roleName : 'N/A',
           dob: user.dob,
-          Country: user.registeredFrom, // Assuming `registeredFrom` represents the Country
-          phoneNo: user.phone || 'N/A', // Default to 'N/A' if phone is missing
-          EmployeeImage: user.image || 'N/A', // Use default image if none is provided
+          Country: user.registeredFrom,
+          phoneNo: user.phone || 'N/A',
+          EmployeeImage: user.image || 'N/A',
         }));
-       console.log(mappedData);
         setEmployeesData(mappedData);
       } catch (error) {
         console.error('An error occurred:', error);
@@ -143,29 +173,37 @@ const AllUsers = () => {
 
     fetchEmployees();
   }, []);
-  // Modify the employeesGrid to specify which fields are editable
+
   const modifiedEmployeesGrid = employeesGrid.map(column => ({
     ...column,
     allowEditing: ['designation'].includes(column.field)
   }));
 
+  const filteredContextMenuItems = contextMenuItems.filter(item => item !== 'Edit' && item !== 'Delete');
+
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl shadow-md">
       <GridComponent
+        id="allusers"
         dataSource={employeesData}
         width="auto"
         allowPaging
         allowSorting
+        allowExcelExport
+        allowPdfExport
+        contextMenuItems={filteredContextMenuItems}
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
         toolbar={toolbarOptions}
+        toolbarClick={toolbarClick}
+        ref={gridRef}
       >
         <ColumnsDirective>
           {modifiedEmployeesGrid.map((item, index) => (
             <ColumnDirective key={index} {...item} />
           ))}
         </ColumnsDirective>
-        <Inject services={[Search, Page, Edit, Toolbar]} />
+        <Inject services={[Resize, Sort, ContextMenu, Filter, Page, ExcelExport, Edit, PdfExport, Toolbar, Search]} />
       </GridComponent>
     </div>
   );

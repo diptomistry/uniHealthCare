@@ -18,6 +18,7 @@ import {
 import { patientsData, contextMenuItems, patientsGrid } from '../../../assets/dashboard';
 
 const AppointmentData = () => {
+  
   const editing = { allowDeleting: true, allowEditing: true };
 
   // Filter out the 'Edit' option from the context menu items
