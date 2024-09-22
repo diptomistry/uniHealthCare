@@ -7,8 +7,7 @@ import { UserContext } from '../../services/auth/UserProvider';
 
 const SetRating = ({ doctorID }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentRating, setCurrentRating] = useState(null); // Use null instead of 0 initially
-  const [finalRating, setFinalRating] = useState(0);
+  const [currentRating, setCurrentRating] = useState(5); // Use null instead of 0 initially
   const [comment, setComment] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { user } = useContext(UserContext);
@@ -31,7 +30,6 @@ const SetRating = ({ doctorID }) => {
             const lastRating = data[data.length - 1];
             console.log('Setting current rating to:', lastRating.rating);
             setCurrentRating(lastRating.rating); // Ensure correct rating is set
-            setFinalRating(lastRating.rating);
             setComment(lastRating.review || '');
           }
         } else {
@@ -94,7 +92,7 @@ const SetRating = ({ doctorID }) => {
   return (
     <div className="relative">
       <Rating
-        value={currentRating !== null ? currentRating : finalRating}  // Check for null value
+        value={currentRating !== null ? currentRating : 0}  // Check for null value
         onChange={handleRatingChange}
         className="text-yellow-500"
       />
