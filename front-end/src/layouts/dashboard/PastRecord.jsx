@@ -1,9 +1,10 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import Slider from 'react-slick';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import "slick-carousel/slick/slick-theme.css";
 import PrescriptionTemplate from '../../components/dashboard/doctor/prescription/PrescriptionTemplate';
 import SetRating from '../../models/dashboard/SetRating';
+import { UserContext } from '../../services/auth/UserProvider';
 const getId = (name) =>{
     if(!name) return null;
     const idMatch = name.match(/id:(\d+)/);
@@ -25,7 +26,7 @@ const getId = (name) =>{
 
   
 const PastRecord = ({ appointments }) => {
-
+    const { user } = useContext(UserContext);
     const [exampleDataList, setExampleDataList] = useState([]);
 
     useEffect(() => {
@@ -33,7 +34,7 @@ const PastRecord = ({ appointments }) => {
         try {
           const token = localStorage.getItem("token");
   
-          const response = await fetch("http://localhost:8000/api/appointments/1", {
+          const response = await fetch(`http://localhost:8000/api/appointments/${user.userID}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

@@ -1,3 +1,4 @@
+/*
 import React, { useState,useContext } from 'react';
 import { Rating } from '@material-tailwind/react';
 import CustomModal from '../CustomModal';
@@ -84,7 +85,8 @@ const SetRating = ({ rating,doctorID }) => {
 };
 
 export default SetRating;
-/*
+*/
+
 import React, { useState, useContext } from 'react';
 import { Rating } from '@material-tailwind/react';
 import CustomModal from '../CustomModal';
@@ -106,13 +108,15 @@ const SetRating = ({ rating, doctorID }) => {
   };
 
   const handleSubmit = async () => {
+   
     const token = localStorage.getItem('token'); // Assuming the bearer token is stored in localStorage as 'token'
     const ratingData = {
       rating: currentRating,
-      comment: comment,
+      review: comment,
     };
 
-    try {
+    try { 
+      console.log('doctorID:,userID',doctorID,userID);
       const response = await fetch(`http://localhost:8000/api/ratings/doctor/${doctorID}/user/${userID}`, {
         method: 'POST',
         headers: {
@@ -185,7 +189,9 @@ const SetRating = ({ rating, doctorID }) => {
           className="w-full border p-2 rounded-md mb-4"
         />
         <div className="flex justify-end">
-          <Button title="Submit" onClick={handleSubmit} />
+         <button onClick={handleSubmit}>
+         <Button title="Submit"  />
+         </button>
         </div>
       </CustomModal>
     </div>
@@ -193,4 +199,3 @@ const SetRating = ({ rating, doctorID }) => {
 };
 
 export default SetRating;
-*/
