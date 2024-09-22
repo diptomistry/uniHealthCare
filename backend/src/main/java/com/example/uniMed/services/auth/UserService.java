@@ -1,4 +1,5 @@
 package com.example.uniMed.services.auth;
+
 import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -13,6 +14,7 @@ import com.example.uniMed.models.Role;
 import com.example.uniMed.models.Student;
 import com.example.uniMed.security.JwtHelper;
 import com.example.uniMed.models.User;
+import com.example.uniMed.models.DTOs.UserDTO;
 import com.example.uniMed.repositories.EmailSender;
 import com.example.uniMed.repositories.auth.AdminRepository;
 import com.example.uniMed.repositories.auth.StudentRepository;
@@ -30,6 +32,7 @@ import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -39,7 +42,6 @@ public class UserService {
 
     @Autowired
     private StudentRepository studentRepository;
-
 
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -59,36 +61,35 @@ public class UserService {
     @Autowired
     private AdminRepository adminRepository;
 
-    public Map<String,Object> getUser (Long userId){
+    public Map<String, Object> getUser(Long userId) {
         Map<String, Object> response = new HashMap<>();
         Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()){
+        if (user.isPresent()) {
             response.put("success", true);
             response.put("message", "User found");
             response.put("data", user.get());
-        }
-        else{
+        } else {
             response.put("success", false);
             response.put("message", "User not found");
         }
         return response;
     }
 
- @Transactional
+    @Transactional
     public Map<String, Object> createUser(MultipartFile file,
-                                          String password,
-                                          String confirmPass,
-                                          String email,
-                                          Date dob,
-                                          String name,
-                                          String gender,
-                                          String userType,
-                                          String departmentId,
-                                          String session,
-                                          String registrationNo,
-                                          String departmentName,
-                                          String registeredFrom,
-                                          String phone) {
+            String password,
+            String confirmPass,
+            String email,
+            Date dob,
+            String name,
+            String gender,
+            String userType,
+            String departmentId,
+            String session,
+            String registrationNo,
+            String departmentName,
+            String registeredFrom,
+            String phone) {
         Map<String, Object> response = new HashMap<>();
 
         try {
@@ -97,7 +98,6 @@ public class UserService {
                 response.put("message", "Password does not match");
                 return response;
             }
-            
 
             Optional<User> existingUser = userRepository.findByEmail(email);
             if (existingUser.isPresent()) {
@@ -107,9 +107,8 @@ public class UserService {
             }
 
             String filePath;
-       
-                 filePath =  fileService.saveFile(file);
-            
+
+            filePath = fileService.saveFile(file);
 
             String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
             String token = new JwtHelper().generateToken(email);
@@ -120,27 +119,26 @@ public class UserService {
             System.out.println("------->Here");
             Optional<Role> role = roleRepository.findByRoleName(userType);
             System.out.println("------>Here");
-            if(role.isPresent()){
+            if (role.isPresent()) {
                 System.out.println("Role found");
-            }
-            else{
+            } else {
                 System.out.println("Role not found");
             }
-            
-           
-            
-            User newUser = new User(hashedPassword, email, dob, name, gender, role.get(), filePath, token, status, registeredFrom, phone);
+
+            User newUser = new User(hashedPassword, email, dob, name, gender, role.get(), filePath, token, status,
+                    registeredFrom, phone);
             System.out.println("------->Here");
 
             if ("student".equals(userType)) {
                 if (departmentName == null || session == null || registrationNo == null) {
                     userRepository.delete(newUser);
                     response.put("success", false);
-                    response.put("message", "Department, session, and registration number must be provided for students");
+                    response.put("message",
+                            "Department, session, and registration number must be provided for students");
                     return response;
                 }
                 System.out.println("------->Creating student");
-            
+
                 Student student = new Student();
                 student.setDepartment(departmentId);
                 student.setSession(session);
@@ -157,10 +155,11 @@ public class UserService {
                     response.put("message", "Specialization must be provided for doctors");
                     return response;
                 }
-                System.out.println("------->Creating doctor");try{
+                System.out.println("------->Creating doctor");
+                try {
 
-                Doctors doctor = new Doctors();
-                Optional<Department> department = departmentRepository.findById(Integer.parseInt(departmentId));
+                    Doctors doctor = new Doctors();
+                    Optional<Department> department = departmentRepository.findById(Integer.parseInt(departmentId));
                     if (!department.isPresent()) {
                         userRepository.delete(newUser);
                         response.put("success", false);
@@ -170,28 +169,25 @@ public class UserService {
                     doctor.setDepartment(department.get());
                     doctor.setUser(newUser);
 
-               
-                doctorRepository.save(doctor);
-                response.put("user", doctor);
-                }catch(Exception e){
+                    doctorRepository.save(doctor);
+                    response.put("user", doctor);
+                } catch (Exception e) {
                     userRepository.delete(newUser);
-                    
-                    System.out.println("Error: "+e.getMessage());
+
+                    System.out.println("Error: " + e.getMessage());
                     response.put("success", false);
                     response.put("message", "An error occurred while creating the doctor: " + e.getMessage());
                     return response;
                 }
-            }
-            else if("admin".equals(userType)){
-                Admin admin = new Admin(newUser,Date.from(Instant.now()),null);
+            } else if ("admin".equals(userType)) {
+                Admin admin = new Admin(newUser, Date.from(Instant.now()), null);
                 adminRepository.save(admin);
                 response.put("user", admin);
-              
+
+            } else {
+                userRepository.save(newUser);
+                response.put("user", newUser);
             }
-            else{
-            userRepository.save(newUser);
-            response.put("user", newUser);
-        }
 
             response.put("success", true);
             response.put("message", "User created successfully");
@@ -204,10 +200,11 @@ public class UserService {
             return response;
         }
     }
-@Transactional
-    public Map<String, Object> updateUser(MultipartFile profileImage, Long userId, String email, String dobString, 
-                                          String name, String department, String session, String registrationNo, 
-                                          String phone,Long departmentId) throws Exception {
+
+    @Transactional
+    public Map<String, Object> updateUser(MultipartFile profileImage, Long userId, String email, String dobString,
+            String name, String department, String session, String registrationNo,
+            String phone, Long departmentId) throws Exception {
         Map<String, Object> response = new HashMap<>();
 
         Optional<User> userOpt = userRepository.findById(userId);
@@ -218,12 +215,15 @@ public class UserService {
         User user = userOpt.get();
 
         // Update user fields
-        if (email != null && !email.isEmpty())
-   { user.setEmail(email);}
-   if (name != null && !name.isEmpty())
-      {  user.setName(name);}
-      if (phone != null && !phone.isEmpty())
-      {  user.setPhone(phone);}
+        if (email != null && !email.isEmpty()) {
+            user.setEmail(email);
+        }
+        if (name != null && !name.isEmpty()) {
+            user.setName(name);
+        }
+        if (phone != null && !phone.isEmpty()) {
+            user.setPhone(phone);
+        }
 
         // Parse and set date of birth
         if (dobString != null && !dobString.isEmpty()) {
@@ -248,7 +248,7 @@ public class UserService {
             student.setRegistrationNo(registrationNo);
             studentRepository.save(student);
         });
-        Optional <Doctors> doctorOpt = doctorRepository.findById(userId);
+        Optional<Doctors> doctorOpt = doctorRepository.findById(userId);
         doctorOpt.ifPresent(doctor -> {
             doctor.setDepartment(departmentRepository.findById(Integer.parseInt(departmentId.toString(0))).get());
             doctorRepository.save(doctor);
@@ -258,10 +258,11 @@ public class UserService {
         response.put("message", "User updated successfully");
         return response;
     }
+
     @Transactional
     public Map<String, Object> deleteUser(Long userId) {
         System.out.println("Deleting user");
-        System.out.println("User ID: "+userId);
+        System.out.println("User ID: " + userId);
         Map<String, Object> response = new HashMap<>();
         try {
             User user = userRepository.findById(userId).get();
@@ -271,15 +272,12 @@ public class UserService {
                 return response;
             }
             System.out.println("User found");
-            System.out.println("Role: "+user.getRole().getRoleName());
-           
+            System.out.println("Role: " + user.getRole().getRoleName());
 
-            
-            if(user.getRole().getRoleName().equals("student")){
+            if (user.getRole().getRoleName().equals("student")) {
                 Student student = studentRepository.findByUserId(userId);
                 studentRepository.delete(student);
-            }
-            else if(user.getRole().getRoleName().equals("doctor")){
+            } else if (user.getRole().getRoleName().equals("doctor")) {
                 Doctors doctor = doctorRepository.findByUserID(userId);
                 doctorRepository.delete(doctor);
             }
@@ -304,8 +302,8 @@ public class UserService {
         }
 
         User user = userOpt.get();
-        System.out.println("Status: "+status);
-        System.out.println("User: "+user.getEmail());
+        System.out.println("Status: " + status);
+        System.out.println("User: " + user.getEmail());
         user.setStatus(status);
         userRepository.save(user);
 
@@ -350,24 +348,24 @@ public class UserService {
     public Map<String, Object> getAllUsers() {
         Map<String, Object> response = new HashMap<>();
         List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOs = users.stream().map(User::toDTO).collect(Collectors.toList());
         response.put("success", true);
         response.put("message", "Users retrieved successfully");
-        response.put("data", users);
+        response.put("data", userDTOs);
         return response;
     }
 
     public Map<String, Object> sendOtp(String email, boolean debug) throws Exception {
-        try{
-        Map<String, Object> response = new HashMap<>();
-        int otp = generateOtp(debug);
-        String message = "Use this token to reset your password: " + otp;
-        emailSender.sendEmail(email, "Password Reset Request", message);
-        response.put("success", true);
-        response.put("message", "OTP sent successfully");
-        response.put("otp", otp);
-        return response;
-        }
-        catch(Exception e){
+        try {
+            Map<String, Object> response = new HashMap<>();
+            int otp = generateOtp(debug);
+            String message = "Use this token to reset your password: " + otp;
+            emailSender.sendEmail(email, "Password Reset Request", message);
+            response.put("success", true);
+            response.put("message", "OTP sent successfully");
+            response.put("otp", otp);
+            return response;
+        } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("message", "Failed to send OTP: " + e.getMessage());
@@ -418,29 +416,26 @@ public class UserService {
             response.put("message", "User does not exist");
             return response;
         }
-    
+
         User user = userOpt.get();
         if (!BCrypt.checkpw(password, user.getPassword())) {
             response.put("success", false);
             response.put("message", "Invalid username or password");
             return response;
         }
-        //generate token
+        // generate token
         String token = new JwtHelper().generateToken(email);
         user.setToken(token);
-        System.out.println("Token: "+token);
+        System.out.println("Token: " + token);
 
-    
         // Build the response
         response.put("success", true);
         response.put("message", "Login successful");
         response.put("data", user);
-    
-    
-    
+
         return response;
     }
-    
+
     private int generateOtp(boolean debug) {
         if (debug) {
             return 1234;
@@ -462,14 +457,13 @@ public class UserService {
 
     public Map<String, Object> getDoctors() {
         Map<String, Object> response = new HashMap<>();
-        try{
-        List<Doctors> doctors = doctorRepository.findAll();
-        response.put("success", true);
-        response.put("message", "Doctors retrieved successfully");
-        response.put("data", doctors);
-        return response;
-        }
-        catch(Exception e){
+        try {
+            List<Doctors> doctors = doctorRepository.findAll();
+            response.put("success", true);
+            response.put("message", "Doctors retrieved successfully");
+            response.put("data", doctors);
+            return response;
+        } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Failed to get doctors");
             return response;

@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import com.example.uniMed.models.DTOs.UserDTO;
 import com.example.uniMed.models.chat.ChatRoom;
+import com.example.uniMed.models.rating.Rating;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +62,10 @@ public class User {
     @JsonIgnore
     private List<ChatRoom> chatRooms;
 
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Rating> ratings;
+
     public List<ChatRoom> getChatRooms() {
         return chatRooms;
     }
@@ -90,6 +96,20 @@ public class User {
         this.otp = otp;
         this.registeredFrom = registeredFrom;
         this.role = role;
+    }
+
+    public UserDTO toDTO() {
+        UserDTO dto = new UserDTO();
+        dto.setUserID(this.userID);
+        dto.setEmail(this.email);
+        dto.setName(this.name);
+        dto.setSex(this.sex);
+        dto.setPhone(this.phone);
+        dto.setImage(this.image);
+        dto.setStatus(this.status);
+        dto.setDob(this.dob);
+        dto.setRole(this.role != null ? this.role.getRoleName() : null);
+        return dto;
     }
 
     public User(String hashedPassword, String email, Date dob, String name, String sex, Role role,

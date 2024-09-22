@@ -4,20 +4,24 @@ import java.util.List;
 
 import org.checkerframework.checker.units.qual.s;
 
+import com.example.uniMed.models.rating.Rating;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "user"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "user" })
 @Table(name = "doctors")
-public class Doctors  extends User{
-   
-
+public class Doctors extends User {
 
     @ManyToOne
     @JoinColumn(name = "departmentID")
     private Department department;
+
+    @OneToMany(mappedBy = "doctor")
+    @JsonManagedReference
+    private List<Rating> ratings;
 
     public void setUser(User user) {
         super.setEmail(user.getEmail());
@@ -34,35 +38,35 @@ public class Doctors  extends User{
         super.setRegisteredFrom(user.getRegisteredFrom());
         super.setRole(user.getRole());
         super.setStatus(user.getStatus());
-      
-    }
 
- 
+    }
 
     // Constructors
-   
+
     public Doctors(Integer doctorID, User user, Department department) {
-        
+
         this.department = department;
     }
+
     public Doctors() {
-      
+
     }
+
     public Doctors(Integer doctorID, User user) {
-   
+
     }
+
     public Doctors(User newUser, Long departmentId) {
-     
+
         this.department = new Department(departmentId);
     }
- 
-   
+
     public Department getDepartment() {
         return department;
     }
+
     public void setDepartment(Department department) {
         this.department = department;
     }
- 
-    
+
 }

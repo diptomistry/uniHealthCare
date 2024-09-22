@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "ratings")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Rating {
 
     @Id
@@ -22,7 +22,7 @@ public class Rating {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
-   
+
     private Doctors doctor;
 
     private Double rating;
@@ -32,12 +32,13 @@ public class Rating {
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-   
+    @JoinColumn(name = "userID")
+    @JsonBackReference
     private User user;
 
     // Constructors
-    public Rating() {}
+    public Rating() {
+    }
 
     public Rating(Doctors doctor, Double rating, String review, User user) {
         this.doctor = doctor;
