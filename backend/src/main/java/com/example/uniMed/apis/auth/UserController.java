@@ -124,6 +124,12 @@ public Map<String, Object> createUser
         }
     }
 
+    @PostMapping("/update-status")
+    public Map<String, Object> updateUserStatus(@RequestBody Map<String, Object> body) {
+        Long user_id = Long.parseLong(body.get("user_id").toString());
+        String status = body.get("status").toString();
+        return userService.updateUserStatus(user_id, status);
+    }
   
     
     @PostMapping("/update-role")
