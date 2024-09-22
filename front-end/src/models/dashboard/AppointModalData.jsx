@@ -174,22 +174,30 @@ const AppointmentModalData = ({ modalContent }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-
+  
         // Process the API response
-        const formattedAppointments = response.data.map((appointment) => ({
-          date: new Date(appointment.appointmentDateTime).toISOString().split('T')[0], // Format date
-          doctorName: `id:${appointment.prescription?.doctor.userID} ${appointment.prescription?.doctor.name}` || null, // Include doctor's name if available
-          status: appointment.status,
-        }));
-
+        const formattedAppointments = response.data.map((appointment) => {
+          // Extract the last rating ID (if available)
+          const ratingId = appointment.prescription?.patient?.ratings
+            ? appointment.prescription.patient.ratings[appointment.prescription.patient.ratings.length - 1]?.id
+            : -1; // If no ratings exist, default to 'N/A'
+           const id = appointment.prescription?.doctor?.userID? appointment.prescription?.doctor?.userID : -1;
+          return {
+            date: new Date(appointment.appointmentDateTime).toISOString().split('T')[0], // Format date
+            doctorName: `id:${id}  ${appointment.prescription?.doctor?.name}` || 'N/A', // Include doctor's name and the last rating ID
+            status: appointment.status,
+          };
+        });
+  
         setAppointments(formattedAppointments);
       } catch (error) {
         console.error('Error fetching appointments:', error);
       }
     };
-
+  
     fetchAppointments();
   }, []);
+  
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold">{modalContent}</h2>

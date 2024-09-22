@@ -20,13 +20,14 @@ export function ReadonlyRating4() {
 export function ReadonlyRating5() {
   return <Rating className="text-yellow-500" value={5} readonly />;
 }
-const SetRating = ({ doctorID }) => {
+const SetRating = ({ doctorID,ratId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentRating, setCurrentRating] = useState(null);
   const [comment, setComment] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { user } = useContext(UserContext);
   const userID = user.userID;
+  const [ratingID, setRatingID] = useState(null)
 
   useEffect(() => {
     const fetchRating = async () => {
@@ -45,6 +46,7 @@ const SetRating = ({ doctorID }) => {
             const lastRating = data[data.length - 1];
             console.log('Setting current rating to:', lastRating.rating);
             setCurrentRating(lastRating.rating);
+            setRatingID(lastRating.id);
             setComment(lastRating.review || '');
           }
         } else {
@@ -58,8 +60,8 @@ const SetRating = ({ doctorID }) => {
     fetchRating();
   }, [doctorID, userID]);
 
-  const handleRatingChange = () => {
-
+  const handleRatingChange = (newRating) => {
+    setCurrentRating(newRating);
     setIsModalOpen(true);
   };
 
@@ -98,10 +100,27 @@ const SetRating = ({ doctorID }) => {
   };
 
   const handleDeleteRating = () => {
+    console.log('ratid',ratingID)
     setCurrentRating(0);
     setComment('');
     setIsDropdownOpen(false);
     console.log('Rating deleted');
+    //delete with bearer token:http://localhost:8000/api/ratings/{ratingID}
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:8000/api/ratings/${ratingID}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
   };
 
 const renderRatingComponent = () => {
@@ -129,6 +148,13 @@ if(currentRating !== null){
 
   return (
     <div className="relative">
+     {!currentRating && (
+          <Rating
+          value={currentRating !== null ? currentRating : 0}  // Check for null value
+          onChange={handleRatingChange}
+          className="text-gray-500 hover:text-yellow-500"
+        />
+     )}
    
   {renderRatingComponent()}
       <div className="absolute top-1 right-0 overflow-visible">
@@ -137,19 +163,14 @@ if(currentRating !== null){
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         />
         {isDropdownOpen && (
-          <div className="absolute top-4 right-4 mt-2 w-48 bg-white border rounded shadow-lg">
+          <div className="absolute top-3 right-4 mt-2 w-48 bg-white border rounded shadow-lg">
             <button
               className="block px-4 py-2 text-left text-gray-700 hover:bg-gray-100 w-full underline"
               onClick={handleDeleteRating}
             >
               Delete Rating
             </button>
-            <button
-              className="block px-4 py-2 text-left text-gray-700 hover:bg-gray-100 w-full underline"
-              onClick={handleRatingChange}
-            >
-              Edit Rating
-            </button>
+          
           </div>
         )}
       </div>
