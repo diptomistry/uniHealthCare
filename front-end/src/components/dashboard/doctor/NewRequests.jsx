@@ -11,6 +11,7 @@ import PastHistory from "./prescription/PastHistory";
 import { CSSTransition } from "react-transition-group"; // For animation
 import GeneralButton from "../../../layouts/doctor/GeneralButton";
 import { UserContext } from "../../../services/auth/UserProvider";
+
 const getAppID = (name) => {
   if (!name) return null; // If no name, return null
   const appIdMatch = name.match(/AppID:(\d+)/); // Regex to match 'AppID:'
