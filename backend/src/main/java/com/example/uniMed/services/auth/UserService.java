@@ -14,6 +14,7 @@ import com.example.uniMed.models.Role;
 import com.example.uniMed.models.Student;
 import com.example.uniMed.security.JwtHelper;
 import com.example.uniMed.models.User;
+import com.example.uniMed.models.DTOs.DoctorsDTO;
 import com.example.uniMed.models.DTOs.UserDTO;
 import com.example.uniMed.repositories.EmailSender;
 import com.example.uniMed.repositories.auth.AdminRepository;
@@ -67,7 +68,7 @@ public class UserService {
         if (user.isPresent()) {
             response.put("success", true);
             response.put("message", "User found");
-            response.put("data", user.get());
+            response.put("data", user.get().toDTO());
         } else {
             response.put("success", false);
             response.put("message", "User not found");
@@ -170,7 +171,7 @@ public class UserService {
                     doctor.setUser(newUser);
 
                     doctorRepository.save(doctor);
-                    response.put("user", doctor);
+                    response.put("user", doctor.toDTO());
                 } catch (Exception e) {
                     userRepository.delete(newUser);
 
@@ -186,7 +187,7 @@ public class UserService {
 
             } else {
                 userRepository.save(newUser);
-                response.put("user", newUser);
+                response.put("user", newUser.toDTO());
             }
 
             response.put("success", true);
@@ -302,14 +303,14 @@ public class UserService {
         }
 
         User user = userOpt.get();
-        System.out.println("Status: " + status);
-        System.out.println("User: " + user.getEmail());
+        // System.out.println("Status: " + status);
+        // System.out.println("User: " + user.getEmail());
         user.setStatus(status);
         userRepository.save(user);
 
         response.put("success", true);
         response.put("message", "User status updated successfully");
-        response.put("data", userRepository.findById(userId).get());
+        response.put("data", userRepository.findById(userId).get().toDTO());
         return response;
     }
 
@@ -337,7 +338,7 @@ public class UserService {
         if (user.isPresent()) {
             response.put("success", true);
             response.put("message", "User found");
-            response.put("data", user.get());
+            response.put("data", user.get().toDTO());
         } else {
             response.put("success", false);
             response.put("message", "User not found");
@@ -431,7 +432,7 @@ public class UserService {
         // Build the response
         response.put("success", true);
         response.put("message", "Login successful");
-        response.put("data", user);
+        response.put("data", user.toDTO());
 
         return response;
     }
@@ -459,14 +460,20 @@ public class UserService {
         Map<String, Object> response = new HashMap<>();
         try {
             List<Doctors> doctors = doctorRepository.findAll();
+            List <DoctorsDTO> doctorsDTOs = new ArrayList<>();
+            
+            // Convert List of Doctors to List of DoctorsDTO
+            for (Doctors doctor : doctors) {
+                doctorsDTOs.add(doctor.toDto(doctor));
+            }
+    
             response.put("success", true);
             response.put("message", "Doctors retrieved successfully");
-            response.put("data", doctors);
-            return response;
+            response.put("data", doctorsDTOs);
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "Failed to get doctors");
-            return response;
+            response.put("message", "Failed to get doctors: " + e.getMessage());
         }
+        return response;
     }
 }
