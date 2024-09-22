@@ -5,9 +5,24 @@ import Button from '../../layouts/dashboard/DutyRoster/Button';
 import { FaEllipsisV } from 'react-icons/fa';
 import { UserContext } from '../../services/auth/UserProvider';
 
+export function ReadonlyRating1() {
+  return <Rating className="text-yellow-500" value={1} readonly />;
+}
+export function ReadonlyRating2() {
+  return <Rating className="text-yellow-500" value={2} readonly />;
+}
+export function ReadonlyRating3() {
+  return <Rating className="text-yellow-500" value={3} readonly />;
+}
+export function ReadonlyRating4() {
+  return <Rating className="text-yellow-500" value={4} readonly />;
+}
+export function ReadonlyRating5() {
+  return <Rating className="text-yellow-500" value={5} readonly />;
+}
 const SetRating = ({ doctorID }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentRating, setCurrentRating] = useState(null); // Use null instead of 0 initially
+  const [currentRating, setCurrentRating] = useState(null);
   const [comment, setComment] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { user } = useContext(UserContext);
@@ -29,7 +44,7 @@ const SetRating = ({ doctorID }) => {
           if (data.length > 0) {
             const lastRating = data[data.length - 1];
             console.log('Setting current rating to:', lastRating.rating);
-            setCurrentRating(lastRating.rating); // Ensure correct rating is set
+            setCurrentRating(lastRating.rating);
             setComment(lastRating.review || '');
           }
         } else {
@@ -41,10 +56,10 @@ const SetRating = ({ doctorID }) => {
     };
 
     fetchRating();
-  }, [doctorID]);
+  }, [doctorID, userID]);
 
-  const handleRatingChange = (newRating) => {
-    setCurrentRating(newRating);
+  const handleRatingChange = () => {
+
     setIsModalOpen(true);
   };
 
@@ -89,26 +104,51 @@ const SetRating = ({ doctorID }) => {
     console.log('Rating deleted');
   };
 
+const renderRatingComponent = () => {
+  console.log('currentRating:', currentRating);
+if(currentRating !== null){
+  if(currentRating === 1){
+    return ReadonlyRating1();
+  }
+  else if(currentRating === 2){
+    return ReadonlyRating2();
+  }
+  else if(currentRating === 3){
+    return ReadonlyRating3();
+  }
+  else if(currentRating === 4){
+    return ReadonlyRating4();
+  }
+  else if(currentRating === 5){
+    return ReadonlyRating5();
+  }
+}
+ 
+}
+
+
   return (
     <div className="relative">
-      <Rating
-        value={currentRating !== null ? currentRating : 0}  // Check for null value
-        onChange={handleRatingChange}
-        className="text-yellow-500"
-      />
-
+   
+  {renderRatingComponent()}
       <div className="absolute top-1 right-0 overflow-visible">
         <FaEllipsisV
           className="cursor-pointer"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         />
         {isDropdownOpen && (
-          <div className="absolute -top-14 right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+          <div className="absolute top-4 right-4 mt-2 w-48 bg-white border rounded shadow-lg">
             <button
-              className="block px-4 py-2 text-left text-gray-700 hover:bg-gray-100 w-full"
+              className="block px-4 py-2 text-left text-gray-700 hover:bg-gray-100 w-full underline"
               onClick={handleDeleteRating}
             >
               Delete Rating
+            </button>
+            <button
+              className="block px-4 py-2 text-left text-gray-700 hover:bg-gray-100 w-full underline"
+              onClick={handleRatingChange}
+            >
+              Edit Rating
             </button>
           </div>
         )}
