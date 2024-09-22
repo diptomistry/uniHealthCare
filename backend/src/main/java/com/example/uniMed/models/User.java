@@ -109,6 +109,7 @@ public class User {
         dto.setStatus(this.status);
         dto.setDob(this.dob);
         dto.setRole(this.role != null ? this.role : null);
+        dto.setToken(this.token);
         return dto;
     }
 

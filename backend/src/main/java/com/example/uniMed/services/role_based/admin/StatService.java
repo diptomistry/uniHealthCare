@@ -57,21 +57,44 @@ public class StatService {
         hashAppointments.put("prescribedAppointments", prescribedAppointments);
         hashAppointments.put("dispensedAppointments", dispensedAppointments);
 
+
+
+        HashMap <String, Long> hashMedicines = new HashMap<>();
+
+        
+        long outOfStock = medicineRepository.countOutOfStock();
+        long available = medicineRepository.countAvailable();
+        long total = medicineRepository.countTotal();
+        long expired = medicineRepository.countExpired();
+        long lowStock = medicineRepository.countLowStock();
+
+        hashMedicines.put("outOfStock", outOfStock);
+        hashMedicines.put("available", available);
+        hashMedicines.put("total", total);
+        hashMedicines.put("expired", expired);
+        hashMedicines.put("lowStock", lowStock);
       
        stats.put("appointments", hashAppointments);
         // Total medicines
-        long totalMedicines = medicineRepository.count();
+
 
         // Total appointments
         long totalAppointments = appointmentsRepository.count();
 
-        stats.put("totalUsers", totalUsers);
-        stats.put("activeUsers", activeUsers);
-        stats.put("inactiveUsers", inactiveUsers);
+
+        HashMap<String, Long> hashUsers = new HashMap<>();
+        hashUsers.put("totalUsers", totalUsers);
+        hashUsers.put("activeUsers", activeUsers);
+        hashUsers.put("inactiveUsers", inactiveUsers);
+        hashUsers.put("totalDoctors", totalDoctors);
+       
+
+
+        stats.put("users", hashUsers);
         // stats.put("totalDoctors", totalDoctors);
         stats.put("totalUsersByRoles", roleStats);
-        stats.put("totalMedicines", totalMedicines);
-        stats.put("totalAppointments", totalAppointments);
+        stats.put("medicines", hashMedicines);
+      
 
         return stats;
     }

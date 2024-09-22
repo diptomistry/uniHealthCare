@@ -13,6 +13,7 @@ public class UserDTO {
     private String image;
     private String status;
     private Date dob;
+    private String token;
   private Role role;
    
 
@@ -87,5 +88,13 @@ public class UserDTO {
     }
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
