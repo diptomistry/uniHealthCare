@@ -41,10 +41,22 @@ public class BlogService {
     }
 
    
-    public Optional<Blog> updateBlog(Long id, String title, String description, MultipartFile image) {
+    public Optional<Blog> updateBlog(Long id, String title, String description, MultipartFile image, boolean isBlog, boolean isQoute) {
         return blogRepository.findById(id).map(blog -> {
-            blog.setTitle(title);
-            blog.setDescription(description);
+            if (isBlog) {
+                blog.setBlog(true);
+            } else {
+                blog.setBlog(false);
+            }
+            if (isQoute) {
+                blog.setQoute(true);
+            } else {
+                blog.setQoute(false);
+            }
+            if (title != null)
+          {  blog.setTitle(title);}
+          if (description != null)
+          {  blog.setDescription(description);}
 
             if (image != null && !image.isEmpty()) {
                 try {

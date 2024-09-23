@@ -42,6 +42,7 @@ public class BlogController {
             @RequestPart("title") String title,
             @RequestPart("isBlog") String isBlog,
             @RequestPart("description") String description,
+            @RequestPart("isQoute") String isQoute,
 
             @RequestPart(value = "file", required = false) MultipartFile file) {
         Blog aBlog = new Blog();
@@ -51,6 +52,11 @@ public class BlogController {
             aBlog.setBlog(true);
         } else {
             aBlog.setBlog(false);
+        }
+        if (isQoute.equals("true")) {
+            aBlog.setQoute(true);
+        } else {
+            aBlog.setQoute(false);
         }
         // aBlog.setBlog(isBlog);
 
@@ -64,8 +70,11 @@ public class BlogController {
             @PathVariable Long id,
             @RequestPart("title") String title,
             @RequestPart("description") String description,
+            @RequestPart("isBlog") String isBlog,
+            @RequestPart("isQoute") String isQoute,
             @RequestPart(value = "file", required = false) MultipartFile file) {
-        Optional<Blog> updatedBlog = blogService.updateBlog(id, title, description, file);
+
+        Optional<Blog> updatedBlog = blogService.updateBlog(id, title, description, file, isBlog=="true", isQoute=="true");
         return updatedBlog.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

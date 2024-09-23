@@ -29,6 +29,8 @@ public class Blog
 
     private boolean isBlog;
 
+    private boolean isQoute;
+
     public Blog() {
     }
 
@@ -77,5 +79,13 @@ public class Blog
 
     public void setBlog(boolean blog) {
         isBlog = blog;
+    }
+
+    public boolean isQoute() {
+        return isQoute;
+    }
+
+    public void setQoute(boolean isQoute) {
+        this.isQoute = isQoute;
     }
 }
