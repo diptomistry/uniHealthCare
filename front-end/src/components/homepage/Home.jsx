@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Lottie from "lottie-react";
 import AnimationHome from "../../assets/Json/AnimationHome.json";
 import InfiniteMovingCards from "../../layouts/homepage/infinite-moving-cards";
@@ -7,6 +7,43 @@ import { Link } from "react-router-dom";
 import { noticeInfo } from "../../assets/dashboard";
 
 const Home = () => {
+  const [notices, setNotices] = useState([]);
+  useEffect(() => {
+    const fetchNotices = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await fetch("http://localhost:8000/api/notices", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch notices");
+        }
+
+        const data = await response.json();
+        console.log(data);
+
+        // Format the data
+        const formattedNotices = data.map((notice) => ({
+          quote: notice.description,
+          name: notice.date,
+          title: notice.title,
+          vanishDate: "2022-12-31",
+        }));
+
+        setNotices(formattedNotices);
+      } catch (error) {
+        console.error("Error fetching notices:", error);
+      }
+    };
+
+    fetchNotices();
+  }, []);
+
   return (
     <div className=" min-h-screen   bg-white  bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
       {/* Radial gradient for the background */}
@@ -37,7 +74,7 @@ const Home = () => {
         </div>
       </div>
       <div className="rounded-md max-w-full flex flex-col antialiased bg-transparent items-center justify-center relative overflow-hidden ">
-        <InfiniteMovingCards items={noticeInfo} direction="right" />
+        <InfiniteMovingCards items={notices} direction="right" />
       </div>
     </div>
   );
