@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { dashData } from "../../../assets/dashboard";
 import AppointmentData from "./AppointmentData";
 import CircularProgress from "../../../layouts/dashboard/mainContent/CircularProgress";
@@ -18,6 +18,10 @@ import { MdOutlineSimCardDownload } from "react-icons/md";
 import ReportDateRange from "../../../layouts/dashboard/mainContent/ReportDateRange";
 import { FaCircleDot, FaBangladeshiTakaSign } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom"; 
+import { FiCalendar } from "react-icons/fi";
+import { FaUserMd, FaUserNurse, FaUsers, FaPills, FaMoneyBillWave } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa";
+
 const MedicalCenter = ({ darkMode }) => {
   const [patientStatType, setPatientStatType] = useState("monthly");
   const navigate = useNavigate();
@@ -27,7 +31,114 @@ const MedicalCenter = ({ darkMode }) => {
   const handleDownloadReport = () => {
     navigate('/dashboard/Medical-Center/Report'); // Replace with your desired route
   };
+  const [dashData, setDashData] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await fetch("http://localhost:8000/api/stats", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch dashboard data");
+        }
+
+        const data = await response.json();
+        console.log("API Response:", data);
+
+        // Map API response to the required dashData format
+        const mappedDashData = [
+          {
+            icon: <FiCalendar />,
+            amount: data.appointments.dispensedAppointments.toLocaleString(),
+            percentage: "-4%", // You can adjust this based on logic
+            title: "Total Appointment",
+            iconColor: "#03C9D7",
+            iconBg: "#E5FAFB",
+            pcColor: "red-600",
+          },
+          {
+            icon: <FiCalendar />,
+            amount: data.appointments.pendingAppointments.toLocaleString(),
+            percentage: "+23%", // You can adjust this based on logic
+            title: "Pending Appointment",
+            iconColor: "rgb(255, 244, 229)",
+            iconBg: "rgb(254, 201, 15)",
+            pcColor: "green-600",
+          },
+          {
+            icon: <FiCalendar />,
+            amount: data.appointments.prescribedAppointments.toLocaleString(),
+            percentage: "+23%", // You can adjust this based on logic
+            title: "Prescribed Appointment",
+            iconColor: "rgb(229, 255, 244)", // Light greenish color for the icon
+            iconBg: "rgb(15, 201, 254)", // Sky blue background for the icon
+            pcColor: "red-600", // Changed from green to red
+          },
+          
+          {
+            icon: <FaUserMd />,
+            amount: data.users.totalDoctors.toLocaleString(),
+            percentage: "+38%", // You can adjust this based on logic
+            title: "Total Doctors",
+            iconColor: "rgb(228, 106, 118)",
+            iconBg: "rgb(255, 244, 229)",
+            pcColor: "green-600",
+          },
+          {
+            icon: <FaRegUser />,
+            amount: data.totalUsersByRoles.staff.toLocaleString(),
+            percentage: "+38%", // You can adjust this based on logic
+            title: "Total Stuffs",
+            iconColor: "rgb(228, 106, 118)",
+            iconBg: "rgb(255, 244, 229)",
+            pcColor: "green-600",
+          },
+          {
+            icon: <FaUsers />,
+            amount: data.users.totalUsers.toLocaleString(),
+            percentage: "-12%", // You can adjust this based on logic
+            title: "Total Users",
+            iconColor: "rgb(0, 194, 146)",
+            iconBg: "rgb(235, 250, 242)",
+            pcColor: "red-600",
+          },
+          {
+            icon: <FaPills />,
+            amount: data.medicines.total.toLocaleString(),
+            percentage: "-12%", // You can adjust this based on logic
+            title: "Total Medicines",
+            iconColor: "rgb(75, 192, 192)",
+            iconBg: "rgb(229, 245, 244)",
+            pcColor: "red-600",
+          },
+          {
+            icon: <FaMoneyBillWave />,
+            amount: "99,354", // You need to provide the total budget from the API or adjust the logic
+            percentage: "-12%", // You can adjust this based on logic
+            title: "Total Budget in BDT",
+            iconColor: "rgb(54, 162, 235)",
+            iconBg: "rgb(232, 244, 255)",
+            pcColor: "red-600",
+          },
+      
+        ];
+
+        // Set the mapped dashData
+        setDashData(mappedDashData);
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className="mt-24 ">
       <div className="flex flex-col">
