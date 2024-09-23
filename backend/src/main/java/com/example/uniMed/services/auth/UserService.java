@@ -467,7 +467,12 @@ public class UserService {
         // Calculate average ratings for all doctors
         for (Doctors doctor : doctors) {
             List<Rating> ratings = ratingRepository.findByDoctor(doctor);
-            double averageRating = ratings.stream().mapToDouble(rating -> rating.getRating().doubleValue()).average().orElse(0.0);
+           
+            double averageRating = ratings.stream()
+    .filter(rating -> rating.getRating() != null) // Filter out null ratings
+    .mapToDouble(rating -> rating.getRating().doubleValue())
+    .average()
+    .orElse(0.0);
             DoctorsDTO doctorDTO = new DoctorsDTO();
             
             doctorDTO=doctor.toDto(doctor);
