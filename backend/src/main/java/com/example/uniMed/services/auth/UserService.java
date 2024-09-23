@@ -209,17 +209,32 @@ public class UserService {
     }
 
     @Transactional
-    public Map<String, Object> updateUser(MultipartFile profileImage, Long userId, String email, String dobString,
+    public Map<String, Object> updateUser( Long userId, String email, String dobString,
             String name, String department, String session, String registrationNo,
-            String phone, Long departmentId) throws Exception {
+            String phone, Long departmentId,String password) throws Exception {
         Map<String, Object> response = new HashMap<>();
-
+        if (password == null || password.isEmpty()) {
+            response.put("success", false);
+            response.put("message", "Password must be provided");
+            return response;
+        }
+      
         Optional<User> userOpt = userRepository.findById(userId);
         if (userOpt.isEmpty()) {
             throw new EntityNotFoundException("User not found with id: " + userId);
         }
 
+
         User user = userOpt.get();
+        if (password != null && !password.isEmpty()) {
+            //check password is correct
+           
+            if (!BCrypt.checkpw(password, user.getPassword())) {
+               response.put("success", false);
+                response.put("message", "Invalid password");
+                return response;
+            }
+        }
 
         // Update user fields
         if (email != null && !email.isEmpty()) {
@@ -238,18 +253,18 @@ public class UserService {
             Date dob = formatter.parse(dobString);
             user.setDob(dob);
         }
-
-        // Handle profile image upload
-        if (profileImage != null && !profileImage.isEmpty()) {
-            String filePath = fileService.saveFile(profileImage);
-            user.setImage(filePath);
-        }
+       
 
         userRepository.save(user);
 
         // Update student information if exists
         Optional<Student> studentOpt = studentRepository.findById(userId);
         studentOpt.ifPresent(student -> {
+            if (department == null || session == null || registrationNo == null) {
+                response.put("success", false);
+                response.put("message", "Department, session, and registration number must be provided for students");
+                return;
+            }
             student.setDepartment(department);
             student.setSession(session);
             student.setRegistrationNo(registrationNo);
@@ -390,15 +405,10 @@ public class UserService {
         return response;
     }
 
-    public Map<String, Object> resetPassword(String email, String currentPass, String confirmPass) throws Exception {
+    public Map<String, Object> resetPassword(String userID, String currentPass, String confirmPass) throws Exception {
         Map<String, Object> response = new HashMap<>();
-        if (!currentPass.equals(confirmPass)) {
-            response.put("success", false);
-            response.put("message", "Password does not match");
-            return response;
-        }
 
-        Optional<User> userOpt = userRepository.findByEmail(email);
+        Optional<User> userOpt = userRepository.findById(Long.parseLong(userID));
         if (!userOpt.isPresent()) {
             response.put("success", false);
             response.put("message", "User does not exist");
@@ -406,7 +416,17 @@ public class UserService {
         }
 
         User user = userOpt.get();
-        String hashedPassword = BCrypt.hashpw(currentPass, BCrypt.gensalt());
+
+        // Check current password
+        String userCurrentPass = user.getPassword();
+        if (!BCrypt.checkpw(currentPass, userCurrentPass)) {
+            response.put("success", false);
+            response.put("message", "Current password is incorrect");
+            return response;
+        }
+
+        // Hash new password and update user
+        String hashedPassword = BCrypt.hashpw(confirmPass, BCrypt.gensalt());
         user.setPassword(hashedPassword);
         userRepository.save(user);
 
@@ -414,7 +434,6 @@ public class UserService {
         response.put("message", "Password reset successfully");
         return response;
     }
-
     public Map<String, Object> loginUser(String email, String password) throws Exception {
         Map<String, Object> response = new HashMap<>();
         Optional<User> userOpt = userRepository.findByEmail(email);
@@ -458,9 +477,7 @@ public class UserService {
         return 1000 + random.nextInt(9000);
     }
 
-    private String saveFile(MultipartFile file) throws Exception {
-        return (file != null) ? fileService.saveFile(file) : "default/avatar.jpeg";
-    }
+  
     public List<DoctorsDTO> convertDoctorsToDTOs(List<Doctors> doctors) {
         List<DoctorsDTO> doctorsDTOs = new ArrayList<>();
 
@@ -504,6 +521,36 @@ public class UserService {
             response.put("message", "Failed to get doctors: " + e.getMessage());
         }
     
+        return response;
+    }
+    public Map<String,Object> changeImage(Long userId, MultipartFile image) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+           
+            User user = userRepository.findById(userId).get();
+            if (user==null){
+                response.put("success", false);
+                response.put("message", "User id invalid: ");
+                return response;
+            }
+           try{
+            fileService.deleteFile(user.getImage());
+              }catch(Exception e){
+                System.out.println("Error: "+e.getMessage());
+
+           }
+            String imageUrl= fileService.saveFile(image);
+
+            user.setImage(imageUrl);
+
+            userRepository.save(user);
+            response.put("success", true);
+            response.put("message", "Image updated successfully");
+            response.put("imageUrl", imageUrl);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Failed to update image: " + e.getMessage());
+        }
         return response;
     }
 }

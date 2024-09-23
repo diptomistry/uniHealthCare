@@ -89,24 +89,26 @@ public Map<String, Object> createUser
         return userService.deleteUser(user_id);
     }
 
-   @PostMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+   @PostMapping(value = "/update")
     public ResponseEntity<Map<String, Object>> updateUser(
-            @RequestPart(value = "file", required = false) MultipartFile file,
-            @RequestPart("user_id") String userIdString,
-            @RequestPart("email") String email,
-            @RequestPart("dob") String dob,
-            @RequestPart("name") String name,
-            @RequestPart("department") String department,
-            @RequestPart("departmentId") Long departmentId,
-            @RequestPart("session") String session,
-            @RequestPart("registrationNo") String registrationNo,
-            @RequestPart("phone") String phone
-    ) {
+          
+           @RequestBody Map<String, String> body) {
+     
         Map<String, Object> response = new HashMap<>();
         
         try {
-            Long userId = Long.parseLong(userIdString);
-            Map<String, Object> result = userService.updateUser(file, userId, email, dob, name, department, session, registrationNo, phone,departmentId);
+            Long userId = Long.parseLong(body.get("user_id"));
+            String email = body.get("email");
+            String dob = body.get("dob");
+            String name = body.get("name");
+            String department = body.get("department");
+            String session = body.get("session");
+            String registrationNo = body.get("registrationNo");
+            String phone = body.get("phone");
+            String departmentId = body.get("departmentId");
+            String password = body.get("password");
+            
+            Map<String, Object> result = userService.updateUser( userId, email, dob, name, department, session, registrationNo, phone,Long.parseLong(departmentId),password);
             
             response.put("success", true);
             response.put("message", "User updated successfully");
@@ -124,6 +126,17 @@ public Map<String, Object> createUser
         }
     }
 
+
+    @PostMapping(value = "/change-image/{user_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>> changeImage(@PathVariable("user_id") Long userId, @RequestPart("file") MultipartFile image) {
+        
+       
+             return ResponseEntity.ok(
+                userService.changeImage(userId, image)
+             );
+
+          
+    }
     @PostMapping("/update-status")
     public Map<String, Object> updateUserStatus(@RequestBody Map<String, Object> body) {
         Long user_id = Long.parseLong(body.get("user_id").toString());
@@ -163,13 +176,13 @@ public Map<String, Object> createUser
 
     @PostMapping("/reset-password")
     public Map<String, Object> resetPassword(@RequestBody Map<String, String> body) {
-        String email = body.get("email");
+        String userId = body.get("user_id");
         String current_pass = body.get("current_pass");
         String confirm_pass = body.get("confirm_pass");
 
         
         try {
-            return userService.resetPassword(email, current_pass, confirm_pass);
+            return userService.resetPassword(userId, current_pass, confirm_pass);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);

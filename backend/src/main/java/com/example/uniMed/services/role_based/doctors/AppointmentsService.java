@@ -253,7 +253,7 @@ public class AppointmentsService {
             Integer appointmentId = appointment.getAppointmentID();
             System.out.println("-----................................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println(appointmentId);
-            System.out.println(appointment.getUser().getUserID());
+           
     
             AppointmentsDTO1 appointmentsDTO1 = appointment.toDTO();
     
