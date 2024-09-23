@@ -1,4 +1,4 @@
-package com.example.uniMed.apis;
+package com.example.uniMed.apis.file;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

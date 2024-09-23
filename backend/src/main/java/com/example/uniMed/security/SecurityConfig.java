@@ -1,4 +1,4 @@
-package com.example.uniMed.apis;
+package com.example.uniMed.security;
 import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;

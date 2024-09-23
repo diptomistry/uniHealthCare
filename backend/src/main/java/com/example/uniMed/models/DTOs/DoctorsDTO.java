@@ -16,8 +16,31 @@ public class DoctorsDTO {
     private Date dob;
     private String role;
     private Department department;
+    private int ranking;
+    private Double averageRating;
+
+
+    public DoctorsDTO() {
+    }
+   
 
     // Getters and Setters
+
+    public int getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(int ranking) {
+        this.ranking = ranking;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
 
     public Integer getUserID() {
         return userID;

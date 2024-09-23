@@ -16,11 +16,13 @@ import com.example.uniMed.security.JwtHelper;
 import com.example.uniMed.models.User;
 import com.example.uniMed.models.DTOs.DoctorsDTO;
 import com.example.uniMed.models.DTOs.UserDTO;
+import com.example.uniMed.models.rating.Rating;
 import com.example.uniMed.repositories.EmailSender;
 import com.example.uniMed.repositories.auth.AdminRepository;
 import com.example.uniMed.repositories.auth.StudentRepository;
 import com.example.uniMed.repositories.auth.UserRepo;
 import com.example.uniMed.repositories.auth.role.RoleRepository;
+import com.example.uniMed.repositories.doctor.RatingRepository;
 import com.example.uniMed.repositories.publics.about_us.DepartmentRepository;
 import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
 import com.example.uniMed.services.FileService;
@@ -58,6 +60,10 @@ public class UserService {
 
     @Autowired
     private FileService fileService;
+
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @Autowired
     private AdminRepository adminRepository;
@@ -455,25 +461,47 @@ public class UserService {
     private String saveFile(MultipartFile file) throws Exception {
         return (file != null) ? fileService.saveFile(file) : "default/avatar.jpeg";
     }
+    public List<DoctorsDTO> convertDoctorsToDTOs(List<Doctors> doctors) {
+        List<DoctorsDTO> doctorsDTOs = new ArrayList<>();
 
+        // Calculate average ratings for all doctors
+        for (Doctors doctor : doctors) {
+            List<Rating> ratings = ratingRepository.findByDoctor(doctor);
+            double averageRating = ratings.stream().mapToDouble(rating -> rating.getRating().doubleValue()).average().orElse(0.0);
+            DoctorsDTO doctorDTO = new DoctorsDTO();
+            
+            doctorDTO=doctor.toDto(doctor);
+            doctorDTO.setAverageRating(averageRating);
+
+           
+            doctorsDTOs.add(doctorDTO);
+        }
+
+        // Sort doctors by average rating to determine ranking
+        doctorsDTOs.sort(Comparator.comparingDouble(DoctorsDTO::getAverageRating).reversed());
+
+        // Assign ranking
+        for (int i = 0; i < doctorsDTOs.size(); i++) {
+            doctorsDTOs.get(i).setRanking(i + 1);
+        }
+
+        return doctorsDTOs;
+    }
     public Map<String, Object> getDoctors() {
         Map<String, Object> response = new HashMap<>();
-        try {
-            List<Doctors> doctors = doctorRepository.findAll();
-            List <DoctorsDTO> doctorsDTOs = new ArrayList<>();
-            
-            // Convert List of Doctors to List of DoctorsDTO
-            for (Doctors doctor : doctors) {
-                doctorsDTOs.add(doctor.toDto(doctor));
-            }
+        try{
     
             response.put("success", true);
             response.put("message", "Doctors retrieved successfully");
-            response.put("data", doctorsDTOs);
+            response.put("data", convertDoctorsToDTOs(doctorRepository.findAll()));
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Failed to get doctors: " + e.getMessage());
         }
+    
         return response;
     }
 }
+
+    
+
