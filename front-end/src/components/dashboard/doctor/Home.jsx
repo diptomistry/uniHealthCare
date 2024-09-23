@@ -1,27 +1,78 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState,useContext } from "react";
 import { FaUserInjured, FaUserNurse } from "react-icons/fa";
 import GenericPieChart from "../charts/GenericPieChart";
 import { patientDataDoctorPie } from "../../../assets/dashboard";
 import GeneralAreaGraph from "../charts/GeneralAreaGraph";
 import { reviews } from "../../../assets/dashboard";
 import { PatientDataDoctor2 } from "../../../assets/dashboard";
+import { UserContext } from "../../../services/auth/UserProvider";
+import axios from "axios";
 
 
 
 
 const Home = () => {
-  const ratingData = {
-    totalRating: 4.95,
-    totalReviews: 1745,
+  const { user } = useContext(UserContext);
+  console.log(user)
+  const [reviews, setReviews] = useState([]);
+  const [ratingData, setRatingData] = useState({
+    totalRating: 0,
+    totalReviews: 0,
     ratings: [
-      { stars: 5, percentage: 70 },
-      { stars: 4, percentage: 17 },
-      { stars: 3, percentage: 8 },
-      { stars: 2, percentage: 4 },
-      { stars: 1, percentage: 1 },
+      { stars: 5, percentage: 0 },
+      { stars: 4, percentage: 0 },
+      { stars: 3, percentage: 0 },
+      { stars: 2, percentage: 0 },
+      { stars: 1, percentage: 0 },
     ],
-    date: "23 Dec-2020",
-  };
+  });
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/ratings/doctor/${user.userID}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        const apiReviews = response.data;
+        console.log('api',apiReviews)
+        // Format reviews
+        const formattedReviews = apiReviews.map((review) => ({
+          id: review.id,
+          name: review.user.name,
+          review: review.review || "No review provided",
+          rating: review.rating || 0,
+          image: review.user.image,
+        }));
+
+        setReviews(formattedReviews);
+
+        // Aggregate data for ratings
+        const totalReviews = apiReviews.length;
+        const totalRating = apiReviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews;
+
+        const ratingsCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+        apiReviews.forEach((review) => {
+          const star = Math.round(review.rating || 0);
+          ratingsCount[star] += 1;
+        });
+
+        const ratingsPercentage = Object.keys(ratingsCount).map((star) => ({
+          stars: parseInt(star),
+          percentage: (ratingsCount[star] / totalReviews) * 100,
+        }));
+
+        setRatingData({
+          totalRating: parseFloat(totalRating.toFixed(2)),
+          totalReviews: totalReviews,
+          ratings: ratingsPercentage.reverse(),
+        });
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [user.userID, user.token]);
 
   const reviewRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
