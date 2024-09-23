@@ -81,6 +81,7 @@ const NewRequests = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Appointments data:", data);
+      
         const appointData = data.content;
         const pendingAppointments = appointData.filter(
           (appointment) => appointment.status === "Scheduled" && appointment.user !== null
