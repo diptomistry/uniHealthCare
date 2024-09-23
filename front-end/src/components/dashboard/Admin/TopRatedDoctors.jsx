@@ -1,12 +1,46 @@
-import React, { useRef } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import Slider from "react-slick";
 import { FaArrowLeft, FaArrowRight, FaCrown } from "react-icons/fa";
 
 import { DoctorsData } from "../../../assets/dashboard";
 
 const TopRatedDoctors = () => {
+  const [doctorsData, setDoctorsData] = useState([]);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch('http://localhost:8000/api/auth/get-doctors', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const { data } = await response.json();
+          const formattedData = data.map((doctor) => ({
+            img: doctor.image, // Use the image URL from the API response
+            name: doctor.name,
+            specialties: doctor.department.name,
+            rating: doctor.averageRating.toFixed(2),
+            rank: doctor.ranking,
+          }));
+
+          setDoctorsData(formattedData);
+        } else {
+          console.error('Failed to fetch doctors');
+        }
+      } catch (error) {
+        console.error('Error fetching doctors:', error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
   const slider = useRef(null);
-  const sortedDoctors = [...DoctorsData].sort((a, b) => a.rank - b.rank);
+  const sortedDoctors = [...doctorsData].sort((a, b) => a.rank - b.rank);
   const settings = {
     accessibility: true,
     dots: true,
