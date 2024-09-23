@@ -57,4 +57,5 @@ public class PrescribedMedicineDTO {
     public void setAfterBefore(String afterBefore) {
         this.afterBefore = afterBefore;
     }
+    
 }

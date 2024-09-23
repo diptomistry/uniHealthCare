@@ -17,7 +17,7 @@ public class AppointmentsDTO1 {
     private Integer appointmentID;
 
     
-    private User user;
+    private UserDTO user;
 
     private Date appointmentDateTime;
     private String concern;
@@ -26,7 +26,7 @@ public class AppointmentsDTO1 {
  
     
      
-    private Doctors doctor;
+   
  
 
     public AppointmentsDTO1() {
@@ -41,10 +41,10 @@ public class AppointmentsDTO1 {
     public void setAppointmentID(Integer appointmentID) {
         this.appointmentID = appointmentID;
     }
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
     public Date getAppointmentDateTime() {
@@ -71,12 +71,7 @@ public class AppointmentsDTO1 {
     public void setPrescription(Prescription prescription) {
         this.prescription = prescription;
     }
-    public Doctors getDoctor() {
-        return doctor;
-    }
-    public void setDoctor(Doctors doctor) {
-        this.doctor = doctor;
-    }
+   
 
 
 

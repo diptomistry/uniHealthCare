@@ -1,6 +1,7 @@
 package com.example.uniMed.models.medicine;
 
 import com.example.uniMed.models.Medicines;
+import com.example.uniMed.services.role_based.doctors.PrescribedMedicineDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -93,5 +94,21 @@ public class PrescribedMedicine  {
         this.afterBefore = afterBefore;
     }
 
-    
+    public PrescribedMedicineDTO toDTO() {
+        PrescribedMedicineDTO prescribedMedicineDTO = new PrescribedMedicineDTO();
+        if (medicine != null) {
+            prescribedMedicineDTO.setName(medicine.getName());
+            prescribedMedicineDTO.setMedicineID(medicine.getMedicineID());
+        }
+        if (quantity != null) {
+            prescribedMedicineDTO.setQuantity(quantity);
+        }
+        if (duration != null) {
+            prescribedMedicineDTO.setDuration(duration);
+        }
+        if (afterBefore != null) {
+            prescribedMedicineDTO.setAfterBefore(afterBefore);
+        }
+        return prescribedMedicineDTO;
+    }
 }

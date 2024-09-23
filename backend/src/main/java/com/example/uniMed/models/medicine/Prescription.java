@@ -1,9 +1,13 @@
 package com.example.uniMed.models.medicine;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.uniMed.models.Doctors;
 import com.example.uniMed.models.User;
+import com.example.uniMed.models.DTOs.PrescriptionDTO;
+import com.example.uniMed.services.role_based.doctors.PrescribedMedicineDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -125,5 +129,34 @@ public class Prescription {
 
     public Integer getPrescriptionID() {
         return prescriptionID;
+    }
+
+    public PrescriptionDTO toDto(Prescription prescription) {
+        PrescriptionDTO prescriptionDTO = new PrescriptionDTO();
+        
+       if (prescription.getDoctor() != null) {
+            prescriptionDTO.setDoctor(prescription.getDoctor().toDto(prescription.getDoctor()));
+        }
+        // if (prescription.getPatient() != null) {
+        //     prescriptionDTO.setPatient(prescription.getPatient().toDTO(prescription.getPatient()));
+        // }
+       if (prescription.getPrescribedMedicines() != null) {
+          List<PrescribedMedicineDTO> prescribedMedicines = new ArrayList<>();
+                for (PrescribedMedicine prescribedMedicine : prescription.getPrescribedMedicines()) {
+                    prescribedMedicines.add(prescribedMedicine.toDTO());
+                }
+        }
+        if (prescription.getDate() != null) {
+            prescriptionDTO.setDate(prescription.getDate());
+        }
+        if (prescription.getDescription() != null) {
+            prescriptionDTO.setDescription(prescription.getDescription());
+        }
+        if (prescription.getPrescriptionID() != null) {
+            prescriptionDTO.setPrescriptionID(prescription.getPrescriptionID());
+        }
+        
+
+        return prescriptionDTO;
     }
 }
