@@ -172,7 +172,7 @@ const Home = () => {
                 ></div>
               </div>
               <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                {rating.percentage}%
+                {rating.percentage.toFixed(2)}%
               </span>
             </div>
           ))}
