@@ -23,35 +23,7 @@ const AppointmentData = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
   const editing = { allowDeleting: true, allowEditing: true };
-   const patientsData = [
    
-
-
- 
-  
-    {
-      AppointmentDate: 24546,
-      Email: "Frank",
-      PhoneNum: 84.99,
-      PatientName: "Pan Cake",
-      Gender: "Delhi",
-      Status: "complete",
-      StatusBg: "#8BE78B",
-      PatientImage:
-        "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-    },
-    {
-      AppointmentDate: 874534,
-      Email: "Danai",
-      PhoneNum: 122.99,
-      PatientName: "Watch",
-      Gender: "USA",
-      Status: "completed",
-      StatusBg: "#FF5C8E",
-      PatientImage:
-        "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pop-womens-garmin-watches-1641919013.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*",
-    },
-  ];
   const [newPatientsDataDoctor, setNewPatientsDataDoctor] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
