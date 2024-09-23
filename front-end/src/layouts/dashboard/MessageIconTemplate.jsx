@@ -4,7 +4,7 @@ import CustomModal from '../../models/CustomModal';
 import { UserContext } from '../../services/auth/UserProvider';
 import GetMessages from './GetMessages';
 
-const MessageIconTemplate = ({ receiverID }) => {
+const MessageIconTemplate = ({ receiverID,receiverEmail }) => {
   const { user } = useContext(UserContext);
   const [isModalOpen, setModalOpen] = useState(false);
   const [message, setMessage] = useState('');

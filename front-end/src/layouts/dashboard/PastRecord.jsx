@@ -5,16 +5,47 @@ import "slick-carousel/slick/slick-theme.css";
 import PrescriptionTemplate from '../../components/dashboard/doctor/prescription/PrescriptionTemplate';
 import SetRating from '../../models/dashboard/SetRating';
 import { UserContext } from '../../services/auth/UserProvider';
-const getId = (name) =>{
-    if(!name) return null;
+const getId = (name) => {
+    if (!name) return null;
+    
+    // Regex to match 'id:<number>'
     const idMatch = name.match(/id:(\d+)/);
-    if(idMatch && idMatch[1]){
-      return idMatch[1];
-  
+    
+    if (idMatch && idMatch[1] && idMatch[1] !== -1) {
+        return idMatch[1]; // Return the ID only if it's not '-1'
     }
-    return null;
-  }
+
+    return null; // Return null if ID is '-1' or not found
+};
+const getRatId = (name) => {
+    if (!name) return null;
+
+    // Regex to match 'id:<number>'
+    const idMatch = name.match(/ratingID:(\d+)/);
+    
+    if (idMatch && idMatch[1] && idMatch[1] !== -1) {
+        return idMatch[1]; // Return the ID only if it's not '-1'
+    }
+
+    return null; // Return null if ID is '-1' or not found
+};
+
+  const getAppointmentDoctorName = (name) => {
+    if (!name) return null; // If no name, return null
+
+    // Regex to match 'id:<number or -1>' and 'ratingID:<number or -1>' followed by the doctor's name
+    const nameMatch = name.match(/id:(\d+|-1)\s+ratingID:(\d+|-1)\s+(.+)/);
+
+    if (nameMatch && nameMatch[3]) {
+        return nameMatch[3].trim(); // Return the doctor's name
+    }
+
+    return name; // If no match is found, return the original name
+};
+
+
   const extractNameFromIdString = (name) => {
+    
     // Split the string on the first space after "id:4"
     const nameParts = name.split(" ");
     
@@ -138,7 +169,7 @@ const PastRecord = ({ appointments }) => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         {(appointment.status === 'Prescribed' || appointment.status === 'Dispensed') && (
-                                            <SetRating  doctorID={getId(appointment.doctorName)} />
+                                            <SetRating  doctorID={getId(appointment.doctorName)} ratId={getRatId(appointment.doctorName)} />
                                         )}
                                     </td>
                                 </tr>
