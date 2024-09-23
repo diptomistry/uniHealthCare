@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import { dashData } from "../../../assets/dashboard";
 import AppointmentData from "./AppointmentData";
 import CircularProgress from "../../../layouts/dashboard/mainContent/CircularProgress";
@@ -21,8 +21,12 @@ import { useNavigate } from "react-router-dom";
 import { FiCalendar } from "react-icons/fi";
 import { FaUserMd, FaUserNurse, FaUsers, FaPills, FaMoneyBillWave } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
+import { PiStudentBold } from "react-icons/pi";
+import { UserContext } from "../../../services/auth/UserProvider";
+
 
 const MedicalCenter = ({ darkMode }) => {
+  const { user } = useContext(UserContext);
   const [patientStatType, setPatientStatType] = useState("monthly");
   const navigate = useNavigate();
   const handleStatTypeChange = (event) => {
@@ -81,6 +85,16 @@ const MedicalCenter = ({ darkMode }) => {
             iconBg: "rgb(15, 201, 254)", // Sky blue background for the icon
             pcColor: "red-600", // Changed from green to red
           },
+          {
+            icon: <PiStudentBold />,
+
+            amount: data.totalUsersByRoles.student.toLocaleString(), // You need to provide the total budget from the API or adjust the logic
+            percentage: "-12%", // You can adjust this based on logic
+            title: "Total Students",
+            iconColor: "rgb(54, 162, 235)",
+            iconBg: "rgb(232, 244, 255)",
+            pcColor: "red-600",
+          },
           
           {
             icon: <FaUserMd />,
@@ -118,15 +132,7 @@ const MedicalCenter = ({ darkMode }) => {
             iconBg: "rgb(229, 245, 244)",
             pcColor: "red-600",
           },
-          {
-            icon: <FaMoneyBillWave />,
-            amount: "99,354", // You need to provide the total budget from the API or adjust the logic
-            percentage: "-12%", // You can adjust this based on logic
-            title: "Total Budget in BDT",
-            iconColor: "rgb(54, 162, 235)",
-            iconBg: "rgb(232, 244, 255)",
-            pcColor: "red-600",
-          },
+         
       
         ];
 
@@ -144,10 +150,8 @@ const MedicalCenter = ({ darkMode }) => {
       <div className="flex flex-col">
         <div className="w-full flex flex-col md:flex-row items-center gap-4">
           <div className="flex flex-col place-content-end md:w-1/2 ">
-            <div className=" flex  font-poppins border-b-4 border-gray-200">
-              <div className=" ">
-                <ReportDateRange />
-              </div>
+            <div className=" flex  font-poppins border-b-4 border-gray-200 ">
+             
               <div className="mb-8 ml-5">
                 <button
                   title="Save"
@@ -166,26 +170,22 @@ const MedicalCenter = ({ darkMode }) => {
             </div>
            
           </div>
-          <div className="bg-secondaryColor dark:text-gray-200 rounded-xl md:w-1/2 p-8 pt-9 mb-4 shadow-sm flex">
-            <div>
-              <h2 className="text-textColor text-2xl font-bold mb-2">
-                Your work is incomplete
-              </h2>
-              <p className="text-slate-600 mb-4">
-                You have completed{" "}
-                <span className="text-blue-500 font-bold">
-                  66%
-                  <br />
-                </span>
-                of your work,
-                <br /> do your remaining task from <br />
-                <span className=" underline text-textColor hover:text-white cursor-pointer ">
-                  My Tasks.
-                </span>
-              </p>
-            </div>
-            <CircularProgress />
-          </div>
+          <div className="bg-secondaryColor dark:text-gray-200 rounded-xl md:w-1/2 p-8 pt-9 mb-4 shadow-sm">
+      <h2 className="text-textColor text-2xl font-bold mb-2">
+        Welcome back! <span className="ml-3 text-blue-500">{user.name}</span>
+      </h2>
+      <p className="text-slate-600 mb-4">
+       
+        <span className="text-gray-500 font-bold">
+          Do Complete Your Pending Tasks
+        </span> 
+        <br />
+        Check todo list tasks in{" "}
+        <span className="  text-gray-500  cursor-pointer">
+          My Tasks.
+        </span>
+      </p>
+    </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full ">
