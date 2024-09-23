@@ -211,8 +211,9 @@ public class UserService {
     @Transactional
     public Map<String, Object> updateUser( Long userId, String email, String dobString,
             String name, String department, String session, String registrationNo,
-            String phone, Long departmentId,String password) throws Exception {
+            String phone, Long departmentId,String password) {
         Map<String, Object> response = new HashMap<>();
+        try{
         if (password == null || password.isEmpty()) {
             response.put("success", false);
             response.put("message", "Password must be provided");
@@ -279,6 +280,11 @@ public class UserService {
         response.put("success", true);
         response.put("message", "User updated successfully");
         return response;
+    } catch (Exception e) {
+        response.put("success", false);
+        response.put("message", "An error occurred while updating the user: " + e.getMessage());
+        return response;
+    }
     }
 
     @Transactional

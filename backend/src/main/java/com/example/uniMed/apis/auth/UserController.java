@@ -96,7 +96,8 @@ public Map<String, Object> createUser
      
         Map<String, Object> response = new HashMap<>();
         
-        try {
+      
+            System.out.println(body);
             Long userId = Long.parseLong(body.get("user_id"));
             String email = body.get("email");
             String dob = body.get("dob");
@@ -108,22 +109,12 @@ public Map<String, Object> createUser
             String departmentId = body.get("departmentId");
             String password = body.get("password");
             
-            Map<String, Object> result = userService.updateUser( userId, email, dob, name, department, session, registrationNo, phone,Long.parseLong(departmentId),password);
+           
             
-            response.put("success", true);
-            response.put("message", "User updated successfully");
-            response.put("data", result);
+           
             
-            return ResponseEntity.ok(response);
-        } catch (NumberFormatException e) {
-            response.put("success", false);
-            response.put("message", "Invalid user ID format");
-            return ResponseEntity.badRequest().body(response);
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", "Failed to update user: " + e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
-        }
+            return ResponseEntity.ok(userService.updateUser( userId, email, dob, name, department, session, registrationNo, phone,Long.parseLong(departmentId),password));
+        
     }
 
 
