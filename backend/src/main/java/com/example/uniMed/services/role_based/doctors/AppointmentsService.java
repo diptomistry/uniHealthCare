@@ -1,6 +1,7 @@
 package com.example.uniMed.services.role_based.doctors;
 
 import com.example.uniMed.models.DTOs.AppointmentsDTO1;
+import com.example.uniMed.models.DTOs.PrescriptionDTO;
 import com.example.uniMed.apis.role_based.doctors.AppointmentsDTO;
 import com.example.uniMed.models.Appointments;
 import com.example.uniMed.models.Doctors;
@@ -23,10 +24,12 @@ import org.checkerframework.checker.units.qual.t;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder.Op;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.lang.classfile.ClassFile.Option;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -240,31 +243,25 @@ public class AppointmentsService {
         }
         return null;
     }
-
-    public Page<Appointments> getAllAppointments(Pageable pageable) {
+   
+    public Page<AppointmentsDTO1> getAllAppointments(Pageable pageable) {
         Page<Appointments> appointmentsPage = appointmentsRepository.findAll(pageable);
         List<Appointments> appointments = appointmentsPage.getContent();
-
+        List<AppointmentsDTO1> appointmentsDTOs = new ArrayList<>();
+    
         for (Appointments appointment : appointments) {
             Integer appointmentId = appointment.getAppointmentID();
             System.out.println("-----................................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println(appointmentId);
             System.out.println(appointment.getUser().getUserID());
-
-            Prescription optionalPrescription = appointment.getPrescription();
-            if (optionalPrescription != null) {
-                System.out.println("Prescription ID: " + optionalPrescription.getPrescriptionID());
-                User user = optionalPrescription.getPatient();
-                Doctors doctor = optionalPrescription.getDoctor();
-                if (user != null) {
-                    System.out.println("User ID: " + user.getUserID());
-                } else {
-                    System.out.println("User not found");
-                }
-            }
+    
+            AppointmentsDTO1 appointmentsDTO1 = appointment.toDTO();
+    
+      
+    
+            appointmentsDTOs.add(appointmentsDTO1);
         }
-
-        return appointmentsPage;
+    
+        return new PageImpl<>(appointmentsDTOs, pageable, appointmentsPage.getTotalElements());
     }
-
 }
