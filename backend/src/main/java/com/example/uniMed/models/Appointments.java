@@ -3,6 +3,7 @@ package com.example.uniMed.models;
 import java.util.Date;
 import java.util.List;
 
+import com.example.uniMed.models.DTOs.AppointmentsDTO1;
 import com.example.uniMed.models.medicine.Prescription;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -82,5 +83,30 @@ public class Appointments {
     public void setPrescription(Prescription prescription) {
         this.prescription = prescription;
     }
+    public AppointmentsDTO1 toDTO(){
 
+        AppointmentsDTO1 dto = new AppointmentsDTO1();
+        
+       
+        if (this.user != null) {
+            dto.setUser(this.user.toDTO());
+        }
+        if (this.appointmentDateTime != null) {
+            dto.setAppointmentDateTime(this.appointmentDateTime);
+        }
+        if (this.concern != null) {
+            dto.setConcern(this.concern);
+        }
+        if (this.status != null) {
+            dto.setStatus(this.status);
+        }
+        if (this.prescription != null) {
+            System.out.println("prescription is not null");
+            dto.setPrescription(this.prescription.toDto(this.prescription));
+        }
+        if (this.appointmentID != null) {
+            dto.setAppointmentID(this.appointmentID);
+        }
+        return dto;
+    }
 }
