@@ -13,7 +13,7 @@ const UserProfile = () => {
   const [clickTask, setClickTask] = useState(false);
   const { logout } = useContext(UserContext);
   const {user} = useContext(UserContext);
-  console.log(user)
+  console.log(user.image);
 
   const handleSettingsClick = (item) => {
     if (item.title === "My Profile"||item.title === "My Tasks") {
