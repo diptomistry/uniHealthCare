@@ -1,5 +1,5 @@
 import React from "react";
-import { Page, Document, StyleSheet,View } from "@react-pdf/renderer";
+import { Page, Document, StyleSheet, View } from "@react-pdf/renderer";
 
 import {
   ReportTitle,
@@ -24,6 +24,9 @@ import {
   NoOfMedicalTestsTableHead,
   NoOfMedicalTestsTableBody,
   TotalExpenses,
+  DashTableTitle,
+  DashTableHead,
+  DashTableBody,
 } from "../../models/dashboard/ReportComponents";
 
 const styles = StyleSheet.create({
@@ -107,19 +110,15 @@ const ReportLayout = () => {
         <GenderTableTitle styles={styles} />
         <GenderTableHead styles={styles} />
         <GenderTableBody styles={styles} />
-        <PatientTypeTableTitle styles={styles} />
-        <PatientTypeTableHead styles={styles} />
-        <PatientTypeTableBody styles={styles} />
-        <View wrap={false}>
-          <MedicinePatientTypeTableTitle styles={styles} />
-          <MedicinePatientTypeTableHead styles={styles} />
-          <MedicinePatientTypeTableBody styles={styles} />
-        </View>
-        <NoOfMedicalTestsTableTitle styles={styles} />
-        <NoOfMedicalTestsTableHead styles={styles} />
-        <NoOfMedicalTestsTableBody styles={styles} />
-        <TotalExpenses styles={styles} />
       
+    
+        
+        
+        <View wrap={false}>
+         <DashTableTitle styles={styles} />
+        <DashTableHead styles={styles} />
+        <DashTableBody styles={styles} />
+   </View>
       </Page>
     </Document>
   );
