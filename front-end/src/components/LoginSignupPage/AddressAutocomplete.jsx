@@ -43,6 +43,7 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
       ref={inputRef}
       type="text"
       placeholder=" Search and Set your address"
+      onChange={(e) => onAddressSelect(e.target.value)}
     />
   );
 };

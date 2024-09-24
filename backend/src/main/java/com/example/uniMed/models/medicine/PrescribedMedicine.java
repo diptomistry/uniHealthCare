@@ -13,12 +13,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-
-
 @Entity
 @Table(name = "prescribed_medicine")
 
-public class PrescribedMedicine  {
+public class PrescribedMedicine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,17 +27,12 @@ public class PrescribedMedicine  {
     @ManyToOne
     @JoinColumn(name = "medicineID")
     private Medicines medicine;
-   
-
-
-
 
     @ManyToOne
     @JoinColumn(name = "prescriptionID")
     @JsonIgnoreProperties("prescribedMedicines")
     @JsonIgnore
     private Prescription prescription;
-
 
     public Integer getPrescribedMedicineID() {
         return prescribedMedicineID;
@@ -60,8 +53,6 @@ public class PrescribedMedicine  {
     public void setPrescription(Prescription prescription) {
         this.prescription = prescription;
     }
-
-  
 
     public void setMedicine(Medicines medicine) {
         this.medicine = medicine;
@@ -99,6 +90,7 @@ public class PrescribedMedicine  {
         if (medicine != null) {
             prescribedMedicineDTO.setName(medicine.getName());
             prescribedMedicineDTO.setMedicineID(medicine.getMedicineID());
+            prescribedMedicineDTO.setMedicine(medicine.toDTO(medicine));
         }
         if (quantity != null) {
             prescribedMedicineDTO.setQuantity(quantity);
@@ -109,6 +101,7 @@ public class PrescribedMedicine  {
         if (afterBefore != null) {
             prescribedMedicineDTO.setAfterBefore(afterBefore);
         }
+
         return prescribedMedicineDTO;
     }
 }

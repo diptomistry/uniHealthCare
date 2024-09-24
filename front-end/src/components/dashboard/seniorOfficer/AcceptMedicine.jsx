@@ -15,6 +15,7 @@ const AcceptMedicine = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setMedicineRequests(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching medicine requests:", error);
       }

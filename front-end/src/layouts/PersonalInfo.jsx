@@ -1,35 +1,81 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../services/auth/UserProvider';
+import React, { useContext, useState } from "react";
+import { UserContext } from "../services/auth/UserProvider";
 
 const PersonalInfo = () => {
   const { user } = useContext(UserContext);
+  const {updateUser} = useContext(UserContext);
   
-  // Assuming user object has the necessary fields
-  const userInfo = {
-    email: user?.email || '',
-    name: user?.name || '',
-    dob: user?.dob || '',
-    phone: user?.phone || '',
-    gender: user?.sex || '',
+
+  // State to hold form values
+  const [formData, setFormData] = useState({
+    name: user?.name || "",
+    dob: user?.dob || "",
+    phone: user?.phone || "",
+    gender: user?.sex || "",
+    password: "",
+  });
+
+  // Handle input changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const token = localStorage.getItem("token"); // Get the token from local storage
+
+      fetch("http://localhost:8000/api/auth/update/9", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          dob: formData.dob,
+          phone: formData.phone,
+          password: formData.password,
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json(); // Parse the response as JSON
+        })
+        .then((data) => {
+          console.log(data); // Handle the parsed JSON data
+          if (data.success) {
+            alert(data.message);
+            updateUser(data.data);
+          } else {
+            alert("Error: " + data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    } catch (error) {}
   };
 
   return (
-    <form className="max-w-md mx-auto m-5">
-   
-
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto m-5">
       {/* Name Field */}
       <div className="relative z-0 w-full mb-5 group">
         <input
           type="text"
-          name="floating_name"
-          id="floating_name"
+          name="name"
+          id="name"
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-backgroundColor focus:outline-none focus:ring-0 focus:border-backgroundColor peer"
           placeholder=" "
-          value={userInfo.name} // Pre-fill with user name
-          readOnly
+          value={formData.name}
+          onChange={handleChange}
         />
         <label
-          htmlFor="floating_name"
+          htmlFor="name"
           className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-backgroundColor peer-focus:dark:text-backgroundColor peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
         >
           Name
@@ -40,15 +86,15 @@ const PersonalInfo = () => {
       <div className="relative z-0 w-full mb-5 group">
         <input
           type="date"
-          name="floating_dob"
-          id="floating_dob"
+          name="dob"
+          id="dob"
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-backgroundColor focus:outline-none focus:ring-0 focus:border-backgroundColor peer"
           placeholder=" "
-          value={userInfo.dob} // Pre-fill with user date of birth
-          readOnly
+          value={formData.dob}
+          onChange={handleChange}
         />
         <label
-          htmlFor="floating_dob"
+          htmlFor="dob"
           className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-backgroundColor peer-focus:dark:text-backgroundColor peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
         >
           Date of Birth
@@ -59,37 +105,18 @@ const PersonalInfo = () => {
       <div className="relative z-0 w-full mb-5 group">
         <input
           type="tel"
-          name="floating_phone"
-          id="floating_phone"
+          name="phone"
+          id="phone"
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-backgroundColor focus:outline-none focus:ring-0 focus:border-backgroundColor peer"
           placeholder=" "
-          value={userInfo.phone} // Pre-fill with user phone
-          readOnly
+          value={formData.phone}
+          onChange={handleChange}
         />
         <label
-          htmlFor="floating_phone"
+          htmlFor="phone"
           className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-backgroundColor peer-focus:dark:text-backgroundColor peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
         >
           Phone number
-        </label>
-      </div>
-
-      {/* Gender Field */}
-      <div className="relative z-0 w-full mb-5 group">
-        <input
-          type="text"
-          name="floating_gender"
-          id="floating_gender"
-          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-backgroundColor focus:outline-none focus:ring-0 focus:border-backgroundColor peer"
-          placeholder=" "
-          value={userInfo.gender} // Pre-fill with user gender
-          readOnly
-        />
-        <label
-          htmlFor="floating_gender"
-          className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-backgroundColor peer-focus:dark:text-backgroundColor peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Gender
         </label>
       </div>
 
@@ -97,21 +124,21 @@ const PersonalInfo = () => {
       <div className="relative z-0 w-full mb-5 group">
         <input
           type="password"
-          name="floating_password"
-          id="floating_password"
+          name="password"
+          id="password"
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-backgroundColor focus:outline-none focus:ring-0 focus:border-backgroundColor peer"
           placeholder=" "
+          value={formData.password}
+          onChange={handleChange}
           required
         />
         <label
-          htmlFor="floating_password"
+          htmlFor="password"
           className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-backgroundColor peer-focus:dark:text-backgroundColor peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
         >
           Password
         </label>
       </div>
-
-
 
       <button
         type="submit"

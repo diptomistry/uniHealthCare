@@ -61,7 +61,6 @@ public class UserService {
     @Autowired
     private FileService fileService;
 
-
     @Autowired
     private RatingRepository ratingRepository;
 
@@ -134,10 +133,8 @@ public class UserService {
             }
 
             User newUser = new User(hashedPassword, email, dob, name, gender, role.get(), filePath, token, status,
-                    registeredFrom, phone);
-                    if (address!=null){
-                        newUser.setAddress(address);
-                    }
+                    registeredFrom, phone, address);
+
             System.out.println("------->Here");
 
             if ("student".equals(userType)) {
@@ -202,6 +199,7 @@ public class UserService {
 
             response.put("success", true);
             response.put("message", "User created successfully");
+           
             return response;
         } catch (Exception e) {
             // e.printStackTrace();
@@ -213,82 +211,88 @@ public class UserService {
     }
 
     @Transactional
-    public Map<String, Object> updateUser( Long userId, String email, String dobString,
+    public Map<String, Object> updateUser(Long userId, String email, String dobString,
             String name, String department, String session, String registrationNo,
-            String phone, Long departmentId,String password) {
+            String phone, String departmentId, String password) {
         Map<String, Object> response = new HashMap<>();
-        try{
-        if (password == null || password.isEmpty()) {
-            response.put("success", false);
-            response.put("message", "Password must be provided");
-            return response;
-        }
-      
-        Optional<User> userOpt = userRepository.findById(userId);
-        if (userOpt.isEmpty()) {
-            throw new EntityNotFoundException("User not found with id: " + userId);
-        }
+        try {
+            if (password == null || password.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Password must be provided");
+                return response;
+            }
 
+            Optional<User> userOpt = userRepository.findById(userId);
+            if (userOpt.isEmpty()) {
+                throw new EntityNotFoundException("User not found with id: " + userId);
+            }
 
-        User user = userOpt.get();
-        if (password != null && !password.isEmpty()) {
-            //check password is correct
-           
+            User user = userOpt.get();
             if (!BCrypt.checkpw(password, user.getPassword())) {
-               response.put("success", false);
+                response.put("success", false);
                 response.put("message", "Invalid password");
                 return response;
             }
-        }
 
-        // Update user fields
-        if (email != null && !email.isEmpty()) {
-            user.setEmail(email);
-        }
-        if (name != null && !name.isEmpty()) {
-            user.setName(name);
-        }
-        if (phone != null && !phone.isEmpty()) {
-            user.setPhone(phone);
-        }
-
-        // Parse and set date of birth
-        if (dobString != null && !dobString.isEmpty()) {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date dob = formatter.parse(dobString);
-            user.setDob(dob);
-        }
-       
-
-        userRepository.save(user);
-
-        // Update student information if exists
-        Optional<Student> studentOpt = studentRepository.findById(userId);
-        studentOpt.ifPresent(student -> {
-            if (department == null || session == null || registrationNo == null) {
-                response.put("success", false);
-                response.put("message", "Department, session, and registration number must be provided for students");
-                return;
+            // Update user fields
+            if (email != null && !email.isEmpty()) {
+                user.setEmail(email);
             }
-            student.setDepartment(department);
-            student.setSession(session);
-            student.setRegistrationNo(registrationNo);
-            studentRepository.save(student);
-        });
-        Optional<Doctors> doctorOpt = doctorRepository.findById(userId);
-        doctorOpt.ifPresent(doctor -> {
-            doctor.setDepartment(departmentRepository.findById(Integer.parseInt(departmentId.toString())).get());
-            doctorRepository.save(doctor);
-        });
+            if (name != null && !name.isEmpty()) {
+                user.setName(name);
+            }
+            if (phone != null && !phone.isEmpty()) {
+                user.setPhone(phone);
+            }
 
-        response.put("success", true);
-        response.put("message", "User updated successfully");
-        return response;
-    } catch (Exception e) {
-        response.put("success", false);
-        response.put("message", "An error occurred while updating the user: " + e.getMessage());
-        return response;
-    }
+            // Parse and set date of birth
+            if (dobString != null && !dobString.isEmpty()) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date dob = formatter.parse(dobString);
+                user.setDob(dob);
+            }
+
+            userRepository.save(user);
+
+            // Update student information if exists
+            Optional<Student> studentOpt = studentRepository.findById(userId);
+            if (studentOpt.isPresent()) {
+                Student student = studentOpt.get();
+
+                if (department != null) {
+                    student.setDepartment(department);
+                }
+                if (session != null) {
+                    student.setSession(session);
+                }
+                if (registrationNo != null) {
+                    student.setRegistrationNo(registrationNo);
+                }
+                studentRepository.save(student);
+
+            }
+
+            // Update doctor information if exists
+            Optional<Doctors> doctorOpt = doctorRepository.findById(userId);
+            if (doctorOpt.isPresent()) {
+                Doctors doctor = doctorOpt.get();
+                if (departmentId != null) {
+                    doctor.setDepartment(departmentRepository.findById(Integer.parseInt(departmentId)).orElseThrow(
+                            () -> new EntityNotFoundException("Department not found with id: " + departmentId)));
+                }
+                doctorRepository.save(doctor);
+            }
+
+            response.put("success", true);
+            response.put("message", "User updated successfully");
+            response.put("data", user.toDTO());
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "An error occurred while updating the user: " + e.getMessage());
+            return response;
+        }
     }
 
     @Transactional
@@ -443,6 +447,7 @@ public class UserService {
         response.put("message", "Password reset successfully");
         return response;
     }
+
     public Map<String, Object> loginUser(String email, String password) throws Exception {
         Map<String, Object> response = new HashMap<>();
         Optional<User> userOpt = userRepository.findByEmail(email);
@@ -486,25 +491,23 @@ public class UserService {
         return 1000 + random.nextInt(9000);
     }
 
-  
     public List<DoctorsDTO> convertDoctorsToDTOs(List<Doctors> doctors) {
         List<DoctorsDTO> doctorsDTOs = new ArrayList<>();
 
         // Calculate average ratings for all doctors
         for (Doctors doctor : doctors) {
             List<Rating> ratings = ratingRepository.findByDoctor(doctor);
-           
+
             double averageRating = ratings.stream()
-            .filter(rating -> rating.getRating() != null) // Filter out null ratings
-            .mapToDouble(rating -> rating.getRating().doubleValue())
-            .average()
-            .orElse(0.0);
+    .filter(rating -> rating.getRating() != null) // Filter out null ratings
+    .mapToDouble(rating -> rating.getRating().doubleValue())
+    .average()
+    .orElse(0.0);
             DoctorsDTO doctorDTO = new DoctorsDTO();
-            
-            doctorDTO=doctor.toDto(doctor);
+
+            doctorDTO = doctor.toDto(doctor);
             doctorDTO.setAverageRating(averageRating);
 
-           
             doctorsDTOs.add(doctorDTO);
         }
 
@@ -518,10 +521,11 @@ public class UserService {
 
         return doctorsDTOs;
     }
+
     public Map<String, Object> getDoctors() {
         Map<String, Object> response = new HashMap<>();
-        try{
-    
+        try {
+
             response.put("success", true);
             response.put("message", "Doctors retrieved successfully");
             response.put("data", convertDoctorsToDTOs(doctorRepository.findAll()));
@@ -529,26 +533,27 @@ public class UserService {
             response.put("success", false);
             response.put("message", "Failed to get doctors: " + e.getMessage());
         }
-    
+
         return response;
     }
-    public Map<String,Object> changeImage(Long userId, MultipartFile image) {
+
+    public Map<String, Object> changeImage(Long userId, MultipartFile image) {
         Map<String, Object> response = new HashMap<>();
         try {
-           
+
             User user = userRepository.findById(userId).get();
-            if (user==null){
+            if (user == null) {
                 response.put("success", false);
                 response.put("message", "User id invalid: ");
                 return response;
             }
-           try{
-            fileService.deleteFile(user.getImage());
-              }catch(Exception e){
-                System.out.println("Error: "+e.getMessage());
+            try {
+                fileService.deleteFile(user.getImage());
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
 
-           }
-            String imageUrl= fileService.saveFile(image);
+            }
+            String imageUrl = fileService.saveFile(image);
 
             user.setImage(imageUrl);
 
@@ -563,6 +568,3 @@ public class UserService {
         return response;
     }
 }
-
-    
-

@@ -7,7 +7,42 @@ public class MedicineRequestDTO {
     private String requestedBy;
     private Date stockEndDate;
     private Long medicineID;
+    private String status;
+    private Long id;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     private Integer quantity;
+
+    private UserDTO user;
+
+    private MedicinesDTO medicine;
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
 
     // Getters and Setters
     public String getRequestedBy() {
@@ -40,5 +75,13 @@ public class MedicineRequestDTO {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public MedicinesDTO getMedicine() {
+        return medicine;
+    }
+
+    public void setMedicine(MedicinesDTO medicine) {
+        this.medicine = medicine;
     }
 }

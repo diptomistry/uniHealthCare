@@ -90,6 +90,7 @@ const Signup = ({ userType, handleUserTypeChange, setIsLoading }) => {
     }
   };
   const handleAddressSelect = (selectedAddress) => {
+    console.log("Selected address:", selectedAddress);
     setAddress(selectedAddress);
   };
 
@@ -109,12 +110,14 @@ const Signup = ({ userType, handleUserTypeChange, setIsLoading }) => {
       confirmPass,
       address,
       registeredFrom: "web",
+
     };
 
     if (userType === "student") {
       data.departmentId = 1; ///
       data.session = session;
       data.registrationNo = registrationNo;
+      data.departmentName = selectedDepartment;
     }
 
     if (userType === "doctor") {
@@ -342,22 +345,7 @@ const Signup = ({ userType, handleUserTypeChange, setIsLoading }) => {
               />
             </div>
 
-            {userType !== "student" &&
-              userType !== "teacher" &&
-              userType !== "staff" &&
-              userType !== "at" && (
-                <div>
-                  <label className="text-gray-500 text-sm">
-                    Upload Signature:
-                  </label>
-                  <input
-                    className="py-3 px-2 bg-[#d5f2ec] rounded-lg w-full"
-                    type="file"
-                    onChange={handleSignatureChange}
-                    required
-                  />
-                </div>
-              )}
+           
 
             <button
               onClick={sendOtp}

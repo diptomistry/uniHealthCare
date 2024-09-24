@@ -1,6 +1,7 @@
 package com.example.uniMed.services.role_based.doctors;
 
 import com.example.uniMed.models.DTOs.AppointmentsDTO1;
+import com.example.uniMed.models.DTOs.MedicinesDTO;
 import com.example.uniMed.models.DTOs.PrescriptionDTO;
 import com.example.uniMed.apis.role_based.doctors.AppointmentsDTO;
 import com.example.uniMed.models.Appointments;
@@ -28,7 +29,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,16 +84,17 @@ public class AppointmentsService {
     @Transactional
     public Appointments prescribeMedicine(Integer appointmentId, List<PrescribedMedicineDTO> prescribedMedicinesDTO,
             @Nullable String description, @Nullable String date, @Nullable String status, Integer doctorID,
-            Integer userID ,String diagnosis) {
+            Integer userID, String diagnosis) {
         Prescription prescription = new Prescription();
         if (doctorID == null) {
             throw new RuntimeException("Doctor ID is required");
         }
 
         prescription.setDescription(description);
-        if (date != null){
-        prescription.setDate(date);}
-        if (date==null){
+        if (date != null) {
+            prescription.setDate(date);
+        }
+        if (date == null) {
             prescription.setDate(new Date().toString());
         }
         if (diagnosis != null) {
@@ -192,69 +193,53 @@ public class AppointmentsService {
     }
 
     // get all appointments of a user
-    public List<Appointments> getAppointmentsByUser(Integer userID) {
+    public List<AppointmentsDTO1> getAppointmentsByUser(Integer userID) {
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
         System.out.println("User ID: " + userID);
         if (optionalUser.isPresent()) {
             Optional<List<Appointments>> optionalAppointments = appointmentsRepository.findByUserUserID(userID);
 
             if (optionalAppointments.isPresent()) {
+                List<AppointmentsDTO1> appointmentsDTOList = new ArrayList<>();
                 for (Appointments appointment : optionalAppointments.get()) {
-                    if (appointment.getPrescription() != null) {
+                    AppointmentsDTO1 appointmentsDTO = new AppointmentsDTO1();
+                    appointmentsDTO = appointment.toDTO();
 
-                        System.out.println("Appointment ID: \n\n\n\n" + appointment.getAppointmentID());
+                    if (appointment.getPrescription() != null) {
+                        System.out.println("Appointment ID: " + appointment.getAppointmentID());
                         Optional<Prescription> optionalPrescription = prescriptionRepository
                                 .findById(appointment.getPrescription().getPrescriptionID());
                         if (optionalPrescription.isPresent()) {
-                            appointment.setPrescription(optionalPrescription.get());
+                            PrescriptionDTO prescriptionDTO = new PrescriptionDTO();
+                            prescriptionDTO = optionalPrescription.get().toDto(optionalPrescription.get());
+
                             if (optionalPrescription.get().getPrescribedMedicines() != null) {
+                                List<PrescribedMedicineDTO> prescribedMedicineDTOList = new ArrayList<>();
                                 for (PrescribedMedicine prescribedMedicine : optionalPrescription.get()
                                         .getPrescribedMedicines()) {
-                                    Optional<Medicines> optionalMedicine = medicineRepository
-                                            .findById(prescribedMedicine
-                                                    .getMedicine()
-                                                    .getMedicineID());
-                                    if (optionalMedicine.isPresent()) {
-                                        prescribedMedicine.setMedicine(optionalMedicine.get());
-                                    }
+                                    PrescribedMedicineDTO prescribedMedicineDTO = prescribedMedicine.toDTO();
+                                    prescribedMedicineDTOList.add(prescribedMedicineDTO);
                                 }
-                                // Long doctorID =
-                                // Long.parseLong(optionalPrescription.get().getDoctor().toString());
-                                // System.out.println("Doctor ID: " + doctorID);
-                                // System.out.println("\n\n\n");
-                                // try {
-                                // Optional<Doctors> optionalDoctor = doctorRepository.findById(
-                                // Long.parseLong(optionalPrescription.get()
-                                // .getDoctor()
-                                // .getUserID().toString(0)));
-                                // if (optionalDoctor.isPresent()) {
-                                // System.out.println("Doctor found----------------------");
-                                // System.out.println("\n\n\n");
-                                // optionalPrescription.get().setDoctor(optionalDoctor.get());
-                                // }}
-                                // catch (Exception e) {
-                                // System.out.println("Doctor not found");
-                                // }
-
-                            } else if (optionalPrescription.get().getPrescribedMedicines() == null) {
+                                prescriptionDTO.setPrescribedMedicinesDTOs(prescribedMedicineDTOList);
+                            } else {
                                 System.out.println("No medicines found");
                             }
+                            appointmentsDTO.setPrescription(prescriptionDTO);
                         }
                     }
-
-                    return optionalAppointments.get();
+                    appointmentsDTOList.add(appointmentsDTO);
                 }
-
+                return appointmentsDTOList;
             }
         }
         return null;
     }
-   
+
     public Page<AppointmentsDTO1> getAllAppointments(Pageable pageable) {
         Page<Appointments> appointmentsPage = appointmentsRepository.findAll(pageable);
         List<Appointments> appointments = appointmentsPage.getContent();
         List<AppointmentsDTO1> appointmentsDTOs = new ArrayList<>();
-    
+
         for (Appointments appointment : appointments) {
             AppointmentsDTO1 appointmentsDTO1 = appointment.toDTO();
             appointmentsDTOs.add(appointmentsDTO1);

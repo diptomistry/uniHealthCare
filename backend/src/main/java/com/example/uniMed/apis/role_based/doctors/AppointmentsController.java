@@ -49,7 +49,7 @@ public class AppointmentsController {
     }
 
     @GetMapping("/{UserID}")
-    public List<Appointments> getAppointmentsByUserID(@PathVariable Integer UserID) {
+    public List<AppointmentsDTO1> getAppointmentsByUserID(@PathVariable Integer UserID) {
         return appointmentsService.getAppointmentsByUser(UserID);
     }
 

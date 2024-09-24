@@ -21,8 +21,7 @@ import jakarta.persistence.*;
 @Table(name = "users")
 
 @Inheritance(strategy = InheritanceType.JOINED)
-// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-// property = "userID")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userID")
 
 public class User {
     @Id
@@ -87,13 +86,14 @@ public class User {
     }
 
     public User(Integer userID, String password, String email, Date dob, String name, String sex, String phone,
-            String image, String status, String token, String otp, String registeredFrom, Role role) {
+            String image, String status, String token, String otp, String registeredFrom, Role role, String address) {
         this.userID = userID;
         this.password = password;
         this.email = email;
         this.dob = dob;
         this.name = name;
         this.sex = sex;
+        this.address = address;
         this.phone = phone;
         this.image = image;
         this.status = status;
@@ -115,14 +115,14 @@ public class User {
         dto.setDob(this.dob);
         dto.setRole(this.role != null ? this.role : null);
         dto.setToken(this.token);
-        if (this.address!=null){
-            dto.setAddress(this.address);
-        }
+
+        dto.setAddress(this.address);
+
         return dto;
     }
 
     public User(String hashedPassword, String email, Date dob, String name, String sex, Role role,
-            String filePath, String token, String status, String registeredFrom, String phone) {
+            String filePath, String token, String status, String registeredFrom, String phone, String address) {
         this.password = hashedPassword;
         this.email = email;
         this.dob = dob;
@@ -133,6 +133,7 @@ public class User {
         this.token = token;
         this.status = status;
         this.registeredFrom = registeredFrom;
+        this.address = address;
         this.phone = phone;
     }
 
@@ -243,7 +244,5 @@ public class User {
     public void setRoleId(Integer roleId) {
         this.role = new Role(roleId);
     }
-
-  
 
 }
