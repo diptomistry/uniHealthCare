@@ -20,14 +20,14 @@ public class MedicineRequestController {
     private MedicineRequestService medicineRequestService;
 
     @PostMapping
-    public ResponseEntity<MedicineRequest> createRequest(@RequestBody MedicineRequestDTO request) {
-        MedicineRequest createdRequest = medicineRequestService.createRequest(request);
+    public ResponseEntity<MedicineRequestDTO> createRequest(@RequestBody MedicineRequestDTO request) {
+        MedicineRequestDTO createdRequest = medicineRequestService.createRequest(request);
         return ResponseEntity.ok(createdRequest);
     }
 
     @GetMapping
-    public ResponseEntity<List<MedicineRequest>> getAllRequests() {
-        List<MedicineRequest> requests = medicineRequestService.getAllRequests();
+    public ResponseEntity<List<MedicineRequestDTO>> getAllRequests() {
+        List<MedicineRequestDTO> requests = medicineRequestService.getAllRequests();
         return ResponseEntity.ok(requests);
     }
 
@@ -38,9 +38,11 @@ public class MedicineRequestController {
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<MedicineRequest> updateRequestStatus(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+    public ResponseEntity<MedicineRequestDTO> updateRequestStatus(@PathVariable Long id,
+            @RequestBody Map<String, String> payload) {
+        System.out.println(payload);
         String status = payload.get("status");
-        MedicineRequest updatedRequest = medicineRequestService.updateRequestStatus(id, status);
+        MedicineRequestDTO updatedRequest = medicineRequestService.updateRequestStatus(id, status);
         if (updatedRequest != null) {
             return ResponseEntity.ok(updatedRequest);
         }

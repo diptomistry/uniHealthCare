@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.example.uniMed.models.Medicines;
 import com.example.uniMed.models.User;
+import com.example.uniMed.models.DTOs.MedicineRequestDTO;
 
 @Entity
 public class MedicineRequest {
@@ -15,7 +16,6 @@ public class MedicineRequest {
 
     @Temporal(TemporalType.DATE)
     private Date requestDate;
-
 
     @ManyToOne
     @JoinColumn(name = "medicineID")
@@ -68,6 +68,7 @@ public class MedicineRequest {
     public User getRequestedBy() {
         return requestedBy;
     }
+
     public void setRequestedBy(User requestedBy) {
         this.requestedBy = requestedBy;
     }
@@ -86,5 +87,35 @@ public class MedicineRequest {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public MedicineRequestDTO toDTO() {
+        MedicineRequestDTO dto = new MedicineRequestDTO();
+        if (this.requestedBy != null) {
+            dto.setRequestedBy(this.requestedBy.getUserID().toString());
+        }
+        if (this.medicine != null) {
+            dto.setMedicineID(this.medicine.getMedicineID().longValue());
+        }
+        if (this.stockEndDate != null) {
+            dto.setStockEndDate(this.stockEndDate);
+        }
+        if (this.quantity != null) {
+            dto.setQuantity(this.quantity);
+        }
+        if (this.requestedBy != null) {
+            dto.setUser(this.requestedBy.toDTO());
+        }
+        if (this.medicine != null) {
+            dto.setMedicine(this.medicine.toDTO(this.medicine));
+        }
+        if (this.status != null) {
+            dto.setStatus(this.status);
+        }
+        if (this.id != null) {
+            dto.setId(this.id);
+        }
+
+        return dto;
     }
 }

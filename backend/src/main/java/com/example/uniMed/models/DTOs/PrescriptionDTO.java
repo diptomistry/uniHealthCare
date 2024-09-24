@@ -79,4 +79,8 @@ public class PrescriptionDTO {
         }
         this.prescribedMedicines = prescribedMedicineDTOs;
     }
+    public void setPrescribedMedicinesDTOs(List<PrescribedMedicineDTO> prescribedMedicines) {
+        this.prescribedMedicines = prescribedMedicines;
+       
+    }
 }

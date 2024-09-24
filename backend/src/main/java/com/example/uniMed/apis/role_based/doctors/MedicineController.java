@@ -1,6 +1,5 @@
 package com.example.uniMed.apis.role_based.doctors;
 
-
 import com.example.uniMed.models.Medicines;
 import com.example.uniMed.models.User;
 import com.example.uniMed.repositories.auth.UserRepo;
@@ -13,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
+import com.example.uniMed.models.DTOs.MedicinesDTO;
+import com.example.uniMed.models.DTOs.MedicinesDTO1;
+import com.example.uniMed.models.DTOs.Me.MedicineDTO1;
 
 @RestController
 @RequestMapping("/api/medicines")
@@ -26,7 +28,7 @@ public class MedicineController {
 
     // Add a new medicine
     @PostMapping("/add")
-    public ResponseEntity<Medicines> addMedicine(@RequestBody Map<String, Object> payload) {
+    public ResponseEntity<MedicinesDTO> addMedicine(@RequestBody Map<String, Object> payload) {
         String name = (String) payload.get("name");
         Date entryDate = new Date((Long) payload.get("entryDate"));
         Date expiryDate = new Date((Long) payload.get("expiryDate"));
@@ -34,11 +36,11 @@ public class MedicineController {
         BigDecimal price = new BigDecimal((String) payload.get("price"));
         Boolean isOutside = (Boolean) payload.get("isOutside");
         Integer stockQuantity = (Integer) payload.get("stockQuantity");
-        Long addedById = Long.parseLong( payload.get("addedBy").toString());
+        Long addedById = Long.parseLong(payload.get("addedBy").toString());
         User addedBy = userRepo.findById(addedById).orElse(null);
-     
 
-        Medicines medicine = medicineService.addMedicine(name, entryDate, expiryDate, description, price, isOutside, stockQuantity, addedBy);
+        MedicinesDTO medicine = medicineService.addMedicine(name, entryDate, expiryDate, description, price, isOutside,
+                stockQuantity, addedBy);
         return ResponseEntity.ok(medicine);
     }
 
@@ -54,24 +56,11 @@ public class MedicineController {
     }
 
     // Update a medicine
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Medicines> updateMedicine(@PathVariable Integer id, @RequestBody Map<String, Object> payload) {
-        String name = (String) payload.get("name");
-        Date entryDate = new Date((Long) payload.get("entryDate"));
-        Date expiryDate = new Date((Long) payload.get("expiryDate"));
-        String description = (String) payload.get("description");
-        BigDecimal price = new BigDecimal((String) payload.get("price"));
-        Boolean isOutside = (Boolean) payload.get("isOutside");
-        Integer stockQuantity = (Integer) payload.get("stockQuantity");
-        Long addedById = Long.parseLong( payload.get("addedBy").toString());
-        User addedBy = userRepo.findById(addedById).orElse(null);
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<MedicinesDTO> updateMedicine(@PathVariable Integer id, MedicineDTO1 medicineDTO) {
 
-        Medicines medicine = medicineService.updateMedicine(id, name, entryDate, expiryDate, description, price, isOutside, stockQuantity, addedBy);
-        if (medicine != null) {
-            return ResponseEntity.ok(medicine);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        MedicinesDTO medicine = medicineService.updateMedicine(id, medicineDTO);
+        return ResponseEntity.ok(medicine);
     }
 
     // Update stock quantity
@@ -100,8 +89,8 @@ public class MedicineController {
 
     // Get all medicines
     @GetMapping("/all")
-    public ResponseEntity<Iterable<Medicines>> getAllMedicines() {
-        Iterable<Medicines> medicines = medicineService.getAllMedicines();
+    public ResponseEntity<Iterable<MedicinesDTO>> getAllMedicines() {
+        Iterable<MedicinesDTO> medicines = medicineService.getAllMedicines();
         return ResponseEntity.ok(medicines);
     }
 }

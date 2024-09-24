@@ -11,8 +11,6 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
 @RestController
 @RequestMapping("/api/auth")
 public class UserController {
@@ -27,60 +25,55 @@ public class UserController {
     }
 
     @PostMapping("/create-user")
-public Map<String, Object> createUser
-(
-                             @RequestBody Map<String, String> body)
- {
+    public Map<String, Object> createUser(
+            @RequestBody Map<String, String> body) {
 
-     MultipartFile file = null;
-    String email = body.get("email");
-    String password = body.get("password");
-    String confirmPass = body.get("confirmPass");
-    String name = body.get("name");
-    String dob = body.get("dob");
-    String address =body.get("address");
-    System.out.println(dob);
-    Date dateOfBirth;
-    try {
-        dateOfBirth = Date.valueOf(dob);
-    } catch (IllegalArgumentException e) {
-        dateOfBirth=null;
-        
+        MultipartFile file = null;
+        String email = body.get("email");
+        String password = body.get("password");
+        String confirmPass = body.get("confirmPass");
+        String name = body.get("name");
+        String dob = body.get("dob");
+        String address = body.get("address");
+        System.out.println("address");
+        System.out.println(address);
+        System.out.println(dob);
+        Date dateOfBirth;
+        try {
+            dateOfBirth = Date.valueOf(dob);
+        } catch (IllegalArgumentException e) {
+            dateOfBirth = null;
+
+        }
+
+        String gender = body.get("gender");
+        String userType = body.get("userType");
+
+        String departmentName;
+        String session;
+        String registrationNo;
+        String departmentId = null;
+        try {
+            session = body.get("session");
+            registrationNo = body.get("registrationNo");
+            departmentName = body.get("departmentName");
+            departmentId = body.get("departmentId");
+        } catch (NumberFormatException e) {
+            departmentName = null;
+            session = null;
+            registrationNo = null;
+        }
+
+        String registeredFrom = body.get("registeredFrom");
+        String phone = body.get("phone");
+        System.out.println("Creating user");
+        System.out.println(body);
+
+        System.out.println("Creating user");
+
+        return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType,
+                departmentId, session, registrationNo, departmentName, registeredFrom, phone, address);
     }
-
-    String gender = body.get("gender");
-    String userType = body.get("userType");
-
-    String departmentName;
-    String session;
-    String registrationNo;
-    String departmentId=null;
-    try {
-         session = body.get("session");
-         registrationNo = body.get("registrationNo");
-         departmentName = body.get("departmentName");
-         departmentId = body.get("departmentId");
-    } catch (NumberFormatException e) {
-        departmentName = null;
-        session = null;
-        registrationNo = null;
-    }
-   
-    
-    String registeredFrom = body.get("registeredFrom");
-    String phone = body.get("phone");
-    System.out.println("Creating user");
-    System.out.println(body);
-   
-
-          
-
-    
-
-    System.out.println("Creating user");
-
-    return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, departmentId, session, registrationNo,departmentName, registeredFrom,phone,address);
-}
 
     @PostMapping("/delete-user")
     public Map<String, Object> deleteUser(@RequestBody Map<String, Long> body) {
@@ -88,57 +81,53 @@ public Map<String, Object> createUser
         return userService.deleteUser(user_id);
     }
 
-   @PostMapping(value = "/update")
+    @PostMapping(value = "/update/{user_id}")
     public ResponseEntity<Map<String, Object>> updateUser(
-          
-           @RequestBody Map<String, String> body) {
-     
-        Map<String, Object> response = new HashMap<>();
-        
-      
-            System.out.println(body);
-            Long userId = Long.parseLong(body.get("user_id"));
-            String email = body.get("email");
-            String dob = body.get("dob");
-            String name = body.get("name");
-            String department = body.get("department");
-            String session = body.get("session");
-            String registrationNo = body.get("registrationNo");
-            String phone = body.get("phone");
-            String departmentId = body.get("departmentId");
-            String password = body.get("password");
-            
-           
-            
-           
-            
-            return ResponseEntity.ok(userService.updateUser( userId, email, dob, name, department, session, registrationNo, phone,Long.parseLong(departmentId),password));
-        
-    }
+            @PathVariable("user_id") Long userId,
+            @RequestBody Map<String, String> body) {
+        System.out.println("User ID: " + userId);
 
+        Map<String, Object> response = new HashMap<>();
+
+        System.out.println(body);
+
+        String email = body.get("email");
+        String dob = body.get("dob");
+        String name = body.get("name");
+        String department = body.get("department");
+        String session = body.get("session");
+        String registrationNo = body.get("registrationNo");
+        String phone = body.get("phone");
+        String departmentId = body.get("departmentId");
+        String password = body.get("password");
+
+        return ResponseEntity.ok(userService.updateUser(userId, email, dob, name, department, session, registrationNo,
+                phone, departmentId, password));
+
+    }
 
     @PostMapping(value = "/change-image/{user_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Map<String, Object>> changeImage(@PathVariable("user_id") Long userId, @RequestPart("file") MultipartFile image) {
-        
-       
-             return ResponseEntity.ok(
-                userService.changeImage(userId, image)
-             );
+    public ResponseEntity<Map<String, Object>> changeImage(@PathVariable("user_id") Long userId,
+            @RequestPart("file") MultipartFile image) {
 
-          
+        return ResponseEntity.ok(
+                userService.changeImage(userId, image));
+
     }
+
     @PostMapping("/update-status")
     public Map<String, Object> updateUserStatus(@RequestBody Map<String, Object> body) {
         Long user_id = Long.parseLong(body.get("user_id").toString());
         String status = body.get("status").toString();
         return userService.updateUserStatus(user_id, status);
     }
-  
-    
+
     @PostMapping("/update-role")
     public Map<String, Object> updateRole(@RequestParam Long user_id, @RequestParam Integer role_id) {
         return userService.updateUserRole(user_id, role_id);
-    }@PostMapping("/send-otp")
+    }
+
+    @PostMapping("/send-otp")
     public Map<String, Object> sendOtp(@RequestBody Map<String, String> body) {
         String email = body.get("email");
         boolean debug = Boolean.parseBoolean(body.get("debug"));
@@ -170,7 +159,6 @@ public Map<String, Object> createUser
         String current_pass = body.get("current_pass");
         String confirm_pass = body.get("confirm_pass");
 
-        
         try {
             return userService.resetPassword(userId, current_pass, confirm_pass);
         } catch (Exception e) {
@@ -194,10 +182,12 @@ public Map<String, Object> createUser
             return response;
         }
     }
+
     @GetMapping("/get-all-users")
-    public Map<String,Object> getAllUsersMap(){
+    public Map<String, Object> getAllUsersMap() {
         return userService.getAllUsers();
     }
+
     @GetMapping("/get-doctors")
     public Map<String, Object> getDoctors() {
         Map<String, Object> response = userService.getDoctors();

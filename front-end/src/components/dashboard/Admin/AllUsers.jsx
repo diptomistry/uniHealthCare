@@ -67,7 +67,7 @@ const AllUsers = () => {
   const gridEmployeeCountry = (props) => (
     <div className="flex items-center justify-center gap-2">
       <GrLocation />
-      <span>{props.Country}</span>
+      <span>{props.address}</span>
     </div>
   );
 
@@ -154,6 +154,7 @@ const AllUsers = () => {
         }
 
         const result = await response.json();
+        console.log(result);
         
         const mappedData = result.data.map(user => ({
           userID: user.userID,
