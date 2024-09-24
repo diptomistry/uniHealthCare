@@ -3,7 +3,7 @@ import adminImg from "../../../assets/img/admin.jpeg";
 import { FaEdit } from "react-icons/fa";
 import CustomModal from "../../../models/CustomModal";
 import PrimaryButton from "../../../layouts/dashboard/PrimaryButton";
-import Quote from "../../../models/dashboard/Quote";
+//import Quote from "../../../models/dashboard/Quote";
 
 const QuoteSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,7 +61,7 @@ const QuoteSection = () => {
           </div>
         </div>
       </div>
-<Quote />
+
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
         <h2 className="text-2xl font-bold mb-4">Edit Quote</h2>
         <form className="space-y-4">
