@@ -111,8 +111,10 @@ const Blog = () => {
     try {
       formData.append('isBlog', 'true');
       formData.append('isQoute', 'false');
+     // formData.append('isBlog', 'false');
+     // formData.append('isQoute', 'true');
       
-      console.log('hello', editForm.img);
+      //console.log('hello', editForm.img);
       let response;
       if (isAdding) {
         formData.append("isBlog", "true");
@@ -126,6 +128,7 @@ const Blog = () => {
         console.log(response.data);
         setBlogs([...blogs, response.data]);
       } else {
+        console.log("Edit form:", editForm);
         formData.append("isBlog", "true");
         formData.append("isQoute", "false");
        // formData.append("isBlog", "true");

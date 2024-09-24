@@ -3,7 +3,7 @@ import adminImg from "../../../assets/img/admin.jpeg";
 import { FaEdit } from "react-icons/fa";
 import CustomModal from "../../../models/CustomModal";
 import PrimaryButton from "../../../layouts/dashboard/PrimaryButton";
-//import Quote from "../../../models/dashboard/Quote";
+import Quote from "../../../models/dashboard/Quote";
 
 const QuoteSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,35 +32,8 @@ const QuoteSection = () => {
 
   return (
     <div className="md:mt-60 mt-32">
-      <div className="w-full mx-auto bg-white p-6 rounded-lg shadow-md relative">
-        <h2 className="text-2xl font-bold mb-4 text-center">
-          Message from Chief Medical Officer
-        </h2>
-        <div className="flex flex-col md:flex-row items-center space-x-4">
-          <div className="flex-shrink-0 relative">
-            <img
-              src={image}
-              alt="Chief Medical Officer"
-              className="w-48 h-48 rounded-full border-4 border-yellow-400"
-            />
-           
-          </div>
-          <div className="flex-grow">
-            <div className="bg-lime-200 py-2 px-4 rounded-lg">
-              <h3 className="text-xl font-semibold">{name}</h3>
-            </div>
-            <blockquote className="mt-4 text-gray-700 italic">
-              {quote}
-            </blockquote>
-            <button
-              onClick={openModal}
-              className="absolute top-0 right-0 p-2 m-2 bg-gray-200 rounded-full hover:bg-gray-300 transition duration-300"
-            >
-              <FaEdit className="text-gray-700" />
-            </button>
-          </div>
-        </div>
-      </div>
+      
+      <Quote/>
 
       <CustomModal isOpen={isModalOpen} onRequestClose={closeModal}>
         <h2 className="text-2xl font-bold mb-4">Edit Quote</h2>
@@ -103,3 +76,34 @@ const QuoteSection = () => {
 };
 
 export default QuoteSection;
+/*
+<div className="w-full mx-auto bg-white p-6 rounded-lg shadow-md relative">
+        <h2 className="text-2xl font-bold mb-4 text-center">
+          Message from Chief Medical Officer
+        </h2>
+        <div className="flex flex-col md:flex-row items-center space-x-4">
+          <div className="flex-shrink-0 relative">
+            <img
+              src={image}
+              alt="Chief Medical Officer"
+              className="w-48 h-48 rounded-full border-4 border-yellow-400"
+            />
+           
+          </div>
+          <div className="flex-grow">
+            <div className="bg-lime-200 py-2 px-4 rounded-lg">
+              <h3 className="text-xl font-semibold">{name}</h3>
+            </div>
+            <blockquote className="mt-4 text-gray-700 italic">
+              {quote}
+            </blockquote>
+            <button
+              onClick={openModal}
+              className="absolute top-0 right-0 p-2 m-2 bg-gray-200 rounded-full hover:bg-gray-300 transition duration-300"
+            >
+              <FaEdit className="text-gray-700" />
+            </button>
+          </div>
+        </div>
+      </div>
+      */
