@@ -120,7 +120,7 @@ const Sidebar = () => {
             {item.links.map((link) =>
               activeMenu ? (
                 <NavLink
-                  to={`/dashboard/${link.name}`}
+                  to={`/dashboard/${userType}/${link.name}`}
                   key={link.name}
                   onClick={handleCloseSideBar}
                   className={({ isActive }) =>

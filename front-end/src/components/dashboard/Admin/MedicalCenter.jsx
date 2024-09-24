@@ -271,62 +271,7 @@ const MedicalCenter = ({ darkMode }) => {
           </div>
         </div>
 
-        <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md">
-          <div className="flex justify-between">
-            <p className="font-semibold text-xl">
-              Budget and Expenses Updates This Year
-            </p>
-            <div className="flex items-center gap-4">
-              <p className="flex items-center gap-2 text-gray-600 dark:text-[#5c5558] hover:drop-shadow-xl">
-                <span>
-                  <FaCircleDot />
-                </span>
-                <span>Expense</span>
-              </p>
-              <p className="flex items-center gap-2 text-brightColor hover:drop-shadow-xl">
-                <span>
-                  <FaCircleDot />
-                </span>
-                <span>Budget</span>
-              </p>
-            </div>
-          </div>
-          <div className="mt-10 flex flex-wrap justify-center md:gap-x-36 gap-10">
-            <div className="border-r-1 border-color m-4 pr-10">
-              <div>
-                <p>
-                  <div className="flex">
-                    <FaBangladeshiTakaSign size={30} />
-                    <p className="text-3xl font-semibold ml-1">98,487</p>
-                  </div>
-                </p>
-                <p className="text-gray-500 mt-1">Budget</p>
-              </div>
-              <div className="mt-8">
-                <div className="flex">
-                  <FaBangladeshiTakaSign size={30} />
-                  <p className="text-3xl font-semibold ml-1">48,487</p>
-                </div>
-                <p className="text-gray-500 mt-1">Expense</p>
-              </div>
-              <div className="mt-5">
-                <SparkLine
-                  currentColor={"black"}
-                  id="line-sparkLine"
-                  type="Line"
-                  height="80px"
-                  width="250px"
-                  data={SparklineAreaData}
-                  color={"#039BAB"}
-                />
-              </div>
-              <p className="text-gray-500 mt-1">Expenses in each month </p>
-            </div>
-            <div>
-              <Stacked darkMode={darkMode} width="380px" height="360px" />
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   );
