@@ -28,8 +28,6 @@ public class UserController {
 
     @PostMapping("/create-user")
 public Map<String, Object> createUser
-// (@RequestPart("body") Map<String, String> body, 
-// @RequestPart(value = "file", required = false) MultipartFile file)
 (
                              @RequestBody Map<String, String> body)
  {
@@ -40,6 +38,7 @@ public Map<String, Object> createUser
     String confirmPass = body.get("confirmPass");
     String name = body.get("name");
     String dob = body.get("dob");
+    String address =body.get("address");
     System.out.println(dob);
     Date dateOfBirth;
     try {
@@ -80,7 +79,7 @@ public Map<String, Object> createUser
 
     System.out.println("Creating user");
 
-    return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, departmentId, session, registrationNo, registeredFrom, phone,departmentName);
+    return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, departmentId, session, registrationNo,departmentName, registeredFrom,phone,address);
 }
 
     @PostMapping("/delete-user")

@@ -12,7 +12,19 @@ public class PrescriptionDTO {
     private Integer prescriptionID;
     private String description;
     private String date;
+    private String diagnosis;
     private UserDTO patient;
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+  
+
     private DoctorsDTO doctor;
     private List<PrescribedMedicineDTO> prescribedMedicines;
 

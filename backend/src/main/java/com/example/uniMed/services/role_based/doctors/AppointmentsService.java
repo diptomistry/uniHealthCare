@@ -84,13 +84,21 @@ public class AppointmentsService {
     @Transactional
     public Appointments prescribeMedicine(Integer appointmentId, List<PrescribedMedicineDTO> prescribedMedicinesDTO,
             @Nullable String description, @Nullable String date, @Nullable String status, Integer doctorID,
-            Integer userID) {
+            Integer userID ,String diagnosis) {
         Prescription prescription = new Prescription();
         if (doctorID == null) {
             throw new RuntimeException("Doctor ID is required");
         }
+
         prescription.setDescription(description);
-        prescription.setDate(date);
+        if (date != null){
+        prescription.setDate(date);}
+        if (date==null){
+            prescription.setDate(new Date().toString());
+        }
+        if (diagnosis != null) {
+            prescription.setDiagnosis(diagnosis);
+        }
         System.out.println("Doctor ID: " + doctorID);
 
         System.out.println("User ID: " + userID);
@@ -168,8 +176,6 @@ public class AppointmentsService {
             appointment.setPrescription(prescription);
             appointment.setStatus(status);
             appointment.setAppointmentDateTime(Date.from(new Date().toInstant()));
-
-            // appointment.setPrescribedMedicines(prescribedMedicines);
             return appointmentsRepository.save(appointment);
         }
         return null;
@@ -250,18 +256,9 @@ public class AppointmentsService {
         List<AppointmentsDTO1> appointmentsDTOs = new ArrayList<>();
     
         for (Appointments appointment : appointments) {
-            Integer appointmentId = appointment.getAppointmentID();
-            System.out.println("-----................................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println(appointmentId);
-           
-    
             AppointmentsDTO1 appointmentsDTO1 = appointment.toDTO();
-    
-      
-    
             appointmentsDTOs.add(appointmentsDTO1);
         }
-    
         return new PageImpl<>(appointmentsDTOs, pageable, appointmentsPage.getTotalElements());
     }
 }

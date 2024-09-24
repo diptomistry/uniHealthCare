@@ -49,6 +49,15 @@ public class User {
     private String token;
     private String otp;
     private String registeredFrom;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleid")
@@ -106,6 +115,9 @@ public class User {
         dto.setDob(this.dob);
         dto.setRole(this.role != null ? this.role : null);
         dto.setToken(this.token);
+        if (this.address!=null){
+            dto.setAddress(this.address);
+        }
         return dto;
     }
 
@@ -232,12 +244,6 @@ public class User {
         this.role = new Role(roleId);
     }
 
-    // public List<Appointments> getAppointments() {
-    // return appointments;
-    // }
-
-    // public void setAppointments(List<Appointments> appointments) {
-    // this.appointments = appointments;
-    // }
+  
 
 }

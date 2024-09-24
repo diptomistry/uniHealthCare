@@ -21,6 +21,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "prescription")
@@ -33,6 +34,9 @@ public class Prescription {
 
     private String description;
     private String date;
+
+    @Column(columnDefinition = "TEXT")
+    private String diagnosis;
 
      @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userID")
@@ -155,8 +159,25 @@ public class Prescription {
         if (prescription.getPrescriptionID() != null) {
             prescriptionDTO.setPrescriptionID(prescription.getPrescriptionID());
         }
+        if (prescription.getDiagnosis() != null) {
+            prescriptionDTO.setDiagnosis(prescription.getDiagnosis());
+        }
         
 
         return prescriptionDTO;
+    }
+
+
+
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+
+
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
     }
 }

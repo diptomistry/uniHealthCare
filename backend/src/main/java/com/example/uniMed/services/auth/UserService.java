@@ -96,7 +96,8 @@ public class UserService {
             String registrationNo,
             String departmentName,
             String registeredFrom,
-            String phone) {
+            String phone,
+            String address) {
         Map<String, Object> response = new HashMap<>();
 
         try {
@@ -134,6 +135,9 @@ public class UserService {
 
             User newUser = new User(hashedPassword, email, dob, name, gender, role.get(), filePath, token, status,
                     registeredFrom, phone);
+                    if (address!=null){
+                        newUser.setAddress(address);
+                    }
             System.out.println("------->Here");
 
             if ("student".equals(userType)) {

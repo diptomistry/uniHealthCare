@@ -39,7 +39,8 @@ public class AppointmentsController {
                 request.getDate(),
                 request.getStatus(),
                 request.getDoctorID(),
-                request.getUserID());
+               
+                request.getUserID(), request.getDiagnosis());
     }
 
     @PutMapping("/{appointmentId}/status")
@@ -57,12 +58,6 @@ public class AppointmentsController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "1000") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        // List<Appointments> appointments = appointmentsService.getAllAppointments(pageable).getContent();
-        // List<AppointmentsDTO1> appointmentsDTOs = new ArrayList<>();
-        // for (Appointments appointment : appointments) {
-        //     AppointmentsDTO1 appointmentsDTO = new AppointmentsDTO1();
-          
-        // }
         return appointmentsService.getAllAppointments(pageable);
     }
 }

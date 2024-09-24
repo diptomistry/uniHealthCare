@@ -11,6 +11,15 @@ public class PrescribeMedicineRequestDTO {
     private String description;
     private String date;
     private String status;
+    private String diagnosis;
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
     private Integer doctorID;
     private Integer userID;
 

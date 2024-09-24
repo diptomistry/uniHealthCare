@@ -11,6 +11,7 @@ public class UserDTO {
     private String sex;
     private String phone;
     private String image;
+    private String address;
     private String status;
     private Date dob;
     private String token;
@@ -21,6 +22,14 @@ public class UserDTO {
 
     public Integer getUserID() {
         return userID;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setUserID(Integer userID) {
