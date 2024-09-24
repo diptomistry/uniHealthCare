@@ -3161,7 +3161,7 @@ export const doctorLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "Doctor-Home",
+        name: "Home",
         icon: <FiHome />,
       },
     ],

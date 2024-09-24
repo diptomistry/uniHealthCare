@@ -249,7 +249,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Doctor-Home"
+              path="/doctor/Home"
               element={
                 <SpecificRouteProtection role="doctor">
                   <Home />
@@ -257,7 +257,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/New-Requests"
+              path="/doctor/New-Requests"
               element={
                 <SpecificRouteProtection role="doctor">
                   <NewRequests />
