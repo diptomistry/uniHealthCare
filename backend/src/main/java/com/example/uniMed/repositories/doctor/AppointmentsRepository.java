@@ -23,5 +23,29 @@ public interface AppointmentsRepository extends JpaRepository<Appointments, Inte
 
     long countByStatus(String status);
     
+    @Query("SELECT YEAR(a.appointmentDateTime) AS year, COUNT(a) AS count " +
+    "FROM Appointments a " +
+    "WHERE a.status IN ('prescribed', 'dispensed') " +
+    "GROUP BY YEAR(a.appointmentDateTime)")
+List<Object[]> findYearlyPatientCount();
+
+@Query("SELECT MONTH(a.appointmentDateTime) AS month, COUNT(a) AS count " +
+"FROM Appointments a " +
+"WHERE YEAR(a.appointmentDateTime) = :year AND a.status IN ('prescribed', 'dispensed') " +
+"GROUP BY MONTH(a.appointmentDateTime)")
+List<Object[]> findMonthlyPatientCountByYear(int year);
+
+
+@Query("SELECT YEAR(a.appointmentDateTime) AS year, a.user.sex AS sex, COUNT(a) AS count " +
+"FROM Appointments a " +
+"WHERE a.status IN ('prescribed', 'dispensed') " +
+"GROUP BY YEAR(a.appointmentDateTime), a.user.sex")
+List<Object[]> findYearlyPatientCountByGender();
+
+@Query("SELECT YEAR(a.appointmentDateTime) AS year, a.user.role.roleName AS role, COUNT(a) AS count " +
+"FROM Appointments a " +
+"WHERE a.status IN ('prescribed', 'dispensed') " +
+"GROUP BY YEAR(a.appointmentDateTime), a.user.role.roleName")
+List<Object[]> findYearlyPatientCountByRole();
     
 }

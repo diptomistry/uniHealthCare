@@ -29,10 +29,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userID;
 
-    // @OneToMany(mappedBy = "user")
-    // @JsonIgnore
-    // private List<Appointments> appointments;
-
     @Column(nullable = false)
     @JsonIgnore
     private String password;

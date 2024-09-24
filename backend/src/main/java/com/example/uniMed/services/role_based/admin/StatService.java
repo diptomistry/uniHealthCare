@@ -31,12 +31,22 @@ public class StatService {
 
     @Autowired
     private RoleRepository roleRepository;
+    public Map<Integer, Long> getYearlyPatientCount() {
+        List<Object[]> results = appointmentsRepository.findYearlyPatientCount();
+        Map<Integer, Long> yearlyPatientCount = new HashMap<>();
 
+        for (Object[] result : results) {
+            Integer year = (Integer) result[0];
+            Long count = (Long) result[1];
+            yearlyPatientCount.put(year, count);
+        }
+
+        return yearlyPatientCount;
+    }
     public Map<String, Object> getStatistics() {
         Map<String, Object> stats = new HashMap<>();
 
-        // Total users by status and roles
-        // Total users by status and roles
+      
         long totalUsers = userRepo.count();
         long activeUsers = userRepo.countByStatus("APPROVED");
         long inactiveUsers = userRepo.countByStatus("PENDING");
@@ -97,5 +107,63 @@ public class StatService {
       
 
         return stats;
+    }
+ 
+    public Map<Integer, Long> getMonthlyPatientCountByYear(int year) {
+        Map<Integer, Long> monthlyPatientCount = new HashMap<>();
+        // Initialize all months with 0
+        for (int month = 1; month <= 12; month++) {
+            monthlyPatientCount.put(month, 0L);
+        }
+
+        List<Object[]> results = appointmentsRepository.findMonthlyPatientCountByYear(year);
+        for (Object[] result : results) {
+            Integer month = (Integer) result[0];
+            Long count = (Long) result[1];
+            monthlyPatientCount.put(month, count);
+        }
+
+        return monthlyPatientCount;
+    }
+    public Map<Integer, Map<String, Long>> getYearlyPatientCountByGender() {
+        Map<Integer, Map<String, Long>> yearlyPatientCountByGender = new HashMap<>();
+        List<Object[]> results = appointmentsRepository.findYearlyPatientCountByGender();
+
+        for (Object[] result : results) {
+            Integer year = (Integer) result[0];
+            String gender = (String) result[1];
+            Long count = (Long) result[2];
+
+            yearlyPatientCountByGender
+                .computeIfAbsent(year, k -> {
+                    Map<String, Long> genderMap = new HashMap<>();
+                    if (!gender.equals("Male") && count==0){
+                    genderMap.put("Male", 0L);
+                    }
+                  else    if (!gender.equals("Female") && count==0){
+                    genderMap.put("Female", 0L);
+                     }
+                    return genderMap;
+                })
+                .put(gender, count);
+        }
+
+        return yearlyPatientCountByGender;
+    }
+    public Map<Integer, Map<String, Long>> getYearlyPatientCountByRole() {
+        Map<Integer, Map<String, Long>> yearlyPatientCountByRole = new HashMap<>();
+        List<Object[]> results = appointmentsRepository.findYearlyPatientCountByRole();
+
+        for (Object[] result : results) {
+            Integer year = (Integer) result[0];
+            String role = (String) result[1];
+            Long count = (Long) result[2];
+
+            yearlyPatientCountByRole
+                .computeIfAbsent(year, k -> new HashMap<>())
+                .put(role, count);
+        }
+
+        return yearlyPatientCountByRole;
     }
 }
