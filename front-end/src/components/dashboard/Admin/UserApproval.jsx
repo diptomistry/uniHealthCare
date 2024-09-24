@@ -60,7 +60,7 @@ const UserApproval = () => {
       <div className="flex flex-col md:flex-row justify-between">
         <h1 className="text-2xl text-textColor place-content-center font-bold mb-4">Profiles</h1>
         <div className="flex">
-          <ReportDateRange />
+        
           <UserFilter selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} categoryCounts={categoryCounts}  />
         </div>
       </div>

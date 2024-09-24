@@ -3154,19 +3154,7 @@ export const links = [
       },
     ],
   },
-  {
-    title: "Personal Panel",
-    links: [
-      {
-        name: "Update-Info",
-        icon: <RxUpdate />,
-      },
-      {
-        name: "Distribute-Tasks",
-        icon: <FaTasks />,
-      }
-    ]
-  }
+ 
 ];
 export const doctorLinks = [
   {
