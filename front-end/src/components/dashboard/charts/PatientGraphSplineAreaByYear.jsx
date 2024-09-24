@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {
   ChartComponent,
   SeriesCollectionDirective,
@@ -10,8 +10,18 @@ import {
   Legend,
 } from "@syncfusion/ej2-react-charts";
 import { Browser } from "@syncfusion/ej2-base";
-import { yearlyPatientData } from "../../../assets/dashboard";
+import axios from "axios";
 
+const API_BASE_URL = "http://localhost:8000";
+//import { yearlyPatientData } from "../../../assets/dashboard";
+const yearlyPatientData = [
+  { x: new Date(2018, 0, 1), y: 200 },
+  { x: new Date(2019, 0, 1), y: 400 },
+  { x: new Date(2020, 0, 1), y: 350 },
+  { x: new Date(2021, 0, 1), y: 450 },
+  { x: new Date(2022, 0, 1), y: 500 },
+  { x: new Date(2023, 0, 1), y: 550 },
+];
 
 const SAMPLE_CSS = `
     .control-fluid {
@@ -19,6 +29,32 @@ const SAMPLE_CSS = `
     }`;
 
 const PatientGraphSplineAreaByYear = () => {
+  const [yearlyData, setYearlyData] = useState([]);
+
+  useEffect(() => {
+    const fetchYearlyPatientData = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`${API_BASE_URL}/yearly-patient-count`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Transform the API response into the required format
+        const data = Object.keys(response.data).map((year) => ({
+          x: new Date(year, 0, 1), // Set the correct year
+          y: response.data[year],  // Corresponding patient count
+        }));
+
+        setYearlyData(data);
+      } catch (error) {
+        console.error("Error fetching yearly patient data:", error);
+      }
+    };
+
+    fetchYearlyPatientData();
+  }, []);
   const onChartLoad = (args) => {
     let chart = document.getElementById("charts");
     chart.setAttribute("title", "");
@@ -68,7 +104,7 @@ const PatientGraphSplineAreaByYear = () => {
           />
           <SeriesCollectionDirective>
             <SeriesDirective
-              dataSource={yearlyPatientData}
+              dataSource={yearlyData}
               xName="x"
               yName="y"
               name="Patients"

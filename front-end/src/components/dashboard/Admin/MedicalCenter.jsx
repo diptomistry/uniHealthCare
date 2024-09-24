@@ -235,19 +235,15 @@ const MedicalCenter = ({ darkMode }) => {
             <option value="monthly">Monthly</option>
             <option value="yearly">Yearly</option>
           </select>
-          <div className=" flex flex-col md:flex-row ">
-            <div className="w-full md:w-1/2">
+          <div className=" flex flex-col md:flex-row justify-center">
+            <div className="w-full ">
               {patientStatType === "monthly" ? (
                 <PatientGraphSplineArea />
               ) : (
                 <PatientGraphSplineAreaByYear />
               )}
             </div>
-            {patientStatType === "monthly" ? (
-              <DoctorColumnPlacemen />
-            ) : (
-              <DoctorColumnPlacementYearly />
-            )}
+           
           </div>
 
           <div className="flex flex-col  md:flex-row dark:text-gray-200 dark:bg-secondary-dark-bg  border-t-2 overflow-hidden">
