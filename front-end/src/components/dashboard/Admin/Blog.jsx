@@ -109,8 +109,9 @@ const Blog = () => {
     }
 
     try {
-      
-      console.log("hello", editForm.img);
+      formData.append('isBlog', 'true');
+      formData.append('isQoute', 'false');
+      console.log('hello', editForm.img);
       let response;
       if (isAdding) {
         formData.append("isBlog", "true");
