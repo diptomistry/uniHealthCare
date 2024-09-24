@@ -41,6 +41,10 @@ public class BlogController {
             @RequestPart("description") String description,
             @RequestPart("isQoute") String isQoute,
             @RequestPart(value = "file", required = false) MultipartFile file) {
+                System.out.println("Title: "+title);
+                System.out.println("Description: "+description);
+                System.out.println("isBlog: "+isBlog);
+                System.out.println("isQoute: "+isQoute);
         Blog aBlog = new Blog();
         aBlog.setTitle(title);
         aBlog.setDescription(description);
@@ -63,13 +67,20 @@ public class BlogController {
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Blog> updateBlog(
             @PathVariable Long id,
-            @RequestPart("title") String title,
-            @RequestPart("description") String description,
-            @RequestPart("isBlog") String isBlog,
-            @RequestPart("isQoute") String isQoute,
+            @RequestPart(value = "title",required = false) String title,
+            @RequestPart(value = "description",required = false) String description,
+            @RequestPart(value = "isBlog",required = false) String isBlog,
+            @RequestPart(value = "isQoute",required = false) String isQoute,
             @RequestPart(value = "file", required = false) MultipartFile file) {
+                System.out.println("Update blog");
+                System.out.println("Title: "+title);
+                System.out.println("Description: "+description);
+                System.out.println("isBlog: "+isBlog);
+                System.out.println("isQoute: "+isQoute);
 
-        Optional<Blog> updatedBlog = blogService.updateBlog(id, title, description, file, isBlog.equals("true"), isQoute.equals("true"));
+
+
+        Optional<Blog> updatedBlog = blogService.updateBlog(id, title, description, file,isBlog!=null? isBlog.equals("true"):true,isQoute!=null? isQoute.equals("true"):false);
         return updatedBlog.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
