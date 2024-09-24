@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment} from 'react';
 import { Image, Text, View } from '@react-pdf/renderer';
 import logo from '../../assets/img/dumc.png';
 
@@ -362,6 +362,7 @@ export const dashData = [
         title: "Total Medicines",
     },
   ];
+ 
   export const DashTableTitle = ({ styles }) => (
     <View style={{ marginTop: 20 }}>
         <Text style={styles.tableTitle}>Dashboard</Text>
