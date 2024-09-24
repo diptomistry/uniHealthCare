@@ -65,7 +65,7 @@ const Signin = ({ isSignUpMode, openForm }) => {
 
   useEffect(() => {
     if (userType==='admin') {
-      navigate('/dashboard/Medical-Center');
+      navigate('/dashboard/admin/Medical-Center');
     }
     else if (userType==='doctor') {
       navigate('/dashboard/doctor/home');
