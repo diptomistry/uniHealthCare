@@ -69,7 +69,7 @@ public class BlogController {
             @RequestPart("isQoute") String isQoute,
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        Optional<Blog> updatedBlog = blogService.updateBlog(id, title, description, file, isBlog=="true", isQoute=="true");
+        Optional<Blog> updatedBlog = blogService.updateBlog(id, title, description, file, isBlog.equals("true"), isQoute.equals("true"));
         return updatedBlog.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
