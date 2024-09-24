@@ -8,12 +8,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
-import javax.print.attribute.standard.Media;
 
 @RestController
 @RequestMapping("/api/blogs")
@@ -43,7 +40,6 @@ public class BlogController {
             @RequestPart("isBlog") String isBlog,
             @RequestPart("description") String description,
             @RequestPart("isQoute") String isQoute,
-
             @RequestPart(value = "file", required = false) MultipartFile file) {
         Blog aBlog = new Blog();
         aBlog.setTitle(title);
@@ -58,7 +54,6 @@ public class BlogController {
         } else {
             aBlog.setQoute(false);
         }
-        // aBlog.setBlog(isBlog);
 
         Blog newBlog = blogService.createBlog(aBlog, file);
 
