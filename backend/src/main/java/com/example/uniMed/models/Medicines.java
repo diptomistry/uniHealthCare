@@ -17,7 +17,7 @@ public class Medicines {
     private Date entryDate;
     private Date expiryDate;
     private String description;
-    private BigDecimal price;
+    private Long price;
     private Boolean is_Outside;
     private Integer stockQuantity;
     private Boolean isDeleted = false;
@@ -77,11 +77,11 @@ public class Medicines {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 

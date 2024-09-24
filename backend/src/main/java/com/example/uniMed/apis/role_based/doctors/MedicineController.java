@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import com.example.uniMed.models.DTOs.MedicinesDTO;
-import com.example.uniMed.models.DTOs.MedicinesDTO1;
+
 import com.example.uniMed.models.DTOs.Me.MedicineDTO1;
 
 @RestController
@@ -33,7 +33,7 @@ public class MedicineController {
         Date entryDate = new Date((Long) payload.get("entryDate"));
         Date expiryDate = new Date((Long) payload.get("expiryDate"));
         String description = (String) payload.get("description");
-        BigDecimal price = new BigDecimal((String) payload.get("price"));
+        Long price = Long.parseLong(payload.get("price").toString());
         Boolean isOutside = (Boolean) payload.get("isOutside");
         Integer stockQuantity = (Integer) payload.get("stockQuantity");
         Long addedById = Long.parseLong(payload.get("addedBy").toString());
@@ -56,13 +56,11 @@ public class MedicineController {
     }
 
     // Update a medicine
-    @PatchMapping("/update/{id}")
-    public ResponseEntity<MedicinesDTO> updateMedicine(@PathVariable Integer id, MedicineDTO1 medicineDTO) {
-
+    @PutMapping("/update/{id}")
+    public ResponseEntity<MedicinesDTO> updateMedicine(@PathVariable Integer id, @RequestBody MedicineDTO1 medicineDTO) {
         MedicinesDTO medicine = medicineService.updateMedicine(id, medicineDTO);
         return ResponseEntity.ok(medicine);
     }
-
     // Update stock quantity
     @PatchMapping("/update-stock/{id}")
     public ResponseEntity<Medicines> updateStock(@PathVariable Integer id, @RequestBody Map<String, Object> payload) {
@@ -78,8 +76,8 @@ public class MedicineController {
     // Update price
     @PatchMapping("/update-price/{id}")
     public ResponseEntity<Medicines> updatePrice(@PathVariable Integer id, @RequestBody Map<String, Object> payload) {
-        BigDecimal price = new BigDecimal((String) payload.get("price"));
-        Medicines medicine = medicineService.updatePrice(id, price);
+       
+        Medicines medicine = medicineService.updatePrice(id, 0L);
         if (medicine != null) {
             return ResponseEntity.ok(medicine);
         } else {

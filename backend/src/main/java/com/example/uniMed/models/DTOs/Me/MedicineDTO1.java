@@ -1,6 +1,6 @@
 package com.example.uniMed.models.DTOs.Me;
 
-import java.math.BigDecimal;
+
 import java.util.Date;
 
 public class MedicineDTO1 {
@@ -8,7 +8,7 @@ public class MedicineDTO1 {
     private Date entryDate;
     private Date expiryDate;
     private String description;
-    private BigDecimal price;
+    private Long price;
     private Boolean isOutside;
     private Integer stockQuantity;
     private Long addedById;
@@ -46,11 +46,11 @@ public class MedicineDTO1 {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 

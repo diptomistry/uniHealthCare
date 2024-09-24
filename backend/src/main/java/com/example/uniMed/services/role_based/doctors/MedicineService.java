@@ -4,11 +4,13 @@ import com.example.uniMed.models.Medicines;
 import com.example.uniMed.models.User;
 import com.example.uniMed.repositories.doctor.MedicineRepository;
 
+import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.uniMed.models.DTOs.MedicinesDTO;
+import com.example.uniMed.models.DTOs.Me.MedicineDTO1;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +24,7 @@ public class MedicineService {
     private MedicineRepository medicineRepository;
 
     // Add a new medicine
-    public MedicinesDTO addMedicine(String name, Date entryDate, Date expiryDate, String description, BigDecimal price,
+    public MedicinesDTO addMedicine(String name, Date entryDate, Date expiryDate, String description, Long price,
             Boolean isOutside, Integer stockQuantity, User addedBy) {
         Medicines medicine = new Medicines();
         Date date = new Date();
@@ -49,45 +51,57 @@ public class MedicineService {
         return false;
     }
 
-    // Update a medicine
     public MedicinesDTO updateMedicine(Integer medicineID, MedicineDTO1 medicineDTO) {
+        System.out.println(medicineID);
         Optional<Medicines> medicineOptional = medicineRepository.findById(medicineID);
         if (medicineOptional.isPresent()) {
-            System.out.println("Medicine found");
-            System.out.println(medicineOptional.get());
+         
             Medicines medicine = medicineOptional.get();
-            if (name != null) {
-                medicine.setName(name);
+            System.out.println(medicineDTO.getName());
+            System.out.println("Name");
+            System.out.println(medicineDTO.getEntryDate());
+            System.out.println("Entry Date");
+            System.out.println(medicineDTO.getExpiryDate());
+            System.out.println("Expiry Date");
+            System.out.println(medicineDTO.getDescription());
+            System.out.println("Description");
+            System.out.println(medicineDTO.getPrice());
+            System.out.println("Price");
+            System.out.println(medicineDTO.getIsOutside());
+            System.out.println("Is Outside");
+            System.out.println(medicineDTO.getStockQuantity());
+            System.out.println("Stock Quantity");
+    
+            if (medicineDTO.getName() != null) {
+                medicine.setName(medicineDTO.getName());
             }
-            if (entryDate != null) {
-                medicine.setEntryDate(entryDate);
+            if (medicineDTO.getEntryDate() != null) {
+                medicine.setEntryDate(medicineDTO.getEntryDate());
             }
-            if (expiryDate != null) {
-                medicine.setExpiryDate(expiryDate);
+            if (medicineDTO.getExpiryDate() != null) {
+                medicine.setExpiryDate(medicineDTO.getExpiryDate());
             }
-            if (description != null) {
-                medicine.setDescription(description);
+            if (medicineDTO.getDescription() != null) {
+                medicine.setDescription(medicineDTO.getDescription());
             }
-            if (price != null)
-
-            {
-                medicine.setPrice(price);
+            if (medicineDTO.getPrice() != null) {
+                medicine.setPrice(medicineDTO.getPrice());
             }
-            if (isOutside != null) {
-                medicine.setIs_Outside(isOutside);
+            if (medicineDTO.getIsOutside() != null) {
+                medicine.setIs_Outside(medicineDTO.getIsOutside());
             }
-            if (stockQuantity != null) {
-                medicine.setStockQuantity(stockQuantity);
+            if (medicineDTO.getStockQuantity() != null) {
+                System.out.println(medicineDTO.getStockQuantity());
+                System.out.println("Stock Quantity");
+                medicine.setStockQuantity(medicineDTO.getStockQuantity());
             }
-            if (addedBy != null) {
-                medicine.setAddedBy(addedBy);
-            }
+          
+    
             Medicines updatedMedicine = medicineRepository.save(medicine);
             return updatedMedicine.toDTO(updatedMedicine);
         }
         return null;
     }
-
     // Update stock quantity
     public Medicines updateStock(Integer medicineID, Integer stockQuantity) {
         Optional<Medicines> medicineOptional = medicineRepository.findById(medicineID);
@@ -100,7 +114,7 @@ public class MedicineService {
     }
 
     // Update price
-    public Medicines updatePrice(Integer medicineID, BigDecimal price) {
+    public Medicines updatePrice(Integer medicineID, Long price) {
         Optional<Medicines> medicineOptional = medicineRepository.findById(medicineID);
         if (medicineOptional.isPresent()) {
             Medicines medicine = medicineOptional.get();
