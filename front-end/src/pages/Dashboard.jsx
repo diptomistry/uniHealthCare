@@ -273,7 +273,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Student-Home"
+              path="/student/home"
               element={
                 <SpecificRouteProtection role="student">
                   <StudentHome />

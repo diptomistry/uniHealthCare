@@ -3266,7 +3266,7 @@ export const studentLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "Student-Home",
+        name: "Home",
         icon: <FiHome />,
       },
     ],
