@@ -15,7 +15,7 @@ public class UserDTO {
     private String status;
     private Date dob;
     private String token;
-  private Role role;
+    private Role role;
    
 
     // Getters and Setters

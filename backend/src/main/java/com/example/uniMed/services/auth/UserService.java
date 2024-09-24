@@ -277,7 +277,7 @@ public class UserService {
         });
         Optional<Doctors> doctorOpt = doctorRepository.findById(userId);
         doctorOpt.ifPresent(doctor -> {
-            doctor.setDepartment(departmentRepository.findById(Integer.parseInt(departmentId.toString(0))).get());
+            doctor.setDepartment(departmentRepository.findById(Integer.parseInt(departmentId.toString())).get());
             doctorRepository.save(doctor);
         });
 
@@ -334,8 +334,7 @@ public class UserService {
         }
 
         User user = userOpt.get();
-        // System.out.println("Status: " + status);
-        // System.out.println("User: " + user.getEmail());
+     
         user.setStatus(status);
         userRepository.save(user);
 
@@ -462,7 +461,7 @@ public class UserService {
         // generate token
         String token = new JwtHelper().generateToken(email);
         user.setToken(token);
-        System.out.println("Token: " + token);
+        
 
         // Build the response
         response.put("success", true);
@@ -496,10 +495,10 @@ public class UserService {
             List<Rating> ratings = ratingRepository.findByDoctor(doctor);
            
             double averageRating = ratings.stream()
-    .filter(rating -> rating.getRating() != null) // Filter out null ratings
-    .mapToDouble(rating -> rating.getRating().doubleValue())
-    .average()
-    .orElse(0.0);
+            .filter(rating -> rating.getRating() != null) // Filter out null ratings
+            .mapToDouble(rating -> rating.getRating().doubleValue())
+            .average()
+            .orElse(0.0);
             DoctorsDTO doctorDTO = new DoctorsDTO();
             
             doctorDTO=doctor.toDto(doctor);

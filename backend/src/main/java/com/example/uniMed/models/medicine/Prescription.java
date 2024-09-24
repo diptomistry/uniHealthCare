@@ -141,9 +141,6 @@ public class Prescription {
        if (prescription.getDoctor() != null) {
             prescriptionDTO.setDoctor(prescription.getDoctor().toDto(prescription.getDoctor()));
         }
-        // if (prescription.getPatient() != null) {
-        //     prescriptionDTO.setPatient(prescription.getPatient().toDTO(prescription.getPatient()));
-        // }
        if (prescription.getPrescribedMedicines() != null) {
           List<PrescribedMedicineDTO> prescribedMedicines = new ArrayList<>();
                 for (PrescribedMedicine prescribedMedicine : prescription.getPrescribedMedicines()) {
