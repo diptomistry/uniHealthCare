@@ -40,7 +40,7 @@ function InfiniteMovingCards({
   };
 
   const getSpeed = () => {
-    containerRef.current.style.setProperty("--animation-duration", "80s");
+    containerRef.current.style.setProperty("--animation-duration", "10s");
   };
 
   return (
