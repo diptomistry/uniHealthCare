@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-import PersonalInfo from '../PersonalInfo';
-import Image from '../Image';
+import React, { useState, useContext } from "react";
+import { TooltipComponent } from "@syncfusion/ej2-react-popups";
+import PersonalInfo from "../PersonalInfo";
+import Image from "../Image";
+import { UserContext } from "../../services/auth/UserProvider";
 
 function AccountSettings() {
-  const [activeSection, setActiveSection] = useState('Accounts');
+  const [activeSection, setActiveSection] = useState("Accounts");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
+  const { user } = useContext(UserContext);
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
@@ -17,17 +21,77 @@ function AccountSettings() {
 
   const handleChangeEmail = () => {
     // Implement change email functionality, e.g., open a modal
-    console.log('Change Email clicked');
+    console.log("Change Email clicked");
   };
 
-  const handleChangePassword = () => {
-    // Implement change password functionality, e.g., open a modal
-    console.log('Change Password clicked');
+  const handleChangePassword = async () => {
+    const token = localStorage.getItem("token"); // Retrieve the token from local storage
+    const userId = user.userID; // Use the user ID from the context
+
+    const body = {
+      user_id: userId,
+      current_pass: currentPassword,
+      confirm_pass: newPassword,
+    };
+
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/auth/reset-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the token in the headers
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log("Password changed successfully:", data);
+        // Handle success (e.g., show a success message or redirect)
+      } else {
+        console.error("Password change failed:", data);
+        // Handle error (e.g., show an error message)
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      // Handle any other errors
+    }
   };
 
-  const handleDeleteAccount = () => {
-    // Implement account deletion functionality, with confirmation
-    console.log('Account Deletion clicked');
+  const handleDeleteAccount = async () => {
+    try {
+      const token = localStorage.getItem("token"); // Retrieve the bearer token from local storage
+
+      const response = await fetch(
+        "http://localhost:8000/api/auth/update-status",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Bearer token included
+          },
+          body: JSON.stringify({
+            user_id: user.userID, // Use the user ID from context
+            status: "Deleted", // Set status to 'Deleted'
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Account successfully deleted", result);
+        // You can redirect the user or show a success message here
+      } else {
+        console.error("Failed to delete the account");
+        // Handle errors
+      }
+    } catch (error) {
+      console.error("Error during account deletion", error);
+      // Handle fetch errors
+    }
   };
 
   return (
@@ -35,8 +99,16 @@ function AccountSettings() {
       <h1 className="border-b py-6 text-4xl font-semibold">Settings</h1>
       <div className="grid grid-cols-8 pt-3 sm:grid-cols-10">
         <div className="relative my-4 w-56 sm:hidden">
-          <input className="peer hidden" type="checkbox" name="select-1" id="select-1" />
-          <label htmlFor="select-1" className="flex w-full cursor-pointer select-none rounded-lg border p-2 px-3 text-sm text-gray-700 ring-brightColor peer-checked:ring">
+          <input
+            className="peer hidden"
+            type="checkbox"
+            name="select-1"
+            id="select-1"
+          />
+          <label
+            htmlFor="select-1"
+            className="flex w-full cursor-pointer select-none rounded-lg border p-2 px-3 text-sm text-gray-700 ring-brightColor peer-checked:ring"
+          >
             {activeSection}
           </label>
           <svg
@@ -47,24 +119,28 @@ function AccountSettings() {
             stroke="currentColor"
             strokeWidth="2"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
           <ul className="max-h-0 select-none flex-col overflow-hidden rounded-b-lg shadow-md transition-all duration-300 peer-checked:max-h-56 peer-checked:py-3">
             <li
               className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-brightColor hover:text-white"
-              onClick={() => handleSectionChange('Accounts')}
+              onClick={() => handleSectionChange("Accounts")}
             >
               Accounts
             </li>
             <li
               className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-brightColor hover:text-white"
-              onClick={() => handleSectionChange('Personal Info.')}
+              onClick={() => handleSectionChange("Personal Info.")}
             >
               Personal Info.
             </li>
             <li
               className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-brightColor hover:text-white"
-              onClick={() => handleSectionChange('Image')}
+              onClick={() => handleSectionChange("Image")}
             >
               Image
             </li>
@@ -75,25 +151,31 @@ function AccountSettings() {
           <ul>
             <li
               className={`mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${
-                activeSection === 'Accounts' ? 'border-l-brightColor text-brightColor' : 'border-transparent hover:border-l-brightColor hover:text-brightColor'
+                activeSection === "Accounts"
+                  ? "border-l-brightColor text-brightColor"
+                  : "border-transparent hover:border-l-brightColor hover:text-brightColor"
               }`}
-              onClick={() => handleSectionChange('Accounts')}
+              onClick={() => handleSectionChange("Accounts")}
             >
               Accounts
             </li>
             <li
               className={`mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${
-                activeSection === 'Personal Info.' ? 'border-l-brightColor text-brightColor' : 'border-transparent hover:border-l-brightColor hover:text-brightColor'
+                activeSection === "Personal Info."
+                  ? "border-l-brightColor text-brightColor"
+                  : "border-transparent hover:border-l-brightColor hover:text-brightColor"
               }`}
-              onClick={() => handleSectionChange('Personal Info.')}
+              onClick={() => handleSectionChange("Personal Info.")}
             >
               Personal Info.
             </li>
             <li
               className={`mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${
-                activeSection === 'Image' ? 'border-l-brightColor text-brightColor' : 'border-transparent hover:border-l-brightColor hover:text-brightColor'
+                activeSection === "Image"
+                  ? "border-l-brightColor text-brightColor"
+                  : "border-transparent hover:border-l-brightColor hover:text-brightColor"
               }`}
-              onClick={() => handleSectionChange('Image')}
+              onClick={() => handleSectionChange("Image")}
             >
               Image
             </li>
@@ -101,21 +183,20 @@ function AccountSettings() {
         </div>
 
         <div className="col-span-8 overflow-hidden rounded-xl sm:bg-gray-50 sm:px-8 sm:shadow">
-          {activeSection === 'Accounts' && (
+          {activeSection === "Accounts" && (
             <>
               <div className="pt-4">
-                <h1 className="py-2 text-2xl font-semibold">Account settings</h1>
+                <h1 className="py-2 text-2xl font-semibold">
+                  Account settings
+                </h1>
               </div>
               <hr className="mt-4 mb-8" />
 
               <p className="py-2 text-xl font-semibold">Email Address</p>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-gray-600">
-                  Your email address is <strong>john.doe@company.com</strong>
+                  Your email address is <strong>{user.email}</strong>
                 </p>
-                <button className="inline-flex text-sm font-semibold text-primaryColor underline decoration-2" onClick={handleChangeEmail}>
-                  Change
-                </button>
               </div>
               <hr className="mt-4 mb-8" />
 
@@ -123,13 +204,17 @@ function AccountSettings() {
               <div className="flex items-center">
                 <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
                   <label htmlFor="login-password">
-                    <span className="text-sm text-gray-500">Current Password</span>
+                    <span className="text-sm text-gray-500">
+                      Current Password
+                    </span>
                     <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-primaryColor">
                       <input
-                        type={passwordVisible ? 'text' : 'password'}
+                        type={passwordVisible ? "text" : "password"}
                         id="login-password"
                         className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
                         placeholder="***********"
+                        value={currentPassword} // Bind the value to state
+                        onChange={(e) => setCurrentPassword(e.target.value)} // Update state on change
                       />
                     </div>
                   </label>
@@ -137,15 +222,20 @@ function AccountSettings() {
                     <span className="text-sm text-gray-500">New Password</span>
                     <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-primaryColor">
                       <input
-                        type={passwordVisible ? 'text' : 'password'}
+                        type={passwordVisible ? "text" : "password"}
                         id="new-password"
                         className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
                         placeholder="***********"
+                        value={newPassword} // Bind the value to state
+                        onChange={(e) => setNewPassword(e.target.value)} // Update state on change
                       />
                     </div>
                   </label>
                 </div>
-                <TooltipComponent id="passwordTooltipComponent" content="Toggle Password Visibility">
+                <TooltipComponent
+                  id="passwordTooltipComponent"
+                  content="Toggle Password Visibility"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="mt-5 ml-2 h-6 w-6 cursor-pointer text-sm font-semibold text-gray-600 underline decoration-2"
@@ -155,14 +245,19 @@ function AccountSettings() {
                     strokeWidth="2"
                     onClick={togglePasswordVisibility}
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                    />
                   </svg>
                 </TooltipComponent>
               </div>
-              <p className="mt-2">
-                Can't remember your current password? <a className="text-sm font-semibold text-brightColor underline decoration-2" href="#">Recover Account</a>
-              </p>
-              <button className="mt-4 rounded-lg bg-primaryColor hover:bg-hoverColor px-4 py-2 text-white" onClick={handleChangePassword}>
+
+              <button
+                className="mt-4 rounded-lg bg-primaryColor hover:bg-hoverColor px-4 py-2 text-white"
+                onClick={handleChangePassword}
+              >
                 Save Password
               </button>
               <hr className="mt-4 mb-8" />
@@ -170,7 +265,12 @@ function AccountSettings() {
               <div className="mb-10">
                 <p className="py-2 text-xl font-semibold">Delete Account</p>
                 <p className="inline-flex items-center rounded-full bg-rose-100 px-4 py-1 text-rose-600">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="mr-2 h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
                     <path
                       fillRule="evenodd"
                       d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
@@ -180,22 +280,26 @@ function AccountSettings() {
                   Proceed with caution
                 </p>
                 <p className="mt-2">
-                  Make sure you have taken a backup of your data in case you ever need to get access to your data. We will completely wipe your data. There is no way to access your account after this action.
+                  Make sure you have taken a backup of your data in case you
+                  ever need to get access to your data. We will completely wipe
+                  your data. There is no way to access your account after this
+                  action.
                 </p>
-                <button className="ml-auto text-sm font-semibold text-rose-600 underline decoration-2" onClick={handleDeleteAccount}>
+                <button
+                  className="ml-auto text-sm font-semibold text-rose-600 underline decoration-2"
+                  onClick={handleDeleteAccount}
+                >
                   Continue with deletion
                 </button>
               </div>
             </>
           )}
-  {activeSection === 'Personal Info.' && <PersonalInfo />}
-         <div className='flex justify-center'>
-       
-         {activeSection === 'Image' && <Image />}
-         </div>
+          {activeSection === "Personal Info." && <PersonalInfo />}
+          <div className="flex justify-center">
+            {activeSection === "Image" && <Image />}
+          </div>
         </div>
       </div>
-      
     </div>
   );
 }

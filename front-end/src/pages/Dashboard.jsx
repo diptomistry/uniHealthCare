@@ -120,7 +120,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Medical-Center"
+              path="/admin/Medical-Center"
               element={
                 <SpecificRouteProtection role="admin">
                   <MedicalCenter darkMode={darkMode} />
@@ -128,7 +128,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Medical-Center/Report"
+              path="/admin/Medical-Center/Report"
               element={
                 <SpecificRouteProtection role="admin">
                   <Report />
@@ -136,7 +136,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/All-Users"
+              path="/admin/All-Users"
               element={
                 <SpecificRouteProtection role="admin">
                   <AllUsers />
@@ -144,7 +144,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/User-Approval"
+              path="/admin/User-Approval"
               element={
                 <SpecificRouteProtection role="admin">
                   <UserApproval />
@@ -152,7 +152,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Doctor"
+              path="/admin/Doctor"
               element={
                 <SpecificRouteProtection role="admin">
                   <DutyRosterDoctor />
@@ -160,7 +160,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Homeopathy-Section"
+              path="/admin/Homeopathy-Section"
               element={
                 <SpecificRouteProtection role="admin">
                   <DutyRosterHomeo />
@@ -168,7 +168,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Nursing-section"
+              path="/admin/Nursing-section"
               element={
                 <SpecificRouteProtection role="admin">
                   <DutyRosterNurse />
@@ -176,7 +176,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Pharmacy-Section"
+              path="/admin/Pharmacy-Section"
               element={
                 <SpecificRouteProtection role="admin">
                   <DutyRosterPharmacy />
@@ -184,7 +184,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Notice"
+              path="/admin/Notice"
               element={
                 <SpecificRouteProtection role="admin">
                   <Notice />
@@ -192,7 +192,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/About-Section"
+              path="/admin/About-Section"
               element={
                 <SpecificRouteProtection role="admin">
                   <AboutSection />
@@ -200,7 +200,7 @@ const Dashboard = () => {
               }
             />
              <Route
-              path="/department"
+              path="/admin/department"
               element={
                 <SpecificRouteProtection role="admin">
                   <AboutSection />
@@ -209,7 +209,7 @@ const Dashboard = () => {
             />
 
             <Route
-              path="/Blog"
+              path="/admin/Blog"
               element={
                 <SpecificRouteProtection role="admin">
                   <Blog />
@@ -217,7 +217,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Quote-Section"
+              path="/admin/Quote-Section"
               element={
                 <SpecificRouteProtection role="admin">
                   <QuoteSection />
@@ -225,7 +225,7 @@ const Dashboard = () => {
               }
             />
             <Route 
-              path="/App-Info"
+              path="/admin/App-Info"
               element={
                 <SpecificRouteProtection role="admin">
                   <AppInfo />
@@ -233,7 +233,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Update-Info"
+              path="/admin/Update-Info"
               element={
                 <SpecificRouteProtection role="admin">
                   <AdditionalInfo />
@@ -241,7 +241,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Distribute-Tasks"
+              path="/admin/Distribute-Tasks"
               element={
                 <SpecificRouteProtection role="admin">
                   <TaskDistribution />
@@ -249,7 +249,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Doctor-Home"
+              path="/doctor/Home"
               element={
                 <SpecificRouteProtection role="doctor">
                   <Home />
@@ -257,7 +257,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/New-Requests"
+              path="/doctor/New-Requests"
               element={
                 <SpecificRouteProtection role="doctor">
                   <NewRequests />
@@ -273,7 +273,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Student-Home"
+              path="/student/home"
               element={
                 <SpecificRouteProtection role="student">
                   <StudentHome />
@@ -281,7 +281,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Book"
+              path="/admin/Book"
               element={
                 <SpecificRouteProtection role="admin">
                   <BookA />
@@ -289,7 +289,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/BookD"
+              path="/doctor/Book"
               element={
                 <SpecificRouteProtection role="doctor">
                   <BookD />
@@ -297,7 +297,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/BookDO"
+              path="/dispensary_officer/Book"
               element={
                 <SpecificRouteProtection role="dispensary_officer">
                   <BookDO />
@@ -305,7 +305,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Prescription"
+              path="/dispensary_officer/Prescription"
               element={
                 <SpecificRouteProtection role="dispensary_officer">
                   <Prescriptions />
@@ -313,7 +313,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Request-Medicine"
+              path="/dispensary_officer/Request-Medicine"
               element={
                 <SpecificRouteProtection role="dispensary_officer">
                   <ListofMedicine />
@@ -321,7 +321,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Dispensary-Home"
+              path="/dispensary_officer/Home"
               element={
                 <SpecificRouteProtection role="dispensary_officer">
                   <Dispensary_Home />
@@ -329,7 +329,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Accept-Request"
+              path="/senior_officer/Accept-Request"
               element={
                 <SpecificRouteProtection role="senior_officer">
                   <AcceptMedicine />
@@ -337,7 +337,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Add-Medicine"
+              path="/senior_officer/Add-Medicine"
               element={
                 <SpecificRouteProtection role="senior_officer">
                   <AddMedicine />
@@ -345,7 +345,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Senior-Officer-Home"
+              path="/senior_officer/Home"
               element={
                 <SpecificRouteProtection role="senior_officer">
                   <SeniorHome />
@@ -353,7 +353,7 @@ const Dashboard = () => {
               }
             />
              <Route
-              path="/BookSO"
+              path="/senior_officer/Book"
               element={
                 <SpecificRouteProtection role="senior_officer">
                   <BookSO />
@@ -361,7 +361,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Teacher-Home"
+              path="/teacher/Home"
               element={
                 <SpecificRouteProtection role="teacher">
                   <TeacherHome />
@@ -369,7 +369,7 @@ const Dashboard = () => {
               }
             />
             <Route
-              path="/Staff-Home"
+              path="/staff/Home"
               element={
                 <SpecificRouteProtection role="staff">
                   <StaffHome />

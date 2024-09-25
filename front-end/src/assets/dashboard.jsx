@@ -3161,7 +3161,7 @@ export const doctorLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "Doctor-Home",
+        name: "Home",
         icon: <FiHome />,
       },
     ],
@@ -3173,17 +3173,14 @@ export const doctorLinks = [
         name: "New-Requests",
         icon: <AiOutlineFileAdd />, // Icon for new prescription requests
       },
-      {
-        name: "Already-Prescribed",
-        icon: <AiOutlineCheckCircle />, // Icon for already prescribed items
-      },
+    
     ],
   },
   {
     title: "Appointment",
     links: [
       {
-        name: "BookD",
+        name: "Book",
         icon: <TbBrandBooking />,
       },
     ],
@@ -3194,7 +3191,7 @@ export const seniorOfficerLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "Senior-Officer-Home",
+        name: "Home",
         icon: <FiHome />,
       },
     ],
@@ -3218,7 +3215,7 @@ export const seniorOfficerLinks = [
     title: "Appointment",
     links: [
       {
-        name: "BookSO",
+        name: "Book",
         icon: <TbBrandBooking />,
       },
     ],
@@ -3231,7 +3228,7 @@ export const dispensaryLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "Dispensary-Home",
+        name: "Home",
         icon: <FiHome />,
       },
     ],
@@ -3258,7 +3255,7 @@ export const dispensaryLinks = [
     title: "Appointment",
     links: [
       {
-        name: "BookDO",
+        name: "Book",
         icon: <TbBrandBooking />,
       },
     ],
@@ -3269,7 +3266,7 @@ export const studentLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "Student-Home",
+        name: "Home",
         icon: <FiHome />,
       },
     ],
@@ -3280,7 +3277,7 @@ export const staffLinks = [
     title: "Dashboard",
     links: [
       {
-        name: "Staff-Home",
+        name: "Home",
         icon: <FiHome />,
       },
     ],
@@ -3291,7 +3288,7 @@ export const teacherLinks=[
     title: "Dashboard",
     links: [
       {
-        name: "Teacher-Home",
+        name: "Home",
         icon: <FiHome />,
       },
     ],

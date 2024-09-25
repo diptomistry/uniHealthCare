@@ -56,7 +56,7 @@ const PatientGraphSplineAreaByYear = () => {
     fetchYearlyPatientData();
   }, []);
   const onChartLoad = (args) => {
-    let chart = document.getElementById("charts");
+    let chart = document.getElementById("Yearlycharts");
     chart.setAttribute("title", "");
   };
 
@@ -76,7 +76,7 @@ const PatientGraphSplineAreaByYear = () => {
       <style>{SAMPLE_CSS}</style>
       <div className="control-section">
         <ChartComponent
-          id="charts2"
+          id="Yearlycharts"
           style={{ textAlign: "center" }}
           primaryXAxis={{
             valueType: "DateTime",

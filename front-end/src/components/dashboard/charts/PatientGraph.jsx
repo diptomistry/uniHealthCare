@@ -37,7 +37,7 @@ const SAMPLE_CSS = `
 
 const PatientGraphSplineArea = () => {
   const onChartLoad = (args) => {
-    let chart = document.getElementById("charts");
+    let chart = document.getElementById("Patientcharts");
     chart.setAttribute("title", "");
   };
   const [patientData, setPatientData] = useState([]);
@@ -87,7 +87,7 @@ const PatientGraphSplineArea = () => {
       <style>{SAMPLE_CSS}</style>
       <div className="control-section">
         <ChartComponent
-          id="charts2"
+          id="Patientcharts"
           style={{ textAlign: "center" }}
           primaryXAxis={{
             valueType: "DateTime",

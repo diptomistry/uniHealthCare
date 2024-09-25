@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment} from 'react';
 import { Image, Text, View } from '@react-pdf/renderer';
 import logo from '../../assets/img/dumc.png';
 
@@ -112,7 +112,7 @@ export const TableHead = ({ styles }) => (
             <Text>Department</Text>
         </View>
         <View style={styles.theader}>
-            <Text>No. of Patients</Text>
+            <Text>No. of Doctors</Text>
         </View>
     </View>
 );
@@ -142,7 +142,7 @@ export const TableTotal = ({ styles }) => (
             <Text></Text>
         </View>
         <View style={styles.tbody}>
-            <Text>Total Patients</Text>
+            <Text>Total Doctors</Text>
         </View>
         <View style={styles.tbody}>
             <Text>
@@ -315,5 +315,81 @@ export const TotalExpenses = ({ styles }) => (
         <Text style={styles.title}>Total Expanses:</Text>
         <Text style={styles.ReportNumber}>{reciept_data.expanse}  </Text>
     </View>
+);
+export const dashData = [
+    {
+     
+      amount: "39,354",
+     
+      title: "Total Appointment",
+     
+    },
+    {
+     
+      amount: "4,396",
+     
+      title: "Pending Appointment",
+     
+    },
+    {
+        amount: "423,39",
+
+        title: "Prescribed Appointment",
+    },
+    {
+        amount: "39,354",
+
+        title: "Total Students",
+    },
+    {
+        amount: "39,354",
+
+      title: "Total Doctors",
+    },
+    {
+        amount: "39,354",
+      
+        title: "Total Stuffs",
+    },
+    {
+        amount: "99,354",
+
+      title: "Total Users",
+    },
+    {
+        amount: "39,354",
+
+        title: "Total Medicines",
+    },
+  ];
+ 
+  export const DashTableTitle = ({ styles }) => (
+    <View style={{ marginTop: 20 }}>
+        <Text style={styles.tableTitle}>Dashboard</Text>
+    </View>
+);
+export const DashTableHead = ({ styles }) => (
+    <View style={{ width: '100%', flexDirection: 'row', marginTop: 10 }}>
+        <View style={[styles.theader, styles.theader2]}>
+            <Text>Title</Text>
+        </View>
+        <View style={styles.theader}>
+            <Text>Amount</Text>
+        </View>
+    </View>
+);
+export const DashTableBody = ({ styles }) => (
+    dashData.map((data) => (
+        <Fragment key={data.title}>
+            <View style={{ width: '100%', flexDirection: 'row' }}>
+                <View style={[styles.tbody, styles.tbody2]}>
+                    <Text>{data.title}</Text>
+                </View>
+                <View style={styles.tbody}>
+                    <Text>{data.amount}</Text>
+                </View>
+            </View>
+        </Fragment>
+    ))
 );
 

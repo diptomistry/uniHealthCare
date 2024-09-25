@@ -98,31 +98,9 @@ const Home = () => {
 
 
   return (
-    <div className="mt-24">
+    <div className="mt-24 p-20">
       <div className="bg-white dark:bg-secondary-dark-bg mt-3 mb-3 rounded-2xl shadow-md p-10">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="bg-blue-50 rounded-lg p-4 flex items-center space-x-4 flex-1">
-            <div className="bg-blue-500 rounded-full p-3">
-              <FaUserInjured className="text-white text-xl" />
-            </div>
-            <div>
-              <p className="text-gray-600 text-sm">Total Patients</p>
-              <p className="text-2xl font-bold text-gray-800">2001</p>
-              <p className="text-gray-500 text-xs">Till Today</p>
-            </div>
-          </div>
-
-          <div className="bg-blue-50 rounded-lg p-4 flex items-center space-x-4 flex-1">
-            <div className="bg-blue-500 rounded-full p-3">
-              <FaUserNurse className="text-white text-xl" />
-            </div>
-            <div>
-              <p className="text-gray-600 text-sm">Today's Patients</p>
-              <p className="text-2xl font-bold text-gray-800">68</p>
-              <p className="text-gray-500 text-xs">{ratingData.date}</p>
-            </div>
-          </div>
-        </div>
+       
 
     <div className="flex flex-col md:flex-row">
           <div className="basis-full mt-20 border-r-2 ">
@@ -217,22 +195,7 @@ const Home = () => {
         </div>
       </div>
     </div>
-    <div className="flex flex-col md:flex-row bg-white dark:bg-secondary-dark-bg mt-3 mb-3 rounded-2xl shadow-md p-10">
-    <div className="basis-full">
-    <GenericPieChart 
-            data={patientDataDoctorPie} 
-            title="Patient Statistics<br>2023"
-           
-        />
-    </div>
-    <div className="basis-full">
-    <GeneralAreaGraph
-      PatientData={PatientDataDoctor2}
-      title="Patient Statistics 2023"
-      
-    />
-    </div>
-    </div>
+   
     </div>
     
   );

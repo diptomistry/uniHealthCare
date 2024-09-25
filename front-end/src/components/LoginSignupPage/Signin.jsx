@@ -65,25 +65,25 @@ const Signin = ({ isSignUpMode, openForm }) => {
 
   useEffect(() => {
     if (userType==='admin') {
-      navigate('/dashboard/Medical-Center');
+      navigate('/dashboard/admin/Medical-Center');
     }
     else if (userType==='doctor') {
-      navigate('/dashboard/doctor-home');
+      navigate('/dashboard/doctor/home');
     }
     else if (userType==='staff') {
-      navigate('/dashboard/Staff-Home');
+      navigate('/dashboard/staff/home');
     }
     else if (userType==='student') {
-      navigate('/dashboard/Student-Home');
+      navigate('/dashboard/student/home');
     }
     else if (userType==='dispensary_officer') {
-      navigate('/dashboard/dispensary-home');
+      navigate('/dashboard/dispensary_officer/home');
     }
     else if (userType==='senior_officer') {
-      navigate('/dashboard/senior-officer-home');
+      navigate('/dashboard/senior_officer/home');
     }
     else if (userType==='teacher') {
-      navigate('/dashboard/teacher-home');
+      navigate('/dashboard/teacher/home');
     }
     else if (userType==='not approved') {
       navigate('/get-started');

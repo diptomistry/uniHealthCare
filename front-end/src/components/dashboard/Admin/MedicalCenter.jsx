@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { dashData } from "../../../assets/dashboard";
 import AppointmentData from "./AppointmentData";
 import CircularProgress from "../../../layouts/dashboard/mainContent/CircularProgress";
@@ -17,13 +17,18 @@ import TopRatedDoctors from "./TopRatedDoctors";
 import { MdOutlineSimCardDownload } from "react-icons/md";
 import ReportDateRange from "../../../layouts/dashboard/mainContent/ReportDateRange";
 import { FaCircleDot, FaBangladeshiTakaSign } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { FiCalendar } from "react-icons/fi";
-import { FaUserMd, FaUserNurse, FaUsers, FaPills, FaMoneyBillWave } from "react-icons/fa";
+import {
+  FaUserMd,
+  FaUserNurse,
+  FaUsers,
+  FaPills,
+  FaMoneyBillWave,
+} from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import { PiStudentBold } from "react-icons/pi";
 import { UserContext } from "../../../services/auth/UserProvider";
-
 
 const MedicalCenter = ({ darkMode }) => {
   const { user } = useContext(UserContext);
@@ -33,7 +38,7 @@ const MedicalCenter = ({ darkMode }) => {
     setPatientStatType(event.target.value);
   };
   const handleDownloadReport = () => {
-    navigate('/dashboard/Medical-Center/Report'); // Replace with your desired route
+    navigate("/dashboard/admin/Medical-Center/Report"); // Replace with your desired route
   };
   const [dashData, setDashData] = useState([]);
 
@@ -95,7 +100,7 @@ const MedicalCenter = ({ darkMode }) => {
             iconBg: "rgb(232, 244, 255)",
             pcColor: "red-600",
           },
-          
+
           {
             icon: <FaUserMd />,
             amount: data.users.totalDoctors.toLocaleString(),
@@ -132,8 +137,6 @@ const MedicalCenter = ({ darkMode }) => {
             iconBg: "rgb(229, 245, 244)",
             pcColor: "red-600",
           },
-         
-      
         ];
 
         // Set the mapped dashData
@@ -151,7 +154,6 @@ const MedicalCenter = ({ darkMode }) => {
         <div className="w-full flex flex-col md:flex-row items-center gap-4">
           <div className="flex flex-col place-content-end md:w-1/2 ">
             <div className=" flex  font-poppins border-b-4 border-gray-200 ">
-             
               <div className="mb-8 ml-5">
                 <button
                   title="Save"
@@ -168,24 +170,21 @@ const MedicalCenter = ({ darkMode }) => {
                 </button>
               </div>
             </div>
-           
           </div>
           <div className="bg-secondaryColor dark:text-gray-200 rounded-xl md:w-1/2 p-8 pt-9 mb-4 shadow-sm">
-      <h2 className="text-textColor text-2xl font-bold mb-2">
-        Welcome back! <span className="ml-3 text-blue-500">{user.name}</span>
-      </h2>
-      <p className="text-slate-600 mb-4">
-       
-        <span className="text-gray-500 font-bold">
-          Do Complete Your Pending Tasks
-        </span> 
-        <br />
-        Check todo list tasks in{" "}
-        <span className="  text-gray-500  cursor-pointer">
-          My Tasks.
-        </span>
-      </p>
-    </div>
+            <h2 className="text-textColor text-2xl font-bold mb-2">
+              Welcome back!{" "}
+              <span className="ml-3 text-blue-500">{user.name}</span>
+            </h2>
+            <p className="text-slate-600 mb-4">
+              <span className="text-gray-500 font-bold">
+                Do Complete Your Pending Tasks
+              </span>
+              <br />
+              Check todo list tasks in{" "}
+              <span className="  text-gray-500  cursor-pointer">My Tasks.</span>
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full ">
@@ -243,7 +242,6 @@ const MedicalCenter = ({ darkMode }) => {
                 <PatientGraphSplineAreaByYear />
               )}
             </div>
-           
           </div>
 
           <div className="flex flex-col  md:flex-row dark:text-gray-200 dark:bg-secondary-dark-bg  border-t-2 overflow-hidden">
@@ -267,63 +265,6 @@ const MedicalCenter = ({ darkMode }) => {
             </div>
             <div className="">
               <PharmacyCustomerByCat />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 mt-3 mb-3 rounded-2xl shadow-md">
-          <div className="flex justify-between">
-            <p className="font-semibold text-xl">
-              Budget and Expenses Updates This Year
-            </p>
-            <div className="flex items-center gap-4">
-              <p className="flex items-center gap-2 text-gray-600 dark:text-[#5c5558] hover:drop-shadow-xl">
-                <span>
-                  <FaCircleDot />
-                </span>
-                <span>Expense</span>
-              </p>
-              <p className="flex items-center gap-2 text-brightColor hover:drop-shadow-xl">
-                <span>
-                  <FaCircleDot />
-                </span>
-                <span>Budget</span>
-              </p>
-            </div>
-          </div>
-          <div className="mt-10 flex flex-wrap justify-center md:gap-x-36 gap-10">
-            <div className="border-r-1 border-color m-4 pr-10">
-              <div>
-                <p>
-                  <div className="flex">
-                    <FaBangladeshiTakaSign size={30} />
-                    <p className="text-3xl font-semibold ml-1">98,487</p>
-                  </div>
-                </p>
-                <p className="text-gray-500 mt-1">Budget</p>
-              </div>
-              <div className="mt-8">
-                <div className="flex">
-                  <FaBangladeshiTakaSign size={30} />
-                  <p className="text-3xl font-semibold ml-1">48,487</p>
-                </div>
-                <p className="text-gray-500 mt-1">Expense</p>
-              </div>
-              <div className="mt-5">
-                <SparkLine
-                  currentColor={"black"}
-                  id="line-sparkLine"
-                  type="Line"
-                  height="80px"
-                  width="250px"
-                  data={SparklineAreaData}
-                  color={"#039BAB"}
-                />
-              </div>
-              <p className="text-gray-500 mt-1">Expenses in each month </p>
-            </div>
-            <div>
-              <Stacked darkMode={darkMode} width="380px" height="360px" />
             </div>
           </div>
         </div>

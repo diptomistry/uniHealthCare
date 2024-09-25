@@ -65,9 +65,9 @@ const DoctorScheduleTable = () => {
         // If no doctors are present, include slot time and id
         const doctors = slot.doctors.length > 0 
           ? slot.doctors.map(doctor => {
-              return `${doctor.name} (${doctor.specialization}) - Slot ID: ${slot.id} - Doctor ID: ${doctor.id}`;
+              return `${doctor.name} (${doctor.specialization})`;
             }).join(', ')
-          : ` - Slot ID: ${slot.id} `;
+          : `  `;
   
         dayRow.push(doctors); // Push the doctors or slot info if no doctors
       });
