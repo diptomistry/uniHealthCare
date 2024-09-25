@@ -561,6 +561,7 @@ public class UserService {
             response.put("success", true);
             response.put("message", "Image updated successfully");
             response.put("imageUrl", imageUrl);
+            response.put("data", user.toDTO());
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Failed to update image: " + e.getMessage());

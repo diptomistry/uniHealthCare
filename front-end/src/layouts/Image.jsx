@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from 'react';
 import { UserContext } from '../services/auth/UserProvider';
 
 const Image = () => {
-  const { user } = useContext(UserContext);
+  const { user,updateUser } = useContext(UserContext);
   const [preview, setPreview] = useState('');
   const [file, setFile] = useState(null); // Store the selected file
   const dropzoneRef = useRef(null);
@@ -31,6 +31,13 @@ const Image = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("Image uploaded successfully:", data);
+        if (data.success) {
+          alert(data.message);
+          updateUser(data.data);
+        } else {
+          alert("Error: " + data.message);
+        }
+
       } else {
         console.error("Failed to upload image");
       }

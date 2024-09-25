@@ -27,7 +27,7 @@ const PersonalInfo = () => {
     try {
       const token = localStorage.getItem("token"); // Get the token from local storage
 
-      fetch("http://localhost:8000/api/auth/update/9", {
+      fetch(`http://localhost:8000/api/auth/update/${user.userID}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
