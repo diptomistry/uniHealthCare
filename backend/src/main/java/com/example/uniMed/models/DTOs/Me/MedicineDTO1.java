@@ -3,6 +3,9 @@ package com.example.uniMed.models.DTOs.Me;
 
 import java.util.Date;
 
+import com.example.uniMed.models.User;
+import com.example.uniMed.models.DTOs.UserDTO;
+
 public class MedicineDTO1 {
     private String name;
     private Date entryDate;
@@ -11,7 +14,10 @@ public class MedicineDTO1 {
     private Long price;
     private Boolean isOutside;
     private Integer stockQuantity;
-    private Long addedById;
+    private Long addedBy;
+
+
+   
 
     // Getters and Setters
     public String getName() {
@@ -70,11 +76,20 @@ public class MedicineDTO1 {
         this.stockQuantity = stockQuantity;
     }
 
-    public Long getAddedById() {
-        return addedById;
+
+
+    @Override
+    public String toString() {
+        return "MedicineDTO1 [name=" + name + ", entryDate=" + entryDate + ", expiryDate=" + expiryDate
+                + ", description=" + description + ", price=" + price + ", isOutside=" + isOutside + ", stockQuantity="
+                + stockQuantity + ", addedBy=" + "112" + "]";
     }
 
-    public void setAddedById(Long addedById) {
-        this.addedById = addedById;
+    public Long getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(Long addedBy) {
+        this.addedBy = addedBy;
     }
 }

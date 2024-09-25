@@ -1,7 +1,7 @@
 package com.example.uniMed.controllers.publics.about_us;
 
 import com.example.uniMed.models.AboutUs;
-import com.example.uniMed.services.FileService;
+import com.example.uniMed.services.file.FileService;
 import com.example.uniMed.services.publics.about_us.AboutUsService;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
 

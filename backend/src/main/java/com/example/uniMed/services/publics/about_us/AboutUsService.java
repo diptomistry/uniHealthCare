@@ -2,7 +2,7 @@ package com.example.uniMed.services.publics.about_us;
 
 import com.example.uniMed.models.AboutUs;
 import com.example.uniMed.repositories.publics.about_us.AboutUsRepository;
-import com.example.uniMed.services.FileService;
+import com.example.uniMed.services.file.FileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

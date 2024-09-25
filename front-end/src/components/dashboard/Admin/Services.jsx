@@ -88,6 +88,7 @@ const Services = () => {
     const formData = new FormData();
     formData.append('title', editForm.title);
     formData.append('description', editForm.description);
+ 
   
     if (editForm.img) {
       // Check if img is a string (base64 URL)
@@ -105,7 +106,8 @@ const Services = () => {
     }
   
     try {
-      formData.append('isBlog', 'false');
+    
+
       console.log('hello', editForm.img);
       let response;
       if (isAdding) {

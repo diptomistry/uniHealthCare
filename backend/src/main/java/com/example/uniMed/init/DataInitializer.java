@@ -49,9 +49,8 @@ public class DataInitializer implements CommandLineRunner {
 
         
         List<AboutUs> aboutUsList = aboutUsRepository.findAll();
-        if (aboutUsList.size() == 0) {
+        if (aboutUsList.isEmpty()) {
             AboutUs aboutUs = new AboutUs();
-            // aboutUs = aboutUsList.get(0);
             aboutUs.setDescription("This is a project for the course CSE327. The project is about a university medical center. The project is developed by a group of students. The project is developed using Spring Boot, React, and MySQL.");
             aboutUs.setAppName("UniMed");
             aboutUsRepository.save(aboutUs);

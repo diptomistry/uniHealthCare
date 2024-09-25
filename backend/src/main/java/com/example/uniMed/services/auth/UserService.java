@@ -1,6 +1,4 @@
 package com.example.uniMed.services.auth;
-
-import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -24,11 +22,11 @@ import com.example.uniMed.repositories.auth.role.RoleRepository;
 import com.example.uniMed.repositories.doctor.RatingRepository;
 import com.example.uniMed.repositories.publics.about_us.DepartmentRepository;
 import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
-import com.example.uniMed.services.FileService;
+import com.example.uniMed.services.file.FileService;
 import com.example.uniMed.utils.JwtHelper;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
+
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -202,8 +200,6 @@ public class UserService {
            
             return response;
         } catch (Exception e) {
-            // e.printStackTrace();
-            System.out.println(e.getMessage());
             response.put("success", false);
             response.put("message", "An error occurred while creating the user: " + e.getMessage());
             return response;
@@ -503,9 +499,7 @@ public class UserService {
     .mapToDouble(rating -> rating.getRating().doubleValue())
     .average()
     .orElse(0.0);
-            DoctorsDTO doctorDTO = new DoctorsDTO();
-
-            doctorDTO = doctor.toDto(doctor);
+            DoctorsDTO doctorDTO = doctor.toDto(doctor);
             doctorDTO.setAverageRating(averageRating);
 
             doctorsDTOs.add(doctorDTO);

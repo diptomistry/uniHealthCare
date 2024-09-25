@@ -12,23 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import javax.websocket.Session;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 public class ChatService {
 
-    private static final Logger logger = Logger.getLogger(ChatService.class.getName());
+    
 
     @Autowired
     private UserRepo userRepo;
@@ -76,9 +69,6 @@ public class ChatService {
         message.setContent(content);
         message.setTimestamp(LocalDateTime.now());
         messageRepository.save(message);
-
-
-        // Broadcast the message to all connected WebSocket sessions
 
         return message;
     }

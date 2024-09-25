@@ -1,4 +1,4 @@
-package com.example.uniMed.services.role_based.doctors;
+package com.example.uniMed.services.role_based.senior_officer;
 
 import com.example.uniMed.models.Medicines;
 import com.example.uniMed.models.User;
@@ -23,19 +23,23 @@ public class MedicineService {
     @Autowired
     private MedicineRepository medicineRepository;
 
+    @Autowired
+    private com.example.uniMed.repositories.auth.UserRepo userRepo;
+
     // Add a new medicine
-    public MedicinesDTO addMedicine(String name, Date entryDate, Date expiryDate, String description, Long price,
-            Boolean isOutside, Integer stockQuantity, User addedBy) {
+    public MedicinesDTO addMedicine(MedicineDTO1 medicineDTO) {
         Medicines medicine = new Medicines();
         Date date = new Date();
-        medicine.setName(name);
-        medicine.setEntryDate(entryDate != null ? entryDate : date);
-        medicine.setExpiryDate(expiryDate);
-        medicine.setDescription(description);
-        medicine.setPrice(price);
-        medicine.setIs_Outside(isOutside);
-        medicine.setStockQuantity(stockQuantity);
-        medicine.setAddedBy(addedBy);
+        medicine.setName(medicineDTO.getName());
+        medicine.setEntryDate(medicineDTO.getEntryDate() != null ? medicineDTO.getEntryDate() : date);
+        medicine.setExpiryDate(medicineDTO.getExpiryDate());
+        medicine.setDescription(medicineDTO.getDescription());
+        medicine.setPrice(medicineDTO.getPrice());
+        medicine.setIs_Outside(medicineDTO.getIsOutside());
+        medicine.setStockQuantity(medicineDTO.getStockQuantity());
+        Optional<User> user= userRepo.findById(medicineDTO.getAddedBy());
+        if (user.isPresent()){
+        medicine.setAddedBy(user.get());}
         return medicineRepository.save(medicine).toDTO(medicine);
     }
 
@@ -95,8 +99,6 @@ public class MedicineService {
                 System.out.println("Stock Quantity");
                 medicine.setStockQuantity(medicineDTO.getStockQuantity());
             }
-          
-    
             Medicines updatedMedicine = medicineRepository.save(medicine);
             return updatedMedicine.toDTO(updatedMedicine);
         }

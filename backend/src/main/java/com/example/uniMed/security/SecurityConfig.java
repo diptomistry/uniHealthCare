@@ -17,8 +17,7 @@ import io.grpc.netty.shaded.io.netty.handler.codec.http.HttpMethod;
 public class SecurityConfig {
    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("SecurityConfig.securityFilterChain()");
-        System.out.println(http.toString());
+     
         http
             .cors().and()
             .csrf(csrf -> csrf
@@ -26,7 +25,6 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.OPTIONS.name(), "/**").permitAll() 
-                .requestMatchers("/websocket/**").permitAll()
                 .requestMatchers("/api/auth/**", "/api/departments/**", "/api/roles/**", "/ws/chat/**", "/api/blogs", "/api/duty-roster/table", "/api/medicines/all","/websocket","api/about-us/public").permitAll()
                 .anyRequest().authenticated()
             );

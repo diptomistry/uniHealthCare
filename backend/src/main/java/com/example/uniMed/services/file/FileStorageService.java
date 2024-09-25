@@ -1,4 +1,4 @@
-package com.example.uniMed.services;
+package com.example.uniMed.services.file;
 
 
 import org.springframework.stereotype.Service;

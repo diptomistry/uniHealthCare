@@ -9,7 +9,6 @@ import com.example.uniMed.models.Appointments;
 import com.example.uniMed.models.Medicines;
 import com.example.uniMed.repositories.doctor.AppointmentsRepository;
 import com.example.uniMed.repositories.doctor.MedicineRepository;
-import com.example.uniMed.repositories.doctor.PrescribedMedicineRepository;
 import com.example.uniMed.repositories.role_based.dispensary.DispenseRequestRepository;
 import com.example.uniMed.repositories.role_based.dispensary.MedicineRequestRepository;
 
@@ -40,42 +39,38 @@ public class DispenseRequestService {
 
     @Transactional
     public String createDispenseRequest(DispenseRequestDTO requestDTO) {
-        System.out.println(requestDTO.getAppointmentId());
         try {
+            // Validate appointment
             Optional<Appointments> appointmentOptional = appointmentRepository
                     .findById(Integer.parseInt(requestDTO.getAppointmentId().toString()));
             if (!appointmentOptional.isPresent()) {
                 throw new RuntimeException("Appointment not found");
             }
-
             Appointments appointment = appointmentOptional.get();
-            System.out.println(">>>>>>>>>>>>>appoinet found");
 
+            // Prepare dispensed medicines list
             List<DispensedMedicine> dispensedMedicines = new ArrayList<>();
             for (DispenseRequestDTO.DispensedMedicineDTO medicineDTO : requestDTO.getDispensedMedicines()) {
+                // Validate medicine
                 Optional<Medicines> medicineOptional = medicinesRepository
                         .findById(Integer.parseInt(medicineDTO.getPrescribedMedicineId().toString()));
                 if (!medicineOptional.isPresent()) {
                     throw new RuntimeException("Medicine not found");
                 }
-
                 Medicines medicine = medicineOptional.get();
-                System.out.println("medicine fou;nd");
-                System.out.println(medicine.getName());
-                if (medicine.getStockQuantity() == null) {
-                    return ("Stock is empty for medicine ID: " + medicine.getMedicineID());
-                }
-                // System.out.println(medicine.getStockQuantity());
-                if (medicine.getStockQuantity() < medicineDTO.getDispensedQuantity()) {
+
+                // Check stock quantity
+                if (medicine.getStockQuantity() == null || medicine.getStockQuantity() < medicineDTO.getDispensedQuantity()) {
                     throw new RuntimeException("Insufficient stock for medicine ID: " + medicine.getMedicineID());
                 }
 
+                // Update stock quantity
                 medicine.setStockQuantity(medicine.getStockQuantity() - medicineDTO.getDispensedQuantity());
                 medicinesRepository.save(medicine);
 
+                // Update medicine request quantity
                 Optional<MedicineRequest> medicineRequestOptional = medicineRequestRepository
                         .findByMedicineMedicineID(Long.parseLong(medicine.getMedicineID().toString()));
-                System.out.println("medicine optional");
                 if (medicineRequestOptional.isPresent()) {
                     MedicineRequest medicineRequest = medicineRequestOptional.get();
                     if (medicineRequest.getQuantity() > 0) {
@@ -84,28 +79,32 @@ public class DispenseRequestService {
                     }
                 }
 
+                // Create dispensed medicine entry
                 DispensedMedicine dispensedMedicine = new DispensedMedicine();
                 dispensedMedicine.setMedicine(medicine);
                 dispensedMedicine.setDispensedQuantity(medicineDTO.getDispensedQuantity());
                 dispensedMedicines.add(dispensedMedicine);
             }
 
+            // Create and save dispense request
             DispenseRequest dispenseRequest = new DispenseRequest();
             dispenseRequest.setAppointment(appointment);
             dispenseRequest.setRequestedBy(appointment.getUser());
             dispenseRequest.setDispensedMedicines(dispensedMedicines);
             dispenseRequest.setDispenseDate(new Date());
             dispenseRequest.setStatus("DISPENSED");
+            dispenseRequestRepository.save(dispenseRequest);
+
+            // Update appointment status
             appointment.setStatus("DISPENSED");
             appointmentRepository.save(appointment);
 
             return "Dispense request created successfully";
         } catch (Exception e) {
             System.out.println(e);
-            throw new RuntimeException("Insufficient stock for medicine ID: ");
+            throw new RuntimeException("Error creating dispense request: " + e.getMessage());
         }
     }
-
     public Optional<DispenseRequest> getDispenseRequestById(Long id) {
         return dispenseRequestRepository.findById(id);
     }

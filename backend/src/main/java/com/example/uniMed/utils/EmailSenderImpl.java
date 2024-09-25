@@ -1,4 +1,4 @@
-package com.example.uniMed.services;
+package com.example.uniMed.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

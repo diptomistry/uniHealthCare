@@ -1,9 +1,9 @@
-package com.example.uniMed.controllers.role_based.doctors;
+package com.example.uniMed.controllers.role_based.senior_officer;
 
 import com.example.uniMed.models.Medicines;
 import com.example.uniMed.models.User;
 import com.example.uniMed.repositories.auth.UserRepo;
-import com.example.uniMed.services.role_based.doctors.MedicineService;
+import com.example.uniMed.services.role_based.senior_officer.MedicineService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,19 +28,10 @@ public class MedicineController {
 
     // Add a new medicine
     @PostMapping("/add")
-    public ResponseEntity<MedicinesDTO> addMedicine(@RequestBody Map<String, Object> payload) {
-        String name = (String) payload.get("name");
-        Date entryDate = new Date((Long) payload.get("entryDate"));
-        Date expiryDate = new Date((Long) payload.get("expiryDate"));
-        String description = (String) payload.get("description");
-        Long price = Long.parseLong(payload.get("price").toString());
-        Boolean isOutside = (Boolean) payload.get("isOutside");
-        Integer stockQuantity = (Integer) payload.get("stockQuantity");
-        Long addedById = Long.parseLong(payload.get("addedBy").toString());
-        User addedBy = userRepo.findById(addedById).orElse(null);
+    public ResponseEntity<MedicinesDTO> addMedicine(@RequestBody MedicineDTO1 medicineDTO) {
+        System.out.println(medicineDTO.toString());
 
-        MedicinesDTO medicine = medicineService.addMedicine(name, entryDate, expiryDate, description, price, isOutside,
-                stockQuantity, addedBy);
+        MedicinesDTO medicine = medicineService.addMedicine(medicineDTO);
         return ResponseEntity.ok(medicine);
     }
 

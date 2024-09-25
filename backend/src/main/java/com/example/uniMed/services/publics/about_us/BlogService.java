@@ -4,7 +4,7 @@ package com.example.uniMed.services.publics.about_us;
 
 import com.example.uniMed.models.Blog;
 import com.example.uniMed.repositories.publics.about_us.BlogRepository;
-import com.example.uniMed.services.FileService;
+import com.example.uniMed.services.file.FileService;
 
 import jakarta.mail.Multipart;
 
