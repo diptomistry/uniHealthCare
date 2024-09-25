@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.uniMed.apis.publics.duty_roster.DutyRosterTableDTO;
+import com.example.uniMed.controllers.publics.duty_roster.DutyRosterTableDTO;
 import com.example.uniMed.models.Doctors;
 
 import com.example.uniMed.models.dutyroster.DutyRoster;
