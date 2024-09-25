@@ -57,6 +57,11 @@ import FuturePlan from "./img/FuturePlan.png";
 import blogImg4 from "./img/blog4.jpg";
 import blogImg5 from "./img/blog5.jpg";
 import blogImg6 from "./img/blog6.jpg";
+import serviceImg1 from "./img/34.png";
+import serviceImg2 from "./img/35.png";
+import serviceImg3 from "./img/36.png";
+import serviceImg4 from "./img/37.png";
+
 export const AdminTasks = [
   {
     id: 1,
@@ -168,50 +173,53 @@ export const reviews = [
     ],
   },
  */
-export const DoctorsData = [
-  {
-    img: avatar2,
-    name: "Dr. Julian Bennett",
-    specialties: "Cardiologist",
-    rating: 4.3,
-    rank: 2,
-  },
-  {
-    img: avatar,
-    name: "Dr. Serena Mitchell",
-    specialties: "Orthopedic Surgeon",
-    rating: 4.5,
-    rank: 1,
-  },
-  {
-    img: avatar3,
-    name: "Dr. Camila Rodriguez",
-    specialties: "Pediatrician",
-    rating: 4.2,
-    rank: 3,
-  },
-  {
-    img: avatar4,
-    name: "Dr. Victor Nguyen",
-    specialties: "Neurologist",
-    rating: 4.1,
-    rank: 4,
-  },
-  {
-    img: avatar5,
-    name: "Dr. Ethan Carter",
-    specialties: "Dermatologist",
-    rating: 4.0,
-    rank: 5,
-  },
-  {
-    img: avatar6,
-    name: "Dr. Olivia Martinez",
-    specialties: "Ophthalmologist",
-    rating: 3.9,
-    rank: 6,
-  },
-];
+  export const DoctorsData = [
+    {
+      img: avatar2,
+      name: "Jannatul Ferdousi",
+      specialties: "Dentistry",
+      rating: 4.3,
+      rank: 2,
+    },
+    {
+      img: avatar,
+      name: " Mostafizur Rahman",
+      specialties: "Orthopedics",
+      rating: 4.5,
+      rank: 1,
+    },
+    {
+      img: avatar3,
+      name: " Yasmin Haque Bilkis",
+      specialties: "ENT",
+      rating: 4.2,
+      rank: 3,
+    },
+    {
+      img: avatar5,
+      name: "Syed Chandra Dutta",
+      specialties: "Medicine",
+      rating: 4.1,
+      rank: 4,
+    },
+    {
+      img: avatar4,
+      name: " Yasmin Jahan",
+      specialties: "Medicine",
+      rating: 4.0,
+      rank: 5,
+    },
+    {
+      img: avatar6,
+      name: " Sharif Hossain",
+      specialties: "Orthopedics",
+      rating: 3.9,
+      rank: 6,
+    },
+  ];
+  
+  
+  
 
 export const BlogData = [
   {
@@ -267,6 +275,42 @@ export const BlogData = [
     description:
       "Many think public universities are meant for only providing education. Not exactly! These days, students come up with their basic health needs and university medical centres are supposed to address those. The Dhaka University Medical Centre is one of the oldest medical centres in Bangladesh.It provides primary health care services to the students, teachers, and staff of the university.",
   },
+  {
+    img: blogImg5,
+    title: "Evolution of Health Services at the University",
+    description:
+      "The medical services at Dhaka University have evolved significantly since 1922. With the addition of modern medical equipment and expanded facilities, the center continues to serve students and staff with comprehensive healthcare solutions.",
+  },
+  {
+    img: mortaza2,
+    title: "Quality of Services at the Medical Center",
+    description:
+      "Although the center is not a full-fledged hospital, it provides high-quality primary healthcare services. Plans for modernization and expansion with new equipment and facilities are currently under consideration by the administration.",
+  },
+  {
+    img: blogImg5,
+    title: "A Tribute to Dr. Muhammad Murtaza",
+    description:
+      "Shaheed Dr. Muhammad Murtaza Medical Center is named after Dr. Murtaza, who was killed during the 1971 Liberation War. He dedicated his life to serving as the Chief Medical Officer at Dhaka University until his death at the hands of the Pakistani military.",
+  },
+  {
+    img: mortaza2,
+    title: "How Reliable is the Environment of the Medical Center?",
+    description:
+      "While not a hospital, the center maintains a clean and safe environment for primary care. Future development plans aim to improve the quality of care with state-of-the-art medical equipment and facilities.",
+  },
+  {
+    img: blogImg5,
+    title: "A Historical Perspective on University Healthcare",
+    description:
+      "Since its inception in 1922, the medical center at Dhaka University has been a cornerstone of healthcare for students and staff. It bears the name of a brave doctor, Dr. Muhammad Murtaza, who was martyred during the 1971 war.",
+  },
+  {
+    img: mortaza2,
+    title: "Ensuring the Best Healthcare Practices",
+    description:
+      "The medical center offers quality primary care services despite not being a full-service hospital. The administration has received proposals to enhance the center's capabilities with cutting-edge equipment and new buildings.",
+  },
 ];
 
 export const mortazaImages = [
@@ -298,22 +342,22 @@ export const aboutUsData = {
   ],
   services: [
     {
-      image: mortaza1, // Replace with the actual path to the image
+      image: serviceImg1, // Replace with the actual path to the image
       title: "Doctors Treatment",
       bodyText: "এ্যালোপ্যাথিক ১৯ জন ডাক্তার এবং হোমিও ইউনিটে ০৬ জন ডাক্তার সার্ভিস দিয়ে থাকেন , সংক্রামক রোগীদের জন্য ওয়ার্ডে ২৪ টি বেড রয়েছে",
     },
     {
-      image: mortaza2, // Replace with the actual path to the image
+      image: serviceImg2, // Replace with the actual path to the image
       title: "Medical Test",
       bodyText: "তিন ধরনের পরীক্ষা করা হয়- Urine Test, Hematological Test and Stool Test. প্যাথলজি বিভাগে পরীক্ষা করা হয়।",
     },
     {
-      image: mortaza3, // Replace with the actual path to the image
+      image:  serviceImg3, // Replace with the actual path to the image
       title: "Medicine",
       bodyText: "উচ্চ মানের সকল প্রয়োজনীয় ঔষধ এবং দ্রুত ফার্মাসিউটিক্যাল পরিষেবার ব্যবস্থা আছে।",
     },
     {
-      image: mortaza4, // Replace with the actual path to the image
+      image:  serviceImg4, // Replace with the actual path to the image
       title: "Emergency",
       bodyText: "আপনি যদি জরুরী চিকিৎসা প্রয়োজন হয় তাহলে আমাদের হাসপাতালে যোগাযোগ করুন।",
     },
@@ -326,61 +370,53 @@ export const noticeInfo = [
   {
     quote:
       "বিশ্ববিদ্যালয়ের মেডিকেল সেন্টারে নতুন এমআরআই মেশিন স্থাপন করা হয়েছে, যা উন্নত প্রযুক্তির। এই মেশিনটি উন্নত এবং সঠিক নির্ণয় প্রদান করবে, যা শিক্ষার্থী এবং কর্মীদের জন্য বিশেষ সুবিধাজনক।",
-    name: "ডা. মোহাম্মদ আরিফ",
+      name: "2024-01-10",
     title: "নতুন এমআরআই মেশিন",
-    vanishDate: "2023-12-31",
   },
-
   {
     quote:
       "মেডিকেল ক্যাম্প আগামী শনিবার, সকাল ১০টা থেকে বিকেল ৪টা পর্যন্ত অনুষ্ঠিত হবে। এই ক্যাম্পে বিনামূল্যে স্বাস্থ্য পরীক্ষা, ঔষধ প্রদান এবং চিকিৎসার পরামর্শ দেওয়া হবে। সবাইকে উপস্থিত থাকার জন্য অনুরোধ করা যাচ্ছে।",
-    name: "ডা. তানভীর আহমেদ",
+      name: "2024-02-15",
     title: "মেডিকেল ক্যাম্প",
-    vanishDate: "2023-07-29",
   },
   {
     quote:
       "রক্তদান কর্মসূচি: আগামী মঙ্গলবার, সকাল ৯টা থেকে দুপুর ১টা পর্যন্ত। রক্তদানের মাধ্যমে আমরা অনেক জীবন বাঁচাতে পারি। সবাইকে রক্তদানে অংশগ্রহণের জন্য আমন্ত্রণ জানানো হচ্ছে।",
-    name: "ডা. ফারহান হোসেন",
+      name: "2024-03-05",
     title: "রক্তদান কর্মসূচি",
-    vanishDate: "2023-07-25",
   },
   {
     quote:
       "স্বাস্থ্য সচেতনতা সপ্তাহ শুরু হবে আগামী ১লা আগস্ট থেকে। এই সপ্তাহে বিভিন্ন কর্মসূচি এবং সেমিনার অনুষ্ঠিত হবে, যেখানে স্বাস্থ্য সচেতনতা বৃদ্ধি এবং স্বাস্থ্যকর জীবনযাপন নিয়ে আলোচনা করা হবে। সকল শিক্ষার্থী এবং কর্মীদের এই সপ্তাহে সক্রিয় অংশগ্রহণের জন্য আমন্ত্রণ জানানো হচ্ছে। আমরা আশা করি এই কর্মসূচির মাধ্যমে আমাদের কমিউনিটির সবাই স্বাস্থ্য সচেতনতা বৃদ্ধি করতে পারবে এবং স্বাস্থ্যকর জীবনযাপন সম্পর্কে আরও জানতে পারবে। এই সপ্তাহের বিভিন্ন কর্মসূচির মধ্যে রয়েছে স্বাস্থ্য পরীক্ষা, রক্তদান ক্যাম্প, স্বাস্থ্য সচেতনতা সেমিনার, এবং স্বাস্থ্যকর খাদ্যাভ্যাস নিয়ে কর্মশালা। আমরা আশা করি এই সপ্তাহের কর্মসূচিতে সক্রিয় অংশগ্রহণের মাধ্যমে সকলেই স্বাস্থ্য সচেতনতা বৃদ্ধি করতে পারবে এবং আমাদের কমিউনিটির স্বাস্থ্য অবস্থার উন্নতি করতে পারবে।",
-    name: "ডা. সামিয়া ইসলাম",
+      name: "2024-08-01",
     title: "স্বাস্থ্য সচেতনতা সপ্তাহ",
-    vanishDate: "2023-08-01",
   },
   {
     quote:
       "নতুন স্বাস্থ্য পরামর্শ বুথ উদ্বোধন করা হবে ১৫ই সেপ্টেম্বর। এই বুথে শিক্ষার্থী এবং কর্মীরা বিনামূল্যে স্বাস্থ্য পরামর্শ পেতে পারেন। এছাড়াও, স্বাস্থ্য সচেতনতার জন্য বিভিন্ন কর্মসূচি চালু থাকবে।",
-    name: "ডা. আফরোজা সুলতানা",
+      name: "2024-09-15",
     title: "স্বাস্থ্য পরামর্শ বুথ",
-    vanishDate: "2023-09-15",
   },
   {
     quote:
       "বিশ্ববিদ্যালয়ের মেডিকেল সেন্টারে নতুন স্বাস্থ্য কর্মসূচি চালু হয়েছে, যা শিক্ষার্থী এবং কর্মীদের মানসিক স্বাস্থ্য উন্নয়নে সহায়তা করবে। সপ্তাহে দুই দিন মানসিক স্বাস্থ্য বিশেষজ্ঞদের সাথে বিনামূল্যে পরামর্শ পাওয়া যাবে।",
-    name: "ডা. কামরুল হাসান",
+      name: "2024-10-01",
     title: "নতুন মানসিক স্বাস্থ্য কর্মসূচি",
-    vanishDate: "2023-11-30",
   },
   {
     quote:
       "শীতকালীন ফ্লু প্রতিরোধের জন্য বিনামূল্যে ভ্যাকসিন প্রদান কর্মসূচি চালু করা হয়েছে। এই কর্মসূচির আওতায় শিক্ষার্থী এবং কর্মীদের বিনামূল্যে ফ্লু ভ্যাকসিন প্রদান করা হবে।",
-    name: "ডা. নাসরিন সুলতানা",
+      name: "2024-11-01",
     title: "ফ্লু ভ্যাকসিন প্রদান",
-    vanishDate: "2023-10-15",
   },
   {
     quote:
       "বিশ্ববিদ্যালয়ের মেডিকেল সেন্টারে নতুন আপডেটেড হেলথ কার্ড সিস্টেম চালু হয়েছে। এই সিস্টেমের মাধ্যমে শিক্ষার্থী এবং কর্মীরা দ্রুত এবং সহজে স্বাস্থ্য সম্পর্কিত তথ্য এবং সেবা পেতে পারবেন।",
-    name: "ডা. মাহমুদুল হক",
+      name: "2024-12-01",
     title: "হেলথ কার্ড সিস্টেম",
-    vanishDate: "2023-12-31",
   },
 ];
+
 
 export const PharmacySectionSchedule = [
   ["বার", "সকাল ৮.৩০-দুপুর ২.৩০টা পর্যন্ত", "দুপুর ২.৩০-রাত ৯.৩০টা পর্যন্ত"],
@@ -615,54 +651,55 @@ export const EyeDoctorDutyRoster = [
 
 export const AloSchedule = [
   [
-    "বার",
-    "সকাল ৮.০০-দুপুর ২.০০টা",
-    "দুপুর ২.০০-বিকাল ৬.০০টা",
-    "বিকাল ৬.০০-রাত ১০.০০টা",
+    "Day",
+    "8:00 AM - 2:00 PM",
+    "2:00 PM - 6:00 PM",
+    "6:00 PM - 10:00 PM",
   ],
   [
-    "রবিবার",
-    "জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট),মোস্তাফিজুর রহমান(কার্ডিওলজিস্ট)",
-    "মোস্তাফিজুর রহমান (নিউরোলজিস্ট)",
-    "ইয়াসমিন হক বিল্কিস (গাইনোকোলজিস্ট)",
+    "Sunday",
+    "Jannatul Ferdousi (Dentistry), Mostafizur Rahman (Dentistry)",
+    "Mostafizur Rahman (Orthopedics)",
+    "Yasmin Haque Bilkis (ENT)",
   ],
   [
-    "সোমবার",
-    "জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)",
-    "ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)",
-    "মোস্তাফিজুর রহমান (নিউরোলজিস্ট)",
+    "Monday",
+    "Jannatul Ferdousi (Dentistry)",
+    "Yasmin Jahan (Medicine)",
+    "Mostafizur Rahman (Orthopedics)",
   ],
   [
-    "মঙ্গলবার",
-    "জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)",
-    "শরীফ হোসাইন (অর্থোপেডিক সার্জন)",
-    "মোস্তাফিজুর রহমান (নিউরোলজিস্ট)",
+    "Tuesday",
+    "Jannatul Ferdousi (Dentistry)",
+    "Sharif Hossain (Orthopedics)",
+    "Mostafizur Rahman (Orthopedics)",
   ],
   [
-    "বুধবার",
-    "জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)",
-    "ইয়াসমিন হক বিল্কিস (গাইনোকোলজিস্ট)",
-    "সৈয়দ চন্দ্র দত্ত (ডার্মাটোলজিস্ট)",
+    "Wednesday",
+    "Jannatul Ferdousi (Dentistry)",
+    "Yasmin Haque Bilkis (ENT)",
+    "Syed Chandra Dutta (Medicine)",
   ],
   [
-    "বৃহস্পতিবার",
-    "ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)",
-    "শরীফ হোসাইন (অর্থোপেডিক সার্জন)",
-    "সৈয়দ চন্দ্র দত্ত (ডার্মাটোলজিস্ট)",
+    "Thursday",
+    "Yasmin Jahan (Medicine)",
+    "Sharif Hossain (Orthopedics)",
+    "Syed Chandra Dutta (Medicine)",
   ],
   [
-    "শুক্রবার",
-    "জান্নাতুল ফেরদৌসি (কার্ডিওলজিস্ট)",
-    "ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)",
-    "শরীফ হোসাইন (অর্থোপেডিক সার্জন)",
+    "Friday",
+    "Jannatul Ferdousi (Dentistry)",
+    "Yasmin Jahan (Medicine)",
+    "Sharif Hossain (Orthopedics)",
   ],
   [
-    "শনিবার",
-    "ইয়াসমিন জাহান (পেডিয়াট্রিশিয়ান)",
-    "সৈয়দ চন্দ্র দত্ত (ডার্মাটোলজিস্ট)",
-    "ইয়াসমিন হক বিল্কিস (গাইনোকোলজিস্ট)",
+    "Saturday",
+    "Yasmin Jahan (Medicine)",
+    "Syed Chandra Dutta (Medicine)",
+    "Yasmin Haque Bilkis (ENT)",
   ],
 ];
+
 
 export const AloSchedule2 = [
   [
