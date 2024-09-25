@@ -1,0 +1,35 @@
+package com.example.uniMed.utils;
+
+
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Component
+public class TokenVerifierInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("TokenVerifierInterceptor: preHandle");
+        
+      
+        String authorizationHeader = request.getHeader("Authorization");
+        System.out.println("TokenVerifierInterceptor: " + authorizationHeader);
+
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return false;
+        }
+
+        String token = authorizationHeader.substring(7);
+        if (!JwtHelper.validateToken(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return false;
+        }
+
+        return true;
+    }
+}

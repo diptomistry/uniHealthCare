@@ -12,7 +12,6 @@ import com.example.uniMed.models.Department;
 import com.example.uniMed.models.Doctors;
 import com.example.uniMed.models.Role;
 import com.example.uniMed.models.Student;
-import com.example.uniMed.security.JwtHelper;
 import com.example.uniMed.models.User;
 import com.example.uniMed.models.DTOs.DoctorsDTO;
 import com.example.uniMed.models.DTOs.UserDTO;
@@ -26,6 +25,7 @@ import com.example.uniMed.repositories.doctor.RatingRepository;
 import com.example.uniMed.repositories.publics.about_us.DepartmentRepository;
 import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
 import com.example.uniMed.services.FileService;
+import com.example.uniMed.utils.JwtHelper;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaBuilder.In;
