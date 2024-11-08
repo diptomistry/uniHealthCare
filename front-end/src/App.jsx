@@ -8,6 +8,7 @@ import ProtectedRoute from "./services/auth/ProtectedRoute";
 import AdditionalInfo from "./components/dashboard/Admin/AdditionalInfo";
 import PasskeyProtectedRoute from "./services/auth/PasskeyProtectedRoute";
 import { DutyRosterDoctor,Blog  } from "./components/dashboard/Admin";
+import SigninSignupRoot from "./pages/SigninSignupRoot";
 
 import WebSocketComponent from "./layouts/dashboard/WebSocketConnect";
 let key =
@@ -19,7 +20,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/get-started" element={<SlidingLoginSignup />} />
+        <Route path="/get-started" element={<SigninSignupRoot />} />
         <Route
           path="/dashboard/*"
           element={

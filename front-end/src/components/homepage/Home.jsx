@@ -6,6 +6,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { noticeInfo } from "../../assets/dashboard";
 
+
 const Home = () => {
   const [notices, setNotices] = useState([]);
   useEffect(() => {
