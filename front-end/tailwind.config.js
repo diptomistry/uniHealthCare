@@ -1,7 +1,7 @@
-const svgToDataUri = require("mini-svg-data-uri");
+import svgToDataUri from "mini-svg-data-uri";
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ["./index.html", "./src/**/*.{js,jsx,tsx}", "node_modules/tw-elements-react/dist/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
