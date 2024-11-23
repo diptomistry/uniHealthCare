@@ -5,6 +5,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.uniMed.models.DTOs.UserDTO;
 import com.example.uniMed.services.auth.UserService;
 
 import java.sql.Date;
@@ -25,51 +27,31 @@ public class UserController {
     }
 
     @PostMapping("/create-user")
-    public Map<String, Object> createUser(
-            @RequestBody Map<String, String> body) {
-
+    public Map<String, Object> createUser(@RequestBody UserDTO userDTO) {
         MultipartFile file = null;
-        String email = body.get("email");
-        String password = body.get("password");
-        String confirmPass = body.get("confirmPass");
-        String name = body.get("name");
-        String dob = body.get("dob");
-        String address = body.get("address");
+        String email = userDTO.getEmail();
+        String password = userDTO.getPassword();
+        String confirmPass = userDTO.getConfirmPass();
+        String name = userDTO.getName();
+        Date dateOfBirth = userDTO.getDob();
+        String address = userDTO.getAddress();
         System.out.println("address");
         System.out.println(address);
-        System.out.println(dob);
-        Date dateOfBirth;
-        try {
-            dateOfBirth = Date.valueOf(dob);
-        } catch (IllegalArgumentException e) {
-            dateOfBirth = null;
+       
+       
 
-        }
+        String gender = userDTO.getGender();
+        String userType = userDTO.getUserType();
 
-        String gender = body.get("gender");
-        String userType = body.get("userType");
+        String departmentName = userDTO.getDepartmentName();
+        String session = userDTO.getSession();
+        String registrationNo = userDTO.getRegistrationNo();
+        String departmentId = userDTO.getDepartmentId();
 
-        String departmentName;
-        String session;
-        String registrationNo;
-        String departmentId = null;
-        try {
-            session = body.get("session");
-            registrationNo = body.get("registrationNo");
-            departmentName = body.get("departmentName");
-            departmentId = body.get("departmentId");
-        } catch (NumberFormatException e) {
-            departmentName = null;
-            session = null;
-            registrationNo = null;
-        }
-
-        String registeredFrom = body.get("registeredFrom");
-        String phone = body.get("phone");
+        String registeredFrom = userDTO.getRegisteredFrom();
+        String phone = userDTO.getPhone();
         System.out.println("Creating user");
-        System.out.println(body);
-
-        System.out.println("Creating user");
+        System.out.println(userDTO);
 
         return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType,
                 departmentId, session, registrationNo, departmentName, registeredFrom, phone, address);
@@ -170,9 +152,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody Map<String, String> body) {
-        String email = body.get("email");
-        String password = body.get("password");
+    public Map<String, Object> login(@RequestBody UserDTO userDTO) {
+        String email = userDTO.getEmail();
+        String password = userDTO.getPassword();
         try {
             return userService.loginUser(email, password);
         } catch (Exception e) {
@@ -182,7 +164,7 @@ public class UserController {
             return response;
         }
     }
-
+ 
     @GetMapping("/get-all-users")
     public Map<String, Object> getAllUsersMap() {
         return userService.getAllUsers();
@@ -191,11 +173,6 @@ public class UserController {
     @GetMapping("/get-doctors")
     public Map<String, Object> getDoctors() {
         Map<String, Object> response = userService.getDoctors();
-        if (!response.containsKey("success")) {
-            response.put("success", false);
-            response.put("message", "Failed to get doctors");
-
-        }
         return response;
     }
 }

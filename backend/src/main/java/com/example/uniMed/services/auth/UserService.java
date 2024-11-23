@@ -30,9 +30,15 @@ import jakarta.persistence.EntityNotFoundException;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -244,7 +250,8 @@ public class UserService {
             // Parse and set date of birth
             if (dobString != null && !dobString.isEmpty()) {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                Date dob = formatter.parse(dobString);
+                java.util.Date utilDate = formatter.parse(dobString);
+                Date dob = new Date(utilDate.getTime());
                 user.setDob(dob);
             }
 
