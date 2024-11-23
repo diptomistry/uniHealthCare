@@ -41,10 +41,6 @@ public class BlogController {
             @RequestPart("description") String description,
             @RequestPart("isQoute") String isQoute,
             @RequestPart(value = "file", required = false) MultipartFile file) {
-                System.out.println("Title: "+title);
-                System.out.println("Description: "+description);
-                System.out.println("isBlog: "+isBlog);
-                System.out.println("isQoute: "+isQoute);
         Blog aBlog = new Blog();
         aBlog.setTitle(title);
         aBlog.setDescription(description);
@@ -72,11 +68,6 @@ public class BlogController {
             @RequestPart(value = "isBlog",required = false) String isBlog,
             @RequestPart(value = "isQoute",required = false) String isQoute,
             @RequestPart(value = "file", required = false) MultipartFile file) {
-                System.out.println("Update blog");
-                System.out.println("Title: "+title);
-                System.out.println("Description: "+description);
-                System.out.println("isBlog: "+isBlog);
-                System.out.println("isQoute: "+isQoute);
 
 
 
@@ -86,7 +77,6 @@ public class BlogController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBlog(@PathVariable Long id) {
-        System.out.println("Delete blog");
         if (blogService.deleteBlog(id)) {
             return ResponseEntity.ok("Blog deleted successfully");
         } else {

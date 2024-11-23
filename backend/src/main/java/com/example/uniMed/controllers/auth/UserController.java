@@ -35,9 +35,6 @@ public class UserController {
         String name = body.get("name");
         String dob = body.get("dob");
         String address = body.get("address");
-        System.out.println("address");
-        System.out.println(address);
-        System.out.println(dob);
         Date dateOfBirth;
         try {
             dateOfBirth = Date.valueOf(dob);
@@ -66,10 +63,6 @@ public class UserController {
 
         String registeredFrom = body.get("registeredFrom");
         String phone = body.get("phone");
-        System.out.println("Creating user");
-        System.out.println(body);
-
-        System.out.println("Creating user");
 
         return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType,
                 departmentId, session, registrationNo, departmentName, registeredFrom, phone, address);
@@ -85,11 +78,6 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> updateUser(
             @PathVariable("user_id") Long userId,
             @RequestBody Map<String, String> body) {
-        System.out.println("User ID: " + userId);
-
-        Map<String, Object> response = new HashMap<>();
-
-        System.out.println(body);
 
         String email = body.get("email");
         String dob = body.get("dob");

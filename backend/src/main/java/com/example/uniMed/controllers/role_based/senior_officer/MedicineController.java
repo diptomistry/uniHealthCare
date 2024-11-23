@@ -29,8 +29,6 @@ public class MedicineController {
     // Add a new medicine
     @PostMapping("/add")
     public ResponseEntity<MedicinesDTO> addMedicine(@RequestBody MedicineDTO1 medicineDTO) {
-        System.out.println(medicineDTO.toString());
-
         MedicinesDTO medicine = medicineService.addMedicine(medicineDTO);
         return ResponseEntity.ok(medicine);
     }

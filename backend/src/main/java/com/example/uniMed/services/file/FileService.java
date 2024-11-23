@@ -47,9 +47,7 @@ public class FileService {
         // Extract the filename from the URL
 
         URL url = new URL(fileUrl);
-        System.out.println("url: " + url);
         String filename = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
-        System.out.println("filename: " + filename);
         // Resolve the file path
         Path filePath = Paths.get(uploadDir).resolve(filename);
 

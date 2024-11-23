@@ -101,7 +101,6 @@ public class Appointments {
             dto.setStatus(this.status);
         }
         if (this.prescription != null) {
-            System.out.println("prescription is not null");
             dto.setPrescription(this.prescription.toDto(this.prescription));
         }
         if (this.appointmentID != null) {

@@ -31,7 +31,6 @@ public class AppointmentsController {
     @PostMapping("/{appointmentId}/prescribe")
     public Appointments prescribeMedicine(@PathVariable Integer appointmentId,
             @RequestBody PrescribeMedicineRequestDTO request) {
-        System.out.println(request.getPrescribedMedicines());
         return appointmentsService.prescribeMedicine(
                 appointmentId,
                 request.getPrescribedMedicines(),

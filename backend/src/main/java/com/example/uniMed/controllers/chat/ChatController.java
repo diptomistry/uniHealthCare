@@ -27,7 +27,6 @@ public class ChatController {
 
     @PostMapping("/rooms/{chatRoomId}/messages")
     public Message sendMessage(@RequestBody Map<String,Object> payload, @PathVariable Long chatRoomId) {
-        System.out.println("payload: " + payload);
         Long senderId =Long.parseLong( payload.get("senderId").toString());
         String content =  payload.get("content").toString();
         Message message = chatService.sendMessage(senderId, chatRoomId, content);
