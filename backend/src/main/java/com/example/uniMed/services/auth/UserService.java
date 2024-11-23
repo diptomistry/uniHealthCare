@@ -127,9 +127,7 @@ public class UserService {
             if ("student".equals(userType) || "teacher".equals(userType) || "staff".equals(userType)) {
                 status = "Approved";
             }
-            System.out.println("------->Here");
             Optional<Role> role = roleRepository.findByRoleName(userType);
-            System.out.println("------>Here");
             if (role.isPresent()) {
                 System.out.println("Role found");
             } else {
@@ -139,7 +137,6 @@ public class UserService {
             User newUser = new User(hashedPassword, email, dob, name, gender, role.get(), filePath, token, status,
                     registeredFrom, phone, address);
 
-            System.out.println("------->Here");
 
             if ("student".equals(userType)) {
                 if (departmentName == null || session == null || registrationNo == null) {
@@ -149,7 +146,6 @@ public class UserService {
                             "Department, session, and registration number must be provided for students");
                     return response;
                 }
-                System.out.println("------->Creating student");
 
                 Student student = new Student();
                 student.setDepartment(departmentId);
@@ -167,7 +163,6 @@ public class UserService {
                     response.put("message", "Specialization must be provided for doctors");
                     return response;
                 }
-                System.out.println("------->Creating doctor");
                 try {
 
                     Doctors doctor = new Doctors();
@@ -300,8 +295,6 @@ public class UserService {
 
     @Transactional
     public Map<String, Object> deleteUser(Long userId) {
-        System.out.println("Deleting user");
-        System.out.println("User ID: " + userId);
         Map<String, Object> response = new HashMap<>();
         try {
             User user = userRepository.findById(userId).get();
@@ -310,8 +303,6 @@ public class UserService {
                 response.put("message", "User does not exist");
                 return response;
             }
-            System.out.println("User found");
-            System.out.println("Role: " + user.getRole().getRoleName());
 
             if (user.getRole().getRoleName().equals("student")) {
                 Student student = studentRepository.findByUserId(userId);

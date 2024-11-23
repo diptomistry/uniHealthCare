@@ -62,7 +62,6 @@ public class AppointmentsService {
     private MedicineRepository medicineRepository;
 
     public Appointments createAppointment(AppointmentsDTO appointment, Integer userId) {
-        System.out.println("User ID: " + userId);
         Appointments appointment1 = new Appointments();
         appointment1.setAppointmentDateTime(appointment.getAppointmentDateTime());
         appointment1.setConcern(appointment.getConcern());
@@ -75,7 +74,6 @@ public class AppointmentsService {
 
         }
         if (!optionalUser.isPresent()) {
-            System.out.println("User not found");
             throw new RuntimeException("User not found");
         }
         return appointmentsRepository.save(appointment1);
@@ -100,15 +98,11 @@ public class AppointmentsService {
         if (diagnosis != null) {
             prescription.setDiagnosis(diagnosis);
         }
-        System.out.println("Doctor ID: " + doctorID);
-
-        System.out.println("User ID: " + userID);
 
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
         Optional<Doctors> optionalDoctor = doctorRepository.findById(Long.parseLong(doctorID.toString()));
         Optional<Appointments> optionalAppointment = appointmentsRepository.findById(appointmentId);
         if (!optionalAppointment.isPresent()) {
-            System.out.println("Appointment not found");
             throw new RuntimeException("Appointment not found");
         }
 
@@ -129,7 +123,6 @@ public class AppointmentsService {
         List<PrescribedMedicine> prescribedMedicines = new ArrayList<>();
         for (PrescribedMedicineDTO prescribedMedicineDTO : prescribedMedicinesDTO) {
             PrescribedMedicine prescribedMedicine = new PrescribedMedicine();
-            System.out.println(prescribedMedicineDTO.getMedicineID());
             if (prescribedMedicineDTO.getMedicineID() == null) {
 
                 Medicines medicine = new Medicines();
@@ -195,7 +188,6 @@ public class AppointmentsService {
     // get all appointments of a user
     public List<AppointmentsDTO1> getAppointmentsByUser(Integer userID) {
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
-        System.out.println("User ID: " + userID);
         if (optionalUser.isPresent()) {
             Optional<List<Appointments>> optionalAppointments = appointmentsRepository.findByUserUserID(userID);
 
@@ -206,7 +198,6 @@ public class AppointmentsService {
                     appointmentsDTO = appointment.toDTO();
 
                     if (appointment.getPrescription() != null) {
-                        System.out.println("Appointment ID: " + appointment.getAppointmentID());
                         Optional<Prescription> optionalPrescription = prescriptionRepository
                                 .findById(appointment.getPrescription().getPrescriptionID());
                         if (optionalPrescription.isPresent()) {

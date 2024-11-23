@@ -21,7 +21,6 @@ public class JwtHelper {
     }
 
     public static boolean validateToken(String token) {
-        System.out.println("Token: " + token);
         try {
             Jwts.parser().verifyWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())).build().parseClaimsJws(token);
             return true;

@@ -20,8 +20,6 @@ public class DispenseRequestController {
     @PostMapping
     public ResponseEntity<String> createDispenseRequest(@RequestBody DispenseRequestDTO requestDTO) {
         try {
-            System.out.println("Request: " + requestDTO);
-            System.out.println("Request: " + requestDTO.getAppointmentId());
             String createdRequest = dispenseRequestService.createDispenseRequest(requestDTO);
             return ResponseEntity.ok(createdRequest);
         } catch (RuntimeException e) {

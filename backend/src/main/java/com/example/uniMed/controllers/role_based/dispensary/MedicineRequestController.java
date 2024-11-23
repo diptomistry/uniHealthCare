@@ -40,7 +40,6 @@ public class MedicineRequestController {
     @PutMapping("/{id}/status")
     public ResponseEntity<MedicineRequestDTO> updateRequestStatus(@PathVariable Long id,
             @RequestBody Map<String, String> payload) {
-        System.out.println(payload);
         String status = payload.get("status");
         MedicineRequestDTO updatedRequest = medicineRequestService.updateRequestStatus(id, status);
         if (updatedRequest != null) {

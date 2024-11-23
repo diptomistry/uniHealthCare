@@ -45,8 +45,6 @@ public class DutyRosterControllers {
 
     @PostMapping("/delete-doctor/{dutyRosterId}")
     public ResponseEntity<?> deleteDoctorFromDutyRoster(@PathVariable Long dutyRosterId, @RequestBody Map<String, Object> payload) {
-        System.out.println("delete doctor");
-        System.out.println(dutyRosterId);
         List<Integer> doctorId = (List<Integer>) payload.get("doctorId");
         DutyRoster dutyRoster = null;
         for (Integer id : doctorId) {

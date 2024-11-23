@@ -94,7 +94,6 @@ public class AboutUsController {
      @PostMapping("/update-single-about-us/{id}")
     public ResponseEntity<AboutUs> updateSingleAboutUs(@PathVariable Long id, @RequestBody Map<String, String> payload) {
         String description = payload.get("description");
-        System.out.println("Description: " + description);
         AboutUs updatedAboutUs = aboutUsService.updateSingleAboutUs(id, description);
         if (updatedAboutUs != null) {
             return ResponseEntity.ok(updatedAboutUs);

@@ -56,25 +56,10 @@ public class MedicineService {
     }
 
     public MedicinesDTO updateMedicine(Integer medicineID, MedicineDTO1 medicineDTO) {
-        System.out.println(medicineID);
         Optional<Medicines> medicineOptional = medicineRepository.findById(medicineID);
         if (medicineOptional.isPresent()) {
          
             Medicines medicine = medicineOptional.get();
-            System.out.println(medicineDTO.getName());
-            System.out.println("Name");
-            System.out.println(medicineDTO.getEntryDate());
-            System.out.println("Entry Date");
-            System.out.println(medicineDTO.getExpiryDate());
-            System.out.println("Expiry Date");
-            System.out.println(medicineDTO.getDescription());
-            System.out.println("Description");
-            System.out.println(medicineDTO.getPrice());
-            System.out.println("Price");
-            System.out.println(medicineDTO.getIsOutside());
-            System.out.println("Is Outside");
-            System.out.println(medicineDTO.getStockQuantity());
-            System.out.println("Stock Quantity");
     
             if (medicineDTO.getName() != null) {
                 medicine.setName(medicineDTO.getName());
@@ -95,8 +80,6 @@ public class MedicineService {
                 medicine.setIs_Outside(medicineDTO.getIsOutside());
             }
             if (medicineDTO.getStockQuantity() != null) {
-                System.out.println(medicineDTO.getStockQuantity());
-                System.out.println("Stock Quantity");
                 medicine.setStockQuantity(medicineDTO.getStockQuantity());
             }
             Medicines updatedMedicine = medicineRepository.save(medicine);

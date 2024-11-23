@@ -67,11 +67,6 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> updateUser(
             @PathVariable("user_id") Long userId,
             @RequestBody Map<String, String> body) {
-        System.out.println("User ID: " + userId);
-
-        Map<String, Object> response = new HashMap<>();
-
-        System.out.println(body);
 
         String email = body.get("email");
         String dob = body.get("dob");
