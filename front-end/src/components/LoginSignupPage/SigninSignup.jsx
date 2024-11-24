@@ -178,6 +178,7 @@ import EmailRecoveryOTP from "./EmailRecoveryOTP";
 import Signin from "./Signin";
 import Signup from "./Signup";
 import withLoading from "../../layouts/WithLoading";
+import FullScreenLoader from "./FullScreenLoader";
 
 const SlidingLoginSignup = ({ setIsLoading }) => {
   const [isSignUpMode, setIsSignUpMode] = useState(false);
@@ -336,4 +337,4 @@ const SlidingLoginSignup = ({ setIsLoading }) => {
     </div>
   );
 };
-export default withLoading(SlidingLoginSignup);
+export default withLoading(SlidingLoginSignup,{loader: FullScreenLoader});

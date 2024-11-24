@@ -20,9 +20,10 @@ const Blog = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [imageSrc, setImageSrc] = useState("");
+  const [isLoadingText, setisLoadingText] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const handleButtonClick = async () => {
-    setIsLoading(true);
+    setisLoadingText(true);
     try {
       // Make the API request directly in the parent component
       const response = await axios.post("http://127.0.0.1:5000/improve-text", {
@@ -34,7 +35,7 @@ const Blog = () => {
       console.error("Error improving text:", error);
       // setImprovedText('Error processing text');
     } finally {
-      setIsLoading(false);
+      setisLoadingText(false);
     }
   };
 
@@ -51,7 +52,7 @@ const Blog = () => {
         const data = await response.json();
         console.log(data);
         const filteredBlogs = data.filter((blog) => blog.isBlog === true);
-        
+
         setBlogs(filteredBlogs);
         //console.log(data.img);
       } catch (error) {
@@ -109,16 +110,16 @@ const Blog = () => {
     }
 
     try {
-      formData.append('isBlog', 'true');
-      formData.append('isQoute', 'false');
-     // formData.append('isBlog', 'false');
-     // formData.append('isQoute', 'true');
-      
+      formData.append("isBlog", "true");
+      formData.append("isQoute", "false");
+      // formData.append('isBlog', 'false');
+      // formData.append('isQoute', 'true');
+
       //console.log('hello', editForm.img);
       let response;
       if (isAdding) {
         formData.append("isBlog", "true");
-      formData.append("isQoute", "false");
+        formData.append("isQoute", "false");
         response = await axios.post(`${API_BASE_URL}/blogs`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -131,7 +132,7 @@ const Blog = () => {
         console.log("Edit form:", editForm);
         formData.append("isBlog", "true");
         formData.append("isQoute", "false");
-       // formData.append("isBlog", "true");
+        // formData.append("isBlog", "true");
         response = await axios.put(
           `${API_BASE_URL}/blogs/${editForm.id}`,
           formData,
@@ -290,12 +291,12 @@ const Blog = () => {
           <div className="absolute right-2 top-0 p-2">
             <button
               onClick={handleButtonClick}
-              disabled={isLoading}
+              disabled={isLoadingText}
               class="group flex justify-center p-2 rounded-md hover:text-black drop-shadow-xl from-gray-800 bg-[#a6a7ab] text-white font-semibold hover:translate-y-2 transition-all duration-250 hover:from-[#331029] hover:to-[#310413]"
               variant="ghost"
               size="icon"
             >
-              {isLoading ? (
+              {isLoadingText ? (
                 <FaWandMagicSparkles className="animate-spin" />
               ) : (
                 <FaWandMagicSparkles />
@@ -316,7 +317,11 @@ const Blog = () => {
           onChange={handleImageChange}
         />
         <div className="mb-5">
-          <ImageGenerator setImageSrc={handleAIImageSet} />
+          <ImageGenerator
+            setImageSrc={handleAIImageSet}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+          />
           {imageSrc && (
             <div className="md:ml-24 md:mr-24  ml-10 mr-10  scale-90  border border-gray-300 rounded-xl overflow-hidden flex justify-center items-center ">
               <img
