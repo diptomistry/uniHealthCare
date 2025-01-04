@@ -1,22 +1,32 @@
 package com.example.uniMed.models;
 
 import java.sql.Date;
-import java.time.LocalDate;
-
 import java.util.List;
 
 import com.example.uniMed.models.DTOs.UserDTO;
 import com.example.uniMed.models.chat.ChatRoom;
 import com.example.uniMed.models.rating.Rating;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "users")
@@ -25,6 +35,7 @@ import jakarta.persistence.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userID")
 
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userID;
@@ -39,8 +50,10 @@ public class User {
 
     @Temporal(TemporalType.DATE)
     private Date dob;
+
     @JsonProperty("name")
     private String name;
+
     private String sex;
     private String phone;
     private String image;
@@ -50,14 +63,6 @@ public class User {
     private String otp;
     private String registeredFrom;
     private String address;
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleid")
@@ -71,39 +76,28 @@ public class User {
     @JsonManagedReference
     private List<Rating> ratings;
 
-    public List<ChatRoom> getChatRooms() {
-        return chatRooms;
+    // Private constructor for Builder
+    private User(Builder builder) {
+        this.userID = builder.userID;
+        this.password = builder.password;
+        this.email = builder.email;
+        this.dob = builder.dob;
+        this.name = builder.name;
+        this.sex = builder.sex;
+        this.phone = builder.phone;
+        this.image = builder.image;
+        this.status = builder.status;
+        this.token = builder.token;
+        this.otp = builder.otp;
+        this.registeredFrom = builder.registeredFrom;
+        this.address = builder.address;
+        this.role = builder.role;
     }
 
-    public void setChatRooms(List<ChatRoom> chatRooms) {
-        this.chatRooms = chatRooms;
-    }
+    // Empty constructor for JPA
+    public User() {}
 
-    public User() {
-    }
-
-    public User getUser() {
-        return this;
-    }
-
-    public User(Integer userID, String password, String email, Date dob, String name, String sex, String phone,
-            String image, String status, String token, String otp, String registeredFrom, Role role, String address) {
-        this.userID = userID;
-        this.password = password;
-        this.email = email;
-        this.dob = dob;
-        this.name = name;
-        this.sex = sex;
-        this.address = address;
-        this.phone = phone;
-        this.image = image;
-        this.status = status;
-        this.token = token;
-        this.otp = otp;
-        this.registeredFrom = registeredFrom;
-        this.role = role;
-    }
-
+    // toDTO method
     public UserDTO toDTO() {
         UserDTO dto = new UserDTO();
         dto.setUserID(this.userID);
@@ -116,30 +110,22 @@ public class User {
         dto.setDob(this.dob);
         dto.setRole(this.role != null ? this.role : null);
         dto.setToken(this.token);
-
         dto.setAddress(this.address);
-
         return dto;
     }
 
-    public User(String hashedPassword, String email, Date dob, String name, String sex, Role role,
-            String filePath, String token, String status, String registeredFrom, String phone, String address) {
-        this.password = hashedPassword;
-        this.email = email;
-        this.dob = dob;
-        this.name = name;
-        this.sex = sex;
-        this.role = role;
-        this.image = filePath;
-        this.token = token;
-        this.status = status;
-        this.registeredFrom = registeredFrom;
-        this.address = address;
-        this.phone = phone;
+    // Getters and setters remain unchanged
+
+    public Integer getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
@@ -177,13 +163,8 @@ public class User {
     public void setSex(String sex) {
         this.sex = sex;
     }
-
-    public Integer getUserID() {
-        return userID;
-    }
-
-    public void setUserID(Integer userID) {
-        this.userID = userID;
+    public void setRoleId(Integer roleId) {
+        this.role = new Role(roleId); // Assuming Role has a constructor that accepts an ID
     }
 
     public String getPhone() {
@@ -234,6 +215,14 @@ public class User {
         this.registeredFrom = registeredFrom;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -242,8 +231,114 @@ public class User {
         this.role = role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.role = new Role(roleId);
+    public List<ChatRoom> getChatRooms() {
+        return chatRooms;
     }
 
+    public void setChatRooms(List<ChatRoom> chatRooms) {
+        this.chatRooms = chatRooms;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    // Builder Class
+    public static class Builder {
+        private Integer userID;
+        private String password;
+        private String email;
+        private Date dob;
+        private String name;
+        private String sex;
+        private String phone;
+        private String image;
+        private String status = "Pending";
+        private String token;
+        private String otp;
+        private String registeredFrom;
+        private String address;
+        private Role role;
+
+        // Builder methods for setting fields
+        public Builder userID(Integer userID) {
+            this.userID = userID;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder dob(Date dob) {
+            this.dob = dob;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder sex(String sex) {
+            this.sex = sex;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder image(String image) {
+            this.image = image;
+            return this;
+        }
+
+        public Builder status(String status) {
+            this.status = status;
+            return this;
+        }
+        
+
+        public Builder token(String token) {
+            this.token = token;
+            return this;
+        }
+
+        public Builder otp(String otp) {
+            this.otp = otp;
+            return this;
+        }
+
+        public Builder registeredFrom(String registeredFrom) {
+            this.registeredFrom = registeredFrom;
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder role(Role role) {
+            this.role = role;
+            return this;
+        }
+
+        // Build method to create User object
+        public User build() {
+            return new User(this);
+        }
+    }
 }

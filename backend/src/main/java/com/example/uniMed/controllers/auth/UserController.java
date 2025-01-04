@@ -21,13 +21,13 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/get-user")
-    public Map<String, Object> getUser(@RequestBody Map<String, Long> body) {
+    public ResponseEntity<Map<String, Object>> getUser(@RequestBody Map<String, Long> body) {
         Long user_id = body.get("user_id");
         return userService.getUser(user_id);
     }
 
     @PostMapping("/create-user")
-    public Map<String, Object> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserDTO userDTO) {
         MultipartFile file = null;
         String email = userDTO.getEmail();
         String password = userDTO.getPassword();
@@ -53,12 +53,20 @@ public class UserController {
         System.out.println("Creating user");
         System.out.println(userDTO);
 
-        return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType,
-                departmentId, session, registrationNo, departmentName, registeredFrom, phone, address);
+        Map<String, String> additionalInfo = new HashMap<>();
+        additionalInfo.put("departmentId", departmentId);
+        additionalInfo.put("session", session);
+        additionalInfo.put("registrationNo", registrationNo);
+        additionalInfo.put("departmentName", departmentName);
+        additionalInfo.put("registeredFrom", registeredFrom);
+        additionalInfo.put("phone", phone);
+        additionalInfo.put("address", address);
+
+        return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, additionalInfo);
     }
 
     @PostMapping("/delete-user")
-    public Map<String, Object> deleteUser(@RequestBody Map<String, Long> body) {
+    public ResponseEntity<Map<String, Object>> deleteUser(@RequestBody Map<String, Long> body) {
         Long user_id = body.get("user_id");
         return userService.deleteUser(user_id);
     }
@@ -78,8 +86,8 @@ public class UserController {
         String departmentId = body.get("departmentId");
         String password = body.get("password");
 
-        return ResponseEntity.ok(userService.updateUser(userId, email, dob, name, department, session, registrationNo,
-                phone, departmentId, password));
+        return userService.updateUser(userId, email, dob, name, department, session, registrationNo,
+                phone, departmentId, password);
 
     }
 
@@ -87,77 +95,57 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> changeImage(@PathVariable("user_id") Long userId,
             @RequestPart("file") MultipartFile image) {
 
-        return ResponseEntity.ok(
+        return (
                 userService.changeImage(userId, image));
 
     }
 
     @PostMapping("/update-status")
-    public Map<String, Object> updateUserStatus(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<Map<String, Object>> updateUserStatus(@RequestBody Map<String, Object> body) {
         Long user_id = Long.parseLong(body.get("user_id").toString());
         String status = body.get("status").toString();
         return userService.updateUserStatus(user_id, status);
     }
 
     @PostMapping("/update-role")
-    public Map<String, Object> updateRole(@RequestParam Long user_id, @RequestParam Integer role_id) {
+    public ResponseEntity<Map<String, Object>> updateRole(@RequestParam Long user_id, @RequestParam Integer role_id) {
         return userService.updateUserRole(user_id, role_id);
     }
 
     @PostMapping("/send-otp")
-    public Map<String, Object> sendOtp(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Map<String, Object>> sendOtp(@RequestBody Map<String, String> body) {
         String email = body.get("email");
         boolean debug = Boolean.parseBoolean(body.get("debug"));
-        try {
-            return userService.sendOtp(email, debug);
-        } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "Failed to send OTP: " + e.getMessage());
-            return response;
-        }
+        
+    return userService.sendOtp(email, debug);
+      
     }
 
     @PostMapping("/verify-email")
-    public Map<String, Object> verifyEmail(@RequestParam String email) {
-        try {
+    public ResponseEntity<Map<String, Object>> verifyEmail(@RequestParam String email) {
+       
             return userService.verifyEmail(email);
-        } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "Failed to verify email: " + e.getMessage());
-            return response;
-        }
+       
     }
 
     @PostMapping("/reset-password")
-    public Map<String, Object> resetPassword(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Map<String, Object>> resetPassword(@RequestBody Map<String, String> body) {
         String userId = body.get("user_id");
         String current_pass = body.get("current_pass");
         String confirm_pass = body.get("confirm_pass");
 
-        try {
+       
             return userService.resetPassword(userId, current_pass, confirm_pass);
-        } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "Failed to reset password: " + e.getMessage());
-            return response;
-        }
+       
     }
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody UserDTO userDTO) {
         String email = userDTO.getEmail();
         String password = userDTO.getPassword();
-        try {
+        
             return userService.loginUser(email, password);
-        } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "Failed to login: " + e.getMessage());
-            return response;
-        }
+      
     }
  
     @GetMapping("/get-all-users")
@@ -166,8 +154,8 @@ public class UserController {
     }
 
     @GetMapping("/get-doctors")
-    public Map<String, Object> getDoctors() {
-        Map<String, Object> response = userService.getDoctors();
-        return response;
+    public ResponseEntity<Map<String, Object>> getDoctors() {
+         
+        return userService.getDoctors();
     }
 }

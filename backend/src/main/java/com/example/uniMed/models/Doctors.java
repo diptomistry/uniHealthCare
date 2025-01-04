@@ -2,14 +2,16 @@ package com.example.uniMed.models;
 
 import java.util.List;
 
-import org.checkerframework.checker.units.qual.s;
-
 import com.example.uniMed.models.DTOs.DoctorsDTO;
 import com.example.uniMed.models.rating.Rating;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "user" })
@@ -81,6 +83,33 @@ public class Doctors extends User {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+     // Nested DoctorBuilder class
+     public static class DoctorBuilder {
+        private Doctors doctor;
+
+        public DoctorBuilder() {
+            doctor = new Doctors();
+        }
+
+        public DoctorBuilder withUser(User user) {
+            doctor.setUser(user);
+            return this;
+        }
+
+        public DoctorBuilder withDepartment(Department department) {
+            doctor.setDepartment(department);
+            return this;
+        }
+
+        public DoctorBuilder withDepartmentId(Long departmentId) {
+            doctor.setDepartment(new Department(departmentId));
+            return this;
+        }
+
+        public Doctors build() {
+            return doctor;
+        }
     }
 
 }

@@ -1,38 +1,8 @@
 package com.example.uniMed.services.auth;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.example.uniMed.models.Admin;
-import com.example.uniMed.models.Department;
-import com.example.uniMed.models.Doctors;
-import com.example.uniMed.models.Role;
-import com.example.uniMed.models.Student;
-import com.example.uniMed.models.User;
-import com.example.uniMed.models.DTOs.DoctorsDTO;
-import com.example.uniMed.models.DTOs.UserDTO;
-import com.example.uniMed.models.rating.Rating;
-import com.example.uniMed.repositories.EmailSender;
-import com.example.uniMed.repositories.auth.AdminRepository;
-import com.example.uniMed.repositories.auth.StudentRepository;
-import com.example.uniMed.repositories.auth.UserRepo;
-import com.example.uniMed.repositories.auth.role.RoleRepository;
-import com.example.uniMed.repositories.doctor.RatingRepository;
-import com.example.uniMed.repositories.publics.about_us.DepartmentRepository;
-import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
-import com.example.uniMed.services.file.FileService;
-import com.example.uniMed.utils.JwtHelper;
-
-import jakarta.persistence.EntityNotFoundException;
-
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -40,6 +10,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.uniMed.models.DTOs.DoctorsDTO;
+import com.example.uniMed.models.DTOs.UserDTO;
+import com.example.uniMed.models.Doctors;
+import com.example.uniMed.models.Role;
+import com.example.uniMed.models.Student;
+import com.example.uniMed.models.User;
+import com.example.uniMed.models.rating.Rating;
+import com.example.uniMed.repositories.EmailSender;
+import com.example.uniMed.repositories.auth.StudentRepository;
+import com.example.uniMed.repositories.auth.UserRepo;
+import com.example.uniMed.repositories.doctor.RatingRepository;
+import com.example.uniMed.repositories.publics.about_us.DepartmentRepository;
+import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
+import com.example.uniMed.services.auth.common_services.UserServices;
+import com.example.uniMed.services.auth.factories.UserCreator;
+import com.example.uniMed.services.auth.factories.UserCreatorFactory;
+import com.example.uniMed.services.file.FileService;
+import com.example.uniMed.utils.JwtHelper;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
@@ -59,8 +60,6 @@ public class UserService {
     @Autowired
     private EmailSender emailSender;
 
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Autowired
     private FileService fileService;
@@ -68,155 +67,110 @@ public class UserService {
     @Autowired
     private RatingRepository ratingRepository;
 
-    @Autowired
-    private AdminRepository adminRepository;
 
-    public Map<String, Object> getUser(Long userId) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> getUser(Long userId) {
+        
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
-            response.put("success", true);
-            response.put("message", "User found");
-            response.put("data", user.get().toDTO());
+            return createResponse(true, "User found", user.get().toDTO());
         } else {
-            response.put("success", false);
-            response.put("message", "User not found");
+            return createResponse(false, "User not found", null);
         }
-        return response;
+        
     }
+   
+   
+   
 
     @Transactional
-    public Map<String, Object> createUser(MultipartFile file,
-            String password,
-            String confirmPass,
-            String email,
-            Date dob,
-            String name,
-            String gender,
-            String userType,
-            String departmentId,
-            String session,
-            String registrationNo,
-            String departmentName,
-            String registeredFrom,
-            String phone,
-            String address) {
-        Map<String, Object> response = new HashMap<>();
+    @PostMapping("/create")
+    public ResponseEntity<Map<String, Object>> createUser(
+            @RequestParam MultipartFile file,
+            @RequestParam String password,
+            @RequestParam String confirmPass,
+            @RequestParam String email,
+            @RequestParam Date dob,
+            @RequestParam String name,
+            @RequestParam String gender,
+            @RequestParam String userType,
+            @RequestParam(required = false) Map<String, String> additionalFields) {
 
+       
         try {
+            // Validate password match
             if (!password.equals(confirmPass)) {
-                response.put("success", false);
-                response.put("message", "Password does not match");
-                return response;
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Passwords do not match"
+                ));
+            }
+            UserServices userService = new UserServices();
+
+            // Check email existence
+            if (userService.isEmailExists(email)) {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Email already exists"
+                ));
             }
 
-            Optional<User> existingUser = userRepository.findByEmail(email);
-            if (existingUser.isPresent()) {
-                response.put("success", false);
-                response.put("message", "Email already exists");
-                return response;
+            // Save file
+            String filePath = userService.saveFile(file);
+
+            // Create user
+            String hashedPassword = userService.hashPassword(password);
+            String token = userService.generateToken(email);
+
+            Optional<Role> role = userService.findRoleByName(userType);
+            if (role.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Invalid role"
+                ));
             }
 
-            String filePath;
+            User user = new User.Builder()
+    .password(hashedPassword)
+    .email(email)
+    .dob(dob)
+    .name(name)
+    .sex(gender)
+    .role(role.get())
+    .image(filePath)
+    .token(token)
+    .status("Pending")
+    .registeredFrom(additionalFields.get("registeredFrom"))
+    .phone(additionalFields.get("phone"))
+    .address(additionalFields.get("address"))
+    .build();
 
-            filePath = fileService.saveFile(file);
-
-            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-            String token = new JwtHelper().generateToken(email);
-            String status = "Pending";
-            if ("student".equals(userType) || "teacher".equals(userType) || "staff".equals(userType)) {
-                status = "Approved";
-            }
-            Optional<Role> role = roleRepository.findByRoleName(userType);
-            if (role.isPresent()) {
-                System.out.println("Role found");
+            Object specificUser;
+            if (!"admin".equalsIgnoreCase(userType)) {
+                UserCreatorFactory userCreatorFactory = new UserCreatorFactory();
+                // Use factory to handle specific user creation logic
+                UserCreator creator = userCreatorFactory.getUserCreator(userType);
+                specificUser = creator.createUser(user, additionalFields);
             } else {
-                System.out.println("Role not found");
+                // Handle admin creation (if applicable)
+                specificUser = userRepository.save(user);
             }
 
-            User newUser = new User(hashedPassword, email, dob, name, gender, role.get(), filePath, token, status,
-                    registeredFrom, phone, address);
+            return createResponse(true, "User created successfully", specificUser);
 
-
-            if ("student".equals(userType)) {
-                if (departmentName == null || session == null || registrationNo == null) {
-                    userRepository.delete(newUser);
-                    response.put("success", false);
-                    response.put("message",
-                            "Department, session, and registration number must be provided for students");
-                    return response;
-                }
-
-                Student student = new Student();
-                student.setDepartment(departmentId);
-                student.setSession(session);
-                student.setRegistrationNo(registrationNo);
-                student.setUser(newUser);
-                studentRepository.save(student);
-                response.put("user", student);
-
-            } else if ("doctor".equals(userType)) {
-
-                if (departmentId == null) {
-                    userRepository.delete(newUser);
-                    response.put("success", false);
-                    response.put("message", "Specialization must be provided for doctors");
-                    return response;
-                }
-                try {
-
-                    Doctors doctor = new Doctors();
-                    Optional<Department> department = departmentRepository.findById(Integer.parseInt(departmentId));
-                    if (!department.isPresent()) {
-                        userRepository.delete(newUser);
-                        response.put("success", false);
-                        response.put("message", "Department does not exist");
-                        return response;
-                    }
-                    doctor.setDepartment(department.get());
-                    doctor.setUser(newUser);
-
-                    doctorRepository.save(doctor);
-                    response.put("user", doctor.toDTO());
-                } catch (Exception e) {
-                    userRepository.delete(newUser);
-
-                    System.out.println("Error: " + e.getMessage());
-                    response.put("success", false);
-                    response.put("message", "An error occurred while creating the doctor: " + e.getMessage());
-                    return response;
-                }
-            } else if ("admin".equals(userType)) {
-                Admin admin = new Admin(newUser, Date.from(Instant.now()), null);
-                adminRepository.save(admin);
-                response.put("user", admin);
-
-            } else {
-                userRepository.save(newUser);
-                response.put("user", newUser.toDTO());
-            }
-
-            response.put("success", true);
-            response.put("message", "User created successfully");
-           
-            return response;
         } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", "An error occurred while creating the user: " + e.getMessage());
-            return response;
+            return createResponse(false, "An error occurred while creating the user: " + e.getMessage(), null);
         }
     }
+    
 
     @Transactional
-    public Map<String, Object> updateUser(Long userId, String email, String dobString,
+    public ResponseEntity<Map<String, Object>> updateUser(Long userId, String email, String dobString,
             String name, String department, String session, String registrationNo,
             String phone, String departmentId, String password) {
-        Map<String, Object> response = new HashMap<>();
+        
         try {
             if (password == null || password.isEmpty()) {
-                response.put("success", false);
-                response.put("message", "Password must be provided");
-                return response;
+               return createResponse(false, "Password is required", null);
             }
 
             Optional<User> userOpt = userRepository.findById(userId);
@@ -226,9 +180,7 @@ public class UserService {
 
             User user = userOpt.get();
             if (!BCrypt.checkpw(password, user.getPassword())) {
-                response.put("success", false);
-                response.put("message", "Invalid password");
-                return response;
+                return createResponse(false, "Invalid password", null);
             }
 
             // Update user fields
@@ -281,27 +233,19 @@ public class UserService {
                 doctorRepository.save(doctor);
             }
 
-            response.put("success", true);
-            response.put("message", "User updated successfully");
-            response.put("data", user.toDTO());
-            return response;
+            return createResponse(true, "User updated successfully", user.toDTO());
         } catch (Exception e) {
-            e.printStackTrace();
-            response.put("success", false);
-            response.put("message", "An error occurred while updating the user: " + e.getMessage());
-            return response;
+            return createResponse(false, "An error occurred while updating the user: " + e.getMessage(), null);
         }
     }
 
     @Transactional
-    public Map<String, Object> deleteUser(Long userId) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> deleteUser(Long userId) {
+       
         try {
             User user = userRepository.findById(userId).get();
             if (user == null) {
-                response.put("success", false);
-                response.put("message", "User does not exist");
-                return response;
+                return createResponse(false, "User id invalid", null);
             }
 
             if (user.getRole().getRoleName().equals("student")) {
@@ -313,113 +257,89 @@ public class UserService {
             }
 
             userRepository.delete(user);
-            response.put("success", true);
-            response.put("message", "User and all related records deleted successfully");
+            return createResponse(true, "User deleted successfully", null);
         } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", "An error occurred while deleting the user + " + e.getMessage());
+            return createResponse(false, "Failed to delete user: " + e.getMessage(), null);
         }
-        return response;
+       
     }
 
-    public Map<String, Object> updateUserStatus(Long userId, String status) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> updateUserStatus(Long userId, String status) {
+       
         Optional<User> userOpt = userRepository.findById(userId);
         if (!userOpt.isPresent()) {
-            response.put("success", false);
-            response.put("message", "User does not exist");
-            return response;
+            return createResponse(false, "User does not exist", null);
         }
 
         User user = userOpt.get();
      
         user.setStatus(status);
         userRepository.save(user);
-
-        response.put("success", true);
-        response.put("message", "User status updated successfully");
-        response.put("data", userRepository.findById(userId).get().toDTO());
-        return response;
+        return createResponse(true, "User status updated successfully",userRepository.findById(userId).get().toDTO());
+       
     }
 
-    public Map<String, Object> updateUserRole(Long userId, Integer roleId) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> updateUserRole(Long userId, Integer roleId) {
+       
         Optional<User> userOpt = userRepository.findById(userId);
         if (!userOpt.isPresent()) {
-            response.put("success", false);
-            response.put("message", "User does not exist");
-            return response;
+           return createResponse(false, "User does not exist", null);
         }
 
         User user = userOpt.get();
         user.setRoleId(roleId);
         userRepository.save(user);
 
-        response.put("success", true);
-        response.put("message", "User role updated successfully");
-        return response;
+        return createResponse(true, "User role updated successfully",userRepository.findById(userId).get().toDTO());
     }
 
-    public Map<String, Object> getUserById(Long userId) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> getUserById(Long userId) {
+       
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
-            response.put("success", true);
-            response.put("message", "User found");
-            response.put("data", user.get().toDTO());
+            return createResponse(true, "User found", user.get().toDTO());
         } else {
-            response.put("success", false);
-            response.put("message", "User not found");
+            return createResponse(false, "User not found", null);
         }
-        return response;
+       
     }
 
     public Map<String, Object> getAllUsers() {
-        Map<String, Object> response = new HashMap<>();
+        
         List<User> users = userRepository.findAll();
         List<UserDTO> userDTOs = users.stream().map(User::toDTO).collect(Collectors.toList());
-        response.put("success", true);
-        response.put("message", "Users retrieved successfully");
-        response.put("data", userDTOs);
-        return response;
+      return createResponse(true, "Users retrieved successfully", userDTOs).getBody();
+       
     }
 
-    public Map<String, Object> sendOtp(String email, boolean debug) throws Exception {
+    public ResponseEntity<Map<String, Object>> sendOtp(String email, boolean debug)  {
         try {
-            Map<String, Object> response = new HashMap<>();
+            
             int otp = generateOtp(debug);
             String message = "Use this token to reset your password: " + otp;
             emailSender.sendEmail(email, "Password Reset Request", message);
-            response.put("success", true);
-            response.put("message", "OTP sent successfully");
-            response.put("otp", otp);
-            return response;
+        
+            return createResponse(true, "OTP sent successfully", Map.of("otp", otp));
+          
         } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "Failed to send OTP: " + e.getMessage());
-            return response;
+            return createResponse(false, "Failed to send OTP: " + e.getMessage(), null);
         }
     }
 
-    public Map<String, Object> verifyEmail(String email) throws Exception {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> verifyEmail(String email)  {
+        
         int otp = generateOtp(false);
         String message = "Use this token to reset your password: " + otp;
         emailSender.sendEmail(email, "Password Reset Request", message);
-        response.put("success", true);
-        response.put("message", "OTP sent successfully");
-        return response;
+        return createResponse(true, "OTP sent successfully", Map.of("otp", otp));
     }
 
-    public Map<String, Object> resetPassword(String userID, String currentPass, String confirmPass) throws Exception {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> resetPassword(String userID, String currentPass, String confirmPass)  {
+        
 
         Optional<User> userOpt = userRepository.findById(Long.parseLong(userID));
         if (!userOpt.isPresent()) {
-            response.put("success", false);
-            response.put("message", "User does not exist");
-            return response;
+            return createResponse(false, "User does not exist", null);
         }
 
         User user = userOpt.get();
@@ -427,9 +347,7 @@ public class UserService {
         // Check current password
         String userCurrentPass = user.getPassword();
         if (!BCrypt.checkpw(currentPass, userCurrentPass)) {
-            response.put("success", false);
-            response.put("message", "Current password is incorrect");
-            return response;
+            return createResponse(false, "Invalid current password", null);
         }
 
         // Hash new password and update user
@@ -437,25 +355,19 @@ public class UserService {
         user.setPassword(hashedPassword);
         userRepository.save(user);
 
-        response.put("success", true);
-        response.put("message", "Password reset successfully");
-        return response;
+        return createResponse(true, "Password reset successfully", user.toDTO());
     }
 
-    public Map<String, Object> loginUser(String email, String password) throws Exception {
-        Map<String, Object> response = new HashMap<>();
+    public Map<String, Object> loginUser(String email, String password)  {
+        
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (!userOpt.isPresent()) {
-            response.put("success", false);
-            response.put("message", "User does not exist");
-            return response;
+           return createResponse(false, "Invalid username or password", null).getBody();
         }
 
         User user = userOpt.get();
         if (!BCrypt.checkpw(password, user.getPassword())) {
-            response.put("success", false);
-            response.put("message", "Invalid username or password");
-            return response;
+            return createResponse(false, "Invalid username or password", null).getBody();
         }
         // generate token
         String token = new JwtHelper().generateToken(email);
@@ -463,11 +375,7 @@ public class UserService {
         
 
         // Build the response
-        response.put("success", true);
-        response.put("message", "Login successful");
-        response.put("data", user.toDTO());
-
-        return response;
+        return createResponse(true, "Login successful", user.toDTO()).getBody();
     }
 
     private int generateOtp(boolean debug) {
@@ -514,30 +422,29 @@ public class UserService {
         return doctorsDTOs;
     }
 
-    public Map<String, Object> getDoctors() {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> getDoctors() {
+        
         try {
 
-            response.put("success", true);
-            response.put("message", "Doctors retrieved successfully");
-            response.put("data", convertDoctorsToDTOs(doctorRepository.findAll()));
+            List<Doctors> doctors = doctorRepository.findAll();
+            List<DoctorsDTO> doctorsDTOs = convertDoctorsToDTOs(doctors);
+
+            return createResponse(true, "Doctors retrieved successfully", doctorsDTOs);
         } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", "Failed to get doctors: " + e.getMessage());
-        }
+            return createResponse(false, "Failed to get doctors: " + e.getMessage(), null);
+        
 
-        return response;
+      
     }
+}
 
-    public Map<String, Object> changeImage(Long userId, MultipartFile image) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> changeImage(Long userId, MultipartFile image) {
+        
         try {
 
             User user = userRepository.findById(userId).get();
             if (user == null) {
-                response.put("success", false);
-                response.put("message", "User id invalid: ");
-                return response;
+                return createResponse(false, "User id invalid", null);
             }
             try {
                 fileService.deleteFile(user.getImage());
@@ -550,14 +457,21 @@ public class UserService {
             user.setImage(imageUrl);
 
             userRepository.save(user);
-            response.put("success", true);
-            response.put("message", "Image updated successfully");
-            response.put("imageUrl", imageUrl);
-            response.put("data", user.toDTO());
+            return createResponse(true, "Image updated successfully", Map.of("imageUrl", imageUrl, "data", user.toDTO()));
         } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", "Failed to update image: " + e.getMessage());
+            return createResponse(false, "Failed to update image: " + e.getMessage(), null);
         }
-        return response;
+       
     }
+    private ResponseEntity<Map<String, Object>> createResponse(boolean success, String message, Object data) {
+        HashMap<String, Object> response = new HashMap<>();
+        response.put("success", success);
+        response.put("message", message);
+        if (data != null) response.put("data", data);
+        return new ResponseEntity<>(response, success ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    }
+    public static void validatePasswordMatch(String password, String confirmPassword) {
+        if (!password.equals(confirmPassword)) throw new IllegalArgumentException("Passwords do not match");
+    }
+
 }
