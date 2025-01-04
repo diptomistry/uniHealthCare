@@ -16,11 +16,12 @@ const Services = () => {
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [imageSrc, setImageSrc] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingImg, setIsLoadingImg] = useState(false);
   const handleButtonClick = async () => {
     setIsLoading(true);
     try {
       // Make the API request directly in the parent component
-      const response = await axios.post('http://127.0.0.1:5000/improve-text', {
+      const response = await axios.post('http://127.0.0.1:5001/improve-text', {
         text: editForm.description,
       });
       //setImprovedText(response.data.corrected_text); // Set the improved text
@@ -253,7 +254,12 @@ const handleAIImageSet = async (generatedImage) => {
           onChange={handleImageChange}
         />
          <div className="mb-5">
-         <ImageGenerator setImageSrc={handleAIImageSet} />
+         
+         <ImageGenerator
+                     setImageSrc={handleAIImageSet}
+                     isLoading={isLoadingImg}
+                     setIsLoading={setIsLoadingImg}
+                   />
          {imageSrc && (
   <div className="md:ml-24 md:mr-24  ml-10 mr-10  scale-90  border border-gray-300 rounded-xl overflow-hidden flex justify-center items-center ">
     <img src={imageSrc} alt="Generated" className="object-cover w-full h-full" />

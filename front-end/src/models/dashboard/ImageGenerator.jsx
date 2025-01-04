@@ -81,9 +81,10 @@ const ImageGenerator = ({ setImageSrc,setIsLoading }) => {
   const [showInput, setShowInput] = useState(false);
 
   const fetchImage = async () => {
+    console.log("fetching image");
     setIsLoading(true);
     try {
-      const response = await fetch("http://127.0.0.1:5000/generate-image", {
+      const response = await fetch("http://127.0.0.1:5001/generate-image", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

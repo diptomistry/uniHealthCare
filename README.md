@@ -67,6 +67,16 @@ The AI chatbot, known as zBOT, is a Python-based component integrated into the m
    cd zBOT
    python3 -m venv venv
    . venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+pip install nltk
+$ python
+>>> import nltk
+>>> nltk.download('punkt')
+quit()
+pip install  flask flask-cors 
+pip install numpy 
+pip install pyspellchecker
+pip3 install --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
+
    ```
 
 2. Install dependencies:
@@ -106,6 +116,8 @@ We have integrated the Gemini AI API into our application to provide disease dia
    cd GeminiAiApi
    python3 -m venv venv
    . venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   pip install flask requests pillow flask-cors google-generativeai python-dotenv
+python app.py 
    ```
 
 2. Install dependencies:
