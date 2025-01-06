@@ -12,10 +12,10 @@ This project includes a **Higher-Order Component (HOC)** that wraps any componen
    - The `withLoading` function accepts a component and adds loading logic to it.
    - If `isLoading` is true, it displays the `FullScreenLoader` component on top of the wrapped component.
 
-Here’s a shorter version of the `README.md`:
+
 
 ```markdown
-# Content Management Factory Pattern
+## Content Management Factory Pattern
 
 ## Overview
 Implements the Factory Pattern for creating and managing content types (Blog, Service, Quote) with a unified interface and encapsulated logic.
