@@ -13,9 +13,9 @@ This project includes a **Higher-Order Component (HOC)** that wraps any componen
    - If `isLoading` is true, it displays the `FullScreenLoader` component on top of the wrapped component.
 
 
-
-```markdown
 ## Content Management Factory Pattern
+```markdown
+
 
 ## Overview
 Implements the Factory Pattern for creating and managing content types (Blog, Service, Quote) with a unified interface and encapsulated logic.
