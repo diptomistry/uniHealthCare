@@ -6,13 +6,14 @@ import CustomModal from "../../../models/CustomModal";
 import DeleteConfirmationModal from "../../../models/DeleteConfirmationModal";
 import ImageGenerator from "../../../models/dashboard/ImageGenerator";
 import axios from "axios";
-
+import ContentFactory from "../../../models/dashboard/ContentFactory";
 const API_BASE_URL = "http://localhost:8000/api";
 
 const ContentManager = ({ 
   contentType, // 'blog' | 'service' | 'quote'
   title
 }) => {
+
   const [items, setItems] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -94,19 +95,32 @@ const ContentManager = ({
     setEditForm(items[index]);
     setImageSrc("");
   };
-
+/*
   const handleSave = async () => {
     if (!editForm.title || !editForm.description) {
       alert("Title and Description are required.");
       return;
     }
+      // Create content using factory
+//   const content = contentFactory.createContent(
+//     contentType,
+//     editForm.title,
+//     editForm.description,
+//     editForm.img
+//   );
+//   const token = localStorage.getItem("token");
+//   const formData = new FormData();
+//   formData.append("title", content.title);
+//   formData.append("description", content.description);
+//   formData.append("isBlog", String(content.isBlog));
+//   formData.append("isQuote", String(content.isQuote));
 
     const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("title", editForm.title);
     formData.append("description", editForm.description);
 
-    const { isBlog, isQoute } = getContentTypeFlags();
+     const { isBlog, isQoute } = getContentTypeFlags();
     formData.append("isBlog", String(isBlog));
     formData.append("isQoute", String(isQoute));
 
@@ -122,6 +136,7 @@ const ContentManager = ({
 
     try {
       let response;
+      console.log(formData)
       if (isAdding) {
         response = await axios.post(`${API_BASE_URL}/blogs`, formData, {
           headers: {
@@ -130,6 +145,7 @@ const ContentManager = ({
           },
         });
         setItems([...items, response.data]);
+    
       } else {
         response = await axios.put(
           `${API_BASE_URL}/blogs/${editForm.id}`,
@@ -152,7 +168,86 @@ const ContentManager = ({
       alert(`Failed to save ${contentType}. Please try again.`);
     }
   };
-
+*/
+const handleSave = async () => {
+    if (!editForm.title || !editForm.description) {
+      alert("Title and Description are required.");
+      return;
+    }
+  
+    const token = localStorage.getItem("token");
+    //console.log('Token present:', !!token);
+    
+    try {
+      console.log('EditForm state:', {
+        title: editForm.title,
+        descriptionLength: editForm.description.length,
+        imagePresent: !!editForm.img,
+        imageType: typeof editForm.img
+      });
+  
+      const contentFactory = new ContentFactory();
+      const content = contentFactory.createContent(
+        contentType,
+        editForm.title,
+        editForm.description,
+        editForm.img
+      );
+      
+      console.log('Content created:', {
+        type: contentType,
+        isBlog: content.isBlog,
+        isQuote: content.isQuote
+      });
+  
+      const formData = await content.createFormData();
+      
+      console.log('Request details:', {
+        url: `${API_BASE_URL}/blogs`,
+        method: isAdding ? 'POST' : 'PUT',
+        contentType: isAdding ? null : editForm.id
+      });
+  
+      let response;
+      if (isAdding) {
+        response = await axios.post(`${API_BASE_URL}/blogs`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log('POST response:', response.data);
+        setItems([...items, response.data]);
+      } else {
+        response = await axios.put(
+          `${API_BASE_URL}/blogs/${editForm.id}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log('PUT response:', response.data);
+        setItems(
+          items.map((item) => (item.id === editForm.id ? response.data : item))
+        );
+      }
+      setEditingIndex(null);
+      setIsAdding(false);
+    } catch (error) {
+      console.error(`Error saving ${contentType}:`, error);
+      if (error.response) {
+        console.error('Error response:', {
+          status: error.response.status,
+          data: error.response.data,
+          headers: error.response.headers
+        });
+      }
+      alert(`Failed to save ${contentType}. Please try again.`);
+    }
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditForm({ ...editForm, [name]: value });
