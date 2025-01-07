@@ -23,6 +23,6 @@ public class DutyRosterByDay extends DutyRosterTemplate {
 
     @Override
     protected Object transformData(List<DutyRoster> data) {
-        return data; // Customize this as needed (e.g., convert to DTOs)
+        return data; 
     }
 }

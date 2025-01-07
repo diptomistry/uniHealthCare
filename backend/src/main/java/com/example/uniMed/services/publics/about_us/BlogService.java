@@ -2,18 +2,16 @@ package com.example.uniMed.services.publics.about_us;
 
 
 
-import com.example.uniMed.models.Blog;
-import com.example.uniMed.repositories.publics.about_us.BlogRepository;
-import com.example.uniMed.services.file.FileService;
-
-import jakarta.mail.Multipart;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.uniMed.models.Blog;
+import com.example.uniMed.repositories.publics.about_us.BlogRepository;
+import com.example.uniMed.services.file.FileService;
 
 @Service
 public class BlogService {
@@ -59,11 +57,18 @@ public class BlogService {
           {  blog.setDescription(description);}
 
             if (image != null && !image.isEmpty()) {
+               
+                
                 try {
+                    
                     if (blog.getImage() != null) {
                         fileService.deleteFile(blog.getImage());
                     }
-                    String fileName = fileService.saveFile(image);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                String fileName = fileService.saveFile(image);
                     blog.setImage(fileName);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -1,10 +1,20 @@
 package com.example.uniMed.services.role_based.doctors;
 
-import com.example.uniMed.models.DTOs.AppointmentsDTO1;
-import com.example.uniMed.models.DTOs.MedicinesDTO;
-import com.example.uniMed.models.DTOs.PrescriptionDTO;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.example.uniMed.controllers.role_based.doctors.AppointmentsDTO;
 import com.example.uniMed.models.Appointments;
+import com.example.uniMed.models.DTOs.AppointmentsDTO1;
+import com.example.uniMed.models.DTOs.PrescriptionDTO;
 import com.example.uniMed.models.Doctors;
 import com.example.uniMed.models.Medicines;
 import com.example.uniMed.models.User;
@@ -16,26 +26,13 @@ import com.example.uniMed.repositories.doctor.MedicineRepository;
 import com.example.uniMed.repositories.doctor.PrescribedMedicineRepository;
 import com.example.uniMed.repositories.doctor.PrescriptionRepository;
 import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
+import com.example.uniMed.services.role_based.doctors.patterns.AppointmentFactory;
+import com.example.uniMed.services.role_based.doctors.patterns.MedicinesBuilder;
+import com.example.uniMed.services.role_based.doctors.patterns.PrescribedMedicineBuilder;
+import com.example.uniMed.services.role_based.doctors.patterns.PrescriptionBuilder;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.transaction.Transactional;
-
-import org.checkerframework.checker.units.qual.t;
-import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder.Op;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import javax.print.Doc;
 
 @Service
 public class AppointmentsService {
@@ -62,120 +59,101 @@ public class AppointmentsService {
     private MedicineRepository medicineRepository;
 
     public Appointments createAppointment(AppointmentsDTO appointment, Integer userId) {
-        Appointments appointment1 = new Appointments();
-        appointment1.setAppointmentDateTime(appointment.getAppointmentDateTime());
-        appointment1.setConcern(appointment.getConcern());
-        appointment1.setStatus(appointment.getStatus());
-
+      
         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userId.toString()));
 
-        if (optionalUser.isPresent()) {
-            appointment1.setUser(optionalUser.get());
-
-        }
+       
         if (!optionalUser.isPresent()) {
             throw new RuntimeException("User not found");
         }
-        return appointmentsRepository.save(appointment1);
+        Appointments appointment2 = AppointmentFactory.createAppointment(appointment, optionalUser.get());
+         
+        return appointmentsRepository.save(appointment2);
     }
 
-    @Transactional
-    public Appointments prescribeMedicine(Integer appointmentId, List<PrescribedMedicineDTO> prescribedMedicinesDTO,
-            @Nullable String description, @Nullable String date, @Nullable String status, Integer doctorID,
-            Integer userID, String diagnosis) {
-        Prescription prescription = new Prescription();
-        if (doctorID == null) {
-            throw new RuntimeException("Doctor ID is required");
-        }
+@Transactional
+public Appointments prescribeMedicine(Integer appointmentId, List<PrescribedMedicineDTO> prescribedMedicinesDTO,
+        @Nullable String description, @Nullable String date, @Nullable String status, Integer doctorID,
+        Integer userID, String diagnosis) {
 
-        prescription.setDescription(description);
-        if (date != null) {
-            prescription.setDate(date);
-        }
-        if (date == null) {
-            prescription.setDate(new Date().toString());
-        }
-        if (diagnosis != null) {
-            prescription.setDiagnosis(diagnosis);
-        }
+    // Create Prescription using the Builder
+    Prescription prescription = new PrescriptionBuilder()
+        .withDescription(description)
+        .withDiagnosis(diagnosis)
+        .withDate(date)
+        .build();
 
-        Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
-        Optional<Doctors> optionalDoctor = doctorRepository.findById(Long.parseLong(doctorID.toString()));
-        Optional<Appointments> optionalAppointment = appointmentsRepository.findById(appointmentId);
-        if (!optionalAppointment.isPresent()) {
-            throw new RuntimeException("Appointment not found");
-        }
+    Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
+    Optional<Doctors> optionalDoctor = doctorRepository.findById(Long.parseLong(doctorID.toString()));
+    Optional<Appointments> optionalAppointment = appointmentsRepository.findById(appointmentId);
 
-        if (!optionalUser.isPresent()) {
-            System.out.println("User  not found");
-            throw new RuntimeException("User  not found");
-        }
-        if (!optionalDoctor.isPresent()) {
-            System.out.println("Doctor not found");
-            throw new RuntimeException("Doctor not found");
-        }
-        prescription.setDoctor(optionalDoctor.get());
-        prescription.setPatient(optionalUser.get());
-        // Save the prescription first to ensure it is managed by the persistence
-        // context
-        prescription = prescriptionRepository.save(prescription);
-
-        List<PrescribedMedicine> prescribedMedicines = new ArrayList<>();
-        for (PrescribedMedicineDTO prescribedMedicineDTO : prescribedMedicinesDTO) {
-            PrescribedMedicine prescribedMedicine = new PrescribedMedicine();
-            if (prescribedMedicineDTO.getMedicineID() == null) {
-
-                Medicines medicine = new Medicines();
-                medicine.setName(prescribedMedicineDTO.getName());
-
-                medicine.setIs_Outside(true);
-
-                medicine.setEntryDate(Date.from(new Date().toInstant()));
-
-                Optional<User> optionalUser1 = userRepo.findById(Long.parseLong(doctorID.toString()));
-                if (optionalUser1.isPresent()) {
-                    medicine.setAddedBy(optionalUser1.get());
-                }
-                medicine = medicineRepository.save(medicine);
-                prescribedMedicine.setMedicine(medicine);
-            } else {
-                Optional<Medicines> medOptional = medicineRepository.findById(prescribedMedicineDTO.getMedicineID());
-                if (medOptional.isPresent()) {
-
-                    prescribedMedicine.setMedicine(medOptional.get());
-                }
-
-            }
-            prescribedMedicine.setPrescription(prescription);
-            prescribedMedicine.setQuantity(prescribedMedicineDTO.getQuantity());
-            prescribedMedicine.setDuration(prescribedMedicineDTO.getDuration());
-            prescribedMedicine.setAfterBefore(prescribedMedicineDTO.getAfterBefore());
-            // prescribedMedicine.set(prescription); // Associate with the saved
-            // prescription
-            prescribedMedicines.add(prescribedMedicine);
-        }
-
-        // Save each prescribed medicine to ensure it is managed by the persistence
-        // context
-        for (PrescribedMedicine prescribedMedicine : prescribedMedicines) {
-            prescribedMedicineRepository.save(prescribedMedicine);
-        }
-
-        prescription.setPrescribedMedicines(prescribedMedicines);
-
-        prescriptionRepository.save(prescription);
-
-        if (optionalAppointment.isPresent()) {
-            Appointments appointment = optionalAppointment.get();
-            appointment.setPrescription(prescription);
-            appointment.setStatus(status);
-            appointment.setAppointmentDateTime(Date.from(new Date().toInstant()));
-            return appointmentsRepository.save(appointment);
-        }
-        return null;
+    if (!optionalAppointment.isPresent()) {
+        throw new RuntimeException("Appointment not found");
     }
 
-    public Appointments updateAppointmentStatus(Integer appointmentId, String status) {
+    if (!optionalUser.isPresent()) {
+        throw new RuntimeException("User not found");
+    }
+
+    if (!optionalDoctor.isPresent()) {
+        throw new RuntimeException("Doctor not found");
+    }
+
+    prescription.setDoctor(optionalDoctor.get());
+    prescription.setPatient(optionalUser.get());
+
+    // Save the prescription first to ensure it is managed by the persistence context
+    prescription = prescriptionRepository.save(prescription);
+
+    List<PrescribedMedicine> prescribedMedicines = new ArrayList<>();
+    for (PrescribedMedicineDTO prescribedMedicineDTO : prescribedMedicinesDTO) {
+        Medicines medicine;
+
+        if (prescribedMedicineDTO.getMedicineID() == null) {
+            // Use MedicinesBuilder to construct the medicine object
+            Optional<User> optionalUser1 = userRepo.findById(Long.parseLong(doctorID.toString()));
+            User addedBy = optionalUser1.orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+            medicine = new MedicinesBuilder()
+                .withName(prescribedMedicineDTO.getName())
+                .isOutside(true)
+                .withEntryDate(Date.from(new Date().toInstant()))
+                .addedBy(addedBy)
+                .build();
+
+            medicine = medicineRepository.save(medicine);
+        } else {
+            medicine = medicineRepository.findById(prescribedMedicineDTO.getMedicineID())
+                    .orElseThrow(() -> new RuntimeException("Medicine not found"));
+        }
+
+        // Use PrescribedMedicineBuilder to construct the object
+        PrescribedMedicine prescribedMedicine = new PrescribedMedicineBuilder()
+            .withMedicine(medicine)
+            .withPrescription(prescription)
+            .withQuantity(Integer.parseInt(prescribedMedicineDTO.getQuantity()))
+            .withDuration(prescribedMedicineDTO.getDuration())
+            .withAfterBefore(prescribedMedicineDTO.getAfterBefore())
+            .build();
+
+        prescribedMedicines.add(prescribedMedicine);
+    }
+
+    // Save each prescribed medicine to ensure it is managed by the persistence context
+    for (PrescribedMedicine prescribedMedicine : prescribedMedicines) {
+        prescribedMedicineRepository.save(prescribedMedicine);
+    }
+
+    prescription.setPrescribedMedicines(prescribedMedicines);
+    prescriptionRepository.save(prescription);
+
+    Appointments appointment = optionalAppointment.get();
+    appointment.setPrescription(prescription);
+    appointment.setStatus(status);
+    appointment.setAppointmentDateTime(Date.from(new Date().toInstant()));
+    return appointmentsRepository.save(appointment);
+}
+public Appointments updateAppointmentStatus(Integer appointmentId, String status) {
         Optional<Appointments> optionalAppointment = appointmentsRepository.findById(appointmentId);
         if (optionalAppointment.isPresent()) {
             Appointments appointment = optionalAppointment.get();

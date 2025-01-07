@@ -1,0 +1,1956 @@
+From 671064ac0f642cbfa6939eaa902dbb8c82c8d665 Mon Sep 17 00:00:00 2001
+From: "Md. Rasel Hossen" <hrasel2002@gmail.com>
+Date: Sun, 5 Jan 2025 01:53:08 +0600
+Subject: [PATCH] Implement command pattern for About Us management and enhance
+ user creation logic
+
+---
+ .../controllers/auth/UserController.java      |  78 ++--
+ .../templates/DutyRosterByDay.java            |   2 +-
+ .../com/example/uniMed/models/Doctors.java    |  35 +-
+ .../java/com/example/uniMed/models/User.java  | 241 +++++++---
+ .../uniMed/services/auth/UserService.java     | 424 +++++++-----------
+ .../auth/common_services/UserServices.java    |  50 +++
+ .../auth/factories/DoctorCreator.java         |  43 ++
+ .../auth/factories/StudentCreator.java        |  36 ++
+ .../services/auth/factories/UserCreator.java  |   9 +
+ .../auth/factories/UserCreatorFactory.java    |  25 ++
+ .../about_us/command_pattern/Command.java     |   8 +
+ .../command_pattern/CreateAboutUsCommand.java |  19 +
+ .../command_pattern/DeleteAboutUsCommand.java |  18 +
+ .../doctors/AppointmentsService.java          | 198 ++++----
+ .../doctors/patterns/AppointmentFactory.java  |  16 +
+ .../doctors/patterns/MedicinesBuilder.java    |  42 ++
+ .../patterns/PrescribedMedicineBuilder.java   |  49 ++
+ .../doctors/patterns/PrescriptionBuilder.java |  50 +++
+ .../example/uniMed/utils/EmailSenderImpl.java |   1 -
+ .../src/main/resources/application.properties |   2 +-
+ 20 files changed, 857 insertions(+), 489 deletions(-)
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/auth/common_services/UserServices.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/auth/factories/DoctorCreator.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/auth/factories/StudentCreator.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/auth/factories/UserCreator.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/auth/factories/UserCreatorFactory.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/Command.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/CreateAboutUsCommand.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/DeleteAboutUsCommand.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/AppointmentFactory.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/MedicinesBuilder.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/PrescribedMedicineBuilder.java
+ create mode 100644 backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/PrescriptionBuilder.java
+
+diff --git a/backend/src/main/java/com/example/uniMed/controllers/auth/UserController.java b/backend/src/main/java/com/example/uniMed/controllers/auth/UserController.java
+index 7fe77542..37606791 100644
+--- a/backend/src/main/java/com/example/uniMed/controllers/auth/UserController.java
++++ b/backend/src/main/java/com/example/uniMed/controllers/auth/UserController.java
+@@ -21,13 +21,13 @@ public class UserController {
+     private UserService userService;
+ 
+     @GetMapping("/get-user")
+-    public Map<String, Object> getUser(@RequestBody Map<String, Long> body) {
++    public ResponseEntity<Map<String, Object>> getUser(@RequestBody Map<String, Long> body) {
+         Long user_id = body.get("user_id");
+         return userService.getUser(user_id);
+     }
+ 
+     @PostMapping("/create-user")
+-    public Map<String, Object> createUser(@RequestBody UserDTO userDTO) {
++    public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserDTO userDTO) {
+         MultipartFile file = null;
+         String email = userDTO.getEmail();
+         String password = userDTO.getPassword();
+@@ -53,12 +53,20 @@ public class UserController {
+         System.out.println("Creating user");
+         System.out.println(userDTO);
+ 
+-        return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType,
+-                departmentId, session, registrationNo, departmentName, registeredFrom, phone, address);
++        Map<String, String> additionalInfo = new HashMap<>();
++        additionalInfo.put("departmentId", departmentId);
++        additionalInfo.put("session", session);
++        additionalInfo.put("registrationNo", registrationNo);
++        additionalInfo.put("departmentName", departmentName);
++        additionalInfo.put("registeredFrom", registeredFrom);
++        additionalInfo.put("phone", phone);
++        additionalInfo.put("address", address);
++
++        return userService.createUser(file, password, confirmPass, email, dateOfBirth, name, gender, userType, additionalInfo);
+     }
+ 
+     @PostMapping("/delete-user")
+-    public Map<String, Object> deleteUser(@RequestBody Map<String, Long> body) {
++    public ResponseEntity<Map<String, Object>> deleteUser(@RequestBody Map<String, Long> body) {
+         Long user_id = body.get("user_id");
+         return userService.deleteUser(user_id);
+     }
+@@ -78,8 +86,8 @@ public class UserController {
+         String departmentId = body.get("departmentId");
+         String password = body.get("password");
+ 
+-        return ResponseEntity.ok(userService.updateUser(userId, email, dob, name, department, session, registrationNo,
+-                phone, departmentId, password));
++        return userService.updateUser(userId, email, dob, name, department, session, registrationNo,
++                phone, departmentId, password);
+ 
+     }
+ 
+@@ -87,77 +95,57 @@ public class UserController {
+     public ResponseEntity<Map<String, Object>> changeImage(@PathVariable("user_id") Long userId,
+             @RequestPart("file") MultipartFile image) {
+ 
+-        return ResponseEntity.ok(
++        return (
+                 userService.changeImage(userId, image));
+ 
+     }
+ 
+     @PostMapping("/update-status")
+-    public Map<String, Object> updateUserStatus(@RequestBody Map<String, Object> body) {
++    public ResponseEntity<Map<String, Object>> updateUserStatus(@RequestBody Map<String, Object> body) {
+         Long user_id = Long.parseLong(body.get("user_id").toString());
+         String status = body.get("status").toString();
+         return userService.updateUserStatus(user_id, status);
+     }
+ 
+     @PostMapping("/update-role")
+-    public Map<String, Object> updateRole(@RequestParam Long user_id, @RequestParam Integer role_id) {
++    public ResponseEntity<Map<String, Object>> updateRole(@RequestParam Long user_id, @RequestParam Integer role_id) {
+         return userService.updateUserRole(user_id, role_id);
+     }
+ 
+     @PostMapping("/send-otp")
+-    public Map<String, Object> sendOtp(@RequestBody Map<String, String> body) {
++    public ResponseEntity<Map<String, Object>> sendOtp(@RequestBody Map<String, String> body) {
+         String email = body.get("email");
+         boolean debug = Boolean.parseBoolean(body.get("debug"));
+-        try {
+-            return userService.sendOtp(email, debug);
+-        } catch (Exception e) {
+-            Map<String, Object> response = new HashMap<>();
+-            response.put("success", false);
+-            response.put("message", "Failed to send OTP: " + e.getMessage());
+-            return response;
+-        }
++        
++    return userService.sendOtp(email, debug);
++      
+     }
+ 
+     @PostMapping("/verify-email")
+-    public Map<String, Object> verifyEmail(@RequestParam String email) {
+-        try {
++    public ResponseEntity<Map<String, Object>> verifyEmail(@RequestParam String email) {
++       
+             return userService.verifyEmail(email);
+-        } catch (Exception e) {
+-            Map<String, Object> response = new HashMap<>();
+-            response.put("success", false);
+-            response.put("message", "Failed to verify email: " + e.getMessage());
+-            return response;
+-        }
++       
+     }
+ 
+     @PostMapping("/reset-password")
+-    public Map<String, Object> resetPassword(@RequestBody Map<String, String> body) {
++    public ResponseEntity<Map<String, Object>> resetPassword(@RequestBody Map<String, String> body) {
+         String userId = body.get("user_id");
+         String current_pass = body.get("current_pass");
+         String confirm_pass = body.get("confirm_pass");
+ 
+-        try {
++       
+             return userService.resetPassword(userId, current_pass, confirm_pass);
+-        } catch (Exception e) {
+-            Map<String, Object> response = new HashMap<>();
+-            response.put("success", false);
+-            response.put("message", "Failed to reset password: " + e.getMessage());
+-            return response;
+-        }
++       
+     }
+ 
+     @PostMapping("/login")
+     public Map<String, Object> login(@RequestBody UserDTO userDTO) {
+         String email = userDTO.getEmail();
+         String password = userDTO.getPassword();
+-        try {
++        
+             return userService.loginUser(email, password);
+-        } catch (Exception e) {
+-            Map<String, Object> response = new HashMap<>();
+-            response.put("success", false);
+-            response.put("message", "Failed to login: " + e.getMessage());
+-            return response;
+-        }
++      
+     }
+  
+     @GetMapping("/get-all-users")
+@@ -166,8 +154,8 @@ public class UserController {
+     }
+ 
+     @GetMapping("/get-doctors")
+-    public Map<String, Object> getDoctors() {
+-        Map<String, Object> response = userService.getDoctors();
+-        return response;
++    public ResponseEntity<Map<String, Object>> getDoctors() {
++         
++        return userService.getDoctors();
+     }
+ }
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/controllers/publics/duty_roster/templates/DutyRosterByDay.java b/backend/src/main/java/com/example/uniMed/controllers/publics/duty_roster/templates/DutyRosterByDay.java
+index 8e88f0b8..758279a4 100644
+--- a/backend/src/main/java/com/example/uniMed/controllers/publics/duty_roster/templates/DutyRosterByDay.java
++++ b/backend/src/main/java/com/example/uniMed/controllers/publics/duty_roster/templates/DutyRosterByDay.java
+@@ -23,6 +23,6 @@ public class DutyRosterByDay extends DutyRosterTemplate {
+ 
+     @Override
+     protected Object transformData(List<DutyRoster> data) {
+-        return data; // Customize this as needed (e.g., convert to DTOs)
++        return data; 
+     }
+ }
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/models/Doctors.java b/backend/src/main/java/com/example/uniMed/models/Doctors.java
+index f4afeb25..40ea4d47 100644
+--- a/backend/src/main/java/com/example/uniMed/models/Doctors.java
++++ b/backend/src/main/java/com/example/uniMed/models/Doctors.java
+@@ -2,14 +2,16 @@ package com.example.uniMed.models;
+ 
+ import java.util.List;
+ 
+-import org.checkerframework.checker.units.qual.s;
+-
+ import com.example.uniMed.models.DTOs.DoctorsDTO;
+ import com.example.uniMed.models.rating.Rating;
+ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+ import com.fasterxml.jackson.annotation.JsonManagedReference;
+ 
+-import jakarta.persistence.*;
++import jakarta.persistence.Entity;
++import jakarta.persistence.JoinColumn;
++import jakarta.persistence.ManyToOne;
++import jakarta.persistence.OneToMany;
++import jakarta.persistence.Table;
+ 
+ @Entity
+ @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "user" })
+@@ -82,5 +84,32 @@ public class Doctors extends User {
+     public void setDepartment(Department department) {
+         this.department = department;
+     }
++     // Nested DoctorBuilder class
++     public static class DoctorBuilder {
++        private Doctors doctor;
++
++        public DoctorBuilder() {
++            doctor = new Doctors();
++        }
++
++        public DoctorBuilder withUser(User user) {
++            doctor.setUser(user);
++            return this;
++        }
++
++        public DoctorBuilder withDepartment(Department department) {
++            doctor.setDepartment(department);
++            return this;
++        }
++
++        public DoctorBuilder withDepartmentId(Long departmentId) {
++            doctor.setDepartment(new Department(departmentId));
++            return this;
++        }
++
++        public Doctors build() {
++            return doctor;
++        }
++    }
+ 
+ }
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/models/User.java b/backend/src/main/java/com/example/uniMed/models/User.java
+index ccd5391c..638a12cb 100644
+--- a/backend/src/main/java/com/example/uniMed/models/User.java
++++ b/backend/src/main/java/com/example/uniMed/models/User.java
+@@ -1,22 +1,32 @@
+ package com.example.uniMed.models;
+ 
+ import java.sql.Date;
+-import java.time.LocalDate;
+-
+ import java.util.List;
+ 
+ import com.example.uniMed.models.DTOs.UserDTO;
+ import com.example.uniMed.models.chat.ChatRoom;
+ import com.example.uniMed.models.rating.Rating;
+-import com.fasterxml.jackson.annotation.JsonBackReference;
+ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+ import com.fasterxml.jackson.annotation.JsonIgnore;
+-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+ import com.fasterxml.jackson.annotation.JsonManagedReference;
+ import com.fasterxml.jackson.annotation.JsonProperty;
+ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+ 
+-import jakarta.persistence.*;
++import jakarta.persistence.Column;
++import jakarta.persistence.Entity;
++import jakarta.persistence.FetchType;
++import jakarta.persistence.GeneratedValue;
++import jakarta.persistence.GenerationType;
++import jakarta.persistence.Id;
++import jakarta.persistence.Inheritance;
++import jakarta.persistence.InheritanceType;
++import jakarta.persistence.JoinColumn;
++import jakarta.persistence.ManyToMany;
++import jakarta.persistence.ManyToOne;
++import jakarta.persistence.OneToMany;
++import jakarta.persistence.Table;
++import jakarta.persistence.Temporal;
++import jakarta.persistence.TemporalType;
+ 
+ @Entity
+ @Table(name = "users")
+@@ -25,6 +35,7 @@ import jakarta.persistence.*;
+ @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userID")
+ 
+ public class User {
++
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     private Integer userID;
+@@ -39,8 +50,10 @@ public class User {
+ 
+     @Temporal(TemporalType.DATE)
+     private Date dob;
++
+     @JsonProperty("name")
+     private String name;
++
+     private String sex;
+     private String phone;
+     private String image;
+@@ -51,14 +64,6 @@ public class User {
+     private String registeredFrom;
+     private String address;
+ 
+-    public String getAddress() {
+-        return address;
+-    }
+-
+-    public void setAddress(String address) {
+-        this.address = address;
+-    }
+-
+     @ManyToOne(fetch = FetchType.EAGER)
+     @JoinColumn(name = "roleid")
+     private Role role;
+@@ -71,39 +76,28 @@ public class User {
+     @JsonManagedReference
+     private List<Rating> ratings;
+ 
+-    public List<ChatRoom> getChatRooms() {
+-        return chatRooms;
+-    }
+-
+-    public void setChatRooms(List<ChatRoom> chatRooms) {
+-        this.chatRooms = chatRooms;
+-    }
+-
+-    public User() {
+-    }
+-
+-    public User getUser() {
+-        return this;
+-    }
+-
+-    public User(Integer userID, String password, String email, Date dob, String name, String sex, String phone,
+-            String image, String status, String token, String otp, String registeredFrom, Role role, String address) {
+-        this.userID = userID;
+-        this.password = password;
+-        this.email = email;
+-        this.dob = dob;
+-        this.name = name;
+-        this.sex = sex;
+-        this.address = address;
+-        this.phone = phone;
+-        this.image = image;
+-        this.status = status;
+-        this.token = token;
+-        this.otp = otp;
+-        this.registeredFrom = registeredFrom;
+-        this.role = role;
+-    }
+-
++    // Private constructor for Builder
++    private User(Builder builder) {
++        this.userID = builder.userID;
++        this.password = builder.password;
++        this.email = builder.email;
++        this.dob = builder.dob;
++        this.name = builder.name;
++        this.sex = builder.sex;
++        this.phone = builder.phone;
++        this.image = builder.image;
++        this.status = builder.status;
++        this.token = builder.token;
++        this.otp = builder.otp;
++        this.registeredFrom = builder.registeredFrom;
++        this.address = builder.address;
++        this.role = builder.role;
++    }
++
++    // Empty constructor for JPA
++    public User() {}
++
++    // toDTO method
+     public UserDTO toDTO() {
+         UserDTO dto = new UserDTO();
+         dto.setUserID(this.userID);
+@@ -116,30 +110,22 @@ public class User {
+         dto.setDob(this.dob);
+         dto.setRole(this.role != null ? this.role : null);
+         dto.setToken(this.token);
+-
+         dto.setAddress(this.address);
+-
+         return dto;
+     }
+ 
+-    public User(String hashedPassword, String email, Date dob, String name, String sex, Role role,
+-            String filePath, String token, String status, String registeredFrom, String phone, String address) {
+-        this.password = hashedPassword;
+-        this.email = email;
+-        this.dob = dob;
+-        this.name = name;
+-        this.sex = sex;
+-        this.role = role;
+-        this.image = filePath;
+-        this.token = token;
+-        this.status = status;
+-        this.registeredFrom = registeredFrom;
+-        this.address = address;
+-        this.phone = phone;
++    // Getters and setters remain unchanged
++
++    public Integer getUserID() {
++        return userID;
++    }
++
++    public void setUserID(Integer userID) {
++        this.userID = userID;
+     }
+ 
+     public String getPassword() {
+-        return this.password;
++        return password;
+     }
+ 
+     public void setPassword(String password) {
+@@ -177,13 +163,8 @@ public class User {
+     public void setSex(String sex) {
+         this.sex = sex;
+     }
+-
+-    public Integer getUserID() {
+-        return userID;
+-    }
+-
+-    public void setUserID(Integer userID) {
+-        this.userID = userID;
++    public void setRoleId(Integer roleId) {
++        this.role = new Role(roleId); // Assuming Role has a constructor that accepts an ID
+     }
+ 
+     public String getPhone() {
+@@ -234,6 +215,14 @@ public class User {
+         this.registeredFrom = registeredFrom;
+     }
+ 
++    public String getAddress() {
++        return address;
++    }
++
++    public void setAddress(String address) {
++        this.address = address;
++    }
++
+     public Role getRole() {
+         return role;
+     }
+@@ -242,8 +231,114 @@ public class User {
+         this.role = role;
+     }
+ 
+-    public void setRoleId(Integer roleId) {
+-        this.role = new Role(roleId);
++    public List<ChatRoom> getChatRooms() {
++        return chatRooms;
++    }
++
++    public void setChatRooms(List<ChatRoom> chatRooms) {
++        this.chatRooms = chatRooms;
+     }
+ 
+-}
++    public List<Rating> getRatings() {
++        return ratings;
++    }
++
++    public void setRatings(List<Rating> ratings) {
++        this.ratings = ratings;
++    }
++
++    // Builder Class
++    public static class Builder {
++        private Integer userID;
++        private String password;
++        private String email;
++        private Date dob;
++        private String name;
++        private String sex;
++        private String phone;
++        private String image;
++        private String status = "Pending";
++        private String token;
++        private String otp;
++        private String registeredFrom;
++        private String address;
++        private Role role;
++
++        // Builder methods for setting fields
++        public Builder userID(Integer userID) {
++            this.userID = userID;
++            return this;
++        }
++
++        public Builder password(String password) {
++            this.password = password;
++            return this;
++        }
++
++        public Builder email(String email) {
++            this.email = email;
++            return this;
++        }
++
++        public Builder dob(Date dob) {
++            this.dob = dob;
++            return this;
++        }
++
++        public Builder name(String name) {
++            this.name = name;
++            return this;
++        }
++
++        public Builder sex(String sex) {
++            this.sex = sex;
++            return this;
++        }
++
++        public Builder phone(String phone) {
++            this.phone = phone;
++            return this;
++        }
++
++        public Builder image(String image) {
++            this.image = image;
++            return this;
++        }
++
++        public Builder status(String status) {
++            this.status = status;
++            return this;
++        }
++        
++
++        public Builder token(String token) {
++            this.token = token;
++            return this;
++        }
++
++        public Builder otp(String otp) {
++            this.otp = otp;
++            return this;
++        }
++
++        public Builder registeredFrom(String registeredFrom) {
++            this.registeredFrom = registeredFrom;
++            return this;
++        }
++
++        public Builder address(String address) {
++            this.address = address;
++            return this;
++        }
++
++        public Builder role(Role role) {
++            this.role = role;
++            return this;
++        }
++
++        // Build method to create User object
++        public User build() {
++            return new User(this);
++        }
++    }
++}
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/services/auth/UserService.java b/backend/src/main/java/com/example/uniMed/services/auth/UserService.java
+index 6b5e6b22..488b6203 100644
+--- a/backend/src/main/java/com/example/uniMed/services/auth/UserService.java
++++ b/backend/src/main/java/com/example/uniMed/services/auth/UserService.java
+@@ -1,46 +1,47 @@
+ package com.example.uniMed.services.auth;
++import java.security.NoSuchAlgorithmException;
++import java.security.SecureRandom;
++import java.sql.Date;
++import java.text.SimpleDateFormat;
++import java.util.ArrayList;
++import java.util.Comparator;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.Optional;
++import java.util.stream.Collectors;
++
+ import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.HttpStatus;
++import org.springframework.http.ResponseEntity;
+ import org.springframework.security.crypto.bcrypt.BCrypt;
+ import org.springframework.stereotype.Service;
+ import org.springframework.transaction.annotation.Transactional;
++import org.springframework.web.bind.annotation.PostMapping;
++import org.springframework.web.bind.annotation.RequestParam;
+ import org.springframework.web.multipart.MultipartFile;
+ 
+-import com.example.uniMed.models.Admin;
+-import com.example.uniMed.models.Department;
++import com.example.uniMed.models.DTOs.DoctorsDTO;
++import com.example.uniMed.models.DTOs.UserDTO;
+ import com.example.uniMed.models.Doctors;
+ import com.example.uniMed.models.Role;
+ import com.example.uniMed.models.Student;
+ import com.example.uniMed.models.User;
+-import com.example.uniMed.models.DTOs.DoctorsDTO;
+-import com.example.uniMed.models.DTOs.UserDTO;
+ import com.example.uniMed.models.rating.Rating;
+ import com.example.uniMed.repositories.EmailSender;
+-import com.example.uniMed.repositories.auth.AdminRepository;
+ import com.example.uniMed.repositories.auth.StudentRepository;
+ import com.example.uniMed.repositories.auth.UserRepo;
+-import com.example.uniMed.repositories.auth.role.RoleRepository;
+ import com.example.uniMed.repositories.doctor.RatingRepository;
+ import com.example.uniMed.repositories.publics.about_us.DepartmentRepository;
+ import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
++import com.example.uniMed.services.auth.common_services.UserServices;
++import com.example.uniMed.services.auth.factories.UserCreator;
++import com.example.uniMed.services.auth.factories.UserCreatorFactory;
+ import com.example.uniMed.services.file.FileService;
+ import com.example.uniMed.utils.JwtHelper;
+ 
+ import jakarta.persistence.EntityNotFoundException;
+ 
+-
+-import java.security.NoSuchAlgorithmException;
+-import java.security.SecureRandom;
+-import java.sql.Date;
+-import java.text.SimpleDateFormat;
+-import java.time.Instant;
+-import java.util.ArrayList;
+-import java.util.Comparator;
+-import java.util.HashMap;
+-import java.util.List;
+-import java.util.Map;
+-import java.util.Optional;
+-import java.util.stream.Collectors;
+-
+ @Service
+ public class UserService {
+ 
+@@ -59,8 +60,6 @@ public class UserService {
+     @Autowired
+     private EmailSender emailSender;
+ 
+-    @Autowired
+-    private RoleRepository roleRepository;
+ 
+     @Autowired
+     private FileService fileService;
+@@ -68,155 +67,110 @@ public class UserService {
+     @Autowired
+     private RatingRepository ratingRepository;
+ 
+-    @Autowired
+-    private AdminRepository adminRepository;
+ 
+-    public Map<String, Object> getUser(Long userId) {
+-        Map<String, Object> response = new HashMap<>();
++    public ResponseEntity<Map<String, Object>> getUser(Long userId) {
++        
+         Optional<User> user = userRepository.findById(userId);
+         if (user.isPresent()) {
+-            response.put("success", true);
+-            response.put("message", "User found");
+-            response.put("data", user.get().toDTO());
++            return createResponse(true, "User found", user.get().toDTO());
+         } else {
+-            response.put("success", false);
+-            response.put("message", "User not found");
++            return createResponse(false, "User not found", null);
+         }
+-        return response;
++        
+     }
++   
++   
++   
+ 
+     @Transactional
+-    public Map<String, Object> createUser(MultipartFile file,
+-            String password,
+-            String confirmPass,
+-            String email,
+-            Date dob,
+-            String name,
+-            String gender,
+-            String userType,
+-            String departmentId,
+-            String session,
+-            String registrationNo,
+-            String departmentName,
+-            String registeredFrom,
+-            String phone,
+-            String address) {
+-        Map<String, Object> response = new HashMap<>();
+-
++    @PostMapping("/create")
++    public ResponseEntity<Map<String, Object>> createUser(
++            @RequestParam MultipartFile file,
++            @RequestParam String password,
++            @RequestParam String confirmPass,
++            @RequestParam String email,
++            @RequestParam Date dob,
++            @RequestParam String name,
++            @RequestParam String gender,
++            @RequestParam String userType,
++            @RequestParam(required = false) Map<String, String> additionalFields) {
++
++       
+         try {
++            // Validate password match
+             if (!password.equals(confirmPass)) {
+-                response.put("success", false);
+-                response.put("message", "Password does not match");
+-                return response;
++                return ResponseEntity.badRequest().body(Map.of(
++                    "success", false,
++                    "message", "Passwords do not match"
++                ));
+             }
+-
+-            Optional<User> existingUser = userRepository.findByEmail(email);
+-            if (existingUser.isPresent()) {
+-                response.put("success", false);
+-                response.put("message", "Email already exists");
+-                return response;
++            UserServices userService = new UserServices();
++
++            // Check email existence
++            if (userService.isEmailExists(email)) {
++                return ResponseEntity.badRequest().body(Map.of(
++                    "success", false,
++                    "message", "Email already exists"
++                ));
+             }
+ 
+-            String filePath;
++            // Save file
++            String filePath = userService.saveFile(file);
+ 
+-            filePath = fileService.saveFile(file);
++            // Create user
++            String hashedPassword = userService.hashPassword(password);
++            String token = userService.generateToken(email);
+ 
+-            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+-            String token = new JwtHelper().generateToken(email);
+-            String status = "Pending";
+-            if ("student".equals(userType) || "teacher".equals(userType) || "staff".equals(userType)) {
+-                status = "Approved";
++            Optional<Role> role = userService.findRoleByName(userType);
++            if (role.isEmpty()) {
++                return ResponseEntity.badRequest().body(Map.of(
++                    "success", false,
++                    "message", "Invalid role"
++                ));
+             }
+-            Optional<Role> role = roleRepository.findByRoleName(userType);
+-            if (role.isPresent()) {
+-                System.out.println("Role found");
+-            } else {
+-                System.out.println("Role not found");
+-            }
+-
+-            User newUser = new User(hashedPassword, email, dob, name, gender, role.get(), filePath, token, status,
+-                    registeredFrom, phone, address);
+-
+-
+-            if ("student".equals(userType)) {
+-                if (departmentName == null || session == null || registrationNo == null) {
+-                    userRepository.delete(newUser);
+-                    response.put("success", false);
+-                    response.put("message",
+-                            "Department, session, and registration number must be provided for students");
+-                    return response;
+-                }
+-
+-                Student student = new Student();
+-                student.setDepartment(departmentId);
+-                student.setSession(session);
+-                student.setRegistrationNo(registrationNo);
+-                student.setUser(newUser);
+-                studentRepository.save(student);
+-                response.put("user", student);
+-
+-            } else if ("doctor".equals(userType)) {
+-
+-                if (departmentId == null) {
+-                    userRepository.delete(newUser);
+-                    response.put("success", false);
+-                    response.put("message", "Specialization must be provided for doctors");
+-                    return response;
+-                }
+-                try {
+-
+-                    Doctors doctor = new Doctors();
+-                    Optional<Department> department = departmentRepository.findById(Integer.parseInt(departmentId));
+-                    if (!department.isPresent()) {
+-                        userRepository.delete(newUser);
+-                        response.put("success", false);
+-                        response.put("message", "Department does not exist");
+-                        return response;
+-                    }
+-                    doctor.setDepartment(department.get());
+-                    doctor.setUser(newUser);
+-
+-                    doctorRepository.save(doctor);
+-                    response.put("user", doctor.toDTO());
+-                } catch (Exception e) {
+-                    userRepository.delete(newUser);
+-
+-                    System.out.println("Error: " + e.getMessage());
+-                    response.put("success", false);
+-                    response.put("message", "An error occurred while creating the doctor: " + e.getMessage());
+-                    return response;
+-                }
+-            } else if ("admin".equals(userType)) {
+-                Admin admin = new Admin(newUser, Date.from(Instant.now()), null);
+-                adminRepository.save(admin);
+-                response.put("user", admin);
+ 
++            User user = new User.Builder()
++    .password(hashedPassword)
++    .email(email)
++    .dob(dob)
++    .name(name)
++    .sex(gender)
++    .role(role.get())
++    .image(filePath)
++    .token(token)
++    .status("Pending")
++    .registeredFrom(additionalFields.get("registeredFrom"))
++    .phone(additionalFields.get("phone"))
++    .address(additionalFields.get("address"))
++    .build();
++
++            Object specificUser;
++            if (!"admin".equalsIgnoreCase(userType)) {
++                UserCreatorFactory userCreatorFactory = new UserCreatorFactory();
++                // Use factory to handle specific user creation logic
++                UserCreator creator = userCreatorFactory.getUserCreator(userType);
++                specificUser = creator.createUser(user, additionalFields);
+             } else {
+-                userRepository.save(newUser);
+-                response.put("user", newUser.toDTO());
++                // Handle admin creation (if applicable)
++                specificUser = userRepository.save(user);
+             }
+ 
+-            response.put("success", true);
+-            response.put("message", "User created successfully");
+-           
+-            return response;
++            return createResponse(true, "User created successfully", specificUser);
++
+         } catch (Exception e) {
+-            response.put("success", false);
+-            response.put("message", "An error occurred while creating the user: " + e.getMessage());
+-            return response;
++            return createResponse(false, "An error occurred while creating the user: " + e.getMessage(), null);
+         }
+     }
++    
+ 
+     @Transactional
+-    public Map<String, Object> updateUser(Long userId, String email, String dobString,
++    public ResponseEntity<Map<String, Object>> updateUser(Long userId, String email, String dobString,
+             String name, String department, String session, String registrationNo,
+             String phone, String departmentId, String password) {
+-        Map<String, Object> response = new HashMap<>();
++        
+         try {
+             if (password == null || password.isEmpty()) {
+-                response.put("success", false);
+-                response.put("message", "Password must be provided");
+-                return response;
++               return createResponse(false, "Password is required", null);
+             }
+ 
+             Optional<User> userOpt = userRepository.findById(userId);
+@@ -226,9 +180,7 @@ public class UserService {
+ 
+             User user = userOpt.get();
+             if (!BCrypt.checkpw(password, user.getPassword())) {
+-                response.put("success", false);
+-                response.put("message", "Invalid password");
+-                return response;
++                return createResponse(false, "Invalid password", null);
+             }
+ 
+             // Update user fields
+@@ -281,27 +233,19 @@ public class UserService {
+                 doctorRepository.save(doctor);
+             }
+ 
+-            response.put("success", true);
+-            response.put("message", "User updated successfully");
+-            response.put("data", user.toDTO());
+-            return response;
++            return createResponse(true, "User updated successfully", user.toDTO());
+         } catch (Exception e) {
+-            e.printStackTrace();
+-            response.put("success", false);
+-            response.put("message", "An error occurred while updating the user: " + e.getMessage());
+-            return response;
++            return createResponse(false, "An error occurred while updating the user: " + e.getMessage(), null);
+         }
+     }
+ 
+     @Transactional
+-    public Map<String, Object> deleteUser(Long userId) {
+-        Map<String, Object> response = new HashMap<>();
++    public ResponseEntity<Map<String, Object>> deleteUser(Long userId) {
++       
+         try {
+             User user = userRepository.findById(userId).get();
+             if (user == null) {
+-                response.put("success", false);
+-                response.put("message", "User does not exist");
+-                return response;
++                return createResponse(false, "User id invalid", null);
+             }
+ 
+             if (user.getRole().getRoleName().equals("student")) {
+@@ -313,113 +257,89 @@ public class UserService {
+             }
+ 
+             userRepository.delete(user);
+-            response.put("success", true);
+-            response.put("message", "User and all related records deleted successfully");
++            return createResponse(true, "User deleted successfully", null);
+         } catch (Exception e) {
+-            response.put("success", false);
+-            response.put("message", "An error occurred while deleting the user + " + e.getMessage());
++            return createResponse(false, "Failed to delete user: " + e.getMessage(), null);
+         }
+-        return response;
++       
+     }
+ 
+-    public Map<String, Object> updateUserStatus(Long userId, String status) {
+-        Map<String, Object> response = new HashMap<>();
++    public ResponseEntity<Map<String, Object>> updateUserStatus(Long userId, String status) {
++       
+         Optional<User> userOpt = userRepository.findById(userId);
+         if (!userOpt.isPresent()) {
+-            response.put("success", false);
+-            response.put("message", "User does not exist");
+-            return response;
++            return createResponse(false, "User does not exist", null);
+         }
+ 
+         User user = userOpt.get();
+      
+         user.setStatus(status);
+         userRepository.save(user);
+-
+-        response.put("success", true);
+-        response.put("message", "User status updated successfully");
+-        response.put("data", userRepository.findById(userId).get().toDTO());
+-        return response;
++        return createResponse(true, "User status updated successfully",userRepository.findById(userId).get().toDTO());
++       
+     }
+ 
+-    public Map<String, Object> updateUserRole(Long userId, Integer roleId) {
+-        Map<String, Object> response = new HashMap<>();
++    public ResponseEntity<Map<String, Object>> updateUserRole(Long userId, Integer roleId) {
++       
+         Optional<User> userOpt = userRepository.findById(userId);
+         if (!userOpt.isPresent()) {
+-            response.put("success", false);
+-            response.put("message", "User does not exist");
+-            return response;
++           return createResponse(false, "User does not exist", null);
+         }
+ 
+         User user = userOpt.get();
+         user.setRoleId(roleId);
+         userRepository.save(user);
+ 
+-        response.put("success", true);
+-        response.put("message", "User role updated successfully");
+-        return response;
++        return createResponse(true, "User role updated successfully",userRepository.findById(userId).get().toDTO());
+     }
+ 
+-    public Map<String, Object> getUserById(Long userId) {
+-        Map<String, Object> response = new HashMap<>();
++    public ResponseEntity<Map<String, Object>> getUserById(Long userId) {
++       
+         Optional<User> user = userRepository.findById(userId);
+         if (user.isPresent()) {
+-            response.put("success", true);
+-            response.put("message", "User found");
+-            response.put("data", user.get().toDTO());
++            return createResponse(true, "User found", user.get().toDTO());
+         } else {
+-            response.put("success", false);
+-            response.put("message", "User not found");
++            return createResponse(false, "User not found", null);
+         }
+-        return response;
++       
+     }
+ 
+     public Map<String, Object> getAllUsers() {
+-        Map<String, Object> response = new HashMap<>();
++        
+         List<User> users = userRepository.findAll();
+         List<UserDTO> userDTOs = users.stream().map(User::toDTO).collect(Collectors.toList());
+-        response.put("success", true);
+-        response.put("message", "Users retrieved successfully");
+-        response.put("data", userDTOs);
+-        return response;
++      return createResponse(true, "Users retrieved successfully", userDTOs).getBody();
++       
+     }
+ 
+-    public Map<String, Object> sendOtp(String email, boolean debug) throws Exception {
++    public ResponseEntity<Map<String, Object>> sendOtp(String email, boolean debug)  {
+         try {
+-            Map<String, Object> response = new HashMap<>();
++            
+             int otp = generateOtp(debug);
+             String message = "Use this token to reset your password: " + otp;
+             emailSender.sendEmail(email, "Password Reset Request", message);
+-            response.put("success", true);
+-            response.put("message", "OTP sent successfully");
+-            response.put("otp", otp);
+-            return response;
++        
++            return createResponse(true, "OTP sent successfully", Map.of("otp", otp));
++          
+         } catch (Exception e) {
+-            Map<String, Object> response = new HashMap<>();
+-            response.put("success", false);
+-            response.put("message", "Failed to send OTP: " + e.getMessage());
+-            return response;
++            return createResponse(false, "Failed to send OTP: " + e.getMessage(), null);
+         }
+     }
+ 
+-    public Map<String, Object> verifyEmail(String email) throws Exception {
+-        Map<String, Object> response = new HashMap<>();
++    public ResponseEntity<Map<String, Object>> verifyEmail(String email)  {
++        
+         int otp = generateOtp(false);
+         String message = "Use this token to reset your password: " + otp;
+         emailSender.sendEmail(email, "Password Reset Request", message);
+-        response.put("success", true);
+-        response.put("message", "OTP sent successfully");
+-        return response;
++        return createResponse(true, "OTP sent successfully", Map.of("otp", otp));
+     }
+ 
+-    public Map<String, Object> resetPassword(String userID, String currentPass, String confirmPass) throws Exception {
+-        Map<String, Object> response = new HashMap<>();
++    public ResponseEntity<Map<String, Object>> resetPassword(String userID, String currentPass, String confirmPass)  {
++        
+ 
+         Optional<User> userOpt = userRepository.findById(Long.parseLong(userID));
+         if (!userOpt.isPresent()) {
+-            response.put("success", false);
+-            response.put("message", "User does not exist");
+-            return response;
++            return createResponse(false, "User does not exist", null);
+         }
+ 
+         User user = userOpt.get();
+@@ -427,9 +347,7 @@ public class UserService {
+         // Check current password
+         String userCurrentPass = user.getPassword();
+         if (!BCrypt.checkpw(currentPass, userCurrentPass)) {
+-            response.put("success", false);
+-            response.put("message", "Current password is incorrect");
+-            return response;
++            return createResponse(false, "Invalid current password", null);
+         }
+ 
+         // Hash new password and update user
+@@ -437,25 +355,19 @@ public class UserService {
+         user.setPassword(hashedPassword);
+         userRepository.save(user);
+ 
+-        response.put("success", true);
+-        response.put("message", "Password reset successfully");
+-        return response;
++        return createResponse(true, "Password reset successfully", user.toDTO());
+     }
+ 
+-    public Map<String, Object> loginUser(String email, String password) throws Exception {
+-        Map<String, Object> response = new HashMap<>();
++    public Map<String, Object> loginUser(String email, String password)  {
++        
+         Optional<User> userOpt = userRepository.findByEmail(email);
+         if (!userOpt.isPresent()) {
+-            response.put("success", false);
+-            response.put("message", "User does not exist");
+-            return response;
++           return createResponse(false, "Invalid username or password", null).getBody();
+         }
+ 
+         User user = userOpt.get();
+         if (!BCrypt.checkpw(password, user.getPassword())) {
+-            response.put("success", false);
+-            response.put("message", "Invalid username or password");
+-            return response;
++            return createResponse(false, "Invalid username or password", null).getBody();
+         }
+         // generate token
+         String token = new JwtHelper().generateToken(email);
+@@ -463,11 +375,7 @@ public class UserService {
+         
+ 
+         // Build the response
+-        response.put("success", true);
+-        response.put("message", "Login successful");
+-        response.put("data", user.toDTO());
+-
+-        return response;
++        return createResponse(true, "Login successful", user.toDTO()).getBody();
+     }
+ 
+     private int generateOtp(boolean debug) {
+@@ -514,30 +422,29 @@ public class UserService {
+         return doctorsDTOs;
+     }
+ 
+-    public Map<String, Object> getDoctors() {
+-        Map<String, Object> response = new HashMap<>();
++    public ResponseEntity<Map<String, Object>> getDoctors() {
++        
+         try {
+ 
+-            response.put("success", true);
+-            response.put("message", "Doctors retrieved successfully");
+-            response.put("data", convertDoctorsToDTOs(doctorRepository.findAll()));
++            List<Doctors> doctors = doctorRepository.findAll();
++            List<DoctorsDTO> doctorsDTOs = convertDoctorsToDTOs(doctors);
++
++            return createResponse(true, "Doctors retrieved successfully", doctorsDTOs);
+         } catch (Exception e) {
+-            response.put("success", false);
+-            response.put("message", "Failed to get doctors: " + e.getMessage());
+-        }
++            return createResponse(false, "Failed to get doctors: " + e.getMessage(), null);
++        
+ 
+-        return response;
++      
+     }
++}
+ 
+-    public Map<String, Object> changeImage(Long userId, MultipartFile image) {
+-        Map<String, Object> response = new HashMap<>();
++    public ResponseEntity<Map<String, Object>> changeImage(Long userId, MultipartFile image) {
++        
+         try {
+ 
+             User user = userRepository.findById(userId).get();
+             if (user == null) {
+-                response.put("success", false);
+-                response.put("message", "User id invalid: ");
+-                return response;
++                return createResponse(false, "User id invalid", null);
+             }
+             try {
+                 fileService.deleteFile(user.getImage());
+@@ -550,14 +457,21 @@ public class UserService {
+             user.setImage(imageUrl);
+ 
+             userRepository.save(user);
+-            response.put("success", true);
+-            response.put("message", "Image updated successfully");
+-            response.put("imageUrl", imageUrl);
+-            response.put("data", user.toDTO());
++            return createResponse(true, "Image updated successfully", Map.of("imageUrl", imageUrl, "data", user.toDTO()));
+         } catch (Exception e) {
+-            response.put("success", false);
+-            response.put("message", "Failed to update image: " + e.getMessage());
++            return createResponse(false, "Failed to update image: " + e.getMessage(), null);
+         }
+-        return response;
++       
+     }
+-}
++    private ResponseEntity<Map<String, Object>> createResponse(boolean success, String message, Object data) {
++        HashMap<String, Object> response = new HashMap<>();
++        response.put("success", success);
++        response.put("message", message);
++        if (data != null) response.put("data", data);
++        return new ResponseEntity<>(response, success ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
++    }
++    public static void validatePasswordMatch(String password, String confirmPassword) {
++        if (!password.equals(confirmPassword)) throw new IllegalArgumentException("Passwords do not match");
++    }
++
++}
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/services/auth/common_services/UserServices.java b/backend/src/main/java/com/example/uniMed/services/auth/common_services/UserServices.java
+new file mode 100644
+index 00000000..673428a0
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/auth/common_services/UserServices.java
+@@ -0,0 +1,50 @@
++package com.example.uniMed.services.auth.common_services;
++
++import org.springframework.stereotype.Service;
++
++import java.io.IOException;
++import java.util.Optional;
++
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.security.crypto.bcrypt.BCrypt;
++import org.springframework.web.multipart.MultipartFile;
++
++import com.example.uniMed.models.Role;
++import com.example.uniMed.repositories.auth.UserRepo;
++import com.example.uniMed.repositories.auth.role.RoleRepository;
++import com.example.uniMed.services.file.FileService;
++import com.example.uniMed.utils.JwtHelper;
++
++
++@Service
++public class UserServices {
++
++    @Autowired
++    private UserRepo userRepository;
++
++    @Autowired
++    private RoleRepository roleRepository;
++
++    @Autowired
++    private FileService fileService;
++
++    public String hashPassword(String password) {
++        return BCrypt.hashpw(password, BCrypt.gensalt());
++    }
++
++    public String generateToken(String email) {
++        return new JwtHelper().generateToken(email);
++    }
++
++    public String saveFile(MultipartFile file) throws IOException {
++        return fileService.saveFile(file);
++    }
++
++    public Optional<Role> findRoleByName(String roleName) {
++        return roleRepository.findByRoleName(roleName);
++    }
++
++    public boolean isEmailExists(String email) {
++        return userRepository.findByEmail(email).isPresent();
++    }
++}
+diff --git a/backend/src/main/java/com/example/uniMed/services/auth/factories/DoctorCreator.java b/backend/src/main/java/com/example/uniMed/services/auth/factories/DoctorCreator.java
+new file mode 100644
+index 00000000..79fbcc6c
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/auth/factories/DoctorCreator.java
+@@ -0,0 +1,43 @@
++package com.example.uniMed.services.auth.factories;
++
++import java.util.Map;
++import java.util.Optional;
++
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import com.example.uniMed.models.Department;
++import com.example.uniMed.models.Doctors;
++import com.example.uniMed.models.User;
++import com.example.uniMed.repositories.publics.about_us.DepartmentRepository;
++import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
++
++@Service
++public class DoctorCreator implements UserCreator {
++
++    @Autowired
++    private DoctorRepository doctorRepository;
++
++    @Autowired
++    private DepartmentRepository departmentRepository;
++
++    @Override
++    public Object createUser(User user, Map<String, String> additionalFields) {
++        String departmentId = additionalFields.get("departmentId");
++
++        if (departmentId == null) {
++            throw new IllegalArgumentException("Specialization (departmentId) is required for doctors");
++        }
++
++        Optional<Department> department = departmentRepository.findById(Integer.parseInt(departmentId));
++        if (department.isEmpty()) {
++            throw new IllegalArgumentException("Department does not exist");
++        }
++
++        Doctors doctor = new Doctors();
++        doctor.setUser(user);
++        doctor.setDepartment(department.get());
++
++        return doctorRepository.save(doctor);
++    }
++}
+diff --git a/backend/src/main/java/com/example/uniMed/services/auth/factories/StudentCreator.java b/backend/src/main/java/com/example/uniMed/services/auth/factories/StudentCreator.java
+new file mode 100644
+index 00000000..44865427
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/auth/factories/StudentCreator.java
+@@ -0,0 +1,36 @@
++package com.example.uniMed.services.auth.factories;
++
++import java.util.Map;
++
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import com.example.uniMed.models.Student;
++import com.example.uniMed.models.User;
++import com.example.uniMed.repositories.auth.StudentRepository;
++
++@Service
++public class StudentCreator implements UserCreator {
++
++    @Autowired
++    private StudentRepository studentRepository;
++
++    @Override
++    public Object createUser(User user, Map<String, String> additionalFields) {
++        String departmentId = additionalFields.get("departmentId");
++        String session = additionalFields.get("session");
++        String registrationNo = additionalFields.get("registrationNo");
++
++        if (departmentId == null || session == null || registrationNo == null) {
++            throw new IllegalArgumentException("Department, session, and registration number are required for students");
++        }
++
++        Student student = new Student();
++        student.setUser(user);
++        student.setDepartment(departmentId);
++        student.setSession(session);
++        student.setRegistrationNo(registrationNo);
++
++        return studentRepository.save(student);
++    }
++}
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/services/auth/factories/UserCreator.java b/backend/src/main/java/com/example/uniMed/services/auth/factories/UserCreator.java
+new file mode 100644
+index 00000000..ba7a9bc7
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/auth/factories/UserCreator.java
+@@ -0,0 +1,9 @@
++package com.example.uniMed.services.auth.factories;
++
++import java.util.Map;
++
++import com.example.uniMed.models.User;
++
++public interface UserCreator {
++    Object createUser(User user, Map<String, String> additionalFields);
++}
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/services/auth/factories/UserCreatorFactory.java b/backend/src/main/java/com/example/uniMed/services/auth/factories/UserCreatorFactory.java
+new file mode 100644
+index 00000000..f98222fd
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/auth/factories/UserCreatorFactory.java
+@@ -0,0 +1,25 @@
++package com.example.uniMed.services.auth.factories;
++
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++@Service
++public class UserCreatorFactory {
++
++    @Autowired
++    private StudentCreator studentCreator;
++
++    @Autowired
++    private DoctorCreator doctorCreator;
++
++    public UserCreator getUserCreator(String userType) {
++        switch (userType.toLowerCase()) {
++            case "student":
++                return studentCreator;
++            case "doctor":
++                return doctorCreator;
++            default:
++                throw new IllegalArgumentException("Invalid user type: " + userType);
++        }
++    }
++}
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/Command.java b/backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/Command.java
+new file mode 100644
+index 00000000..1390d513
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/Command.java
+@@ -0,0 +1,8 @@
++package com.example.uniMed.services.publics.about_us.command_pattern;
++
++public interface Command {
++    void execute();
++}
++
++
++
+diff --git a/backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/CreateAboutUsCommand.java b/backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/CreateAboutUsCommand.java
+new file mode 100644
+index 00000000..f03d441c
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/CreateAboutUsCommand.java
+@@ -0,0 +1,19 @@
++package com.example.uniMed.services.publics.about_us.command_pattern;
++
++import com.example.uniMed.models.AboutUs;
++import com.example.uniMed.services.publics.about_us.AboutUsService;
++
++public class CreateAboutUsCommand implements Command {
++    private AboutUsService aboutUsService;
++    private AboutUs aboutUs;
++
++    public CreateAboutUsCommand(AboutUsService aboutUsService, AboutUs aboutUs) {
++        this.aboutUsService = aboutUsService;
++        this.aboutUs = aboutUs;
++    }
++
++    @Override
++    public void execute() {
++        aboutUsService.createAboutUs(aboutUs);
++    }
++}
+diff --git a/backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/DeleteAboutUsCommand.java b/backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/DeleteAboutUsCommand.java
+new file mode 100644
+index 00000000..ebfa6483
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/publics/about_us/command_pattern/DeleteAboutUsCommand.java
+@@ -0,0 +1,18 @@
++package com.example.uniMed.services.publics.about_us.command_pattern;
++
++import com.example.uniMed.services.publics.about_us.AboutUsService;
++
++public class DeleteAboutUsCommand implements Command {
++    private AboutUsService aboutUsService;
++    private Long id;
++
++    public DeleteAboutUsCommand(AboutUsService aboutUsService, Long id) {
++        this.aboutUsService = aboutUsService;
++        this.id = id;
++    }
++
++    @Override
++    public void execute() {
++        aboutUsService.deleteAboutUs(id);
++    }
++}
+diff --git a/backend/src/main/java/com/example/uniMed/services/role_based/doctors/AppointmentsService.java b/backend/src/main/java/com/example/uniMed/services/role_based/doctors/AppointmentsService.java
+index 37970053..e86ad8a2 100644
+--- a/backend/src/main/java/com/example/uniMed/services/role_based/doctors/AppointmentsService.java
++++ b/backend/src/main/java/com/example/uniMed/services/role_based/doctors/AppointmentsService.java
+@@ -1,10 +1,20 @@
+ package com.example.uniMed.services.role_based.doctors;
+ 
+-import com.example.uniMed.models.DTOs.AppointmentsDTO1;
+-import com.example.uniMed.models.DTOs.MedicinesDTO;
+-import com.example.uniMed.models.DTOs.PrescriptionDTO;
++import java.util.ArrayList;
++import java.util.Date;
++import java.util.List;
++import java.util.Optional;
++
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.data.domain.Page;
++import org.springframework.data.domain.PageImpl;
++import org.springframework.data.domain.Pageable;
++import org.springframework.stereotype.Service;
++
+ import com.example.uniMed.controllers.role_based.doctors.AppointmentsDTO;
+ import com.example.uniMed.models.Appointments;
++import com.example.uniMed.models.DTOs.AppointmentsDTO1;
++import com.example.uniMed.models.DTOs.PrescriptionDTO;
+ import com.example.uniMed.models.Doctors;
+ import com.example.uniMed.models.Medicines;
+ import com.example.uniMed.models.User;
+@@ -16,27 +26,14 @@ import com.example.uniMed.repositories.doctor.MedicineRepository;
+ import com.example.uniMed.repositories.doctor.PrescribedMedicineRepository;
+ import com.example.uniMed.repositories.doctor.PrescriptionRepository;
+ import com.example.uniMed.repositories.publics.duty_roster.DoctorRepository;
++import com.example.uniMed.services.role_based.doctors.patterns.AppointmentFactory;
++import com.example.uniMed.services.role_based.doctors.patterns.MedicinesBuilder;
++import com.example.uniMed.services.role_based.doctors.patterns.PrescribedMedicineBuilder;
++import com.example.uniMed.services.role_based.doctors.patterns.PrescriptionBuilder;
+ 
+ import jakarta.annotation.Nullable;
+-import jakarta.persistence.criteria.CriteriaBuilder.In;
+ import jakarta.transaction.Transactional;
+ 
+-import org.checkerframework.checker.units.qual.t;
+-import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder.Op;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.data.domain.Page;
+-import org.springframework.data.domain.PageImpl;
+-import org.springframework.data.domain.PageRequest;
+-import org.springframework.data.domain.Pageable;
+-import org.springframework.stereotype.Service;
+-
+-import java.util.ArrayList;
+-import java.util.Date;
+-import java.util.List;
+-import java.util.Optional;
+-
+-import javax.print.Doc;
+-
+ @Service
+ public class AppointmentsService {
+ 
+@@ -62,120 +59,101 @@ public class AppointmentsService {
+     private MedicineRepository medicineRepository;
+ 
+     public Appointments createAppointment(AppointmentsDTO appointment, Integer userId) {
+-        Appointments appointment1 = new Appointments();
+-        appointment1.setAppointmentDateTime(appointment.getAppointmentDateTime());
+-        appointment1.setConcern(appointment.getConcern());
+-        appointment1.setStatus(appointment.getStatus());
+-
++      
+         Optional<User> optionalUser = userRepo.findById(Long.parseLong(userId.toString()));
+ 
+-        if (optionalUser.isPresent()) {
+-            appointment1.setUser(optionalUser.get());
+-
+-        }
++       
+         if (!optionalUser.isPresent()) {
+             throw new RuntimeException("User not found");
+         }
+-        return appointmentsRepository.save(appointment1);
++        Appointments appointment2 = AppointmentFactory.createAppointment(appointment, optionalUser.get());
++         
++        return appointmentsRepository.save(appointment2);
+     }
+ 
+-    @Transactional
+-    public Appointments prescribeMedicine(Integer appointmentId, List<PrescribedMedicineDTO> prescribedMedicinesDTO,
+-            @Nullable String description, @Nullable String date, @Nullable String status, Integer doctorID,
+-            Integer userID, String diagnosis) {
+-        Prescription prescription = new Prescription();
+-        if (doctorID == null) {
+-            throw new RuntimeException("Doctor ID is required");
+-        }
++@Transactional
++public Appointments prescribeMedicine(Integer appointmentId, List<PrescribedMedicineDTO> prescribedMedicinesDTO,
++        @Nullable String description, @Nullable String date, @Nullable String status, Integer doctorID,
++        Integer userID, String diagnosis) {
+ 
+-        prescription.setDescription(description);
+-        if (date != null) {
+-            prescription.setDate(date);
+-        }
+-        if (date == null) {
+-            prescription.setDate(new Date().toString());
+-        }
+-        if (diagnosis != null) {
+-            prescription.setDiagnosis(diagnosis);
+-        }
++    // Create Prescription using the Builder
++    Prescription prescription = new PrescriptionBuilder()
++        .withDescription(description)
++        .withDiagnosis(diagnosis)
++        .withDate(date)
++        .build();
+ 
+-        Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
+-        Optional<Doctors> optionalDoctor = doctorRepository.findById(Long.parseLong(doctorID.toString()));
+-        Optional<Appointments> optionalAppointment = appointmentsRepository.findById(appointmentId);
+-        if (!optionalAppointment.isPresent()) {
+-            throw new RuntimeException("Appointment not found");
+-        }
++    Optional<User> optionalUser = userRepo.findById(Long.parseLong(userID.toString()));
++    Optional<Doctors> optionalDoctor = doctorRepository.findById(Long.parseLong(doctorID.toString()));
++    Optional<Appointments> optionalAppointment = appointmentsRepository.findById(appointmentId);
+ 
+-        if (!optionalUser.isPresent()) {
+-            System.out.println("User  not found");
+-            throw new RuntimeException("User  not found");
+-        }
+-        if (!optionalDoctor.isPresent()) {
+-            System.out.println("Doctor not found");
+-            throw new RuntimeException("Doctor not found");
+-        }
+-        prescription.setDoctor(optionalDoctor.get());
+-        prescription.setPatient(optionalUser.get());
+-        // Save the prescription first to ensure it is managed by the persistence
+-        // context
+-        prescription = prescriptionRepository.save(prescription);
++    if (!optionalAppointment.isPresent()) {
++        throw new RuntimeException("Appointment not found");
++    }
+ 
+-        List<PrescribedMedicine> prescribedMedicines = new ArrayList<>();
+-        for (PrescribedMedicineDTO prescribedMedicineDTO : prescribedMedicinesDTO) {
+-            PrescribedMedicine prescribedMedicine = new PrescribedMedicine();
+-            if (prescribedMedicineDTO.getMedicineID() == null) {
++    if (!optionalUser.isPresent()) {
++        throw new RuntimeException("User not found");
++    }
+ 
+-                Medicines medicine = new Medicines();
+-                medicine.setName(prescribedMedicineDTO.getName());
++    if (!optionalDoctor.isPresent()) {
++        throw new RuntimeException("Doctor not found");
++    }
+ 
+-                medicine.setIs_Outside(true);
++    prescription.setDoctor(optionalDoctor.get());
++    prescription.setPatient(optionalUser.get());
+ 
+-                medicine.setEntryDate(Date.from(new Date().toInstant()));
++    // Save the prescription first to ensure it is managed by the persistence context
++    prescription = prescriptionRepository.save(prescription);
+ 
+-                Optional<User> optionalUser1 = userRepo.findById(Long.parseLong(doctorID.toString()));
+-                if (optionalUser1.isPresent()) {
+-                    medicine.setAddedBy(optionalUser1.get());
+-                }
+-                medicine = medicineRepository.save(medicine);
+-                prescribedMedicine.setMedicine(medicine);
+-            } else {
+-                Optional<Medicines> medOptional = medicineRepository.findById(prescribedMedicineDTO.getMedicineID());
+-                if (medOptional.isPresent()) {
++    List<PrescribedMedicine> prescribedMedicines = new ArrayList<>();
++    for (PrescribedMedicineDTO prescribedMedicineDTO : prescribedMedicinesDTO) {
++        Medicines medicine;
+ 
+-                    prescribedMedicine.setMedicine(medOptional.get());
+-                }
++        if (prescribedMedicineDTO.getMedicineID() == null) {
++            // Use MedicinesBuilder to construct the medicine object
++            Optional<User> optionalUser1 = userRepo.findById(Long.parseLong(doctorID.toString()));
++            User addedBy = optionalUser1.orElseThrow(() -> new RuntimeException("Doctor not found"));
+ 
+-            }
+-            prescribedMedicine.setPrescription(prescription);
+-            prescribedMedicine.setQuantity(prescribedMedicineDTO.getQuantity());
+-            prescribedMedicine.setDuration(prescribedMedicineDTO.getDuration());
+-            prescribedMedicine.setAfterBefore(prescribedMedicineDTO.getAfterBefore());
+-            // prescribedMedicine.set(prescription); // Associate with the saved
+-            // prescription
+-            prescribedMedicines.add(prescribedMedicine);
+-        }
++            medicine = new MedicinesBuilder()
++                .withName(prescribedMedicineDTO.getName())
++                .isOutside(true)
++                .withEntryDate(Date.from(new Date().toInstant()))
++                .addedBy(addedBy)
++                .build();
+ 
+-        // Save each prescribed medicine to ensure it is managed by the persistence
+-        // context
+-        for (PrescribedMedicine prescribedMedicine : prescribedMedicines) {
+-            prescribedMedicineRepository.save(prescribedMedicine);
++            medicine = medicineRepository.save(medicine);
++        } else {
++            medicine = medicineRepository.findById(prescribedMedicineDTO.getMedicineID())
++                    .orElseThrow(() -> new RuntimeException("Medicine not found"));
+         }
+ 
+-        prescription.setPrescribedMedicines(prescribedMedicines);
++        // Use PrescribedMedicineBuilder to construct the object
++        PrescribedMedicine prescribedMedicine = new PrescribedMedicineBuilder()
++            .withMedicine(medicine)
++            .withPrescription(prescription)
++            .withQuantity(Integer.parseInt(prescribedMedicineDTO.getQuantity()))
++            .withDuration(prescribedMedicineDTO.getDuration())
++            .withAfterBefore(prescribedMedicineDTO.getAfterBefore())
++            .build();
+ 
+-        prescriptionRepository.save(prescription);
++        prescribedMedicines.add(prescribedMedicine);
++    }
+ 
+-        if (optionalAppointment.isPresent()) {
+-            Appointments appointment = optionalAppointment.get();
+-            appointment.setPrescription(prescription);
+-            appointment.setStatus(status);
+-            appointment.setAppointmentDateTime(Date.from(new Date().toInstant()));
+-            return appointmentsRepository.save(appointment);
+-        }
+-        return null;
++    // Save each prescribed medicine to ensure it is managed by the persistence context
++    for (PrescribedMedicine prescribedMedicine : prescribedMedicines) {
++        prescribedMedicineRepository.save(prescribedMedicine);
+     }
+ 
+-    public Appointments updateAppointmentStatus(Integer appointmentId, String status) {
++    prescription.setPrescribedMedicines(prescribedMedicines);
++    prescriptionRepository.save(prescription);
++
++    Appointments appointment = optionalAppointment.get();
++    appointment.setPrescription(prescription);
++    appointment.setStatus(status);
++    appointment.setAppointmentDateTime(Date.from(new Date().toInstant()));
++    return appointmentsRepository.save(appointment);
++}
++public Appointments updateAppointmentStatus(Integer appointmentId, String status) {
+         Optional<Appointments> optionalAppointment = appointmentsRepository.findById(appointmentId);
+         if (optionalAppointment.isPresent()) {
+             Appointments appointment = optionalAppointment.get();
+diff --git a/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/AppointmentFactory.java b/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/AppointmentFactory.java
+new file mode 100644
+index 00000000..12b0b7d9
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/AppointmentFactory.java
+@@ -0,0 +1,16 @@
++package com.example.uniMed.services.role_based.doctors.patterns;
++
++import com.example.uniMed.controllers.role_based.doctors.AppointmentsDTO;
++import com.example.uniMed.models.Appointments;
++import com.example.uniMed.models.User;
++
++public class AppointmentFactory {
++    public static Appointments createAppointment(AppointmentsDTO appointmentDTO, User user) {
++        Appointments appointment = new Appointments();
++        appointment.setAppointmentDateTime(appointmentDTO.getAppointmentDateTime());
++        appointment.setConcern(appointmentDTO.getConcern());
++        appointment.setStatus(appointmentDTO.getStatus());
++        appointment.setUser(user);
++        return appointment;
++    }
++}
+diff --git a/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/MedicinesBuilder.java b/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/MedicinesBuilder.java
+new file mode 100644
+index 00000000..a3648a5f
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/MedicinesBuilder.java
+@@ -0,0 +1,42 @@
++package com.example.uniMed.services.role_based.doctors.patterns;
++
++import java.util.Date;
++
++import com.example.uniMed.models.Medicines;
++import com.example.uniMed.models.User;
++
++public class MedicinesBuilder {
++    private String name;
++    private boolean isOutside;
++    private Date entryDate;
++    private User addedBy;
++
++    public MedicinesBuilder withName(String name) {
++        this.name = name;
++        return this;
++    }
++
++    public MedicinesBuilder isOutside(boolean isOutside) {
++        this.isOutside = isOutside;
++        return this;
++    }
++
++    public MedicinesBuilder withEntryDate(Date entryDate) {
++        this.entryDate = entryDate;
++        return this;
++    }
++
++    public MedicinesBuilder addedBy(User addedBy) {
++        this.addedBy = addedBy;
++        return this;
++    }
++
++    public Medicines build() {
++        Medicines medicine = new Medicines();
++        medicine.setName(name);
++        medicine.setIs_Outside(isOutside);
++        medicine.setEntryDate(entryDate);
++        medicine.setAddedBy(addedBy);
++        return medicine;
++    }
++}
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/PrescribedMedicineBuilder.java b/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/PrescribedMedicineBuilder.java
+new file mode 100644
+index 00000000..2d3261b2
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/PrescribedMedicineBuilder.java
+@@ -0,0 +1,49 @@
++package com.example.uniMed.services.role_based.doctors.patterns;
++
++import com.example.uniMed.models.Medicines;
++import com.example.uniMed.models.medicine.PrescribedMedicine;
++import com.example.uniMed.models.medicine.Prescription;
++
++public class PrescribedMedicineBuilder {
++
++    private Medicines medicine;
++    private Prescription prescription;
++    private int quantity;
++    private String duration;
++    private String afterBefore;
++
++    public PrescribedMedicineBuilder withMedicine(Medicines medicine) {
++        this.medicine = medicine;
++        return this;
++    }
++
++    public PrescribedMedicineBuilder withPrescription(Prescription prescription) {
++        this.prescription = prescription;
++        return this;
++    }
++
++    public PrescribedMedicineBuilder withQuantity(int quantity) {
++        this.quantity = quantity;
++        return this;
++    }
++
++    public PrescribedMedicineBuilder withDuration(String duration) {
++        this.duration = duration;
++        return this;
++    }
++
++    public PrescribedMedicineBuilder withAfterBefore(String afterBefore) {
++        this.afterBefore = afterBefore;
++        return this;
++    }
++
++    public PrescribedMedicine build() {
++        PrescribedMedicine prescribedMedicine = new PrescribedMedicine();
++        prescribedMedicine.setMedicine(this.medicine);
++        prescribedMedicine.setPrescription(this.prescription);
++        prescribedMedicine.setQuantity(afterBefore);
++        prescribedMedicine.setDuration(this.duration);
++        prescribedMedicine.setAfterBefore(this.afterBefore);
++        return prescribedMedicine;
++    }
++}
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/PrescriptionBuilder.java b/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/PrescriptionBuilder.java
+new file mode 100644
+index 00000000..a66c97c0
+--- /dev/null
++++ b/backend/src/main/java/com/example/uniMed/services/role_based/doctors/patterns/PrescriptionBuilder.java
+@@ -0,0 +1,50 @@
++package com.example.uniMed.services.role_based.doctors.patterns;
++
++import java.util.Date;
++
++import com.example.uniMed.models.Doctors;
++import com.example.uniMed.models.User;
++import com.example.uniMed.models.medicine.Prescription;
++public class PrescriptionBuilder {
++
++    private String description;
++    private String diagnosis;
++    private String date;
++    private Doctors doctor;
++    private User patient;
++
++    public PrescriptionBuilder withDescription(String description) {
++        this.description = description;
++        return this;
++    }
++
++    public PrescriptionBuilder withDiagnosis(String diagnosis) {
++        this.diagnosis = diagnosis;
++        return this;
++    }
++
++    public PrescriptionBuilder withDate(String date) {
++        this.date = date;
++        return this;
++    }
++
++    public PrescriptionBuilder withDoctor(Doctors doctor) {
++        this.doctor = doctor;
++        return this;
++    }
++
++    public PrescriptionBuilder withPatient(User patient) {
++        this.patient = patient;
++        return this;
++    }
++
++    public Prescription build() {
++        Prescription prescription = new Prescription();
++        prescription.setDescription(this.description);
++        prescription.setDiagnosis(this.diagnosis);
++        prescription.setDate(this.date != null ? this.date : new Date().toString());
++        prescription.setDoctor(this.doctor);
++        prescription.setPatient(this.patient);
++        return prescription;
++    }
++}
+\ No newline at end of file
+diff --git a/backend/src/main/java/com/example/uniMed/utils/EmailSenderImpl.java b/backend/src/main/java/com/example/uniMed/utils/EmailSenderImpl.java
+index b4e5968f..04a59e1b 100644
+--- a/backend/src/main/java/com/example/uniMed/utils/EmailSenderImpl.java
++++ b/backend/src/main/java/com/example/uniMed/utils/EmailSenderImpl.java
+@@ -14,7 +14,6 @@ public class EmailSenderImpl implements EmailSender {
+     
+     private final JavaMailSender javaMailSender;
+ 
+-    @Autowired
+     public EmailSenderImpl(JavaMailSender javaMailSender) {
+         this.javaMailSender = javaMailSender;
+     }
+diff --git a/backend/src/main/resources/application.properties b/backend/src/main/resources/application.properties
+index 3746f7f2..f0a8fd0c 100644
+--- a/backend/src/main/resources/application.properties
++++ b/backend/src/main/resources/application.properties
+@@ -6,7 +6,7 @@ server.port=8000
+ # Database configuration
+ spring.datasource.url=jdbc:mysql://localhost:3306/uni_health
+ spring.datasource.username=root
+-spring.datasource.password=zxzxzx21
++spring.datasource.password=Rasel2003
+ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+ # Hibernate settings
+ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+-- 
+2.39.5 (Apple Git-154)
+
