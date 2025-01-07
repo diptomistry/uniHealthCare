@@ -13,3 +13,68 @@ This project includes a **Higher-Order Component (HOC)** that wraps any componen
    - If `isLoading` is true, it displays the `FullScreenLoader` component on top of the wrapped component.
 
 
+## Content Management Factory Pattern
+```markdown
+
+
+## Overview
+Implements the Factory Pattern for creating and managing content types (Blog, Service, Quote) with a unified interface and encapsulated logic.
+
+## Structure
+
+### Factory Class: `ContentFactory`
+Creates content instances based on type:
+```javascript
+class ContentFactory {
+  createContent(type, title, description, image) { ... }
+}
+```
+
+### Base Class: `ContentItem`
+Defines shared properties and `createFormData()` method:
+```javascript
+class ContentItem {
+  constructor(title, description, image, isBlog, isQuote) { ... }
+  async createFormData() { ... }
+}
+```
+
+### Content Types
+- `BlogContent`
+- `ServiceContent`
+- `QuoteContent`
+
+## Usage
+```javascript
+import ContentFactory from './contentFactory';
+
+const factory = new ContentFactory();
+const blogContent = factory.createContent('blog', 'Title', 'Description', imageFile);
+const formData = await blogContent.createFormData();
+```
+
+## API Integration
+- **Headers**: 
+  ```javascript
+  { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
+  ```
+- **FormData Fields**: `title`, `description`, `isBlog`, `isQuote`, `file`.
+
+## Extending
+Add new types by creating a new class extending `ContentItem` and updating `ContentFactory`.
+
+## Debugging
+Enable detailed logs:
+```javascript
+console.log('Content:', { title: this.title, description: this.description, imageType: typeof this.image });
+```
+
+## Future Improvements
+- Add property validation.
+- Enhance error reporting and logging.
+- Support custom configurations.
+```
+
+This concise version covers the essentials while remaining clear. Let me know if further adjustments are needed!
+
+

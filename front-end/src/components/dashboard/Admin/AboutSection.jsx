@@ -321,6 +321,41 @@ const AboutSection = () => {
           {" "}
           <Button title={"Submit"} />
         </button>
+        <h2 className="text-2xl font-hindSiliguri mt-4 font-semibold text-textColor flex justify-center mb-4">
+          বিভাগসমূহ
+        </h2>
+        <div className="flex flex-wrap gap-6 mb-5">
+          {departments.map((department, index) => (
+            <li
+              key={department.id}
+              className="flex justify-between items-center bg-gray-100 rounded-full px-3 py-1"
+            >
+              <span>{department.name}</span>
+              <button
+                onClick={() => openDeleteModal("department", index)}
+                className="ml-2 text-red-500 font-bold"
+              >
+                ×
+              </button>
+            </li>
+          ))}
+        </div>
+        <div className="flex gap-2 mb-6">
+          <input
+            type="text"
+            value={newDepartment}
+            onChange={handleNewDepartmentChange}
+            onKeyDown={handleKeyPress}
+            placeholder="Add new department"
+            className="flex-grow p-2 border border-gray-300 rounded"
+          />
+          <button
+            onClick={handleAddDepartment}
+            className="bg-primaryColor hover:bg-hoverColor text-white px-4 py-2 rounded"
+          >
+            Add
+          </button>
+        </div>
         <div className="mb-5">
           <h2 className="text-2xl font-poppins font-semibold text-textColor flex justify-center mt-4 mb-4">
             Images
@@ -360,43 +395,10 @@ const AboutSection = () => {
             </label>
           </div>
         </div>
+        
       </div>
       <div className="w-full md:w-1/2 bg-white dark:bg-secondary-dark-bg mt-3 mb-3 rounded-2xl shadow-md p-2">
-        <h2 className="text-2xl font-hindSiliguri font-semibold text-textColor flex justify-center mb-4">
-          বিভাগসমূহ
-        </h2>
-        <div className="flex flex-wrap gap-6 mb-5">
-          {departments.map((department, index) => (
-            <li
-              key={department.id}
-              className="flex justify-between items-center bg-gray-100 rounded-full px-3 py-1"
-            >
-              <span>{department.name}</span>
-              <button
-                onClick={() => openDeleteModal("department", index)}
-                className="ml-2 text-red-500 font-bold"
-              >
-                ×
-              </button>
-            </li>
-          ))}
-        </div>
-        <div className="flex gap-2 mb-6">
-          <input
-            type="text"
-            value={newDepartment}
-            onChange={handleNewDepartmentChange}
-            onKeyDown={handleKeyPress}
-            placeholder="Add new department"
-            className="flex-grow p-2 border border-gray-300 rounded"
-          />
-          <button
-            onClick={handleAddDepartment}
-            className="bg-primaryColor hover:bg-hoverColor text-white px-4 py-2 rounded"
-          >
-            Add
-          </button>
-        </div>
+     
         <div className="m-10 ">
         <Services/>
 

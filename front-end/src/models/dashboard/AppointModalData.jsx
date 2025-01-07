@@ -98,7 +98,7 @@ const AppointmentModalData = ({ modalContent }) => {
     try {
       const departmentListString = departmentList.join(", ");
       console.log("Department List: ", departmentListString);
-      const response = await fetch("http://127.0.0.1:5000/diagnose", {
+      const response = await fetch("http://127.0.0.1:5001/diagnose", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

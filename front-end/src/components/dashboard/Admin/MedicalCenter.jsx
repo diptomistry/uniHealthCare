@@ -59,7 +59,7 @@ const MedicalCenter = ({ darkMode }) => {
         }
 
         const data = await response.json();
-        console.log("API Response:", data);
+        
 
         // Map API response to the required dashData format
         const mappedDashData = [
