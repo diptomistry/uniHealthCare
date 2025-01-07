@@ -53,6 +53,7 @@ const About = () => {
       const data = await response.json();
       
       setAboutUs(data.description);
+      //console.log(data.description);
       
   
      
