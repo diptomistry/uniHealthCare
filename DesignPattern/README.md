@@ -69,12 +69,24 @@ Enable detailed logs:
 console.log('Content:', { title: this.title, description: this.description, imageType: typeof this.image });
 ```
 
-## Future Improvements
-- Add property validation.
-- Enhance error reporting and logging.
-- Support custom configurations.
-```
+## Diagram Flow
+User Action (e.g., "Create Blog") 
+        ↓
+ContentManager (Client)
+        ↓
+ContentFactory (Factory)
+        ↓
+Determines Type (Switch Statement)
+        ↓
+Creates Object (e.g., BlogContent, ServiceContent, QuoteContent)
+        ↓
+Returns Object to ContentManager
+        ↓
+Calls createFormData() on Object
+        ↓
+Formatted Data is Sent to Backend
 
-This concise version covers the essentials while remaining clear. Let me know if further adjustments are needed!
+
+
 
 

@@ -9,11 +9,10 @@ import axios from "axios";
 import ContentFactory from "../../../models/dashboard/ContentFactory";
 const API_BASE_URL = "http://localhost:8000/api";
 
-const ContentManager = ({ 
+const ContentManager = ({
   contentType, // 'blog' | 'service' | 'quote'
-  title
+  title,
 }) => {
-
   const [items, setItems] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -29,14 +28,12 @@ const ContentManager = ({
 
   const getContentTypeFlags = () => {
     switch (contentType) {
-      case 'blog':
+      case "blog":
         return { isBlog: true, quote: false };
-      case 'service':
+      case "service":
         return { isBlog: false, quote: false };
-      case 'quote':
+      case "quote":
         return { isBlog: false, quote: true };
-      case 'code':
-        return { isBlog: false, quote: false };
       default:
         return { isBlog: false, quote: false };
     }
@@ -67,10 +64,11 @@ const ContentManager = ({
           },
         });
         const data = await response.json();
-        const { isBlog, isQoute } = getContentTypeFlags();
-        const filteredItems = data.filter(item => 
-          item.isBlog === isBlog && item.isQoute === isQoute
+        const { isBlog, quote } = getContentTypeFlags();
+        const filteredItems = data.filter(
+          (item) => item.isBlog === isBlog && item.qoute === quote
         );
+        
         setItems(filteredItems);
       } catch (error) {
         console.error(`Error fetching ${contentType} data:`, error);
@@ -95,7 +93,7 @@ const ContentManager = ({
     setEditForm(items[index]);
     setImageSrc("");
   };
-/*
+  /*
   const handleSave = async () => {
     if (!editForm.title || !editForm.description) {
       alert("Title and Description are required.");
@@ -169,23 +167,23 @@ const ContentManager = ({
     }
   };
 */
-const handleSave = async () => {
+  const handleSave = async () => {
     if (!editForm.title || !editForm.description) {
       alert("Title and Description are required.");
       return;
     }
-  
+
     const token = localStorage.getItem("token");
     //console.log('Token present:', !!token);
-    
+
     try {
-      console.log('EditForm state:', {
+      console.log("EditForm state:", {
         title: editForm.title,
         descriptionLength: editForm.description.length,
         imagePresent: !!editForm.img,
-        imageType: typeof editForm.img
+        imageType: typeof editForm.img,
       });
-  
+
       const contentFactory = new ContentFactory();
       const content = contentFactory.createContent(
         contentType,
@@ -193,21 +191,21 @@ const handleSave = async () => {
         editForm.description,
         editForm.img
       );
-      
-      console.log('Content created:', {
+
+      console.log("Content created:", {
         type: contentType,
         isBlog: content.isBlog,
-        isQuote: content.isQuote
+        isQuote: content.isQuote,
       });
-  
+
       const formData = await content.createFormData();
-      
-      console.log('Request details:', {
+
+      console.log("Request details:", {
         url: `${API_BASE_URL}/blogs`,
-        method: isAdding ? 'POST' : 'PUT',
-        contentType: isAdding ? null : editForm.id
+        method: isAdding ? "POST" : "PUT",
+        contentType: isAdding ? null : editForm.id,
       });
-  
+
       let response;
       if (isAdding) {
         response = await axios.post(`${API_BASE_URL}/blogs`, formData, {
@@ -216,7 +214,7 @@ const handleSave = async () => {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log('POST response:', response.data);
+        console.log("POST response:", response.data);
         setItems([...items, response.data]);
       } else {
         response = await axios.put(
@@ -229,7 +227,7 @@ const handleSave = async () => {
             },
           }
         );
-        console.log('PUT response:', response.data);
+        console.log("PUT response:", response.data);
         setItems(
           items.map((item) => (item.id === editForm.id ? response.data : item))
         );
@@ -239,10 +237,10 @@ const handleSave = async () => {
     } catch (error) {
       console.error(`Error saving ${contentType}:`, error);
       if (error.response) {
-        console.error('Error response:', {
+        console.error("Error response:", {
           status: error.response.status,
           data: error.response.data,
-          headers: error.response.headers
+          headers: error.response.headers,
         });
       }
       alert(`Failed to save ${contentType}. Please try again.`);
@@ -293,7 +291,7 @@ const handleSave = async () => {
   };
 
   // Flag to control visibility of add/delete options
-  const showAddDelete = contentType !== 'quote';
+  const showAddDelete = contentType !== "quote";
 
   return (
     <div className="p-6">
@@ -310,13 +308,16 @@ const handleSave = async () => {
           </button>
         )}
       </div>
-      
+
       <div className="space-y-8">
         {items.map((item, index) => {
           const descriptionParagraphs = (item.description || "").split("\n");
 
           return (
-            <div key={index} className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div
+              key={index}
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+            >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-textColor dark:text-white">
                   {item.title}
@@ -399,10 +400,12 @@ const handleSave = async () => {
                 </button>
               </div>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-2">
-                {isAdding ? "Choose image from Device" : "Change image from Device"}
+                {isAdding
+                  ? "Choose image from Device"
+                  : "Change image from Device"}
               </label>
               <input
                 className="w-full px-4 py-2 border rounded-lg"
@@ -413,13 +416,13 @@ const handleSave = async () => {
             </div>
 
             <div className="space-y-4">
-             {showAddDelete && (
-                 <ImageGenerator
-                 setImageSrc={handleAIImageSet}
-                 isLoading={isLoading}
-                 setIsLoading={setIsLoading}
-               />
-             )}
+              {showAddDelete && (
+                <ImageGenerator
+                  setImageSrc={handleAIImageSet}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
+                />
+              )}
               {imageSrc && (
                 <div className="border border-gray-300 rounded-xl overflow-hidden">
                   <img
@@ -447,7 +450,7 @@ const handleSave = async () => {
           </div>
         </div>
       </CustomModal>
-      
+
       {showAddDelete && (
         <DeleteConfirmationModal
           isOpen={deleteIndex !== null}

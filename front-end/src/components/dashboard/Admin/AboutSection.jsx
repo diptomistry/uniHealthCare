@@ -244,29 +244,7 @@ const AboutSection = () => {
         const url = await uploadResponse.text();
         console.log("Image URL:", url);
 
-        // Step 2: Post the image URL to the About Us API
-        /*
-        const saveResponse = await fetch(
-          "http://localhost:8000/api/about-us/upload-image/1",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ imageUrl: url }),
-          }
-        );
-       
-
-        if (!saveResponse.ok) {
-          const errorText = await saveResponse.text();
-          console.error("Save response:", errorText);
-          throw new Error(
-            `Failed to save image URL with status ${saveResponse.status}`
-          );
-        }
- */
+     
         setImages((prevImages) => [...prevImages, url]);
         await fetchImages();
       } catch (error) {

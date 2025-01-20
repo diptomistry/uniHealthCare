@@ -13,7 +13,7 @@ const About = () => {
     fetchData();
   }, []);
   const [services, setServices] = useState([]);
-
+  
   const fetchData = async () => {
     const token = localStorage.getItem('token');
     try {
@@ -24,7 +24,7 @@ const About = () => {
         },
       });
       const data = await response.json();
-      const filteredBlogs = data.filter(blog => blog.isBlog === false);
+      const filteredBlogs = data.filter(blog => blog.isBlog === false && blog.qoute === false);
       console.log('f',filteredBlogs);
       setServices(filteredBlogs);
       //console.log(data.img);
