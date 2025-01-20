@@ -104,7 +104,7 @@ const DoctorScheduleTable = () => {
     <div className='flex flex-col gap-5 '>
       <div className='flex flex-col md:flex-row justify-center'>
         <div>
-          <h2 className="text-sm md:text-2xl font-hindSiliguri text-textColor">ডাক্তারদের ডিউটি রোস্টার </h2>
+          <h2 className="text-sm md:text-2xl font-hindSiliguri text-textColor font-bold">ডাক্তারদের ডিউটি রোস্টার </h2>
         </div>
         
       </div>
@@ -114,7 +114,7 @@ const DoctorScheduleTable = () => {
           row.map((cell, cellIndex) => (
             <div 
               key={`${rowIndex}-${cellIndex}`} 
-              className={`p-2 border border-gray-300  ${rowIndex === 0 ? 'font-bold bg-gray-100' : ''}`}
+              className={`p-2 border border-gray-300  ${rowIndex === 0 ? 'font-bold bg-brightColor/50' : ''}`}
             >
               {cell}
             </div>
