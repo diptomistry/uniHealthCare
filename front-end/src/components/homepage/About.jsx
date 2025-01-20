@@ -24,7 +24,7 @@ const About = () => {
         },
       });
       const data = await response.json();
-      const filteredBlogs = data.filter(blog => blog.isBlog === false);
+      const filteredBlogs = data.filter(blog => blog.isBlog === false && blog.qoute === false);
       console.log('f',filteredBlogs);
       setServices(filteredBlogs);
       //console.log(data.img);
