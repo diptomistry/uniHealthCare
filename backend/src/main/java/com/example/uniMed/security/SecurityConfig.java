@@ -25,7 +25,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.OPTIONS.name(), "/**").permitAll() 
-                .requestMatchers("/api/auth/**", "/api/departments/**", "/api/roles/**", "/ws/chat/**", "/api/blogs", "/api/duty-roster/table", "/api/medicines/all","/websocket","api/about-us/public","api/notices/*","/api/about-us/*").permitAll()
+                .requestMatchers("/api/auth/**", "/api/departments/**", "/api/roles/**", "/ws/chat/**", "/api/blogs", "/api/duty-roster/table", "/api/medicines/all","/websocket","api/about-us/public","api/notices","/api/about-us").permitAll()
                 .anyRequest().authenticated()
             );
         return http.build();
