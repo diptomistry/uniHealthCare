@@ -19,7 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(tokenVerifierInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/auth/**", "/api/departments/**", "/api/roles/**","/ws/chat/**","/api/blogs","/api/duty-roster/table","/api/medicines/all","/api/about-us/public/*"); // Exclude /auth/** paths
+                .excludePathPatterns("/api/auth/**", "/api/departments/**", "/api/roles/**","/ws/chat/**","/api/blogs","/api/duty-roster/table","/api/medicines/all","/api/about-us/public/*","/api/notices/*","/api/about-us/*"); // Exclude /auth/** paths
     }
 
   
