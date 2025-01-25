@@ -127,3 +127,93 @@ const DecoratedConfirmButton = DecoratorPatternForDisablingBtn(OriginalButton);
 - Avoid excessive nesting
 - Preserve original component's core functionality
 
+# SpecificRouteProtection Guard Pattern
+
+This repository implements the **Guard Pattern** in a React/Next.js application to protect specific routes based on user roles. The `SpecificRouteProtection` component ensures only authorized users with the appropriate roles can access certain parts of the application. Unauthorized users are redirected to a login page.
+
+---
+
+## **What is the Guard Pattern?**
+The Guard Pattern is a design pattern that restricts access to certain parts of an application by validating conditions (e.g., user authentication or role-based authorization). It acts as a gatekeeper to protect resources and routes, ensuring that only users who meet specific criteria can access them.
+
+In this implementation, the guard checks for a valid `role` and either renders the content for authorized users or redirects unauthorized users.
+
+---
+
+## **How It Works**
+
+The `SpecificRouteProtection` component is a reusable React component that wraps protected content and enforces access control based on the provided `role` prop.
+
+### **Code Overview**
+```tsx
+import { useRouter } from "next/navigation";
+
+interface Props {
+  children: React.ReactNode;
+  role?: string;
+}
+
+export default function SpecificRouteProtection({ children, role }: Props) {
+  const router = useRouter();
+
+  if (role === undefined) {
+    router.push("/login");
+    return null; // Prevent rendering while redirecting
+  }
+
+  return <>{children}</>;
+}
+```
+
+### **Features**
+1. **Condition-Based Access**: The guard checks if the `role` prop is defined.
+2. **Redirection**: If the condition is not met, users are redirected to the `/login` page.
+3. **Reusable**: The component can wrap any part of the application to enforce role-based access control.
+
+### **Usage**
+1. Import the `SpecificRouteProtection` component.
+2. Wrap the component or content you want to protect with `SpecificRouteProtection`.
+3. Pass the user role as a prop to determine access.
+
+#### **Example**
+```tsx
+import SpecificRouteProtection from "./SpecificRouteProtection";
+
+export default function DashboardPage() {
+  const userRole = "admin"; // Example user role fetched from state or context
+
+  return (
+    <SpecificRouteProtection role={userRole}>
+      <h1>Welcome to the Admin Dashboard</h1>
+    </SpecificRouteProtection>
+  );
+}
+```
+In this example, only users with a defined `userRole` will see the dashboard. If `userRole` is `undefined`, they are redirected to the login page.
+
+---
+
+## **Advantages**
+- **Simplifies Access Control**: Centralizes route protection logic in a reusable component.
+- **Improves Security**: Prevents unauthorized users from accessing protected routes or components.
+- **Flexibility**: Can be extended to include more complex conditions, such as role hierarchies or feature flags.
+
+---
+
+## **Enhancements and Best Practices**
+
+### **1. Handle Redirect Loops**
+Ensure the redirect logic only executes on the client side or when the component is mounted to avoid server-side rendering (SSR) issues or infinite loops.
+
+### **2. Show a Loading State**
+Improve user experience by displaying a loading indicator during redirection:
+```tsx
+if (role === undefined) {
+  router.push("/login");
+  return <p>Redirecting...</p>;
+}
+```
+
+### **3. Centralized Authentication**
+Consider using a global authentication context or state management library (e.g., Redux, Context API) to manage user roles and authentication state across the application.
+
