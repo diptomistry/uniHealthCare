@@ -11,7 +11,10 @@ import PastHistory from "./prescription/PastHistory";
 import { CSSTransition } from "react-transition-group"; // For animation
 import GeneralButton from "../../../layouts/doctor/GeneralButton";
 import { UserContext } from "../../../services/auth/UserProvider";
-
+const removeAppIDAndUserID = (name) => {
+  if (!name) return name; // Return the original name if it's null/undefined
+  return name.replace(/AppID:\d+\s?|userID:\d+\s?/g, "").trim(); // Remove 'AppID' and 'userID'
+};
 const getAppID = (name) => {
   if (!name) return null; // If no name, return null
   const appIdMatch = name.match(/AppID:(\d+)/); // Regex to match 'AppID:'
@@ -192,9 +195,8 @@ const NewRequests = () => {
                 <div className="text-center flex gap-5 sm:text-left">
                   <div className="space-y-0.5">
                     <p className="text-lg text-black font-semibold">
-                      {selectedPatient.PatientName}
+                    {removeAppIDAndUserID(selectedPatient.PatientName)}
                     </p>
-                    <p className="text-slate-500 font-medium">Student</p>
                   </div>
                   <div className="space-y-0.5">
                     <p className="text-lg text-black font-semibold">Gender</p>

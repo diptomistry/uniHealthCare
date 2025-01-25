@@ -1,4 +1,9 @@
-
+admin:
+diptomistry50@gmail.com
+fffftttt
+doctor:
+docEnt2@example.com
+doctor
 # Full Stack Application
 
 This project is a comprehensive full-stack application .
