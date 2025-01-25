@@ -88,5 +88,42 @@ Formatted Data is Sent to Backend
 
 
 
+# React Button Decorator Pattern
 
+## Overview
+This implementation demonstrates the Decorator design pattern for managing button state and functionality in React applications.
+
+## Key Features
+- Dynamic button state modification
+- Flexible UI enhancement
+- Separation of concerns
+- Easy button behavior extension
+
+## Pattern Implementation
+The `DecoratorPatternForDisablingBtn` higher-order component (HOC) decorates the original button:
+- Adds disabled state
+- Applies visual feedback (opacity, cursor)
+- Preserves original button properties
+
+## Usage Example
+```jsx
+const DecoratedConfirmButton = DecoratorPatternForDisablingBtn(OriginalButton);
+
+<DecoratedConfirmButton isDisabled={condition} />
+```
+
+## Benefits
+- Modular button state management
+- Easily composable
+- Maintains single responsibility principle
+
+## Potential Extensions
+- Add loading states
+- Implement conditional styling
+- Create multiple decorator layers
+
+## Best Practices
+- Keep decorators focused
+- Avoid excessive nesting
+- Preserve original component's core functionality
 

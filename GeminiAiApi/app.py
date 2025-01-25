@@ -15,7 +15,7 @@ API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-
 headers = {"Authorization": "Bearer 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"}
 
 # Set the API key for Google Generative AI
-os.environ["GEMINI_API_KEY"] = "AIzaSyA6PanoKCq945enwgph8CU8tt0fqIm3X8Q"
+os.environ["GEMINI_API_KEY"] = "AIzaSyCeLqq9CEBo8PNRMtCc68SQRQwu8Tgn4co"
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
 # Model configuration for Google Generative AI

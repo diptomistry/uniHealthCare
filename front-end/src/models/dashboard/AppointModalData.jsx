@@ -7,8 +7,9 @@ import {
 import { AloSchedule } from "../../assets/dashboard";
 import { UserContext } from "../../services/auth/UserProvider";
 import PastRecord from "../../layouts/dashboard/PastRecord";
-
+import DecoratorPatternForDisablingBtn from "./DecoratorPatternForDisablingBtn";
 import axios from "axios";
+
 const AppointmentModalData = ({ modalContent }) => {
   const [description, setDescription] = useState("");
   const [departmentResponse, setDepartmentResponse] = useState("");
@@ -18,7 +19,8 @@ const AppointmentModalData = ({ modalContent }) => {
   const { user } = useContext(UserContext);
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
-  
+  const [isAppointmentConfirmed, setIsAppointmentConfirmed] = useState(false);
+
  
   const [dutyRoster, setDutyRoster] = useState([]);
   const fetchDepartments = async () => {
@@ -152,6 +154,7 @@ const AppointmentModalData = ({ modalContent }) => {
       if (response.ok) {
         // Handle success, e.g., show a success message or redirect
         alert("Appointment confirmed!");
+        setIsAppointmentConfirmed(true);
       } else {
         console.error("Error confirming appointment");
       }
@@ -164,6 +167,16 @@ const AppointmentModalData = ({ modalContent }) => {
   const showAlert = departmentResponse.toLowerCase().includes("please");
 
   const [appointments, setAppointments] = useState([]);
+  const ConfirmButton = (
+    <button
+      type="submit"
+      className="bg-primaryColor hover:bg-hoverColor text-white font-bold py-2 px-4 rounded mt-4"
+      disabled={isLoading || !appointmentDate || !appointmentTime}
+    >
+      {isLoading ? "Confirming..." : "Confirm Appointment"}
+    </button>
+  );
+  const DecoratedConfirmButton = DecoratorPatternForDisablingBtn(ConfirmButton);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -263,13 +276,7 @@ const AppointmentModalData = ({ modalContent }) => {
                     required
                   />
                 </div>
-                <button
-                  type="submit"
-                  className="bg-primaryColor hover:bg-hoverColor text-white font-bold py-2 px-4 rounded mt-4"
-                  disabled={isLoading || !appointmentDate || !appointmentTime}
-                >
-                  {isLoading ? "Confirming..." : "Confirm Appointment"}
-                </button>
+                <DecoratedConfirmButton isDisabled={isAppointmentConfirmed} />
               </form>
               <div className="mt-6 mx-auto p-4 ">
                 <h3 className="text-lg font-bold">
