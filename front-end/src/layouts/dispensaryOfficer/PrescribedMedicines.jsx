@@ -65,8 +65,7 @@ const PrescribedMedicines = ({ userID, closeModal }) => {
       }
       return acc;
     }, {});
-      console.log("Formatted Data:", formattedData);
-      console.log("Formatted Data:", formattedData);
+     
       //if any arrat of formatted data is empty, remove it
       for (const key in formattedData) {
         if (formattedData[key].length === 0) {
