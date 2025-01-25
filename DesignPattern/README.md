@@ -1,6 +1,3 @@
-Here's a reorganized, precise version for all the patterns mentioned:
-
----
 
 # Design Patterns in React and JavaScript
 
