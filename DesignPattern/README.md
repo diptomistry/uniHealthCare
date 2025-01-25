@@ -243,7 +243,7 @@ By leveraging these design patterns, the University HealthCare backend achieves 
 
 
 # Design Patterns in Frontend(React and JavaScript):
-# Design Patterns in Frontend (React and JavaScript)
+
 
 This section explains design patterns used in the frontend of the University HealthCare project. These patterns enhance modularity, reusability, and scalability.
 

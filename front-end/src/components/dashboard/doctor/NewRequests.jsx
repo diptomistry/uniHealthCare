@@ -129,6 +129,7 @@ const NewRequests = () => {
   };
 
   const handleSubmitPrescription = () => {
+   
     const appID = getAppID(selectedPatient.PatientName);
     console.log("AppID:", appID);
     const userID = getUserID(selectedPatient.PatientName);
