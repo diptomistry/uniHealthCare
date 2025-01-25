@@ -4,6 +4,16 @@ fffftttt
 doctor:
 docEnt2@example.com
 doctor
+dispensary:
+dis2@example.com
+password123
+senior officer:
+senior2@example.com
+password123
+student:
+student5@example.com
+password123
+
 # Full Stack Application
 
 This project is a comprehensive full-stack application .
