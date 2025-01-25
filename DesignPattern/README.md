@@ -242,7 +242,20 @@ By leveraging these design patterns, the University HealthCare backend achieves 
 
 
 # Design Patterns in Frontend(React and JavaScript):
+# Design Patterns in Frontend (React and JavaScript)
 
+This section explains design patterns used in the frontend of the University HealthCare project. These patterns enhance modularity, reusability, and scalability.
+
+## Table of Contents
+
+1. [Higher-Order Component (HOC) for Loading State](#1-higher-order-component-hoc-for-loading-state)  
+2. [Content Management Factory Pattern](#2-content-management-factory-pattern)  
+3. [React Button Decorator Pattern](#3-react-button-decorator-pattern)  
+4. [Specific Route Protection Guard Pattern](#4-specific-route-protection-guard-pattern)  
+5. [React Context API Pattern](#5-react-context-api-pattern)  
+6. [Advantages of These Patterns](#advantages-of-these-patterns)
+
+---
 ## 1. Higher-Order Component (HOC) for Loading State
 
 ### Overview:
