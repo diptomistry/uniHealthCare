@@ -6,17 +6,29 @@ from flask_cors import CORS
 import google.generativeai as genai
 import os
 
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv()
+except ImportError:
+    pass
+
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS for the entire app
 
 # Hugging Face API for Image Generation
 API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
-headers = {"Authorization": "Bearer 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"}
+_hf_token = os.environ.get("HUGGINGFACE_API_TOKEN")
+if not _hf_token:
+    raise RuntimeError("HUGGINGFACE_API_TOKEN environment variable is required")
+headers = {"Authorization": f"Bearer {_hf_token}"}
 
-# Set the API key for Google Generative AI
-os.environ["GEMINI_API_KEY"] = "AIzaSyCeLqq9CEBo8PNRMtCc68SQRQwu8Tgn4co"
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+# Google Generative AI
+_gemini_key = os.environ.get("GEMINI_API_KEY")
+if not _gemini_key:
+    raise RuntimeError("GEMINI_API_KEY environment variable is required")
+genai.configure(api_key=_gemini_key)
 
 # Model configuration for Google Generative AI
 generation_config = {
@@ -27,10 +39,12 @@ generation_config = {
     "response_mime_type": "text/plain",
 }
 
+
 # Hugging Face Query Function
 def query(payload):
     response = requests.post(API_URL, headers=headers, json=payload)
     return response.content
+
 
 # Route 1: Hugging Face Image Generation
 @app.route('/generate-image', methods=['POST'])
@@ -50,11 +64,13 @@ def generate_image():
     # Send the generated image back to the client
     return send_file('generated_image.png', mimetype='image/png')
 
+
 # Create the Google Generative AI Model
 model = genai.GenerativeModel(
     model_name="gemini-1.5-flash",
     generation_config=generation_config,
 )
+
 
 # Route 2: Text Improvement using Google Generative AI
 @app.route('/improve-text', methods=['POST'])
@@ -84,6 +100,7 @@ def improve_text():
     response = chat_session.send_message(input_text)
 
     return jsonify({'corrected_text': response.text})
+
 
 # Route 3: Medical Advice Chatbot using Google Generative AI
 @app.route('/api/ask', methods=['POST'])
@@ -119,6 +136,7 @@ def ask_medical_advice():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 # Route 4: Department Suggestion Based on Symptoms
 @app.route('/diagnose', methods=['POST'])
@@ -185,6 +203,7 @@ def diagnose():
 
     response = chat_session.send_message(user_input)
     return jsonify({"response": response.text})
+
 
 # Start the Flask app
 if __name__ == '__main__':
